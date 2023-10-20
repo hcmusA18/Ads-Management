@@ -1,0 +1,29 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "overrides": [],
+  "rules": {
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "no-shadow": 0
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/"
+  ],
+  "plugins": [
+    "prettier"
+  ]
+}
