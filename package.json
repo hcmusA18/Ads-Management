@@ -10,12 +10,9 @@
     "prepare": "husky install",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
-    "pretify": "prettier --write ."
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged && lint-staged"
-    }
+    "pretty": "prettier --check .",
+    "pretty:fix": "prettier --write .",
+    "pre-commit": "pretty-quick --staged"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -32,9 +29,10 @@
   },
   "devDependencies": {
     "eslint": "^8.51.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
-    "prettier": "^3.0.3",
+    "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3"
   }
 }
