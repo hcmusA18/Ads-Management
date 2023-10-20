@@ -4,8 +4,7 @@
     "es2021": true
   },
   "extends": [
-    "eslint:recommended",
-    "prettier"
+    "eslint:recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -13,17 +12,14 @@
   },
   "overrides": [],
   "rules": {
+    "no-shadow": 0,
     "quotes": [
       "error",
-      "double"
-    ],
-    "no-shadow": 0
+      "single"
+    ]
   },
   "ignorePatterns": [
     "node_modules/",
     "dist/"
-  ],
-  "plugins": [
-    "prettier"
   ]
 }
