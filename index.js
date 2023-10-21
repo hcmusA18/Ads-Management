@@ -7,8 +7,9 @@ const app = express()
 const PORT = 3000
 const __dirname = path.resolve() // return the current working directory
 
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')))
+// EJS
+app.set('view engine', 'ejs')
 
 // Start the server
 app.listen(PORT, () => {
@@ -16,5 +17,9 @@ app.listen(PORT, () => {
 })
 
 app.get('/', (req, res) => {
-  res.render('index.html')
+  res.render('index')
+})
+
+app.get('/test', (req, res) => {
+  res.render('test')
 })
