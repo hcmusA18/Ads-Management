@@ -1,0 +1,93 @@
+:root {
+  --Neutral-5: #8c8c8c;
+  --Dark: #1f274a;
+  --Background: #f7fafc;
+  --neutral: #8c8c8c;
+  --Blue-1: #355ded;
+}
+
+* {
+  font-family: 'Lato';
+  color: var(--Dark);
+}
+
+.main-container {
+  border-radius: 12px;
+  border: 1px solid var(--Neutral-5);
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 30px;
+  margin-top: 50px !important;
+}
+
+.header-1 {
+  color: #000;
+  /* Header 1 */
+  font-family: 'Lato';
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+
+  padding-top: 1rem;
+}
+
+.dropdown {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  padding: 10px 10px 10px 0;
+  gap: 42px;
+}
+
+.dropdown-toggle {
+  border-radius: 8px;
+  border: 1px solid var(--Neutral-5);
+  background-color: var(--Background);
+  font-family: 'Lato';
+  font-size: 18px;
+  color: var(--Dark);
+}
+
+.dropdown-toggle:hover {
+  background-color: var(--Dark);
+  color: var(--Background);
+}
+
+.dropdown-menu {
+  border-radius: 8px;
+  border: 1px solid var(--Neutral-5);
+  background: var(--Background);
+  gap: 42px;
+}
+
+#data-table {
+  border-radius: 10px !important;
+  border: 1px solid var(--neutral) !important;
+  border-bottom: none !important;
+  margin-bottom: 3px !important;
+  align-items: center !important;
+}
+
+#table-header {
+  color: var(--Blue-1) !important;
+  text-align: center;
+
+  /* Header 4 */
+  font-family: Lato;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 22px; /* 137.5% */
+}
+
+td {
+  /* Truncate text */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflowing content */
+  text-overflow: ellipsis; /* Display an ellipsis (...) to indicate truncated text */
+  max-width: 100px; /* Set a maximum width for the table cells */
+}

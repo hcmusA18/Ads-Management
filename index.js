@@ -20,6 +20,6 @@ app.get('/', (req, res) => {
   res.render('index')
 })
 
-app.get('/test', (req, res) => {
-  res.render('test')
+app.get('/LHQC_So', (req, res) => {
+  res.render('LoaihinhQC_So')
 })
