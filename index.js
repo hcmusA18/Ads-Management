@@ -23,3 +23,7 @@ app.get('/', (req, res) => {
 app.get('/LHQC_So', (req, res) => {
   res.render('LoaihinhQC_So')
 })
+
+app.get('/BCVP_Quan', (req, res) => {
+  res.render('Baocao_Quan')
+})
