@@ -1,0 +1,84 @@
+<%- include("partials/sidebar.ejs"); %>
+    <div class="container-fluid vw-100 ps-5 pt-1">
+        <div class="top-bar position-relative">
+            <!-- profile -->
+            <div class="position-absolute top-0 end-0 p-3 pe-1">
+                <div class="card d-flex flex-sm-row align-items-center p-2 shadow" style="border-radius: 8px;">
+                    <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
+                    <div class="ps-2 d-flex flex-sm-column">
+                        <p class="h6 mb-0">John Doe</p>
+                        <p class="h6 mb-0" style="font-weight: 75;">Phường 10, Quận 6</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-container">
+            <!-- Title -->
+            <div class="d-block">
+                <h1 class="header-1">DANH SÁCH CÁC QUẬN</h1>
+            </div>
+            <!-- Filter -->
+            <div class="d-block mt-3">
+                <div class="filter d-flex flex-row align-items-center">
+                    <div class="card d-inline-block align-top"
+                        style="height: fit-content; border-radius: 8px; border: 1px solid #677383; background-color: #f7fafc; width: fit-content; padding: 7px; margin-left: 10px;">
+                        <div style="font-size: 16px; line-height: 1; margin-bottom: 5px;">Tổng số Quận</div>
+                        <div
+                            style="font-size: 20px; text-align: right; line-height: 1; color: #fd3939; font-weight: 700;">
+                            12</div>
+                    </div>
+
+                    <div class="card d-inline-block align-top" style="height: fit-content; border-radius: 8px; border: 1px solid #677383; background-color: #f7fafc; width: fit-content; padding: 7px; margin-left: 10px;">
+                        <div style="font-size: 16px; line-height: 1;  margin-bottom: 5px;">Tổng số Phường</div>
+                        <div style="font-size: 20px; text-align: right; line-height: 1; color: #ae57ff; font-weight: 700;">112</div> 
+                    </div>
+
+                    <div class="card d-inline-block align-top"
+                        style="height: fit-content; border-radius: 8px; border: 1px solid #677383; background-color: #f7fafc; width: fit-content; padding: 7px; margin-left: 10px;">
+                        <div style="font-size: 16px; line-height: 1; margin-bottom: 5px;">Tổng số điểm quảng cáo</div>
+                        <div
+                            style="font-size: 20px; text-align: right; line-height: 1; color: #00B285; font-weight: 700;">
+                            211</div>
+                    </div>
+
+                    <div class="card d-inline-block align-top"
+                        style="height: fit-content; border-radius: 8px; border: 1px solid #677383; background-color: #f7fafc; width: fit-content; padding: 7px; margin-left: 10px;">
+                        <div style="font-size: 16px; line-height: 1; margin-bottom: 5px;">Tổng số bảng quảng cáo</div>
+                        <div
+                            style="font-size: 20px; text-align: right; line-height: 1; color: #D59633; font-weight: 700;">
+                            1102</div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- List Bar -->
+            <div></div>
+            <!-- Table -->
+            <div class="container-fluid mt-4 ps-0">
+                <table id="data-table" class="table table-hover table-responsive" style="width:100%">
+                    <thead id="table-header">
+                        <tr>
+                            <th style="width: fit-content;">Mã Quận</th>
+                            <th style="width: fit-content;">Tên Quận</th>
+                            <th style="width: fit-content;">Số Phường</th>
+                            <th style="width: fit-content;">Số điểm đặt</th>
+                            <th style="width: fit-content;">Số bảng quảng cáo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i=1; i <=55; i++) { %>
+                            <tr>
+                                <td>
+                                    Q00<%=i%>
+                                </td>
+                                <td>Quận 1</td>
+                                <td>10</td>
+                                <td>15</td>
+                                <td>20</td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
