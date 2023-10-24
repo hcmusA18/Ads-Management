@@ -1,7 +1,9 @@
 import express from 'express'
 import path from 'path'
 import http from 'http'
-import govRoutes from './routes/govRoutes.js'
+import soRoutes from './routes/gov.soRoutes.js'
+import quanRoutes from './routes/gov.quanRoutes.js'
+import phuongRoutes from './routes/gov.phuongRoutes.js'
 import citizenRoutes from './routes/citizenRoutes.js'
 
 const GOV_PORT = 3000
@@ -42,7 +44,10 @@ appGov.use(express.static(path.join(__dirname, 'government/public')))
 appGov.set('views', path.join(__dirname, 'government/views'))
 
 // Routes
-appGov.use('/', govRoutes)
+// appGov.use('/', govRoutes)
+appGov.use('/so', soRoutes)
+appGov.use('/quan', quanRoutes)
+appGov.use('/phuong', phuongRoutes)
 
 // EJS
 appGov.set('view engine', 'ejs')
@@ -52,8 +57,3 @@ const serverGov = http.createServer(appGov);
 serverGov.listen(GOV_PORT, () => {
   console.log(`Government server is running at http://localhost:${GOV_PORT}`)
 })
-
-
-
-
-
