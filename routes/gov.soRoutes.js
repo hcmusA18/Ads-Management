@@ -13,6 +13,10 @@ router.get('/qlquan', (req, res) => {
   res.render('so/QLQuan');
 });
 
+router.get('/qlphuong', (req, res) => {
+  res.render('so/QLPhuong');
+});
+
 router.get('/yeucau/cp', (req, res) => {
   res.render('so/YeucauCP');
 });

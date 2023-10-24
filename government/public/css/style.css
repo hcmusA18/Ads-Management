@@ -112,3 +112,87 @@ td {
   text-overflow: ellipsis; /* Display an ellipsis (...) to indicate truncated text */
   max-width: 100px; /* Set a maximum width for the table cells */
 }
+
+.list-bar {
+  width: 18%;
+  height: 529px;
+  border: solid #1F274A 1px;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.list-bar .title{
+  text-align: center;
+  margin: 0 auto;
+  font-size: 28px;
+  padding: 5px;
+  border-radius: 8px;
+  color: #ffffff;
+  background-color: #3C77FF;
+  width: fit-content;
+  height: 50px;
+}
+
+.searchBar{
+  padding: 8px;
+  border-radius: 8px;
+  border: solid #1f274a88 1px;
+  margin-top: 10px;
+}
+
+.searchBar:hover{
+  border: solid #1F274A 2px;
+}
+
+.searchFill{
+  border: none;
+}
+
+input:focus
+{
+  /* border: solid #1F274A 2px; */
+  outline: none;
+}
+
+.list-district{
+  margin: 15px 0;
+  padding: 5px;
+  max-height: 70%;
+  overflow-y: auto;
+}
+
+.district-box{
+  border-radius: 8px;
+  border: solid #1f274a 1px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.district-box:hover{
+  background-color: #e2e2e2;
+}
+/*============= Scroll Bar ========================*/
+/* width */
+.scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+.scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.scroll::-webkit-scrollbar-thumb {
+  background: #1f274a;
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: #27346e;
+}
+/*============= End Scroll Bar =====================*/
