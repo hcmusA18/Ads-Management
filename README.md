@@ -8,8 +8,8 @@ The Ads Management Application is a web-based platform designed to facilitate ad
   - Fetch data from the backend server (port 3000)
 
 - **Government Staff**
-  - Contains FE code on government side (including admin, running on port 4000)
-  - Backend server (port 4000)
+  - Contains FE code on government side (including admin, running on port 3000)
+  - Backend server (port 3000)
 
 ## How to run
   - git clone "URL_HERE"
