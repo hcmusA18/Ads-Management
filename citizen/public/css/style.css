@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+:root {
+  --Neutral-5: #8c8c8c;
+  --Dark: #1f274a;
+  --Background: #f7fafc;
+  --neutral: #8c8c8c;
+  --Blue-1: #355ded;
+}
+
+* {
+  font-family: 'Montserrat', sans-serif !important;
+  color: var(--Dark) !important;
+}
+
+.search-bar {
+  position: absolute;
+  top: 16px;
+  left: 32px;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+#map {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+/* Styling search bar or mapbox control topleft */
+.mapboxgl-ctrl-top-left .mapboxgl-ctrl {
+  margin: 16px 0 0 32px !important;
+}
+.mapboxgl-ctrl-geocodecoder {
+  font-family: 'Montserrat', sans-serif !important;
+}
+svg {
+  fill: var(--Dark) !important;
+}
+.mapboxgl-ctrl-group {
+  background: var(--Background) !important;
+}
+.form-check-label {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 1.125rem !important;
+  letter-spacing: -0.02rem !important;
+  font-weight: 600 !important;
+  line-height: normal;
+  font-style: normal;
+  opacity: 1 !important;
+}
+#bottom-menu {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 2rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2rem);
+  -webkit-backdrop-filter: blur(0.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}

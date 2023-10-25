@@ -1,6 +1,8 @@
 import express from 'express'
 import path from 'path'
 import http from 'http'
+import dotenv from 'dotenv'
+
 import soRoutes from './routes/gov.soRoutes.js'
 import quanRoutes from './routes/gov.quanRoutes.js'
 import phuongRoutes from './routes/gov.phuongRoutes.js'
@@ -12,19 +14,19 @@ const __dirname = path.resolve() // return the current working directory
 const appCitizen = express()
 const appGov = express()
 
+
+dotenv.config(path.join(__dirname, '.env'))
+
 // Citizen
 
 // Public folder
 appCitizen.use(express.static(path.join(__dirname, 'citizen/public')))
 
 //Views folder
-appCitizen.set('views', path.join(__dirname, 'citizen/views'))
+// appCitizen.set('views', path.join(__dirname, 'citizen/views'))
 
 // Routes
 appCitizen.use('/', citizenRoutes);
-
-// EJS
-appCitizen.set('view engine', 'ejs')
 
 // Start the server
 const serverCitizen = http.createServer(appCitizen);
