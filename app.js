@@ -1,6 +1,5 @@
 import express from 'express'
 import path from 'path'
-import http from 'http'
 import soRoutes from './routes/gov.soRoutes.js'
 import quanRoutes from './routes/gov.quanRoutes.js'
 import phuongRoutes from './routes/gov.phuongRoutes.js'
@@ -27,8 +26,8 @@ appCitizen.use('/', citizenRoutes);
 appCitizen.set('view engine', 'ejs')
 
 // Start the server
-const serverCitizen = http.createServer(appCitizen);
-serverCitizen.listen(CITIZEN_PORT, () => {
+// const serverCitizen = http.createServer(appCitizen);
+appCitizen.listen(CITIZEN_PORT, () => {
   console.log(`Citizen server is running at http://localhost:${CITIZEN_PORT}`)
 })
 
@@ -53,7 +52,7 @@ appGov.use('/phuong', phuongRoutes)
 appGov.set('view engine', 'ejs')
 
 // Start the server
-const serverGov = http.createServer(appGov);
-serverGov.listen(GOV_PORT, () => {
+// const serverGov = http.createServer(appGov);
+appGov.listen(GOV_PORT, () => {
   console.log(`Government server is running at http://localhost:${GOV_PORT}`)
 })
