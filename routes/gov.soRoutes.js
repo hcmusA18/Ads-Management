@@ -9,6 +9,10 @@ router.get('/lhqc', (req, res) => {
   res.render('so/LoaihinhQC');
 });
 
+router.get('/htbc', (req, res) => {
+  res.render('so/HinhthucBC');
+});
+
 router.get('/qlquan', (req, res) => {
   res.render('so/QLQuan');
 });

@@ -6,8 +6,8 @@
       <div class="card d-flex flex-sm-row align-items-center p-2 shadow" style="border-radius: 8px">
         <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
         <div class="ps-2 d-flex flex-sm-column">
-          <p class="h6 mb-0">John Doe</p>
-          <p class="h6 mb-0" style="font-weight: 75">Phường 10, Quận 6</p>
+          <p class="h6 mb-0">Admin</p>
+          <p class="h6 mb-0" style="font-weight: 75">Sở VH - TT</p>
         </div>
       </div>
     </div>
@@ -18,9 +18,9 @@
       <h1 class="header-1">LOẠI HÌNH QUẢNG CÁO</h1>
     </div>
     <!-- Filter -->
-    <div class="d-block mt-3">
-      <div class="filter d-flex flex-row align-items-center">
-        <div class="dropdown d-inline-block">
+    <div class="container-fluid mt-3 ps-0">
+      <div class="d-flex flex-row align-items-center" style="position: relative">
+        <div class="dropdown d-inline-block" style="flex: 0">
           <a
             class="btn btn-secondary dropdown-toggle"
             href="#"
@@ -31,9 +31,8 @@
             Loại hình quảng cáo
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="/so/lhqc">Loại hình quảng cáo</a></li>
+            <li><a class="dropdown-item" href="/so/htbc">Hình thức báo cáo</a></li>
           </ul>
         </div>
 
@@ -44,9 +43,10 @@
             border-radius: 8px;
             border: 1px solid #677383;
             background-color: #f7fafc;
-            width: 8rem;
+            width: 10rem;
             padding: 7px;
             margin-left: 10px;
+            min-width: fit-content;
           ">
           <div style="font-size: 16px; line-height: 1">Mới nhất</div>
           <div style="font-size: 20px; text-align: right; line-height: 1; color: #00b285; font-weight: 700">
@@ -63,13 +63,28 @@
             background-color: #f7fafc;
             width: fit-content;
             padding: 7px;
+            width: 10rem;
             margin-left: 10px;
+            min-width: fit-content;
           ">
           <div style="font-size: 16px; line-height: 1">Yêu cầu nhiều nhất</div>
           <div style="font-size: 20px; text-align: right; line-height: 1; color: #d59633; font-weight: 700">
             Loại hình B
           </div>
         </div>
+        
+        <!-- Button add -->
+        <div class="d-inline-block" style="position: absolute; right: 0">
+          <button
+            type="button"
+            class="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#addModal"
+            style="background-color: #60c98b">
+            Thêm mới
+          </button>
+        </div>
+
       </div>
     </div>
     <!-- Table -->

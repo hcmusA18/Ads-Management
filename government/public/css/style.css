@@ -7,7 +7,7 @@
 }
 
 * {
-  font-family: 'Lato';
+  font-family: 'Montserrat', sans-serif;
   color: var(--Dark);
   background-color: var(--Background);
 }
@@ -41,7 +41,7 @@
 .header-1 {
   color: #000;
   /* Header 1 */
-  font-family: 'Lato';
+  /* font-family: 'Lato'; */
   font-size: 28px;
   font-style: normal;
   font-weight: 700;
@@ -63,7 +63,7 @@
   border-radius: 8px;
   border: 1px solid var(--Neutral-5);
   background-color: var(--Background);
-  font-family: 'Lato';
+  /* font-family: 'Lato'; */
   font-size: 18px;
   color: var(--Dark);
 }
@@ -78,6 +78,7 @@
   border: 1px solid var(--Neutral-5);
   background: var(--Background);
   gap: 42px;
+  width: 100%;
 }
 
 .dropdown-item:hover {
@@ -98,7 +99,7 @@
   text-align: center;
 
   /* Header 4 */
-  font-family: Lato;
+  /* font-family: Lato; */
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
