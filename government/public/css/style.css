@@ -114,19 +114,46 @@ td {
   max-width: 100px; /* Set a maximum width for the table cells */
 }
 
+.create-btn{
+  align-self: flex-end;
+  background-color: #60C98B;
+  border: none;
+}
+
+.create-btn:hover{
+  background-color: #54b17b;
+}
+
+.modal{
+  background-color: #00000000;
+}
+.modal-dialog-centered{
+  background-color: #00000000;
+}
+
+.container-listbar{
+  width: 100%;
+  height: fit-content;
+  padding: 0;
+  margin: 1.5rem 0 0 0;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .list-bar {
   width: 18%;
-  height: 529px;
+  height: fit-content;
   border: solid #1F274A 1px;
   border-radius: 8px;
   padding: 10px;
   text-align: center;
+  top: 0;
 }
 
 .list-bar .title{
   text-align: center;
   margin: 0 auto;
-  font-size: 28px;
+  font-size: 26px;
   padding: 5px;
   border-radius: 8px;
   color: #ffffff;
@@ -148,6 +175,7 @@ td {
 
 .searchFill{
   border: none;
+  width: 80%;
 }
 
 input:focus
@@ -159,7 +187,7 @@ input:focus
 .list-district{
   margin: 15px 0;
   padding: 5px;
-  max-height: 70%;
+  max-height: 350px;
   overflow-y: auto;
 }
 

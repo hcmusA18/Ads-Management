@@ -87,7 +87,7 @@
 
         <!-- Modal add -->
         <div class="modal fade" id="addModal-htbc" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header pb-3" style="border: none">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -169,7 +169,7 @@
 
                 <!-- Modal edit -->
                 <div class="modal fade" id="editModal-htbc<%= i %>" tabindex="-1" aria-hidden="true">
-                  <div class="modal-dialog">
+                  <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header pb-3" style="border: none">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -179,7 +179,7 @@
                           CHỈNH SỬA HÌNH THỨC BÁO CÁO
                         </h5>
                         <form>
-                          <div class="mb-3">
+                          <div class="mb-3 d-flex" style="flex-wrap: wrap;">
                             <label for="maloai-htbc" class="col-form-label mb-1">Mã loại:</label>
                             <input
                               type="text"
@@ -188,14 +188,14 @@
                               disabled
                               value="<%= maLoai + String(i) %>" />
                           </div>
-                          <div class="mb-3">
+                          <div class="mb-3 d-flex" style="flex-wrap: wrap;">
                             <label for="loai-htbc" class="col-form-label mb-1"
                               >Loại:<span class="text-danger">*</span></label
                             >
                             <!-- Can display ten hinh thuc trong khung input -->
                             <input type="text" class="form-control" id="loai-htbc" required />
                           </div>
-                          <div class="mb-3">
+                          <div class="mb-3 d-flex" style="flex-wrap: wrap;">
                             <label for="mota-htbc" class="col-form-label mb-1"
                               >Mô tả:<span class="text-danger">*</span></label
                             >
