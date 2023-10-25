@@ -1,8 +1,8 @@
 {
   "env": {
-    "browser": true,
     "es2021": true,
-    "jquery": true
+    "jquery": true,
+    "node": true
   },
   "extends": ["eslint:recommended"],
   "parserOptions": {
@@ -10,6 +10,9 @@
     "sourceType": "module"
   },
   "overrides": [],
+  "globals": {
+    "process": true
+  },
   "rules": {
     "no-shadow": 0,
     "quotes": ["error", "single"]
