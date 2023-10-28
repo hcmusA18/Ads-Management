@@ -25,6 +25,7 @@
   justify-content: center;
   padding: 20px 30px;
   margin-top: 50px !important;
+  margin-bottom: 15px!important;
 }
 
 .checkbox-container {
@@ -79,6 +80,7 @@
   background: var(--Background);
   gap: 42px;
   width: 100%;
+  line-height: 45px;
 }
 
 .dropdown-item:hover {
@@ -87,15 +89,14 @@
 }
 
 #data-table {
-  border-radius: 10px !important;
-  border: 1px solid var(--neutral) !important;
+  /* border-radius: 10px !important; */
+  border: 1 solid var(--neutral) !important;
   border-bottom: none !important;
   margin-bottom: 3px !important;
   align-items: center !important;
 }
 
 #table-header {
-  color: var(--Blue-1) !important;
   text-align: center;
 
   /* Header 4 */
@@ -104,6 +105,11 @@
   font-style: normal;
   font-weight: 700;
   line-height: 22px; /* 137.5% */
+}
+
+#table-header th {
+  color: var(--Blue-1);
+  border-color: black;
 }
 
 td {
@@ -203,6 +209,29 @@ input:focus
 .district-box:hover{
   background-color: #e2e2e2;
 }
+
+.profile-card {
+  background-color: #F7FAFC;
+}
+
+.profile-card i {
+  color: #3C77FF;
+}
+
+.profile-card p:first-child {
+  font-weight: 600;
+}
+
+#dropdownMenuLink {
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 51.6px;
+}
+
+.action-icons a, .action-icons a svg {
+  background-color: transparent!important;
+}
+
 /*============= Scroll Bar ========================*/
 /* width */
 .scroll::-webkit-scrollbar {
