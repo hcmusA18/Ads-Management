@@ -22,12 +22,13 @@
       <div class="d-flex flex-row align-items-center" style="position: relative">
         <div class="dropdown d-inline-block" style="flex: 0">
           <a
-            class="btn btn-secondary dropdown-toggle"
+            class="btn btn-secondary dropdown-toggle py-0"
             href="#"
             role="button"
             id="dropdownMenuLink"
             data-bs-toggle="dropdown"
-            aria-expanded="false">
+            aria-expanded="false"
+            style="line-height: 51.6px;">
             Hình thức báo cáo
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -157,14 +158,14 @@
             <td>
               <div class="d-flex flex-row align-items-center justify-content-center action-icons" style="background-color: transparent;">
                 <a href="" data-bs-toggle="modal" data-bs-target="#editModal-htbc<%= i %>">
-                  <%- include("../partials/editIcon.ejs") %>
+                  <img src="/images/edit.svg" alt="edit-icon" style="background-color: transparent;">
                 </a>
                 <a href="#" class="mx-3">
-                  <%- include("../partials/removeIcon.ejs") %>
+                  <img src="/images/remove.svg" alt="edit-icon" style="background-color: transparent;">
                 </a>
                 <!-- Button trigger modal edit -->
                 <a href="#">
-                  <%- include("../partials/infoIcon.ejs") %>
+                  <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent;">
                 </a>
 
                 <!-- Modal edit -->

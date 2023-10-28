@@ -33,4 +33,8 @@ router.get('/phancong', (req, res) => {
   res.render('so/Phancong');
 });
 
+router.get('/ctbc', (req, res) => {
+  res.render('so/ChitietBC');
+});
+
 export default router;
