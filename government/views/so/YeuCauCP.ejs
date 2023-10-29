@@ -34,8 +34,8 @@
             Yêu cầu cấp phép
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="/so/lhqc">Yêu cầu cấp phép</a></li>
-            <li><a class="dropdown-item" href="/so/htbc">Yêu cầu chỉnh sửa</a></li>
+            <li><a class="dropdown-item" href="/so/yeucau/cp">Yêu cầu cấp phép</a></li>
+            <li><a class="dropdown-item" href="/so/yeucau/cs">Yêu cầu chỉnh sửa</a></li>
           </ul>
         </div>
 
@@ -158,85 +158,43 @@
       <table id="data-table" class="table table-hover table-responsive table-bordered" style="width: 100%">
         <thead id="table-header">
           <tr>
-            <th style="color:#3c77ff">ID</th>
+            <th style="color:#3c77ff">ID Yêu cầu</th>
+            <th style="color:#3c77ff">ID Điểm đặt</th>
             <th style="color:#3c77ff">Phường</th>
             <th style="color:#3c77ff">Quận</th>
             <th style="color:#3c77ff">Cán bộ</th>
-            <th style="color:#3c77ff">Tình trạng</th>
-            <th style="color:#3c77ff"> </th>
+            <th style="color:#3c77ff">Thời gian quảng cáo</th>
+            <th style="color:#3c77ff">Trạng thái</th>
+            <th style="color:#3c77ff">Thao tác</th>
           </tr>
         </thead>
         <tbody>
           <% let maLoai = "L00" %> <% for (let i = 1; i <= 55; i++) { %>
           <tr>
-            <td><%= i %></td>
-            <td>Phường 1</td>
-            <td>Quận 6</td>
-            <td>ABCA</td>
+            <!-- <td><%= i %></td> -->
+            <td>BC0155001</td>
+            <td>D0614003</td>
+            <td>Bến Nghé</td>
+            <td>6</td>
+            <td>Trần Gia Thịnh</td>
+            <td>10/02/2023 - 15/05/2023</td>
             <td>Đã duyệt</td>
             <td>
               <div class="d-flex flex-row align-items-center justify-content-center">
                 
                 <!-- Button trigger modal edit -->
-                <a data-bs-toggle="modal" data-bs-target="#editModal-lhqc<%= i %>">
-                  <i class="fa fa-info fa-1x ms-2" aria-hidden="true"></i>
+                <!-- <a href="" data-bs-toggle="modal" data-bs-target="#editModal-lhqc<%= i %>">
+                  <img src="/images/edit.svg" alt="edit-icon" style="background-color: transparent;">
+                </a> -->
+
+                <!-- Button trigger modal edit -->
+                <a href="/so/yeucau/{i}" class="mx-3">
+                  <img src="/images/edit.svg" alt="edit-icon" style="background-color: transparent;">
                 </a>
 
-                <!-- Modal edit -->
-                <div class="modal fade" id="editModal-lhqc<%= i %>" tabindex="-1" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header pb-3" style="border: none">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body pt-1 pb-2" style="border: none">
-                        <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
-                          CHI TIẾT YÊU CẦU
-                        </h5>
-                        <form>
-                          <div class="mb-3">
-                            <label for="maloai-lhqc" class="col-form-label mb-1"
-                              >Mã loại:</label
-                            >
-                            <input type="text" class="form-control" id="maloai-lhqc" disabled value="<%= maLoai + String(i) %>" />
-                          </div>
-                          <div class="mb-3">
-                            <label for="loai-lhqc" class="col-form-label mb-1"
-                              >Loại:<span class="text-danger">*</span></label
-                            >
-                            <!-- display ten loai hinh quang cao trong khung input -->
-                            <input type="text" class="form-control" id="loai-lhqc" required />
-                          </div>
-                          <div class="mb-3">
-                            <label for="mota-lhqc" class="col-form-label mb-1"
-                              >Mô tả:<span class="text-danger">*</span></label
-                            >
-                            <!-- display mo ta loai hinh quang cao trong khung input -->
-                            <textarea class="form-control" id="mota-lhqc" required></textarea>
-                          </div>
-                        </form>
-                      </div>
-                      <div
-                        class="modal-footer pt-1 d-flex justify-content-around"
-                        style="border: none; background-color: #f7fafc">
-                        <button
-                          type="button"
-                          class="btn"
-                          data-bs-dismiss="modal"
-                          style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                          Hủy
-                        </button>
-                        <button
-                          type="button"
-                          class="btn"
-                          style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                          Xác nhận
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+                <a href="#" class="mx-3">
+                  <img src="/images/remove.svg" alt="edit-icon" style="background-color: transparent;">
+                </a>
               </div>
             </td>
           </tr>
