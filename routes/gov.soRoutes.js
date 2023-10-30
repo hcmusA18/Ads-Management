@@ -25,7 +25,7 @@ router.get('/yeucau/cp', (req, res) => {
   res.render('so/YeucauCP');
 });
 
-router.get('/yeucau/{id}', (req, res) => {
+router.get('/yeucau/:id', (req, res) => {
   res.render('so/ChiTietYeuCau');
 });
 
