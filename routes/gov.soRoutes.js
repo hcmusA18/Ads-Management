@@ -25,7 +25,7 @@ router.get('/yeucau/cp', (req, res) => {
   res.render('so/YeucauCP');
 });
 
-router.get('/yeucau/{id}', (req, res) => {
+router.get('/yeucau/chitiet', (req, res) => {
   res.render('so/ChiTietYeuCau');
 });
 
@@ -40,5 +40,9 @@ router.get('/phancong', (req, res) => {
 router.get('/ctbc', (req, res) => {
   res.render('so/ChitietBC');
 });
+
+router.get('/baocao/thongke', (req, res) => {
+  res.render('so/ThongKeBC')
+})
 
 export default router;
