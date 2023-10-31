@@ -76,12 +76,17 @@ svg {
 }
 
 /* Offcanvas */
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1440px) {
   .offcanvas {
     width: 30% !important;
   }
 }
 
+@media screen and (max-width: 1439px) {
+  .offcanvas {
+    width: 430px !important;
+  }
+}
 
 .offcanvas-header {
   display: flex;
