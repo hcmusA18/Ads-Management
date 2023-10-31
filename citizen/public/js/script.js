@@ -98,6 +98,25 @@ function addAdvertisementSource(map) {
       });
     }
   );
+  map.on('click', 'quang-cao', function (e) {
+    map.flyTo({
+      center: e.features[0].geometry.coordinates,
+      essential: true // this animation is considered essential with respect to prefers-reduced-motion
+    });
+
+    // toggle #offcanvas element
+    var offcanvas = document.getElementById('offcanvasRight');
+    var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+    bsOffcanvas.toggle();
+  });
+
+  map.on('mouseenter', 'quang-cao', function () {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+
+  map.on('mouseleave', 'quang-cao', function () {
+    map.getCanvas().style.cursor = '';
+  });
 }
 
 function addReportSource(map) {
@@ -147,6 +166,26 @@ function addReportSource(map) {
       });
     }
   );
+
+  map.on('click', 'bao-cao', function (e) {
+    map.flyTo({
+      center: e.features[0].geometry.coordinates,
+      essential: true // this animation is considered essential with respect to prefers-reduced-motion
+    });
+
+    // toggle #offcanvas element
+    var offcanvas = document.getElementById('offcanvasRight');
+    var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+    bsOffcanvas.toggle();
+  });
+
+  map.on('mouseenter', 'bao-cao', function () {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+
+  map.on('mouseleave', 'bao-cao', function () {
+    map.getCanvas().style.cursor = '';
+  });
 }
 
 function addSource(map) {

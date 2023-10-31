@@ -41,7 +41,7 @@ router.get('/ctbc', (req, res) => {
   res.render('so/ChitietBC');
 });
 
-router.get('/baocao/thongke', (req, res) => {
+router.get('/baocao', (req, res) => {
   res.render('so/ThongKeBC')
 })
 
