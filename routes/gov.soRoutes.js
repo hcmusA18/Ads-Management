@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/lhqc', (req, res) => {
-  res.render('so/LoaihinhQC');
+  res.render('so/LoaihinhQC', { title: 'Sở - LHQC' });
 });
 
 router.get('/htbc', (req, res) => {
