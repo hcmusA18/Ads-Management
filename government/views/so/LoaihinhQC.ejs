@@ -7,25 +7,20 @@
     <%- include("../partials/head.ejs"); %>
   </head>
   <body>
+    <% const toolbars = [
+      { icon: 'bi bi-house-door-fill', name: 'Trang chủ', link:'/so', },
+      { icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan' || '/so/htbc'},
+      { icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc', },
+      { icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/yeucau', },
+      { icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao', },
+      { icon: 'bi bi-person-badge', name:'Phân công', link: '/so/phancong', }, ] %>
+    <header></header>
     <main class="container-fluid d-flex bg-light">
-      <div class="row"><%- include("../partials/sidebar.ejs"); %></div>
-
+      <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
       <div class="container-fluid vw-100 pt-1">
-        <div class="top-bar position-relative">
-
-        </div>
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
           <!-- Profile -->
-          <div class="position-absolute top-0 start-100 translate-middle pe-4 p-2 bg-light" style="width: 12rem">
-            <div class="card d-flex flex-sm-row align-items-center p-2 shadow profile-card" style="border-radius: 0.5rem">
-              <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-              <div class="ps-2 d-flex flex-sm-column">
-                <p class="h6 mb-0">Admin</p>
-                <p class="h6 mb-0" style="font-weight: lighter">Sở VH - TT</p>
-              </div>
-            </div>
-          </div>
-
+          <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
           <!-- Title -->
           <div class="d-block">
             <h1 class="fw-bolder">LOẠI HÌNH QUẢNG CÁO</h1>
@@ -66,10 +61,7 @@
                 <p class="lh-base text-start m-0">Yêu cầu mới nhất</p>
                 <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #d59633">Loại hình B</p>
               </div>
-
-
             </div>
-
           </div>
           <!-- Table -->
           <table
@@ -83,10 +75,8 @@
             data-buttons="buttons"
             data-show-button-text="true"
             data-icon-prefix="bi"
-
             class="table table-bordered table-hover table-striped table-responsive-md rounded"
-            smart-display
-            >
+            smart-display>
             <thead>
               <tr class="row m-0">
                 <th class="col-1" data-sortable="true" data-align="center" data-field="no">No</th>
@@ -202,9 +192,7 @@
                     <input type="text" class="form-control" id="maloai-htbc" required />
                   </div> -->
                     <div class="mb-3">
-                      <label for="loai-htbc" class="col-form-label mb-1"
-                        >Loại:<span class="text-danger">*</span></label
-                      >
+                      <label for="loai-htbc" class="col-form-label mb-1">Loại:<span class="text-danger">*</span></label>
                       <input type="text" class="form-control" id="loai-htbc" required />
                     </div>
                     <div class="mb-3">

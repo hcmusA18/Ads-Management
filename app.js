@@ -41,6 +41,12 @@ serverCitizen.listen(CITIZEN_PORT, () => {
 
 // Public folder
 appGov.use(express.static(path.join(__dirname, 'government/public')))
+appGov.use((req, res, next) => {
+  res.locals.url = req.originalUrl
+  res.locals.host = req.get('host')
+  res.locals.protocol = req.protocol
+  next()
+})
 
 //Views folder
 appGov.set('views', path.join(__dirname, 'government/views'))

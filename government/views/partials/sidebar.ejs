@@ -1,8 +1,8 @@
 <!-- Side bar -->
 <style>
   .sidebar-wrap {
-    width: 5rem;
-    height: 100vh;
+    width: 4rem;
+    height: 100%;
     background-color: var(--Dark);
     color: var(--Background);
     /* padding: 1rem; */
@@ -42,8 +42,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
-    min-width: 40px;
+    height: 2.5rem;
     color: var(--Background);
   }
   .sidebar-wrap .nav {
@@ -66,14 +65,13 @@
   .sidebar-wrap .nav li .bi {
     display: flex;
     justify-self: center;
-    margin-left: 0.7rem;
+    margin-left: 0.3rem;
   }
   .sidebar-wrap .nav li .nav-link .icon-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 2.5rem;
-    min-width: 2.5rem;
   }
   .sidebar-wrap .nav li .nav-link span {
     font-size: 1rem;
@@ -88,7 +86,7 @@
     color: var(--Neutral-4);
   }
 </style>
-
+<!-- <%= current = url %> -->
 <div class="d-flex flex-column p-0 flex-shrink-0 sidebar-wrap">
   <a
     href="/"
@@ -102,70 +100,20 @@
   </a>
   <!-- <hr /> -->
   <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+    <% toolbars.forEach((toolbar) => { %>
     <li class="nav-item">
       <a
-        href="#"
-        class="nav-link active rounded-0 py-3 border-bottom"
+        href="<%= toolbar.link %>"
+        class="nav-link rounded-0 py-3 border-bottom border-dark <%= current === toolbar.link ? 'active' : '' %> "
         aria-current="page"
         data-bs-toggle="tooltip"
         data-bs-placement="right"
-        aria-label="Home"
-        data-bs-original-title="Home">
-        <i class="bi bi-house-door-fill"></i>
-        <span>Trang chủ</span>
+        aria-label="<%= toolbar.name %>"
+        data-bs-original-title="<%= toolbar.name %>">
+        <i class="<%= toolbar.icon %>"></i>
+        <span><%= toolbar.name %></span>
       </a>
     </li>
-    <li>
-      <a
-        href="#"
-        class="nav-link rounded-0 py-3 border-bottom"
-        aria-current="page"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        aria-label="Ward"
-        data-bs-original-title="Ward">
-        <i class="bi bi-building-fill"></i>
-        <span>Danh sách quận huyện</span>
-      </a>
-    </li>
-    <li>
-      <a
-        href="#"
-        class="nav-link rounded-0 py-3 border-bottom"
-        aria-current="page"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        aria-label="Ads"
-        data-bs-original-title="Ads">
-        <i class="bi bi-chat-left-dots-fill"></i>
-        <span>Yêu cầu</span>
-      </a>
-    </li>
-    <li>
-      <a
-        href="#"
-        class="nav-link rounded-0 py-3 border-bottom"
-        aria-current="page"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        aria-label="Ads"
-        data-bs-original-title="Ads">
-        <i class="bi bi-journal-bookmark-fill"></i>
-        <span>Thống kê báo cáo</span>
-      </a>
-    </li>
-    <li>
-      <a
-        href="#"
-        class="nav-link rounded-0 py-3 border-bottom"
-        aria-current="page"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        aria-label="Ads"
-        data-bs-original-title="Ads">
-        <i class="bi bi-person-badge"></i>
-        <span>Phân công</span>
-      </a>
-    </li>
+    <% }) %>
   </ul>
 </div>
