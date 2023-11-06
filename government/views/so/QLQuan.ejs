@@ -1,384 +1,381 @@
-<%- include("../partials/sidebar.ejs"); %>
-    <div class="container-fluid vw-100 ps-5 pt-1">
-        <div class="top-bar position-relative">
-            <!-- profile -->
-            <div class="position-absolute top-0 end-0 p-3 pe-1">
-                <div class="card d-flex flex-sm-row align-items-center p-2 shadow profile-card" style="border-radius: 8px;">
-                    <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-                    <div class="ps-2 d-flex flex-sm-column">
-                        <p class="h6 mb-0">John Doe</p>
-                        <p class="h6 mb-0" style="font-weight: 75;">Phường 10, Quận 6</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="main-container" style="margin-bottom: 10px;">
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include("../partials/head.ejs"); %>
+</head>
+
+<body>
+  <% const toolbars = [
+  { icon: 'bi bi-house-door-fill', name: 'Trang chủ', link:'/so', },
+  { icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan' || '/so/htbc'},
+  { icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc', },
+  { icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/yeucau', },
+  { icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao', },
+  { icon: 'bi bi-person-badge', name:'Phân công', link: '/so/phancong', }, ] %>
+    <header></header>
+    <main class="container-fluid d-flex bg-light">
+      <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <%- include("../partials/profile_card.ejs", {user: {name: 'Admin' , level: 'Sở VH-TT' }}); %>
             <!-- Title -->
             <div class="d-block">
-                <h1 class="header-1">DANH SÁCH CÁC QUẬN</h1>
+              <h1 class="fw-bolder">DANH SÁCH CÁC QUẬN</h1>
             </div>
-            <!-- Filter -->
-            <div class="d-block mt-3  d-flex" style="justify-content: space-between; width: 100%;">
-                <div class="filter d-flex flex-row align-items-center">
-                    <div class="card d-inline-block align-top"
-                        style="height: fit-content; border-radius: 8px; border: 1px solid #677383; background-color: #f7fafc; width: fit-content; padding: 7px; margin-left: 10px;">
-                        <div style="font-size: 16px; line-height: 1; margin-bottom: 5px;">Tổng số Quận</div>
-                        <div
-                            style="font-size: 20px; text-align: right; line-height: 1; color: #fd3939; font-weight: 700;">
-                            12</div>
-                    </div>
-
-                    <div class="card d-inline-block align-top"
-                        style="height: fit-content; border-radius: 8px; border: 1px solid #677383; background-color: #f7fafc; width: fit-content; padding: 7px; margin-left: 10px;">
-                        <div style="font-size: 16px; line-height: 1;  margin-bottom: 5px;">Tổng số Phường</div>
-                        <div
-                            style="font-size: 20px; text-align: right; line-height: 1; color: #ae57ff; font-weight: 700;">
-                            112</div>
-                    </div>
-
-                    <div class="card d-inline-block align-top"
-                        style="height: fit-content; border-radius: 8px; border: 1px solid #677383; background-color: #f7fafc; width: fit-content; padding: 7px; margin-left: 10px;">
-                        <div style="font-size: 16px; line-height: 1; margin-bottom: 5px;">Tổng số điểm quảng cáo</div>
-                        <div
-                            style="font-size: 20px; text-align: right; line-height: 1; color: #00B285; font-weight: 700;">
-                            211</div>
-                    </div>
-
-                    <div class="card d-inline-block align-top"
-                        style="height: fit-content; border-radius: 8px; border: 1px solid #677383; background-color: #f7fafc; width: fit-content; padding: 7px; margin-left: 10px;">
-                        <div style="font-size: 16px; line-height: 1; margin-bottom: 5px;">Tổng số bảng quảng cáo</div>
-                        <div
-                            style="font-size: 20px; text-align: right; line-height: 1; color: #D59633; font-weight: 700;">
-                            1102</div>
-                    </div>
+            <!-- Select -->
+            <div class="container-fluid mt-3 ps-0">
+              <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                <div class="card align-top h-auto rounded border-dark p-1 ms-1"
+                  style="min-width: fit-content; background-color: #f7fafc">
+                  <p class="lh-base text-start m-0">Tổng số Quận</p>
+                  <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #00b285">12</p>
                 </div>
-                <button type="button" class="btn btn-primary create-btn" data-bs-toggle="modal"
-                    data-bs-target="#addModal-qlquan" style="color: #F7FAFC;">
-                    Tạo Quận mới
-                </button>
+
+                <div class="card align-top h-auto rounded border-dark p-1 ms-1"
+                  style="min-width: fit-content; background-color: #f7fafc">
+                  <p class="lh-base text-start m-0">Tổng số Phường</p>
+                  <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #e84747">112</p>
+                </div>
+
+                <div class="card align-top h-auto rounded border-dark p-1 ms-1"
+                  style="min-width: fit-content; background-color: #f7fafc">
+                  <p class="lh-base text-start m-0">Tổng số điểm quảng cáo</p>
+                  <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #d59633">211</p>
+                </div>
+
+                <div class="card align-top h-auto rounded border-dark p-1 ms-1"
+                  style="min-width: fit-content; background-color: #f7fafc">
+                  <p class="lh-base text-start m-0">Tổng số bảng quảng cáo</p>
+                  <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #ae57ff">1022</p>
+                </div>
+              </div>
             </div>
-            <!-- Modal add -->
             <div class="modal fade" id="addModal-qlquan" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content" >
-                        <div class="modal-header pb-3" style="border: none">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body pt-1 pb-2" style="border: none; padding-left: 25px; padding-right: 25px;">
-                            <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
-                                THÊM QUẬN MỚI
-                            </h5>
-                            <form>
-                                <!-- <div class="mb-3">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header pb-3" style="border: none">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body pt-1 pb-2" style="border: none; padding-left: 25px; padding-right: 25px;">
+                    <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
+                      THÊM QUẬN MỚI
+                    </h5>
+                    <form>
+                      <!-- <div class="mb-3">
                                   <label for="maloai-htbc" class="col-form-label mb-1"
                                     >Mã hình thức:<span class="text-danger">*</span></label
                                   >
                                   <input type="text" class="form-control" id="maloai-htbc" required />
                                 </div> -->
-                                <div class="mb-3">
-                                    <label for="tenquan" class="col-form-label mb-1">Tên Quận: <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="tenquan" required />
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer pt-1 d-flex justify-content-around"
-                            style="border: none; background-color: #f7fafc">
-                            <!-- <button
+                      <div class="mb-3">
+                        <label for="tenquan" class="col-form-label mb-1">Tên Quận: <span
+                            class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="tenquan" required />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer pt-1 d-flex justify-content-around"
+                    style="border: none; background-color: #f7fafc">
+                    <!-- <button
                                 type="button"
                                 class="btn"
                                 data-bs-dismiss="modal"
                                 style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
                                 Hủy
                               </button> -->
-                            <button type="button" class="btn" style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                                Thêm
-                            </button>
-                        </div>
-                    </div>
+                    <button type="button" class="btn"
+                      style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                      Thêm
+                    </button>
+                  </div>
                 </div>
+              </div>
             </div>
-            <!-- List Bar -->
-            <div class="container-listbar d-flex">
-                <!-- Left Bar -->
-                <div class="d-inline-block list-bar">
-                    <div class="title">
-                        QUẬN / HUYỆN
-                    </div>
-                    <!-- Search Bar -->
-                    <div class="searchBar">
-                        <div class="search">
-                            <input type="text" name="searchInfo" class="searchFill" placeholder="Search a District">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                    </div>
-                    <!-- List District -->
-                    <div class="list-district scroll">
-                        <a href="/so/qlphuong?quan=Q001" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 1</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <!-- Raw Data -> will be changed when apply DB -->
-                        <a href="/so/qlphuong?quan=Q002" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 2</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q003" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 3</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q004" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 4</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q005" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 5</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q006" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 6</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q007" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 7</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q008" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 8</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q0BT" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận Bình
-                                    Tân</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=QBTH" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận Bình
-                                    Thạnh</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q0TB" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận Tân
-                                    Bình</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q0TP" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận Tân
-                                    Phú</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q012" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận 12</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q0GV" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận Gò
-                                    Vấp</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q0BC" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận Bình
-                                    Chánh</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/qlphuong?quan=Q0CC" style="text-decoration: none;">
-                            <div class="district-box d-flex">
-                                <span style="margin:0 auto; background-color: rgba(255, 255, 255, 0);">Quận Củ
-                                    Chi</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-
-                        <!-- Raw Data -> will be changed when apply DB -->
-                    </div>
-                    <a href="/so/qlquan" style="font-size: 14px;">Xem chi tiết danh sách QUẬN</a>
+            <!-- Content -->
+            <div class="container-listbar d-flex flex-row" style="gap: 15px">
+              <!-- Left Bar -->
+              <div class="d-inline-block list-bar">
+                <div class="title py-2">QUẬN / HUYỆN</div>
+                <!-- Search Bar -->
+                <div class="searchBar">
+                  <div class="search">
+                    <input type="text" name="searchInfo" class="searchFill" placeholder="Search a District"
+                      style="background: transparent;" />
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </div>
                 </div>
-                <!-- Table Content -->
-                <div class="container-fluid d-inline-block ps-0" style="width: 80%;  padding: 0;  margin: 0;">
-                    <table id="data-table" class="table table-hover table-responsive  table-bordered" style="width:100%;">
-                        <thead id="table-header">
-                            <tr>
-                                <th style="width: fit-content;">Mã Quận</th>
-                                <th style="width: fit-content;">Tên Quận</th>
-                                <th style="width: fit-content;">Số Phường</th>
-                                <th style="width: fit-content;">Số điểm đặt</th>
-                                <th style="width: fit-content;">Số bảng quảng cáo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="editRow">
-                                <td>
-                                    <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
-                                        Q001
-                                    </a>
-                                </td>
-                                <td>
-                                    <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
-                                        Quận 1
-                                    </a>
-                                </td>
-                                <td>
-                                    <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
-                                        10
-                                    </a>
-                                </td>
-                                <td>
-                                    <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
-                                        15
-                                    </a>
-                                </td>
-                                <td>
-                                    <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
-                                        20
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q002</td>
-                                <td>Quận 2</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q003</td>
-                                <td>Quận 3</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q004</td>
-                                <td>Quận 4</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q005</td>
-                                <td>Quận 5</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q006</td>
-                                <td>Quận 6</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q007</td>
-                                <td>Quận 7</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q008</td>
-                                <td>Quận 8</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q0BT</td>
-                                <td>Quận Bình Tân</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>QBTH</td>
-                                <td>Quận Bình Thạnh</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
-                            <tr class="editRow">
-                                <td>Q0TP</td>
-                                <td>Quận Tân Phú</td>
-                                <td>10</td>
-                                <td>15</td>
-                                <td>20</td>
-                            </tr>
+                <!-- List District -->
+                <div class="list-district scroll">
+                  <a href="/so/qlphuong?quan=Q001" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 1</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <!-- Raw Data -> will be changed when apply DB -->
+                  <a href="/so/qlphuong?quan=Q002" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 2</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q003" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 3</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q004" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 4</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q005" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 5</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q006" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 6</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q007" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 7</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q008" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 8</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q0BT" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Tân</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=QBTH" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Thạnh</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q0TB" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Tân Bình</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q0TP" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Tân Phú</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q012" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 12</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q0GV" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Gò Vấp</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q0BC" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Chánh</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
+                  <a href="/so/qlphuong?quan=Q0CC" style="text-decoration: none">
+                    <div class="district-box d-flex">
+                      <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Củ Chi</span>
+                      <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                    </div>
+                  </a>
 
-                        </tbody>
-                    </table>
+                  <!-- Raw Data -> will be changed when apply DB -->
                 </div>
+                <a href="/so/qlquan" style="font-size: 14px">Xem chi tiết danh sách QUẬN</a>
+              </div>
+              <!-- Table -->
+              <div class="container-fluid d-inline-block ps-0" style="width: 80%;  padding: 0;  margin: 0;">
+                <table data-toggle="table" data-pagination="true" data-search="true" data-pagination="true"
+                  data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary"
+                  data-buttons="buttons" data-show-button-text="true" data-icon-prefix="bi"
+                  class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+                  <thead>
+                    <tr class="row m-0">
+                      <th class="col" data-sortable="true" data-align="center" data-field="id">Mã Quận</th>
+                      <th class="col" data-sortable="true" data-align="center" data-field="name">Tên Quận</th>
+                      <th class="col" data-sortable="true" data-align="center" data-field="num1">Số Phường</th>
+                      <th class="col" data-sortable="true" data-align="center" data-field="num2">Số điểm đặt</th>
+                      <th class="col" data-sortable="true" data-align="center" data-field="num3">Số bảng quảng cáo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="editRow row m-0">
+                      <td>
+                        <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan"
+                          style="background-color: #00000000;  display: block;">
+                          Q001
+                        </a>
+                      </td>
+                      <td>
+                        <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan"
+                          style="background-color: #00000000;  display: block;">
+                          Quận 1
+                        </a>
+                      </td>
+                      <td>
+                        <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan"
+                          style="background-color: #00000000;  display: block;">
+                          10
+                        </a>
+                      </td>
+                      <td>
+                        <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan"
+                          style="background-color: #00000000;  display: block;">
+                          15
+                        </a>
+                      </td>
+                      <td>
+                        <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan"
+                          style="background-color: #00000000;  display: block;">
+                          20
+                        </a>
+                      </td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q002</td>
+                      <td>Quận 2</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q003</td>
+                      <td>Quận 3</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q004</td>
+                      <td>Quận 4</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q005</td>
+                      <td>Quận 5</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q006</td>
+                      <td>Quận 6</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q007</td>
+                      <td>Quận 7</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q008</td>
+                      <td>Quận 8</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q0BT</td>
+                      <td>Quận Bình Tân</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>QBTH</td>
+                      <td>Quận Bình Thạnh</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                    <tr class="editRow row m-0">
+                      <td>Q0TP</td>
+                      <td>Quận Tân Phú</td>
+                      <td>10</td>
+                      <td>15</td>
+                      <td>20</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <!-- Table -->
-            <!-- Modal edit -->
+            <!-- Modal add -->
             <div class="modal fade" id="editModal-qlquan" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header pb-3" style="border: none">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body pt-1 pb-2" style="border: none">
-                            <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
-                                CHỈNH SỬA THÔNG TIN QUẬN
-                            </h5>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="maloai-htbc" class="col-form-label mb-1">Mã Quận:</label>
-                                    <input type="text" class="form-control" id="maloai-htbc" disabled
-                                        value="" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="loai-htbc" class="col-form-label mb-1">Tên Quận:<span
-                                            class="text-danger">*</span></label>
-                                    <!-- Can display ten hinh thuc trong khung input -->
-                                    <input type="text" class="form-control" id="loai-htbc" required />
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer pt-1 d-flex justify-content-around"
-                            style="border: none; background-color: #f7fafc">
-                            <button type="button" class="btn" data-bs-dismiss="modal"
-                                style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                                Hủy
-                            </button>
-                            <button type="button" class="btn" style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                                Xác nhận
-                            </button>
-                        </div>
-                    </div>
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header pb-3" style="border: none">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body pt-1 pb-2" style="border: none">
+                    <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
+                      CHỈNH SỬA THÔNG TIN QUẬN
+                    </h5>
+                    <form>
+                      <div class="mb-3">
+                        <label for="maloai-htbc" class="col-form-label mb-1">Mã Quận:</label>
+                        <input type="text" class="form-control" id="maloai-htbc" disabled value="" />
+                      </div>
+                      <div class="mb-3">
+                        <label for="loai-htbc" class="col-form-label mb-1">Tên Quận:<span
+                            class="text-danger">*</span></label>
+                        <!-- Can display ten hinh thuc trong khung input -->
+                        <input type="text" class="form-control" id="loai-htbc" required />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer pt-1 d-flex justify-content-around"
+                    style="border: none; background-color: #f7fafc">
+                    <button type="button" class="btn" data-bs-dismiss="modal"
+                      style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
+                      Hủy
+                    </button>
+                    <button type="button" class="btn"
+                      style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                      Xác nhận
+                    </button>
+                  </div>
                 </div>
+              </div>
             </div>
-
         </div>
-    </div>
+      </div>
+    </main>
+</body>
 
-    <script type="text/javascript" src="/js/QLQuan.js"></script>
+</html>

@@ -68,28 +68,28 @@ $(document).ready(function(){
 
     districtInfo.wards.forEach(function(ward){
         const item = $(`
-            <tr>
-                <td>
+            <tr class="row m-0" data-index="0">
+                <td class="col" style="text-align: center;">
                     <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
                         ${ward.wardID}
                     </a>
                 </td>
-                <td>
+                <td class="col" style="text-align: center;">
                     <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
                         ${ward.wardName}
                     </a>
                 </td>
-                <td>
+                <td class="col" style="text-align: center;">
                     <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
                         ${districtInfo.districtName}
                     </a>
                 </td>
-                <td>
+                <td class="col" style="text-align: center;">
                     <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
                         ${ward.numOfAdsSpots}
                     </a>
                 </td>
-                <td>
+                <td class="col" style="text-align: center;">
                     <a data-bs-toggle="modal" data-bs-target="#editModal-qlquan" style="background-color: #00000000;  display: block;">
                         ${ward.numOfAdsPanels}
                     </a>

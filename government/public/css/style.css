@@ -151,13 +151,13 @@ td {
 .list-bar .title {
   text-align: center;
   margin: 0 auto;
-  font-size: 26px;
+  font-size: 24px;
   padding: 5px;
   border-radius: 8px;
   color: #ffffff;
   background-color: #3c77ff;
-  width: fit-content;
-  height: 50px;
+  width: 100%;
+  height: fit-content;
 }
 
 .searchBar {
@@ -285,10 +285,10 @@ input:focus {
   border-radius: 20px;
 }
 
-/* .dropdown-menu{
-  transform: translate(8px, 41px) !important;
-  width: fit-content !important;
-} */
+.dropdown-menu{
+  /* transform: translate(8px, 41px) !important; */
+  width: 100% !important;
+}
 
 .account-item {
   color: #000 !important;
