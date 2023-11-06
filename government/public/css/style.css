@@ -12,6 +12,11 @@
   --dt-row-selected: 103, 115, 131;
 }
 
+html {
+  scroll-behavior: smooth;
+  background: var(--Background);
+}
+
 * {
   font-family: 'Montserrat', sans-serif;
   /* color: var(--Dark); */
