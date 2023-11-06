@@ -28,45 +28,17 @@
           <!-- Select -->
           <div class="container-fluid mt-3 ps-0">
             <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-              <div class="dropdown h-100">
-                <a
-                  class="btn dropdown-toggle py-0 h-100"
-                  href="#"
-                  role="button"
-                  id="dropdownMenuLink"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="true"
-                  style="line-height: 3.9rem">
-                  Yêu cầu cấp phép
-                </a>
-                <ul
-                  class="dropdown-menu dropdown-menu-start"
-                  aria-labelledby="dropdownMenuLink"
-                  style="line-height: 45px">
-                  <li><a class="dropdown-item" href="/so/yeucau/cp">Yêu cầu cấp phép</a></li>
-                  <li><a class="dropdown-item" href="/so/yeucau/cs">Yêu cầu chỉnh sửa</a></li>
-                </ul>
-              </div>
+              <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                <%- include("../partials/select.ejs", {current: 'Yêu cầu cấp phép' , options: [ {
+                  name: 'Yêu cầu cấp phép' , link: '/so/yeucau/cp' }, { name: 'Yêu cầu chỉnh sửa' , link: '/so/yeucau/cs' },
+                  ]}); %>
 
-              <div
-                class="card align-top h-auto rounded border-dark p-1 ms-1"
-                style="min-width: fit-content; background-color: #f7fafc">
-                <p class="lh-base text-start m-0">Đã duyệt</p>
-                <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #00b285">112,983 đơn</p>
-              </div>
-
-              <div
-                class="card align-top h-auto rounded border-dark p-1 ms-1"
-                style="min-width: fit-content; background-color: #f7fafc">
-                <p class="lh-base text-start m-0">Chờ duyệt</p>
-                <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #d59633">112,983 đơn</p>
-              </div>
-
-              <div
-                class="card align-top h-auto rounded border-dark p-1 ms-1"
-                style="min-width: fit-content; background-color: #f7fafc">
-                <p class="lh-base text-start m-0">Từ chối</p>
-                <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #e84747">112,983 đơn</p>
+                <%- include("../partials/info_card.ejs", {title: 'Đã duyệt' , value: '112,983 đơn' ,
+                  color: '#00b285' }); %>
+                <%- include("../partials/info_card.ejs", {title: 'Chờ duyệt' , value: '112,983 đơn' ,
+                  color: '#d59633' }); %>
+                <%- include("../partials/info_card.ejs", {title: 'Từ chối' , value: '112,983 đơn' ,
+                  color: '#e84747' }); %>
               </div>
             </div>
           </div>

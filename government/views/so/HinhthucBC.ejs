@@ -9,308 +9,155 @@
 </head>
 
 <body>
-  <% const toolbars = [
-    { icon: 'bi bi-house-door-fill', name: 'Trang chủ', link:'/so', },
-    { icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan' },
-    { icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc', },
-    { icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link:'/so/yeucau', },
-    { icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao', },
-    { icon: 'bi bi-person-badge', name:'Phân công', link: '/so/phancong', }, ] %>
-  <header></header>
-  <main class="container-fluid d-flex bg-light">
-    <div class="row"><%- include('../partials/sidebar.ejs', { toolbars: toolbars }) %></div>
-    <div class="container-fluid vw-100 pt-1">
-      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
-        <!-- Profile -->
-        <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
+  <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/so', }, { icon: 'bi bi-building-fill'
+    , name: 'Danh sách quận huyện' , link: '/so/qlquan' }, { icon: 'bi bi-badge-ad-fill' , name: 'Loại hình quảng cáo' ,
+    link: '/so/lhqc' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu' , link:'/so/yeucau', }, {
+    icon: 'bi bi-journal-bookmark-fill' , name: 'Thống kê báo cáo' , link: '/so/baocao' , }, {
+    icon: 'bi bi-person-badge' , name:'Phân công', link: '/so/phancong' , }, ] %>
+    <header></header>
+    <main class="container-fluid d-flex bg-light">
+      <div class="row"><%- include('../partials/sidebar.ejs', { toolbars: toolbars }) %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <%- include("../partials/profile_card.ejs", {user: {name: 'Admin' , level: 'Sở VH-TT' }}); %>
 
-        <!-- Title -->
-        <div class="d-block">
-          <h1 class="fw-bolder">HÌNH THỨC BÁO CÁO</h1>
-        </div>
-        <!-- Select -->
-        <div class="container-fluid mt-3 ps-0">
-          <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-            <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-            <%- include("../partials/select.ejs", {current: 'Hình thức báo cáo', options: [
-                { name: 'Loại hình quảng cáo', link: '/so/lhqc' },
-                { name: 'Hình thức báo cáo', link: '/so/htbc' },
-              ]}); %>
+            <!-- Title -->
+            <div class="d-block">
+              <h1 class="fw-bolder">HÌNH THỨC BÁO CÁO</h1>
+            </div>
+            <!-- Select -->
+            <div class="container-fluid mt-3 ps-0">
+              <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                  <%- include("../partials/select.ejs", {current: 'Hình thức báo cáo' , options: [ {
+                    name: 'Loại hình quảng cáo' , link: '/so/lhqc' }, { name: 'Hình thức báo cáo' , link: '/so/htbc' },
+                    ]}); %>
 
-            <%- include("../partials/info_card.ejs", {title: 'Mới nhất', value: 'Hình thức A', color: '#00b285'}); %>
-            <%- include("../partials/info_card.ejs", {title: 'Nhận nhiều nhất', value: 'Hình thức B', color: '#d59633'}); %>
-          </div>
-        </div>
-        <!-- Table -->
-        <table data-toggle="table" data-pagination="true" data-search="true" data-pagination="true"
-          data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary"
-          data-buttons="buttons" data-show-button-text="true" data-icon-prefix="bi"
-          class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
-          <thead>
-            <tr class="row m-0">
-              <th class="col-1" data-sortable="true" data-align="center" data-field="no">No</th>
-              <th class="col-1" data-sortable="true" data-align="center" data-field="id">Mã loại</th>
-              <th class="col-3" data-sortable="true" data-field="name">Loại</th>
-              <th class="col-5" data-sortable="true" data-field="desc">Mô tả</th>
-              <th class="col-2" data-field="action">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% let maLoai = "HT00" %> <% for (let i = 1; i <= 55; i++) { %>
-            <tr class="row m-0">
-              <td><%= i %></td>
-              <td><%= maLoai + String(i) %></td>
-              <td>Lorem ipsum dolor sit amet.</td>
-              <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, earum!</td>
-              <td>
-                <div class="d-flex flex-row align-items-center justify-content-center action-icons"
-                  style="background-color: transparent">
-                  <a href="" data-bs-toggle="modal" data-bs-target="#editModal-htbc<%= i %>">
-                    <img src="/images/edit.svg" alt="edit-icon" style="background-color: transparent" />
-                  </a>
-                  <a href="#" class="mx-3">
-                    <img src="/images/remove.svg" alt="edit-icon" style="background-color: transparent" />
-                  </a>
-                  <!-- Button trigger modal edit -->
-                  <a href="#">
-                    <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
-                  </a>
+                  <%- include("../partials/info_card.ejs", {title: 'Mới nhất' , value: 'Hình thức A' ,
+                    color: '#00b285' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Nhận nhiều nhất' , value: 'Hình thức B' ,
+                    color: '#d59633' }); %>
+                </div>
+              </div>
+              <!-- Table -->
+              <table data-toggle="table" data-pagination="true" data-search="true" data-pagination="true"
+                data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary"
+                data-buttons="buttons" data-show-button-text="true" data-icon-prefix="bi"
+                class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+                <thead>
+                  <tr class="row m-0">
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="no">No</th>
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="id">Mã loại</th>
+                    <th class="col-3" data-sortable="true" data-field="name">Loại</th>
+                    <th class="col-5" data-sortable="true" data-field="desc">Mô tả</th>
+                    <th class="col-2" data-field="action">Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% let maLoai="HT00" %>
+                    <% for (let i=1; i <=55; i++) { %>
+                      <tr class="row m-0">
+                        <td>
+                          <%= i %>
+                        </td>
+                        <td>
+                          <%= maLoai + String(i) %>
+                        </td>
+                        <td>Lorem ipsum dolor sit amet.</td>
+                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, earum!</td>
+                        <td>
+                          <div class="d-flex flex-row align-items-center justify-content-center action-icons"
+                            style="background-color: transparent">
+                            <a href="" data-bs-toggle="modal" data-bs-target="#editModal-htbc<%= i %>">
+                              <img src="/images/edit.svg" alt="edit-icon" style="background-color: transparent" />
+                            </a>
+                            <a href="#" class="mx-3">
+                              <img src="/images/remove.svg" alt="edit-icon" style="background-color: transparent" />
+                            </a>
+                            <!-- Button trigger modal edit -->
+                            <a href="#">
+                              <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
+                            </a>
 
-                  <!-- Modal edit -->
-                  <div class="modal fade" id="editModal-htbc<%= i %>" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-                        <div class="modal-header pb-1 border-0 position-relative text-center justify-content-center">
-                          <button type="button"
-                            class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
-                            data-bs-dismiss="modal" aria-label="Close"></button>
-                          <h4 class="modal-title mt-2 pb-2 text-center fw-bolder">CHỈNH SỬA HÌNH THỨC BÁO CÁO</h4>
-                        </div>
-                        <div class="modal-body pt-1 pb-2 border-0">
-                          <form>
-                            <div class="mb-3 d-flex flex-wrap">
-                              <label for="maloai-htbc" class="col-form-label mb-1">Mã loại:</label>
-                              <input type="text" class="form-control" id="maloai-htbc" disabled
-                                value="<%= maLoai + String(i) %>" />
+                            <!-- Modal edit -->
+                            <div class="modal fade" id="editModal-htbc<%= i %>" tabindex="-1" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                  <div
+                                    class="modal-header pb-1 border-0 position-relative text-center justify-content-center">
+                                    <button type="button"
+                                      class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
+                                      data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title mt-2 pb-2 text-center fw-bolder">CHỈNH SỬA HÌNH THỨC BÁO CÁO
+                                    </h4>
+                                  </div>
+                                  <div class="modal-body pt-1 pb-2 border-0">
+                                    <form>
+                                      <div class="mb-3 d-flex flex-wrap">
+                                        <label for="maloai-htbc" class="col-form-label mb-1">Mã loại:</label>
+                                        <input type="text" class="form-control" id="maloai-htbc" disabled
+                                          value="<%= maLoai + String(i) %>" />
+                                      </div>
+                                      <div class="mb-3 d-flex" style="flex-wrap: wrap">
+                                        <label for="loai-htbc" class="col-form-label mb-1">Loại:<span
+                                            class="text-danger">*</span></label>
+                                        <!-- display ten loai hinh quang cao trong khung input -->
+                                        <input type="text" class="form-control" id="loai-htbc" required />
+                                      </div>
+                                      <div class="mb-3 d-flex" style="flex-wrap: wrap">
+                                        <label for="mota-htbc" class="col-form-label mb-1">Mô tả:<span
+                                            class="text-danger">*</span></label>
+                                        <!-- display mo ta loai hinh quang cao trong khung input -->
+                                        <textarea class="form-control" id="mota-htbc" required></textarea>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer pt-1 d-flex justify-content-around"
+                                    style="border: none; background-color: #f7fafc">
+                                    <button type="button" class="btn" data-bs-dismiss="modal"
+                                      style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
+                                      Hủy
+                                    </button>
+                                    <button type="button" class="btn"
+                                      style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                                      Xác nhận
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <div class="mb-3 d-flex" style="flex-wrap: wrap">
-                              <label for="loai-htbc" class="col-form-label mb-1">Loại:<span
-                                  class="text-danger">*</span></label>
-                              <!-- display ten loai hinh quang cao trong khung input -->
-                              <input type="text" class="form-control" id="loai-htbc" required />
-                            </div>
-                            <div class="mb-3 d-flex" style="flex-wrap: wrap">
-                              <label for="mota-htbc" class="col-form-label mb-1">Mô tả:<span
-                                  class="text-danger">*</span></label>
-                              <!-- display mo ta loai hinh quang cao trong khung input -->
-                              <textarea class="form-control" id="mota-htbc" required></textarea>
-                            </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer pt-1 d-flex justify-content-around"
-                          style="border: none; background-color: #f7fafc">
-                          <button type="button" class="btn" data-bs-dismiss="modal"
-                            style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                            Hủy
-                          </button>
-                          <button type="button" class="btn"
-                            style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                            Xác nhận
-                          </button>
-                        </div>
-                      </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <% } %>
+                </tbody>
+              </table>
+
+              <!-- Modal add -->
+              <div class="modal fade" id="addModal-htbc" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header pb-3" style="border: none">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="card align-top h-auto rounded border-dark p-1 ms-1"
+                      style="min-width: fit-content; background-color: #f7fafc">
+                      <p class="lh-base text-start m-0">Mới nhất</p>
+                      <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #00b285">Hình thức A</p>
+                    </div>
+
+                    <div class="card align-top h-auto rounded border-dark p-1 ms-1"
+                      style="min-width: fit-content; background-color: #f7fafc">
+                      <p class="lh-base text-start m-0">Yêu cầu mới nhất</p>
+                      <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #d59633">Hình thức B</p>
                     </div>
                   </div>
                 </div>
-              </td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-
-        <!-- Modal add -->
-        <div class="modal fade" id="addModal-htbc" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header pb-3" style="border: none">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-
-              <div
-                class="card align-top h-auto rounded border-dark p-1 ms-1"
-                style="min-width: fit-content; background-color: #f7fafc">
-                <p class="lh-base text-start m-0">Mới nhất</p>
-                <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #00b285">Hình thức A</p>
-              </div>
-
-              <div
-                class="card align-top h-auto rounded border-dark p-1 ms-1"
-                style="min-width: fit-content; background-color: #f7fafc">
-                <p class="lh-base text-start m-0">Yêu cầu mới nhất</p>
-                <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #d59633">Hình thức B</p>
               </div>
             </div>
-          </div>
-          <!-- Table -->
-          <table
-            data-toggle="table"
-            data-pagination="true"
-            data-search="true"
-            data-pagination="true"
-            data-page-list="[10, 25, 50, 100, all]"
-            data-locale="vi-VN"
-            data-buttons-class="primary"
-            data-buttons="buttons"
-            data-show-button-text="true"
-            data-icon-prefix="bi"
-            class="table table-bordered table-hover table-striped table-responsive-md rounded"
-            smart-display>
-            <thead>
-              <tr class="row m-0">
-                <th class="col-1" data-sortable="true" data-align="center" data-field="no">No</th>
-                <th class="col-1" data-sortable="true" data-align="center" data-field="id">Mã hình thức</th>
-                <th class="col-3" data-sortable="true" data-field="name">Hình thức</th>
-                <th class="col-5" data-sortable="true" data-field="desc">Mô tả</th>
-                <th class="col-2" data-field="action">Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% let maLoai = "HT00" %> <% for (let i = 1; i <= 55; i++) { %>
-              <tr class="row m-0">
-                <td><%= i %></td>
-                <td><%= maLoai + String(i) %></td>
-                <td>Lorem ipsum dolor sit amet.</td>
-                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, earum!</td>
-                <td>
-                  <div
-                    class="d-flex flex-row align-items-center justify-content-center action-icons"
-                    style="background-color: transparent">
-                    <a href="" data-bs-toggle="modal" data-bs-target="#editModal-htbc<%= i %>">
-                      <img src="/images/edit.svg" alt="edit-icon" style="background-color: transparent" />
-                    </a>
-                    <a href="#" class="mx-3">
-                      <img src="/images/remove.svg" alt="edit-icon" style="background-color: transparent" />
-                    </a>
-                    <!-- Button trigger modal edit -->
-                    <a href="#">
-                      <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
-                    </a>
-
-                    <!-- Modal edit -->
-                    <div class="modal fade" id="editModal-htbc<%= i %>" tabindex="-1" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                          <div class="modal-header pb-1 border-0 position-relative text-center justify-content-center">
-                            <button
-                              type="button"
-                              class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"></button>
-                            <h4 class="modal-title mt-2 pb-2 text-center fw-bolder">CHỈNH SỬA HÌNH THỨC BÁO CÁO</h4>
-                          </div>
-                          <div class="modal-body pt-1 pb-2 border-0">
-                            <form>
-                              <div class="mb-3 d-flex flex-wrap">
-                                <label for="maloai-htbc" class="col-form-label mb-1">Mã loại:</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  id="maloai-htbc"
-                                  disabled
-                                  value="<%= maLoai + String(i) %>" />
-                              </div>
-                              <div class="mb-3 d-flex" style="flex-wrap: wrap">
-                                <label for="loai-htbc" class="col-form-label mb-1"
-                                  >Loại:<span class="text-danger">*</span></label
-                                >
-                                <input type="text" class="form-control" id="loai-htbc" required />
-                              </div>
-                              <div class="mb-3 d-flex" style="flex-wrap: wrap">
-                                <label for="mota-htbc" class="col-form-label mb-1"
-                                  >Mô tả:<span class="text-danger">*</span></label
-                                >
-                                <textarea class="form-control" id="mota-htbc" required></textarea>
-                              </div>
-                            </form>
-                          </div>
-                          <div
-                            class="modal-footer pt-1 d-flex justify-content-around"
-                            style="border: none; background-color: #f7fafc">
-                            <button
-                              type="button"
-                              class="btn"
-                              data-bs-dismiss="modal"
-                              style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                              Hủy
-                            </button>
-                            <button
-                              type="button"
-                              class="btn"
-                              style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                              Xác nhận
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <% } %>
-            </tbody>
-          </table>
-          <!-- Modal add -->
-          <div class="modal fade" id="addModal-lhqc" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header pb-3" style="border: none">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pt-1 pb-2" style="border: none">
-                  <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
-                    THÊM HÌNH THỨC BÁO CÁO
-                  </h5>
-                  <form>
-                    <!-- <div class="mb-3">
-                    <label for="maloai-htbc" class="col-form-label mb-1"
-                      >Mã hình thức:<span class="text-danger">*</span></label
-                    >
-                    <input type="text" class="form-control" id="maloai-htbc" required />
-                  </div> -->
-                  <div class="mb-3">
-                    <label for="loai-htbc" class="col-form-label mb-1">Hình thức:<span
-                        class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="loai-htbc" required />
-                  </div>
-                  <div class="mb-3">
-                    <label for="mota-htbc" class="col-form-label mb-1">Mô tả:<span class="text-danger">*</span></label>
-                    <textarea class="form-control" id="mota-htbc" required></textarea>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer pt-1 d-flex justify-content-around"
-                style="border: none; background-color: #f7fafc">
-                <!-- <button
-                  type="button"
-                  class="btn"
-                  data-bs-dismiss="modal"
-                  style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                  Hủy
-                </button> -->
-                  <button
-                    type="button"
-                    class="btn"
-                    style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                    Thêm
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+    </main>
 </body>
 
 </html>

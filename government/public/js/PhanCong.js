@@ -24,13 +24,13 @@ $(document).ready(function () {
         let item = $(``);
         if (account[4] == 0) {
             item = $(`
-                <tr>    
-                    <td>${index + 1}</td>
-                    <td>${account[0]}</td>
-                    <td>${account[1]}</td>
-                    <td>${account[2]}</td>
-                    <td>${account[3]}</td>
-                    <td>
+                <tr class="row m-0">    
+                    <td class="col-1" style="text-align: center;">${index + 1}</td>
+                    <td class="col-2" style="text-align: center;">${account[0]}</td>
+                    <td class="col-3" style="text-align: center;">${account[1]}</td>
+                    <td class="col-2" style="text-align: center;">${account[2]}</td>
+                    <td class="col-2" style="text-align: center;">${account[3]}</td>
+                    <td class="col-2" style="text-align: center;">
                     <div
                         class="d-flex flex-row align-items-center justify-content-center action-icons"
                         style="background-color: transparent">
@@ -119,13 +119,13 @@ $(document).ready(function () {
         }
         else {
             item = $(`
-                <tr>    
-                    <td>${index + 1}</td>
-                    <td>${account[0]}</td>
-                    <td>${account[1]}</td>
-                    <td>${account[2]}</td>
-                    <td>${account[3]}</td>
-                    <td>
+                    <tr class="row m-0">    
+                    <td class="col-1" style="text-align: center;">${index + 1}</td>
+                    <td class="col-2" style="text-align: center;">${account[0]}</td>
+                    <td class="col-3" style="text-align: center;">${account[1]}</td>
+                    <td class="col-2" style="text-align: center;">${account[2]}</td>
+                    <td class="col-2" style="text-align: center;">${account[3]}</td>
+                    <td class="col-2" style="text-align: center;">
                     <div
                         class="d-flex flex-row align-items-center justify-content-center action-icons"
                         style="background-color: transparent">

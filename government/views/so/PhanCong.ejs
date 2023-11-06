@@ -1,229 +1,257 @@
-<%- include("../partials/sidebar.ejs"); %>
-<div class="container-fluid vw-100 ps-5 pt-1">
-  <div class="top-bar position-relative">
-    <!-- profile -->
-    <div class="position-absolute top-0 end-0 p-3 pe-1">
-      <div class="card d-flex flex-sm-row align-items-center p-2 shadow profile-card" style="border-radius: 8px">
-        <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-        <div class="ps-2 d-flex flex-sm-column">
-          <p class="h6 mb-0">Admin</p>
-          <p class="h6 mb-0" style="font-weight: 75">Sở VH - TT</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="main-container">
-    <!-- Title -->
-    <div class="d-block">
-      <h1 class="header-1">PHÂN CÔNG TÀI KHOẢN</h1>
-    </div>
-    <!-- Filter -->
-    <div class="container-fluid mt-3 ps-0">
-      <div class="d-flex flex-row align-items-center" style="position: relative">
+<!DOCTYPE html>
+<html lang="vi">
 
-        <div
-          class="card d-inline-block align-top"
-          style="
-            height: fit-content;
-            border-radius: 8px;
-            border: 1px solid #677383;
-            background-color: #f7fafc;
-            width: 10rem;
-            padding: 7px;
-            margin-left: 10px;
-            min-width: fit-content;
-          ">
-          <div style="font-size: 16px; line-height: 1; margin-bottom: 8px;">Số lượng tài khoản</div>
-          <div style="font-size: 20px; text-align: right; line-height: 1; color: #00b285; font-weight: 700">
-            25
-          </div>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include('../partials/head.ejs') %>
+</head>
 
-        <div
-          class="card d-inline-block align-top"
-          style="
-            height: fit-content;
-            border-radius: 8px;
-            border: 1px solid #677383;
-            background-color: #f7fafc;
-            width: fit-content;
-            padding: 7px;
-            width: 10rem;
-            margin-left: 10px;
-            min-width: fit-content;
-          ">
-          <div style="font-size: 16px; line-height: 1; margin-bottom: 8px;">Đã phân công</div>
-          <div style="font-size: 20px; text-align: right; line-height: 1; color: #d59633; font-weight: 700">
-            20
-          </div>
-        </div>
+<body>
+  <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/so', }, { icon: 'bi bi-building-fill'
+    , name: 'Danh sách quận huyện' , link: '/so/qlquan' }, { icon: 'bi bi-badge-ad-fill' , name: 'Loại hình quảng cáo' ,
+    link: '/so/pc' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu' , link:'/so/yeucau', }, {
+    icon: 'bi bi-journal-bookmark-fill' , name: 'Thống kê báo cáo' , link: '/so/baocao' , }, {
+    icon: 'bi bi-person-badge' , name:'Phân công', link: '/so/phancong' , }, ] %>
+    <header></header>
+    <main class="container-fluid d-flex bg-light">
+      <div class="row"><%- include('../partials/sidebar.ejs', { toolbars: toolbars }) %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <%- include("../partials/profile_card.ejs", {user: {name: 'Admin' , level: 'Sở VH-TT' }}); %>
 
-        <!-- Button add -->
-        <div class="d-inline-block" style="position: absolute; right: 0">
-          <button
-            type="button"
-            class="btn"
-            data-bs-toggle="modal"
-            data-bs-target="#addModal-lhqc"
-            style="background-color: #60c98b; color: #f7fafc">
-            Thêm mới
-          </button>
-        </div>
-
-        <!-- Modal add -->
-        <div class="modal fade" id="addModal-lhqc" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header pb-3" style="border: none">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body pt-1 pb-2" style="border: none">
-                <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
-                  TẠO TÀI KHOẢN
-                </h5>
-                <h5 style="font-size: 16px; text-align: start; color: #0000009f;">
-                  Hãy điền tên tài khoản (Mật khẩu sẽ được tạo ngẫu nhiên)
-                </h5>
-                <form>
-                  <!-- <div class="mb-3">
-                    <label for="maloai-htbc" class="col-form-label mb-1"
-                      >Mã loại:<span class="text-danger">*</span></label
-                    >
-                    <input type="text" class="form-control" id="maloai-htbc" required />
-                  </div> -->
-                  <div class="mb-3">
-                    <label for="loai-htbc" class="col-form-label mb-1">Tên tài khoản:<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="loai-htbc" required />
-                  </div>
-                </form>
-              </div>
-              <div
-                class="modal-footer pt-1 d-flex justify-content-around"
-                style="border: none; background-color: #f7fafc">
-                <!-- <button
-                  type="button"
-                  class="btn"
-                  data-bs-dismiss="modal"
-                  style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                  Hủy
-                </button> -->
-                <button type="button" class="btn" style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                  Thêm
-                </button>
-              </div>
+            <!-- Title -->
+            <div class="d-block">
+              <h1 class="fw-bolder">PHÂN CÔNG TÀI KHOẢN</h1>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Table -->
-    <div class="container-fluid mt-4 ps-0">
-      <table id="data-table" class="table table-hover table-responsive table-bordered" style="width: 100%">
-        <thead id="table-header">
-          <tr>
-            <th style="width: 5%;">No</th>
-            <th style="width: 20%;">Tên đăng nhập</th>
-            <th style="width: 20%;">Cấp bậc</th>
-            <th style="width: 20%;">Quận</th>
-            <th style="width: 20%;">Phường</th>
-            <th style="width: 15%;">Thao tác</th>
-          </tr>
-        </thead>
-        <tbody id="accountRow">
-          <tr>    
-            <td>1</td>
-            <td>giathinnnn</td>
-            <td>Cấp bậc Q</td>
-            <td>1</td>
-            <td>2</td>
-            <td>
-            <div
-                class="d-flex flex-row align-items-center justify-content-center action-icons"
-                style="background-color: transparent">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#assigntModal1"
-                    style="width: 70%; padding-top: 3px; padding-bottom: 3px; background-color: #60c98b; border: none;">
-                    Phân công
-                </button>
+            <!-- Select -->
+            <div class="container-fluid mt-3 ps-0">
+              <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                  <%- include("../partials/info_card.ejs", {title: 'Số lượng tài khoản' , value: '25' , color: '#00b285'
+                    }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Đã phân công' , value: '20' , color: '#d59633' });
+                    %>
+                </div>
+              </div>
+              <!-- Table -->
+              <table data-toggle="table" data-pagination="true" data-search="true" data-pagination="true"
+                data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary"
+                data-buttons="buttons" data-show-button-text="true" data-icon-prefix="bi"
+                class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+                <thead>
+                  <tr class="row m-0">
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="no">No</th>
+                    <th class="col-2" data-sortable="true" data-align="center" data-field="name">Tên đăng nhập</th>
+                    <th class="col-3" data-sortable="true" data-align="center" data-field="level">Cấp bậc</th>
+                    <th class="col-2" data-sortable="true" data-align="center" data-field="dist">Quận</th>
+                    <th class="col-2" data-sortable="true" data-align="center" data-field="ward">Phường</th>
+                    <th class="col-2" data-field="action" data-align="center">Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="accountRow">
+                  <tr class="row m-0">
+                    <td>1</td>
+                    <td>giathinnnn</td>
+                    <td>Cấp bậc Q</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>
+                      <div class="d-flex flex-row align-items-center justify-content-center action-icons"
+                        style="background-color: transparent">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                          data-bs-target="#assigntModal1"
+                          style="width: 70%; padding-top: 3px; padding-bottom: 3px; background-color: #60c98b; border: none;">
+                          Phân công
+                        </button>
 
-                <!-- Modal edit -->
- 
-                <div class="modal fade" id="assigntModal1" tabindex="-1" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header pb-3" style="border: none">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body pt-1 pb-2" style="border: none">
-                        <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
-                          CẤP QUYỀN CHO gt
-                        </h5>
-                        <form>
-                          <div class="d-flex" style="justify-content: space-between;">
-                            <div class="mb-3 d-flex" style="justify-content: space-between;">
-                              <label for="maloai-lhqc" class="col-form-label mb-1">Quận:</label>
-                              <div class="dropdown" style="padding: 7px 0; height: 36.6px; width: 170px; justify-content: flex-end;">
-                                <select class="form-select" aria-label="Default select example" style="width: 95%;"
-                                onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
-                                  <option selected>Open this select menu</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                </select>
+                        <!-- Modal edit -->
+
+                        <div class="modal fade" id="assigntModal1" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header pb-3" style="border: none">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
                               </div>
-                            </div>
-                            <div class="mb-3 d-flex" style="justify-content: space-between;">
-                              <label for="loai-lhqc" class="col-form-label mb-1">Phường:</label>
-                              <div class="dropdown" style="padding: 7px 0; height: 36.6px; width: 150px; justify-content: flex-end;">
-                                <select class="form-select" aria-label="Default select example" style="width: 95%;"
-                                onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
-                                  <option selected>Open this select menu</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                </select>
+                              <div class="modal-body pt-1 pb-2" style="border: none">
+                                <h5 class="modal-title pb-2"
+                                  style="font-size: 22px; font-weight: 700; text-align: center">
+                                  CẤP QUYỀN CHO gt
+                                </h5>
+                                <form>
+                                  <div class="d-flex" style="justify-content: space-between;">
+                                    <div class="mb-3 d-flex" style="justify-content: space-between;">
+                                      <label for="maloai-pc" class="col-form-label mb-1">Quận:</label>
+                                      <div class="dropdown"
+                                        style="padding: 7px 0; height: 36.6px; width: 170px; justify-content: flex-end;">
+                                        <select class="form-select" aria-label="Default select example"
+                                          style="width: 95%;" onfocus='this.size=5;' onblur='this.size=1;'
+                                          onchange='this.size=1; this.blur();'>
+                                          <option selected>Open this select menu</option>
+                                          <option value="1">One</option>
+                                          <option value="2">Two</option>
+                                          <option value="3">Three</option>
+                                          <option value="1">One</option>
+                                          <option value="2">Two</option>
+                                          <option value="3">Three</option>
+                                          <option value="1">One</option>
+                                          <option value="2">Two</option>
+                                          <option value="3">Three</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="mb-3 d-flex" style="justify-content: space-between;">
+                                      <label for="loai-pc" class="col-form-label mb-1">Phường:</label>
+                                      <div class="dropdown"
+                                        style="padding: 7px 0; height: 36.6px; width: 150px; justify-content: flex-end;">
+                                        <select class="form-select" aria-label="Default select example"
+                                          style="width: 95%;" onfocus='this.size=5;' onblur='this.size=1;'
+                                          onchange='this.size=1; this.blur();'>
+                                          <option selected>Open this select menu</option>
+                                          <option value="1">One</option>
+                                          <option value="2">Two</option>
+                                          <option value="3">Three</option>
+                                          <option value="1">One</option>
+                                          <option value="2">Two</option>
+                                          <option value="3">Three</option>
+                                          <option value="1">One</option>
+                                          <option value="2">Two</option>
+                                          <option value="3">Three</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                              <div class="modal-footer pt-1 d-flex justify-content-around"
+                                style="border: none; background-color: #f7fafc">
+                                <button type="button" class="btn" data-bs-dismiss="modal"
+                                  style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
+                                  Hủy
+                                </button>
+                                <button type="button" class="btn"
+                                  style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                                  Xác nhận
+                                </button>
                               </div>
                             </div>
                           </div>
-                        </form>
+                        </div>
                       </div>
-                      <div
-                        class="modal-footer pt-1 d-flex justify-content-around"
-                        style="border: none; background-color: #f7fafc">
-                        <button
-                          type="button"
-                          class="btn"
-                          data-bs-dismiss="modal"
-                          style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                          Hủy
-                        </button>
-                        <button
-                          type="button"
-                          class="btn"
-                          style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                          Xác nhận
-                        </button>
-                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Modal add -->
+              <div class="modal fade" id="addModal-pc" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header pb-3" style="border: none">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body pt-1 pb-2" style="border: none">
+                      <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
+                        TẠO TÀI KHOẢN
+                      </h5>
+                      <h5 style="font-size: 16px; text-align: start; color: #0000009f;">
+                        Hãy điền tên tài khoản (Mật khẩu sẽ được tạo ngẫu nhiên)
+                      </h5>
+                      <form>
+                        <div class="mb-3">
+                          <label for="loai-htbc" class="col-form-label mb-1">Tên tài khoản:<span
+                              class="text-danger">*</span></label>
+                          <input type="text" class="form-control" id="loai-htbc" required />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer pt-1 d-flex justify-content-around"
+                      style="border: none; background-color: #f7fafc">
+                      <button type="button" class="btn"
+                        style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                        Thêm
+                      </button>
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <!-- Modal edit -->
+
+              <div class="modal fade" id="assigntModal1" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header pb-3" style="border: none">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body pt-1 pb-2" style="border: none">
+                      <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
+                        CẤP QUYỀN CHO gt
+                      </h5>
+                      <form>
+                        <div class="d-flex" style="justify-content: space-between;">
+                          <div class="mb-3 d-flex" style="justify-content: space-between;">
+                            <label for="maloai-pc" class="col-form-label mb-1">Quận:</label>
+                            <div class="dropdown"
+                              style="padding: 7px 0; height: 36.6px; width: 170px; justify-content: flex-end;">
+                              <select class="form-select" aria-label="Default select example" style="width: 95%;"
+                                onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+                                <option selected>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="mb-3 d-flex" style="justify-content: space-between;">
+                            <label for="loai-pc" class="col-form-label mb-1">Phường:</label>
+                            <div class="dropdown"
+                              style="padding: 7px 0; height: 36.6px; width: 150px; justify-content: flex-end;">
+                              <select class="form-select" aria-label="Default select example" style="width: 95%;"
+                                onfocus='this.size=5;' onblur='this.size=1;' onchange='this.size=1; this.blur();'>
+                                <option selected>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer pt-1 d-flex justify-content-around"
+                      style="border: none; background-color: #f7fafc">
+                      <button type="button" class="btn" data-bs-dismiss="modal"
+                        style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
+                        Hủy
+                      </button>
+                      <button type="button" class="btn"
+                        style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                        Xác nhận
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<script type="text/javascript" src="/js/PhanCong.js"></script>
+    </main>
+    
+    <script defer type="text/javascript" src="/js/PhanCong.js"></script>
+</body>
+
+</html>

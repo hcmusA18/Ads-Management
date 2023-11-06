@@ -28,28 +28,15 @@
           <!-- Select -->
           <div class="container-fluid mt-3 ps-0">
             <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-              <div
-                class="card align-top h-auto rounded border-dark p-1 ms-1"
-                style="min-width: fit-content; background-color: #f7fafc">
-                <p class="lh-base text-start m-0">Điểm có báo cáo nhiều nhất</p>
-                <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #00b285">Địa điểm A</p>
-              </div>
-
-              <div
-                class="card align-top h-auto rounded border-dark p-1 ms-1"
-                style="min-width: fit-content; background-color: #f7fafc">
-                <p class="lh-base text-start m-0">Bảng có báo cáo nhiều nhất</p>
-                <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #d59633">Bảng báo B</p>
-              </div>
-
-              <div
-                class="card align-top h-auto rounded border-dark p-1 ms-1"
-                style="min-width: fit-content; background-color: #f7fafc">
-                <p class="lh-base text-start m-0">Quận có báo cáo nhiều nhất</p>
-                <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #e84747">Quận C</p>
+              <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                <%- include("../partials/info_card.ejs", {title: 'Điểm có báo cáo nhiều nhất' , value: 'Địa điểm A' ,
+                  color: '#00b285' }); %>
+                <%- include("../partials/info_card.ejs", {title: 'Bảng có báo cáo nhiều nhất' , value: 'Bảng báo B' ,
+                  color: '#d59633' }); %>
+                <%- include("../partials/info_card.ejs", {title: 'Quận có báo cáo nhiều nhất' , value: 'Quận C' ,
+                  color: '#e84747' }); %>
               </div>
             </div>
-          </div>
           <!-- Table -->
           <table
             data-toggle="table"

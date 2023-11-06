@@ -28,23 +28,13 @@
             <!-- Select -->
             <div class="container-fluid mt-3 ps-0">
               <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-
-                <div class="card align-top h-auto rounded border-dark p-1 ms-1"
-                  style="min-width: fit-content; background-color: #f7fafc">
-                  <p class="lh-base text-start m-0">Tổng số Phường</p>
-                  <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #ae57ff">112</p>
-                </div>
-
-                <div class="card align-top h-auto rounded border-dark p-1 ms-1"
-                  style="min-width: fit-content; background-color: #f7fafc">
-                  <p class="lh-base text-start m-0">Tổng số điểm quảng cáo</p>
-                  <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #00B285">211</p>
-                </div>
-
-                <div class="card align-top h-auto rounded border-dark p-1 ms-1"
-                  style="min-width: fit-content; background-color: #f7fafc">
-                  <p class="lh-base text-start m-0">Tổng số bảng quảng cáo</p>
-                  <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #D59633">1022</p>
+                <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value: '112' ,
+                    color: '#ae57ff' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value: '211' ,
+                    color: '#00B285' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' , value: '1022' ,
+                    color: '#D59633' }); %>
                 </div>
               </div>
             </div>
