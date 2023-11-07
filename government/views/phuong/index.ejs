@@ -6,9 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%- title %></title>
   <%- include("../partials/head.ejs"); %>
+
+  <!-- Mapbox -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+  <script src="../../services/phuongServices/script.js" type="module"></script>
 </head>
 
 <body>
+  <!--- Load the mapbox geocoder plugin -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+    type="text/css" />
+
+  
+  <div id="map"></div>
+  
   <% const toolbars = [
       { icon: 'bi bi-house-door-fill', name: 'Trang chủ', link:'/so', },
       { icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan'},
@@ -17,19 +32,7 @@
       { icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao', },
       { icon: 'bi bi-person-badge', name:'Phân công', link: '/so/phancong', }, ] %>
   <header></header>
-  <main class="container-fluid d-flex bg-light">
-    <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
-    <div class="container-fluid vw-100 pt-1">
-      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
-        <!-- Profile -->
-        <%- include("../partials/profile_card.ejs", {user: {name: 'Trần Gia Thịnh', level: 'Phường 13 - Quận 6'}}); %>
-        <!-- Title -->
-        <div class="d-block">
-          <h1 class="fw-bolder">TRANG CHỦ</h1>
-        </div>
-      </div>
-    </div>
-  </main>
+ 
 </body>
 
 </html>
