@@ -257,17 +257,17 @@ mapboxScript.onload = function () {
   );
 
   // Wait until the map has finished loading.
-  map.on('load', () => {
-    addSource(map);
-  });
+  // map.on('load', () => {
+  //   addSource(map);
+  // });
   // After the last frame rendered before the map enters an "idle" state.
-  map.on('idle', () => {
-    // If these two layers were not added to the map, abort
-    if (!map.getLayer('bao-cao') || !map.getLayer('quang-cao')) {
-      return;
-    }
-
-    attachToggle('bao-cao', 'bao-cao', map);
-    attachToggle('quang-cao', 'quang-cao', map);
-  });
+  // map.on('idle', () => {
+  //   // If these two layers were not added to the map, abort
+  //   if (!map.getLayer('bao-cao') || !map.getLayer('quang-cao')) {
+  //     return;
+  //   }
+  //
+  //   attachToggle('bao-cao', 'bao-cao', map);
+  //   attachToggle('quang-cao', 'quang-cao', map);
+  // });
 }
