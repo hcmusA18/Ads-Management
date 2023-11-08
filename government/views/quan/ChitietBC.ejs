@@ -9,11 +9,10 @@
 </head>
 
 <body>
-  <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/so', }, { icon: 'bi bi-building-fill'
-    , name: 'Danh sách quận huyện' , link: '/so/qlquan' || '/so/htbc' }, { icon: 'bi bi-badge-ad-fill' ,
-    name: 'Loại hình quảng cáo' , link: '/so/lhqc' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu' ,
-    link: '/so/yeucau' , }, { icon: 'bi bi-journal-bookmark-fill' , name: 'Thống kê báo cáo' , link: '/so/baocao' , }, {
-    icon: 'bi bi-person-badge' , name:'Phân công', link: '/so/phancong' , }, ] %>
+  <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/quan', }, { icon: 'bi bi-geo-fill'
+    , name: 'Điểm đặt / bảng quảng cáo' , link: '/quan/diemdat' }, { icon: 'bi bi-file-earmark-text-fill' ,
+    name: 'Báo cáo vi phạm' , link: '/quan/baocao' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,
+    link: '/so/yeucau' , }, ] %>
     <header></header>
     <main class="container-fluid d-flex bg-light">
       <div class="row">
@@ -44,7 +43,7 @@
                   </div>
                   <div class="col-md-4 custom-col">
                     <label for="dropdown-state-list" style="margin-bottom: 6px">Trạng thái</label>
-                    <div class="dropdown d-block p-0" style="flex: 0">
+                    <!-- <div class="dropdown d-block p-0" style="flex: 0">
                       <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdown-state-list"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Chưa xử lý
@@ -53,7 +52,12 @@
                         <li><a class="dropdown-item" href="#">Chờ xử lý</a></li>
                         <li><a class="dropdown-item" href="#">Đã xử lý</a></li>
                       </ul>
-                    </div>
+                    </div> -->
+                    <select class="form-select" aria-label="Default select example" id="state-baocao">
+                      <option selected>Chưa xử lí</option>
+                      <option value="1">Đã xử lí</option>
+        
+                    </select>
                   </div>
                 </div>
 
@@ -74,7 +78,7 @@
                   <form class="col-md-4 custom-col">
                     <label for="date" style="margin-bottom: 6px">Thời điểm gửi</label>
                     <div class="input-group date" id="datepicker">
-                      <input type="text" class="form-control" id="date" />
+                      <input type="text" class="form-control" id="date" value="01-01-2023"/>
                       <span class="input-group-append">
                         <span class="input-group-text h-100">
                           <i class="fa fa-calendar" style="background-color: transparent;"></i>
@@ -103,9 +107,9 @@
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col">
                     <div class="col-md-12 custom-col">
-                      <label for="nd-baocao1" style="margin-bottom: 6px">Nội dung báo cáo</label>
+                      <label for="nd-baocao1" style="margin-bottom: 6px">Cách thức xử lí</label>
                       <textarea class="form-control" id="nd-baocao1"
-                        disabled>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate eum, id veniam odio eveniet tempore provident tempora ex beatae laborum quisquam quae culpa minima eligendi, qui quas tenetur repudiandae blanditiis.</textarea>
+                        >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate eum, id veniam odio eveniet tempore provident tempora ex beatae laborum quisquam quae culpa minima eligendi, qui quas tenetur repudiandae blanditiis.</textarea>
                     </div>
                   </div>
                 </div>
@@ -119,7 +123,11 @@
                   </div>
                 </div>
               </div>
+              <div class="d-flex flex-row align-items-center justify-content-start" style="gap: 20px; margin-top: 15px;">
+                <a href="/quan/baocao"><button type="button" class="btn btn-success" style="width: 150px;">Xác nhận</button></a>
+              </div>
         </div>
+      </div>
     </main>
 
     <!-- Include Bootstrap Datepicker -->

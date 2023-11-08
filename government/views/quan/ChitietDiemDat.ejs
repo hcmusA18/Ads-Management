@@ -9,11 +9,10 @@
   </head>
 
   <body>
-    <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/so', }, { icon: 'bi bi-building-fill'
-    , name: 'Danh sách quận huyện' , link: '/so/qlphuong' || '/so/htbc' }, { icon: 'bi bi-badge-ad-fill' ,
-    name: 'Loại hình quảng cáo' , link: '/so/lhqc' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu' ,
-    link: '/so/yeucau' , }, { icon: 'bi bi-journal-bookmark-fill' , name: 'Thống kê báo cáo' , link: '/so/baocao' , }, {
-    icon: 'bi bi-person-badge' , name:'Phân công', link: '/so/phancong' , }, ] %>
+    <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/quan', }, { icon: 'bi bi-geo-fill'
+    , name: 'Điểm đặt / bảng quảng cáo' , link: '/quan/diemdat' }, { icon: 'bi bi-file-earmark-text-fill' ,
+    name: 'Báo cáo vi phạm' , link: '/quan/baocao' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,
+    link: '/so/yeucau' , }, ] %>
     <header></header>
     <main class="container-fluid d-flex bg-light">
       <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
@@ -103,8 +102,8 @@
             </div>
             <div class="container-fluid px-0 nd-chi-tiet">
               <div class="container d-flex justify-content-between">
-                <h4 style="font-weight: bold;">Chi tiết điểm đặt</h4>
-                <a href="/quan/yeucau/cs/123"><img src="/images/edit.svg" alt="edit-icon"></a>
+                <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
+                <a href="/quan/yeucau/cs/123" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Yêu cầu chỉnh sửa</a>
               </div>
               <div class="container mt-4">
                 <label for="id-baocao" style="margin-bottom: 6px">ID Điểm đặt</label>
