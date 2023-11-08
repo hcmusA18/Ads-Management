@@ -1,119 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ads Management</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,700;0,900;1,400&display=swap"
-      rel="stylesheet" />
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%- title %></title>
+    <%- include("./partials/head.ejs"); %>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet"/>
+    <script defer src="/js/index/map.js"></script>
     <style>
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: Lato, sans-serif;
-      }
-
-      /* The grid: Three equal columns that floats next to each other */
-      .sidebar {
-        margin: 0;
-        padding: 0;
-        width: 10%;
-        background-color: #f1f1f1;
-        height: 100vh;
-        position: fixed;
-        overflow: auto;
-        z-index: 1;
-      }
-
-      /* Style the links inside the list */
-      .sidebar a {
-        display: block;
-        color: black;
-        padding: 16px;
-        text-decoration: none;
-      }
-
-      /* Change background color of links on hover */
-      .sidebar a:hover {
-        background-color: #555;
-        color: white;
-      }
-
-      /* Active/current link */
-      .sidebar a.active {
-        background-color: #4caf50;
-        color: white;
-      }
-
-      /* Style page content */
-      .content {
-        float: left;
-        padding: 20px;
-        width: 75%;
-        background-color: #f1f1f1;
-        height: 100vh;
-      }
-
-      /* Style the footer */
-      footer {
-        background-color: #777;
-        padding: 10px;
-        text-align: center;
-        color: white;
-      }
-
-      /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-      @media (max-width: 600px) {
-        .sidebar,
-        .content {
-          width: 100%;
-          height: auto;
-        }
-      }
-      #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        z-index: 0; /* at the bottom */
-      }
+			.mapboxgl-ctrl-top-left {
+				left: 5rem !important;
+			}
     </style>
-  </head>
-  <body>
-    <header>Header</header>
-    <main>
-      <!-- Sidebar -->
-      <div class="sidebar" style="width: 25%; right: 0">
-        <a class="active" href="#home">Home</a>
-        <a href="#news">News</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>
-      </div>
-      <!--  -->
+</head>
 
-      <!-- Page content -->
-      <div id="map"></div>
-      <script>
-        // mapboxgl.accessToken = 'sk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenM4eGplMWExcDJqbjBsMW01NHAxdyJ9.kxGAbREWTTjYxbmmVixrAQ'
-        mapboxgl.accessToken =
-          'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg'
-        const map = new mapboxgl.Map({
-          container: 'map',
-          style: 'mapbox://styles/mapbox/streets-v12',
-          center: [106.6297, 10.8231], // starting position
-          zoom: 12 // starting zoom
-        })
-      </script>
-      <!--  -->
-    </main>
-    <footer>Footer</footer>
-  </body>
+<body>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link
+        rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+        type="text/css"/>
+<header></header>
+<% const toolbars = [
+    {icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: '/so',},
+    {icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan'},
+    {icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc',},
+    {icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/yeucau',},
+    {icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao',},
+    {icon: 'bi bi-person-badge', name: 'Phân công', link: '/so/phancong',}
+] %>
+<aside class="position-absolute z-3 h-100">
+    <%- include('./partials/sidebar.ejs', {toolbars: toolbars}); %>
+</aside>
+<main class="container-fluid d-flex bg-light p-0">
+    <div id="map" style="position: absolute; width: 100%; top:0; bottom: 0;"></div>
+    <!--Login modal form-->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" style="display: block"
+         aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Đăng nhập</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm" method="post">
+                        <div class="mb-3 form-floating">
+                            <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập"
+                                   name="username"
+                                   required>
+                            <label for="username" class="form-label">Tên đăng nhập<span
+                                        class="text-danger">*</span></label>
+                        </div>
+                        <div class="mb-3 form-floating">
+                            <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu"
+                                   name="password"
+                                   required>
+                            <label for="password" class="form-label">
+                                Mật khẩu <span class="text-danger">*</span>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" style="color: #fff; background-color: #0d6efd" type="submit"
+                            onclick="loginHandler()">
+                        Đăng nhập
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+			<!--auto trigger modal form-->
+			document.addEventListener('DOMContentLoaded', function () {
+				var myModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+					keyboard: false
+				})
+				myModal.show();
+			})
+			const loginHandler = () => {
+				const username = document.getElementById('username').value;
+				const password = document.getElementById('password').value;
+				if (username === 'admin') {
+					window.location.href = '/so';
+				} else if (username === 'quan') {
+					window.location.href = '/quan';
+				} else if (username === 'phuong') {
+					window.location.href = '/phuong';
+				} else {
+					alert('Sai tên đăng nhập hoặc mật khẩu');
+				}
+			}
+    </script>
+</main>
+</body>
+
 </html>
