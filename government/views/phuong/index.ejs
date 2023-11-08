@@ -9,8 +9,7 @@
 
   <!-- Mapbox -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
-  <script src="../../services/phuongServices/script.js" type="module"></script>
+  <script src="./js/phuongScript.js" type="module"></script>
 </head>
 
 <body>
@@ -22,7 +21,7 @@
     type="text/css" />
 
   
-  <div id="map"></div>
+  <div id="map" style="position: absolute; top:0; bottom:0; width: 100%;"></div>
   
   <% const toolbars = [
       { icon: 'bi bi-house-door-fill', name: 'Trang chủ', link:'/so', },
