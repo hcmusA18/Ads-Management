@@ -41,7 +41,7 @@ router.get('/phancong', (req, res) => {
   res.render('so/Phancong', { title: 'Sở - Phancong' });
 });
 
-router.get('/ctbc', (req, res) => {
+router.get('/baocao/:id', (req, res) => {
   res.render('so/ChitietBC', { title: 'Sở - ChitietBC' });
 });
 

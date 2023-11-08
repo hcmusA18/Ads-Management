@@ -1,139 +1,156 @@
-<%- include("../partials/sidebar.ejs"); %>
-<div class="container-fluid vw-100 ps-5 pt-1">
-  <div class="top-bar position-relative">
-    <!-- profile -->
-    <div class="position-absolute top-0 end-0 p-3 pe-1">
-      <div class="card d-flex flex-sm-row align-items-center p-2 shadow" style="border-radius: 8px">
-        <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-        <div class="ps-2 d-flex flex-sm-column">
-          <p class="h6 mb-0">John Doe</p>
-          <p class="h6 mb-0" style="font-weight: 75">Quận 6</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="main-container">
-    <div class="d-inline-block">
-      <h1 class="header-1">QUẢN LÝ BÁO CÁO VI PHẠM</h1>
-    </div>
-    <!-- Check box -->
-    <div class="container-fluid checkbox-container">
-      <div class="d-inline-block pb-2" style="padding-left: 15px">
-        <h1 style="color: #1f274a; font-size: 22px; font-weight: 500">QUẬN 6</h1>
-      </div>
-      <div class="container-fluid d-flex flex-wrap">
-        <% for (let i = 1; i <= 15; i++) { %>
-        <div class="form-check me-4 mb-2">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            id="check<%= i %>"
-            name="option<%= i %>"
-            value="something"
-            checked />
-          <label class="form-check-label" for="check<%= i %>">Phường <%= i %></label>
-        </div>
-        <% } %>
-      </div>
-    </div>
-    <!-- Dropdown menu / Filter -->
-    <div class="d-block mt-3">
-      <div class="filter d-flex flex-row align-items-center">
-        <label for="doituong" style="font-size: 18px; padding-right: 10px">Đối tượng: </label>
-        <div class="dropdown d-inline-block pe-5" id="doituong">
-          <a
-            class="btn btn-secondary dropdown-toggle"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Đối tượng
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>
+<!DOCTYPE html>
+<html lang="vi">
 
-        <label for="trangthai" style="font-size: 18px; padding-right: 10px">Trạng thái: </label>
-        <div class="dropdown d-inline-block" id="trangthai">
-          <a
-            class="btn btn-secondary dropdown-toggle"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Trạng thái
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <!-- Table -->
-    <div class="container-fluid mt-4 ps-0">
-      <table id="data-table" class="table table-hover table-responsive" style="width: 100%">
-        <thead id="table-header">
-          <tr>
-            <th>ID Báo cáo</th>
-            <th>Phường</th>
-            <th>ID Điểm đặt/Bảng QC</th>
-            <th>Loại hình báo cáo</th>
-            <th>Họ tên người gửi</th>
-            <th>Email</th>
-            <th>Thời điểm gửi</th>
-            <th>Trạng thái</th>
-            <th>Xem chi tiết</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for (let i = 1; i <= 55; i++) { %>
-          <tr>
-            <td>BC0155001</td>
-            <td><%= i %></td>
-            <td>QC0614001</td>
-            <td>Lorem ipsum dolor sit amet.</td>
-            <td>Lorem ipsum dolor.</td>
-            <td>Lorem ipsum dolor sit.</td>
-            <td>25/12/2023</td>
-            <td>
-              <% let x = "Processing"; %> <% if (i % 3 === 1) { %>
-              <div class="d-inline-block p-1" style="background-color: #ff3838; border-radius: 8px; min-width: 5rem">
-                Chưa xử lý
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include('../partials/head.ejs') %>
+  <!-- <style>
+    table th .th-inner {
+      height: 100%;
+      text-wrap: wrap!important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style> -->
+</head>
+
+<body>
+  <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/so', }, { icon: 'bi bi-geo-fill'
+  , name: 'Điểm đặt / bảng quảng cáo' , link: '/so/qlphuong' || '/so/htbc' }, { icon: 'bi bi-file-earmark-text-fill' ,
+  name: 'Báo cáo vi phạm' , link: '/quan/baocao' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,
+  link: '/so/yeucau' , }, ] %>
+    <header></header>
+    <main class="container-fluid d-flex bg-light">
+      <div class="row"><%- include('../partials/sidebar.ejs', { toolbars: toolbars }) %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <%- include("../partials/profile_card.ejs", {user: {name: 'John Doe' , level: 'Quận 2' }}); %>
+
+            <!-- Title -->
+            <div class="d-block mb-3">
+              <h1 class="fw-bolder">QUẢN LÝ BÁO CÁO VI PHẠM</h1>
+            </div>
+            <!-- Check box -->
+            <div class="container-fluid checkbox-container">
+              <div class="d-inline-block pb-2" style="padding-left: 15px">
+                <h1 style="color: #1f274a; font-size: 22px; font-weight: 500">QUẬN 2</h1>
               </div>
-              <% } else if (i % 3 === 2) { %>
-              <div class="d-inline-block p-1" style="background-color: #58f; border-radius: 8px; min-width: 5rem">
-                Đang xử lý
+              <div class="container-fluid d-flex flex-wrap">
+                <% for (let i = 1; i <= 12; i++) { %>
+                <div class="form-check me-4 mb-3" style="min-width: 9rem;">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="check<%= i %>"
+                    name="option<%= i %>"
+                    value="something"
+                    checked />
+                  <label class="form-check-label" for="check<%= i %>">Phường <%= i %></label>
+                </div>
+                <% } %>
               </div>
-              <% } else { %>
-              <div class="d-inline-block p-1" style="background-color: #41ff54; border-radius: 8px; min-width: 5rem">
-                Đã xử lý
+            </div>
+            <!-- Select -->
+            <div class="container-fluid mt-3 ps-0">
+              <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
+                  <div>Đối tượng: </div>
+                  <%- include("../partials/select.ejs", {current: 'Tất cả' , options: [ {
+                    name: 'Tất cả' , link: '#' }, { name: 'Điểm đặt' , link: '#' }, { name: 'Bảng quảng cáo' , link: '#' }
+                    ]}); %>
+                  <div class="ms-5">Trạng thái</div>
+                  <%- include("../partials/select.ejs", {current: 'Tất cả' , options: [ {
+                    name: 'Tất cả' , link: '#' }, { name: 'Chưa xử lý' , link: '#' }, { name: 'Đang xử lý' , link: '#' }, {name: "Đã xử lý", link: "#"},
+                    ]}); %>
+                </div>
               </div>
-              <% }%>
-            </td>
-            <td>
-              <div class="d-flex flex-row align-items-center justify-content-center">
-                <!-- <a href="#">
-                  <i class="fa fa-pencil fa-1x ms-2" aria-hidden="true"></i>
-                </a>
-                <a href="#">
-                  <i class="fa fa-trash fa-1x ms-2" aria-hidden="true"></i>
-                </a> -->
-                <a href="#">
-                  <i class="fa fa-info fa-1x ms-2" aria-hidden="true"></i>
-                </a>
+              <!-- Table -->
+              <table data-toggle="table" data-pagination="true" data-search="true" data-pagination="true"
+                data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary" data-buttons="buttons"
+                data-show-button-text="true" data-icon-prefix="bi"
+                class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+                <thead>
+                  <tr class="row m-0">
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="phuong">Phường</th>
+                    <th class="col-1" data-sortable="true" data-field="id2">ID Điểm đặt/Bảng QC</th>
+                    <th class="col-2" data-sortable="true" data-field="lhbc">Loại hình báo cáo</th>
+                    <th class="col-2" data-sortable="true" data-field="name">Họ tên người gửi</th>
+                    <th class="col-1" data-sortable="true" data-field="email">Email</th>
+                    <th class="col-1" data-sortable="true" data-field="time">Thời điểm gửi</th>
+                    <th class="col-2" data-sortable="true" data-align="center" data-field="state">Trạng thái</th>
+                    <th class="col-1" data-align="center" data-field="detail">Chi tiết</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (let i=1; i <=55; i++) { %>
+                    <tr class="row m-0">
+                      <td>BC0155001</td>
+                      <td>
+                        <%= i %>
+                      </td>
+                      <td>QC0614001</td>
+                      <td>Lorem ipsum dolor sit amet.</td>
+                      <td>Lorem ipsum dolor.</td>
+                      <td>Lorem ipsum dolor sit.</td>
+                      <td>25/12/2023</td>
+                      <td>
+                        <% let x="Processing" ; %>
+                          <% if (i % 3===1) { %>
+                            <div class="d-inline-block p-1" style="background-color: #ff3838; border-radius: 8px; min-width: 6rem; color: white;">
+                              Chưa xử lý
+                            </div>
+                          <% } else if (i % 3===2) { %>
+                            <div class="d-inline-block p-1" style="background-color: #58f; border-radius: 8px; min-width: 6rem; color: white;">
+                              Đang xử lý
+                            </div>
+                          <% } else { %>
+                            <div class="d-inline-block p-1"
+                              style="background-color: #41ff54; border-radius: 8px; min-width: 6rem; color: white;">
+                              Đã xử lý
+                            </div>
+                          <% }%>
+                      </td>
+                      <td>
+                        <div class="d-flex flex-row align-items-center justify-content-center">
+                          <a href="/quan/baocao/123">
+                            <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+              </table>
+
+              <!-- Modal add -->
+              <div class="modal fade" id="addModal-htbc" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header pb-3" style="border: none">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="card align-top h-auto rounded border-dark p-1 ms-1"
+                      style="min-width: fit-content; background-color: #f7fafc">
+                      <p class="lh-base text-start m-0">Mới nhất</p>
+                      <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #00b285">Hình thức A</p>
+                    </div>
+
+                    <div class="card align-top h-auto rounded border-dark p-1 ms-1"
+                      style="min-width: fit-content; background-color: #f7fafc">
+                      <p class="lh-base text-start m-0">Yêu cầu mới nhất</p>
+                      <p class="fw-bolder text-end fs-5 lh-base my-0 ms-5" style="color: #d59633">Hình thức B</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </td>
-          </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+            </div>
+    </main>
+</body>
+
+</html>
