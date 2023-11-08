@@ -1,0 +1,64 @@
+<div class="modal fade" id="<%= modal_id %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 600px">
+    <div class="modal-content">
+      <div class="modal-header pb-0 border-0 position-relative text-center justify-content-center">
+        <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title pb-2 fs-4 fw-semibold text-center text-uppercase">
+          <%= title %>
+        </h5>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body pt-1 pb-2 border-0">
+
+        <% if (typeof sub_title !== 'undefined' && sub_title !== null && sub_title !== '' ) { %>
+        <h5 class="text-start fs-6 text-dark">
+          <%= sub_title %>
+        </h5>
+        <% } %>
+        <!-- Form -->
+        <form>
+          <% components.forEach(function(component) { %>
+          <div class="mb-3">
+            <label for="<%= component.id %>" class="col-form-label mb-1"><%= component.label %>
+              <% if (component.required) { %>
+              <span class="text-danger">*</span>
+              <% } %>
+            </label>
+            <% if (component.type === 'text') { %>
+            <input type="text" name="<%= component.id %>" id="<%= component.id %>" class="form-control" aria-required="<%= component.required %>" <% if (component.disabled) { %> disabled <% } %> value="<%= component.value %>">
+            <% } else if (component.type === 'textarea') { %>
+            <textarea name="<%= component.id %>" id="<%= component.id %>" class="form-control" aria-required="<%= component.required %>" <% if (component.disabled) { %> disabled <% } %>></textarea>
+            <% } else if (component.type === 'select') { %>
+            <select name="<%= component.id %>" id="<%= component.id %>" class="form-select" aria-required="<%= component.required %>" <% if (component.disabled) { %> disabled <% } %>>
+              <% component.options.forEach(function(option) { %>
+              <option value="<%= option.value %>"><%= option.label %></option>
+              <% }) %>
+            </select>
+            <% } %>
+          </div>
+          <% }) %>
+        </form>
+      </div>
+      <div class="modal-footer pt-1 d-flex justify-content-around border-0">
+        <% buttons.forEach(function(button) { %>
+          <% if (button.dismiss) { %>
+            <button type="button" class="btn" data-bs-dismiss="modal"
+                    style="min-width: 6.5rem; background-color: <%= button.color %>; color: #f7fafc">
+              <%= button.label %>
+            </button>
+          <% } else { %>
+            <button type="button" class="btn"
+                    style="min-width: 6.5rem; background-color: <%= button.color %>; color: #f7fafc">
+              <%= button.label %>
+            </button>
+        <% }}) %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Optional: Place to the bottom of scripts -->
+<!-- <script>
+  const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+</script> -->

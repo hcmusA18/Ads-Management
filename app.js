@@ -53,6 +53,9 @@ appGov.set('views', path.join(__dirname, 'government/views'))
 
 // Routes
 // appGov.use('/', govRoutes)
+appGov.get('/', (req, res) => {
+  res.render('index', { title: 'Cán bộ' })
+})
 appGov.use('/so', soRoutes)
 appGov.use('/quan', quanRoutes)
 appGov.use('/phuong', phuongRoutes)

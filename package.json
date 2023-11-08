@@ -39,6 +39,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "prettier": "^2.8.8",
+    "prettier-plugin-ejs": "^0.0.18",
     "pretty-quick": "^3.1.3"
   }
 }

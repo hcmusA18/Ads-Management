@@ -1,70 +1,61 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%- title %></title>
-    <%- include("../partials/head.ejs"); %>
-  </head>
-  <body>
-    <% const toolbars = [
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include("../partials/head.ejs"); %>
+</head>
+
+<body>
+  <% const toolbars = [
       { icon: 'bi bi-house-door-fill', name: 'Trang chủ', link:'/so', },
       { icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan' || '/so/htbc'},
       { icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc', },
       { icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/yeucau', },
       { icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao', },
       { icon: 'bi bi-person-badge', name:'Phân công', link: '/so/phancong', }, ] %>
-    <header></header>
-    <main class="container-fluid d-flex bg-light">
-      <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
-      <div class="container-fluid vw-100 pt-1">
-        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
-          <!-- Profile -->
-          <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
-          <!-- Title -->
-          <div class="d-block">
-            <h1 class="fw-bolder">THỐNG KÊ BÁO CÁO</h1>
-          </div>
-          <!-- Select -->
-          <div class="container-fluid mt-3 ps-0">
+  <header></header>
+  <main class="container-fluid d-flex bg-light">
+    <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+    <div class="container-fluid vw-100 pt-1">
+      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+        <!-- Profile -->
+        <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
+        <!-- Title -->
+        <div class="d-block">
+          <h1 class="fw-bolder">THỐNG KÊ BÁO CÁO</h1>
+        </div>
+        <!-- Select -->
+        <div class="container-fluid mt-3 ps-0">
+          <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
             <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-              <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                <%- include("../partials/info_card.ejs", {title: 'Điểm có báo cáo nhiều nhất' , value: 'Địa điểm A' ,
+              <%- include("../partials/info_card.ejs", {title: 'Điểm có báo cáo nhiều nhất' , value: 'Địa điểm A' ,
                   color: '#00b285' }); %>
-                <%- include("../partials/info_card.ejs", {title: 'Bảng có báo cáo nhiều nhất' , value: 'Bảng báo B' ,
+              <%- include("../partials/info_card.ejs", {title: 'Bảng có báo cáo nhiều nhất' , value: 'Bảng báo B' ,
                   color: '#d59633' }); %>
-                <%- include("../partials/info_card.ejs", {title: 'Quận có báo cáo nhiều nhất' , value: 'Quận C' ,
+              <%- include("../partials/info_card.ejs", {title: 'Quận có báo cáo nhiều nhất' , value: 'Quận C' ,
                   color: '#e84747' }); %>
-              </div>
             </div>
+          </div>
           <!-- Table -->
-          <table
-            data-toggle="table"
-            data-pagination="true"
-            data-search="true"
-            data-pagination="true"
-            data-page-list="[10, 25, 50, 100, all]"
-            data-locale="vi-VN"
-            data-buttons-class="primary"
-            data-show-button-text="true"
-            data-icon-prefix="bi"
-            class="table table-bordered table-hover table-striped table-responsive-md rounded"
-            smart-display>
+          <table data-toggle="table" data-pagination="true" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary" data-show-button-text="true" data-icon-prefix="bi" class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
             <thead>
-              <tr class="row m-0">
-                <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
-                <th class="col-1" data-sortable="true" data-align="center" data-field="id2">ID Điểm đặt/Bảng QC</th>
-                <th class="col-2" data-sortable="true" data-field="type">Loại hình</th>
-                <th class="col-2" data-sortable="true" data-field="name">Người gửi</th>
-                <th class="col-2" data-sortable="true" data-field="email">Email</th>
-                <th class="col-2" data-sortable="true" data-align="center" data-field="date">Thời điểm gửi</th>
-                <th class="col-1" data-sortable="true" data-field="action">Trạng thái</th>
-                <th class="col-1" data-sortable="true" data-field="detail">Chi tiết</th>
+              <tr>
+                <th data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
+                <th data-sortable="true" data-align="center" data-field="id2">ID Điểm đặt/Bảng QC</th>
+                <th data-sortable="true" data-field="type">Loại hình</th>
+                <th data-sortable="true" data-field="name">Người gửi</th>
+                <th data-sortable="true" data-field="email">Email</th>
+                <th data-sortable="true" data-align="center" data-field="date">Thời điểm gửi</th>
+                <th data-sortable="true" data-field="action">Trạng thái</th>
+                <th data-sortable="true" data-field="detail">Chi tiết</th>
               </tr>
             </thead>
             <tbody>
               <% let maLoai = "L00" %> <% for (let i = 1; i <= 55; i++) { %>
-              <tr class="row m-0">
+              <tr>
                 <!-- 1 -->
                 <td><%= i %></td>
                 <!-- 2 -->
@@ -81,9 +72,7 @@
                 <td>Chờ xử lý</td>
                 <!-- 8 Chi tiết -->
                 <td>
-                  <div
-                    class="d-flex flex-row align-items-center justify-content-center action-icons"
-                    style="background-color: transparent">
+                  <div class="d-flex flex-row align-items-center justify-content-center action-icons" style="background-color: transparent">
                     <!-- Button trigger modal edit -->
                     <a href="#">
                       <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
@@ -112,22 +101,16 @@
                     <input type="text" class="form-control" id="maloai-htbc" required />
                   </div> -->
                     <div class="mb-3">
-                      <label for="loai-htbc" class="col-form-label mb-1"
-                        >Hình thức:<span class="text-danger">*</span></label
-                      >
+                      <label for="loai-htbc" class="col-form-label mb-1">Hình thức:<span class="text-danger">*</span></label>
                       <input type="text" class="form-control" id="loai-htbc" required />
                     </div>
                     <div class="mb-3">
-                      <label for="mota-htbc" class="col-form-label mb-1"
-                        >Mô tả:<span class="text-danger">*</span></label
-                      >
+                      <label for="mota-htbc" class="col-form-label mb-1">Mô tả:<span class="text-danger">*</span></label>
                       <textarea class="form-control" id="mota-htbc" required></textarea>
                     </div>
                   </form>
                 </div>
-                <div
-                  class="modal-footer pt-1 d-flex justify-content-around"
-                  style="border: none; background-color: #f7fafc">
+                <div class="modal-footer pt-1 d-flex justify-content-around" style="border: none; background-color: #f7fafc">
                   <!-- <button
                   type="button"
                   class="btn"
@@ -135,10 +118,7 @@
                   style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
                   Hủy
                 </button> -->
-                  <button
-                    type="button"
-                    class="btn"
-                    style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                  <button type="button" class="btn" style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
                     Thêm
                   </button>
                 </div>
@@ -147,6 +127,7 @@
           </div>
         </div>
       </div>
-    </main>
-  </body>
+  </main>
+</body>
+
 </html>

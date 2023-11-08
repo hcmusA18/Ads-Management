@@ -1,24 +1,28 @@
-<%- include("../partials/sidebar.ejs"); %>
-<div class="container-fluid vw-100 ps-5 pt-1">
-  <!-- Topbar -->
-  <div class="top-bar position-relative">
-    <!-- profile -->
-    <div class="position-absolute top-0 end-0 p-3 pe-1">
-      <div class="card d-flex flex-sm-row align-items-center p-2 shadow profile-card" style="border-radius: 8px">
-        <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
-        <div class="ps-2 d-flex flex-sm-column">
-          <p class="h6 mb-0">John Doe</p>
-          <p class="h6 mb-0" style="font-weight: 75">Phường 10, Quận 6</p>
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include("../partials/head.ejs"); %>
+</head>
+
+<body>
+  <header></header>
+  <main class="container-fluid d-flex bg-light">
+    <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+    <div class="container-fluid vw-100 pt-1">
+      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+        <!-- Profile -->
+        <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
+        <!-- Title -->
+        <div class="d-block">
+          <h1 class="fw-bolder">TRANG CHỦ</h1>
         </div>
       </div>
     </div>
-  </div>
-  <!--  -->
+  </main>
+</body>
 
-  <div class="main-container">
-    <!-- Title -->
-    <div class="d-block">
-      <h1 class="header-1">TRANG CHỦ</h1>
-    </div>
-  </div>
-</div>
+</html>

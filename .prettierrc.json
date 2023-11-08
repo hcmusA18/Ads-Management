@@ -4,5 +4,8 @@
   "trailingComma": "none",
   "semi": false,
   "printWidth": 120,
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "plugins": [
+    "prettier-plugin-ejs"
+  ]
 }
