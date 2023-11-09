@@ -8,7 +8,7 @@ document.head.appendChild(mapboxScript);
 
 function addAdvertisementSource(map) {
 	map.loadImage(
-			'assets/blue_elip.png',
+			'images/blue_elip.png',
 			(error, image) => {
 				if (error) throw error;
 				map.addImage('quang-cao', image);
@@ -94,7 +94,8 @@ function addAdvertisementSource(map) {
 						// 'text-offset': [0, 1.25],
 						'text-anchor': 'top',
 						'icon-anchor': 'bottom'
-					}
+					},
+					'visibility': 'visible'
 				});
 			}
 	);
@@ -121,7 +122,7 @@ function addAdvertisementSource(map) {
 
 function addReportSource(map) {
 	map.loadImage(
-			'assets/red_elip.png',
+			'images/red_elip.png',
 			(error, image) => {
 				if (error) throw error;
 				map.addImage('bao-cao', image);
@@ -162,7 +163,8 @@ function addReportSource(map) {
 						// 'text-offset': [0, 1.25],
 						'text-anchor': 'top',
 						'icon-anchor': 'bottom'
-					}
+					},
+					'visibility': 'visible'
 				});
 			}
 	);

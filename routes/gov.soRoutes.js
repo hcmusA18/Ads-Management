@@ -43,7 +43,7 @@ router.get('/yeucau/cs', (req, res) => {
 });
 
 router.get('/yeucau/:id', (req, res) => {
-  res.render('so/ChiTietYeuCau', { title: 'Sở - ChiTietYeuCau', toolbars: toolbars });
+  res.render('so/ChiTietYeuCau', { title: 'Sở - ChiTietYeuCau', toolbars: toolbars, id: req.params.id });
 });
 
 router.get('/phancong', (req, res) => {
@@ -51,7 +51,7 @@ router.get('/phancong', (req, res) => {
 });
 
 router.get('/baocao/:id', (req, res) => {
-  res.render('so/ChitietBC', { title: 'Sở - ChitietBC', toolbars: toolbars });
+  res.render('so/ChitietBC', { title: 'Sở - ChitietBC', toolbars: toolbars, id: req.params.id  });
 });
 
 router.get('/baocao', (req, res) => {

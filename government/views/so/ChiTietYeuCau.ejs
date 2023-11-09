@@ -9,11 +9,6 @@
 </head>
 
 <body>
-  <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/so', }, { icon: 'bi bi-building-fill'
-    , name: 'Danh sách quận huyện' , link: '/so/qlquan' || '/so/htbc' }, { icon: 'bi bi-badge-ad-fill' ,
-    name: 'Loại hình quảng cáo' , link: '/so/lhqc' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu' ,
-    link: '/so/yeucau' , }, { icon: 'bi bi-journal-bookmark-fill' , name: 'Thống kê báo cáo' , link: '/so/baocao' , }, {
-    icon: 'bi bi-person-badge' , name:'Phân công', link: '/so/phancong' , }, ] %>
     <header></header>
     <main class="container-fluid d-flex bg-light">
       <div class="row">
@@ -44,8 +39,8 @@
                 <!-- Row 1: 3 columns -->
                 <div class="row mt-2">
                   <div class="col-md-4 custom-col">
-                    <label for="id-baocao" style="margin-bottom: 6px">ID Báo cáo</label>
-                    <input type="text" class="form-control" id="id-baocao" value="BC0155001" disabled />
+                    <label for="id-baocao" style="margin-bottom: 6px">ID Yêu cầu</label>
+                    <input type="text" class="form-control" id="id-baocao" value=<%= id %> disabled />
                   </div>
                   <div class="col-md-4 custom-col">
                     <label for="sdt" style="margin-bottom: 6px">Số điện thoại</label>
