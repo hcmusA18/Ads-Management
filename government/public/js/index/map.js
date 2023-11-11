@@ -8,7 +8,7 @@ document.head.appendChild(mapboxScript);
 
 function addAdvertisementSource(map) {
 	map.loadImage(
-			'./images/blue_elip.png',
+			'/images/blue_elip.png',
 			(error, image) => {
 				if (error) throw error;
 				map.addImage('quang-cao', image);
@@ -122,7 +122,7 @@ function addAdvertisementSource(map) {
 
 function addReportSource(map) {
 	map.loadImage(
-			'./images/red_elip.png',
+			'/images/red_elip.png',
 			(error, image) => {
 				if (error) throw error;
 				map.addImage('bao-cao', image);

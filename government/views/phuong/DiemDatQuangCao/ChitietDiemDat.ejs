@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title %></title>
+    <%- include("../../partials/head.ejs"); %>
+    <link rel="stylesheet" href="/css/carousel.css" />
+  </head>
+
+  <body>
+    <header></header>
+    <main class="container-fluid d-flex bg-light">
+      <div class="row"><%- include("../../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <%- include("../../partials/profile_card.ejs", {user: {name: 'Admin' , level: 'Sở VH-TT' }}); %>
+          <!-- Back button -->
+          <%- include("../../partials/back_button.ejs"); %>
+          <!-- Title -->
+          <div class="d-flex flex-row align-items-center" style="gap: 10px">
+            <h1 class="fw-bolder m-0">ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO</h1>
+          </div>
+
+          <!-- Content -->
+          <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
+            <div class="container-fluid px-0">
+              <div class="row">
+                <img id="mainImage" src="https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201" alt="Current Image">
+              </div>
+              <div class="row mx-auto my-auto justify-content-center mt-2">
+                <div id="recipeCarousel" class="carousel slide px-0" data-bs-ride="carousel">
+                  <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                      <div class="col-lg-4 col-md-6 me-3">
+                        <div class="card">
+                          <div class="card-img">
+                            <img src="https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201" class="img-fluid" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <div class="col-lg-4 col-md-6 me-3">
+                        <div class="card">
+                          <div class="card-img">
+                            <img src="https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202" class="img-fluid" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <div class="col-lg-4 col-md-6 me-3">
+                        <div class="card">
+                          <div class="card-img">
+                            <img src="https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203" class="img-fluid" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <div class="col-lg-4 col-md-6 me-3">
+                        <div class="card">
+                          <div class="card-img">
+                            <img src="https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204" class="img-fluid" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <div class="col-lg-4 col-md-6 me-3">
+                        <div class="card">
+                          <div class="card-img">
+                            <img src="https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205" class="img-fluid" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <div class="col-lg-4 col-md-6 me-3">
+                        <div class="card">
+                          <div class="card-img">
+                            <img src="https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206" class="img-fluid" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <a class="carousel-control-prev bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  </a>
+                  <a class="carousel-control-next bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="container-fluid px-0 nd-chi-tiet">
+              <div class="container d-flex justify-content-between">
+                <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
+                <a href="/quan/yeucau/cs/diemdat/123" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Yêu cầu chỉnh sửa</a>
+              </div>
+              <div class="container mt-4">
+                <label for="id-baocao" style="margin-bottom: 6px">ID Điểm đặt</label>
+                <input type="text" class="form-control" id="id-diemdat" value="D0155001" disabled />
+              </div>
+              <div class="container mt-2">
+                <label for="id-baocao" style="margin-bottom: 6px">Địa chỉ</label>
+                <input type="text" class="form-control" id="diachi" value="227 Nguyễn Văn Cừ" disabled />
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="id-baocao" style="margin-bottom: 6px;">Phường</label>                  <input type="text" class="form-control" id="diachi" value="Bến Nghé" disabled />
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="id-baocao" style="margin-bottom: 6px">Quận</label>
+                  <input type="text" class="form-control" id="diachi" value="Bình Thạnh" disabled />
+                </div>
+              </div>
+              <div class="container mt-2">
+                <label for="id-baocao" style="margin-bottom: 6px">Loại vị trí</label>
+                <input type="text" class="form-control" id="diachi" value="Đất công/Công viên/Hành lang an toàn giao thông" disabled />
+              </div>
+              <div class="container mt-2">
+                <label for="id-baocao" style="margin-bottom: 6px">Hình thức quảng cáo</label>
+                <input type="text" class="form-control" id="diachi" value="Quảng cáo thương mại" disabled />
+              </div>
+              <div class="container mt-2">
+                <label for="id-baocao" style="margin-bottom: 6px">Thông tin quy hoạch</label>
+                <input type="text" class="form-control" id="diachi" value="Đã quy hoạch" disabled />
+              </div>
+            </div>
+          </div>
+          <!-- Ads list -->
+          <div class="mt-5 mb-2" style="font-size: 20px; font-weight: bold;">Danh sách bảng quảng cáo</div>
+          <table data-toggle="table" data-pagination="true" data-pagination="true"
+            data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-show-button-text="true" data-icon-prefix="bi"
+            class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+            <thead>
+              <tr class="row m-0">
+                <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID</th>
+                <th class="col-1" data-sortable="true" data-align="center" data-field="phuong">Phường</th>
+                <th class="col" data-sortable="true" data-field="diemdat">Điểm đặt</th>
+                <th class="col-2" data-sortable="true" data-field="loai">Loại bảng quảng cáo</th>
+                <th class="col-2" data-sortable="true" data-field="htqc">Kích thước</th>
+                <th class="col-2" data-sortable="true" data-field="thongtin">Số lượng</th>
+                <th class="col-1" data-align="center" data-field="detail">Chi tiết</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let i=1; i <=4; i++) { %>
+                <tr class="row m-0">
+                  <td>B0155001</td>
+                  <td>
+                    <%= i %>
+                  </td>
+                  <td>Đồng Khởi - Nguyễn Du (Sở Văn Hóa)</td>
+                  <td>Trụ bảng Hiflex</td>
+                  <td>2.5m x 10m</td>
+                  <td>1 trụ/bảng</td>
+                  <td>
+                    <div class="d-flex flex-row align-items-center justify-content-center">
+                      <a href="/quan/bangquangcao/123">
+                        <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+    
+    
+    <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
+  </body>
+</html>
