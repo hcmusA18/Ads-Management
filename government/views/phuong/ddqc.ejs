@@ -18,13 +18,10 @@
 </head>
 
 <body>
-    <% const toolbars=[ 
-    { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/quan', }, 
-    { icon: 'bi bi-geo-fill', name: 'Điểm đặt quảng cáo' , link: '/quan/diemdat' }, 
-    { icon: 'bi bi-badge-ad-fill', name: 'Bảng quảng cáo' , link: '/quan/bangquangcao' },
-    { icon: 'bi bi-file-earmark-text-fill' ,name: 'Báo cáo vi phạm' , link: '/quan/baocao' }, 
-    { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,link: '/quan/yeucau/cp' , }, 
-    ] %>
+    <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/quan', }, { icon: 'bi bi-geo-fill'
+    , name: 'Điểm đặt / bảng quảng cáo' , link: '/quan/diemdat' }, { icon: 'bi bi-file-earmark-text-fill' ,
+    name: 'Báo cáo vi phạm' , link: '/quan/baocao' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,
+    link: '/so/yeucau' , }, ] %>
     <header></header>
     <main class="container-fluid d-flex bg-light">
       <div class="row"><%- include('../partials/sidebar.ejs', { toolbars: toolbars }) %></div>
@@ -37,43 +34,24 @@
             <div class="d-block mb-3">
               <h1 class="fw-bolder">DANH SÁCH ĐIỂM ĐẶT QUẢNG CÁO</h1>
             </div>
-            <!-- Check box -->
-            <div class="container-fluid checkbox-container">
-              <div class="d-inline-block pb-2" style="padding-left: 15px">
-                <h1 style="color: #1f274a; font-size: 22px; font-weight: 500">QUẬN 2</h1>
-              </div>
-              <div class="container-fluid d-flex flex-wrap">
-                <% for (let i = 1; i <= 12; i++) { %>
-                <div class="form-check me-4 mb-3" style="min-width: 9rem;">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="check<%= i %>"
-                    name="option<%= i %>"
-                    value="something"
-                    checked />
-                  <label class="form-check-label" for="check<%= i %>">Phường <%= i %></label>
-                </div>
-                <% } %>
-              </div>
-            </div>
+
             <!-- Select -->
             <div class="container-fluid mt-3 ps-0">
               <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                   <%- include("../partials/select.ejs", {current: 'Điểm đặt quảng cáo' , options: [ {
-                    name: 'Điểm đặt quảng cáo' , link: '/quan/diemdat' }, { name: 'Bảng quảng cáo' , link: '/quan/bangquangcao' },
+                    name: 'Điểm đặt quảng cáo' , link: '#' }, { name: 'Bảng quảng cáo' , link: '#' },
                     ]}); %>
                 </div>
               </div>
               <!-- Table -->
               <table data-toggle="table" data-pagination="true" data-search="true" data-pagination="true"
-                data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN"
+                data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary" data-buttons="buttons"
                 data-show-button-text="true" data-icon-prefix="bi"
                 class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                 <thead>
                   <tr class="row m-0">
-                    <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID</th>
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
                     <th class="col-1" data-sortable="true" data-align="center" data-field="phuong">Phường</th>
                     <th class="col" data-sortable="true" data-field="diemdat">Điểm đặt</th>
                     <th class="col-2" data-sortable="true" data-field="loai">Loại vị trí</th>

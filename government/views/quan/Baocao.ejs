@@ -18,10 +18,13 @@
 </head>
 
 <body>
-  <% const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/quan', }, { icon: 'bi bi-geo-fill'
-    , name: 'Điểm đặt / bảng quảng cáo' , link: '/quan/diemdat' }, { icon: 'bi bi-file-earmark-text-fill' ,
-    name: 'Báo cáo vi phạm' , link: '/quan/baocao' , }, { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,
-    link: '/so/yeucau' , }, ] %>
+    <% const toolbars=[ 
+    { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/quan', }, 
+    { icon: 'bi bi-geo-fill', name: 'Điểm đặt quảng cáo' , link: '/quan/diemdat' }, 
+    { icon: 'bi bi-badge-ad-fill', name: 'Bảng quảng cáo' , link: '/quan/bangquangcao' },
+    { icon: 'bi bi-file-earmark-text-fill' ,name: 'Báo cáo vi phạm' , link: '/quan/baocao' }, 
+    { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,link: '/quan/yeucau/cp' , }, 
+    ] %>
     <header></header>
     <main class="container-fluid d-flex bg-light">
       <div class="row"><%- include('../partials/sidebar.ejs', { toolbars: toolbars }) %></div>
