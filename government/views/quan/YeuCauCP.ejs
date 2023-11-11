@@ -18,13 +18,6 @@
 </head>
 
 <body>
-    <% const toolbars=[ 
-    { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/quan', }, 
-    { icon: 'bi bi-geo-fill', name: 'Điểm đặt quảng cáo' , link: '/quan/diemdat' }, 
-    { icon: 'bi bi-badge-ad-fill', name: 'Bảng quảng cáo' , link: '/quan/bangquangcao' },
-    { icon: 'bi bi-file-earmark-text-fill' ,name: 'Báo cáo vi phạm' , link: '/quan/baocao' }, 
-    { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,link: '/quan/yeucau/cp' , }, 
-    ] %>
     <header></header>
     <main class="container-fluid d-flex bg-light">
       <div class="row"><%- include('../partials/sidebar.ejs', { toolbars: toolbars }) %></div>
@@ -34,8 +27,9 @@
           <%- include("../partials/profile_card.ejs", {user: {name: 'John Doe' , level: 'Quận 2' }}); %>
 
             <!-- Title -->
-            <div class="d-block mb-3">
+            <div class="d-flex pt-2 mb-3 justify-content-between align-items-center">
               <h1 class="fw-bolder">QUẢN LÝ YÊU CẦU CẤP PHÉP QUẢNG CÁO</h1>
+              <a href="/quan/yeucau/cp-new" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true" style="height: fit-content;">Tạo yêu cầu</a>
             </div>
             <!-- Check box -->
             <div class="container-fluid checkbox-container">
@@ -114,7 +108,7 @@
                       </td>
                       <td>
                         <div class="d-flex flex-row align-items-center justify-content-center">
-                          <a href="/quan/baocao/123">
+                          <a href="/quan/yeucau/cp/123">
                             <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
                           </a>
                         </div>

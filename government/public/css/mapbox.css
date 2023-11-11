@@ -32,6 +32,9 @@
 .mapboxgl-ctrl-top-left .mapboxgl-ctrl {
   margin: 16px 0 0 32px !important;
 }
+.mapboxgl-ctrl-top-left {
+  left: 5rem !important;
+}
 .mapboxgl-ctrl-geocodecoder {
   font-family: 'Montserrat', sans-serif !important;
 }

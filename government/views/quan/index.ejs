@@ -17,36 +17,30 @@
     <script
       src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
     <link rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
-      type="text/css" />
-
-    <!-- Sidebar -->
-    <% const toolbars=[ 
-    { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/quan', }, 
-    { icon: 'bi bi-geo-fill', name: 'Điểm đặt quảng cáo' , link: '/quan/diemdat' }, 
-    { icon: 'bi bi-badge-ad-fill', name: 'Bảng quảng cáo' , link: '/quan/bangquangcao' },
-    { icon: 'bi bi-file-earmark-text-fill' ,name: 'Báo cáo vi phạm' , link: '/quan/baocao' }, 
-    { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,link: '/quan/yeucau/cp' , }, 
-    ] %>
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+    type="text/css" />
     <header></header>
-    <main class="container-fluid d-flex bg-light">
-      <div class="row vh-100"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
-      <div class="container-fluid vw-100 pt-1">
-        <div id="map" class="position-absolute top-0 bottom-0 w-100"></div>
-        <div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 z-index-3">
-          <div id="container" class="row align-items-center justify-content-start mx-2">
-            <div class="col-3">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="quang-cao" aria-checked="false" checked />
-                <label class="form-check-label" for="quang-cao">Bảng quảng cáo</label>
-              </div>
+    
+    <!-- Sidebar -->
+    <aside class="position-absolute z-3 h-100">
+      <%- include('../partials/sidebar.ejs', {toolbars: toolbars}); %>
+    </aside>
+    <main class="container-fluid d-flex bg-light p-0">
+      <div id="map" style="position: absolute; width: 100%; top:0; bottom: 0;"></div>
+      <div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 z-index-3"
+        style="left: 5rem">
+        <div id="container" class="row align-items-center justify-content-start mx-2">
+          <div class="col-3">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="quang-cao" aria-checked="false" checked />
+              <label class="form-check-label" for="quang-cao">Bảng quảng cáo</label>
             </div>
-
-            <div class="col-3">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="bao-cao" aria-checked="false" checked />
-                <label class="form-check-label" for="bao-cao">Báo cáo vi phạm</label>
-              </div>
+          </div>
+    
+          <div class="col-3">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="bao-cao" aria-checked="false" checked />
+              <label class="form-check-label" for="bao-cao">Báo cáo vi phạm</label>
             </div>
           </div>
         </div>

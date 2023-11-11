@@ -273,24 +273,24 @@ mapboxScript.onload = function () {
 }
 
 // for modal
-window.onload = () => {
-  const myModal = new bootstrap.Modal('#modalLoginForm');
-  myModal.show();
-}
+// window.onload = () => {
+//   const myModal = new bootstrap.Modal('#modalLoginForm');
+//   myModal.show();
+// }
 
-function togglePasswordVisibility(passwordInput, toggleButton) {
-  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-  passwordInput.setAttribute('type', type);
+// function togglePasswordVisibility(passwordInput, toggleButton) {
+//   const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+//   passwordInput.setAttribute('type', type);
 
-  const toggleType = toggleButton.classList.contains('bi-eye-slash') ? 'bi-eye' : 'bi-eye-slash';
-  toggleButton.className = `bi ${toggleType}`;
-}
+//   const toggleType = toggleButton.classList.contains('bi-eye-slash') ? 'bi-eye' : 'bi-eye-slash';
+//   toggleButton.className = `bi ${toggleType}`;
+// }
 
-const togglePassword = document.querySelectorAll('#togglePassword, #togglePassword1, #togglePassword2');
-const passwords = document.querySelectorAll('#password, #password1, #password2');
+// const togglePassword = document.querySelectorAll('#togglePassword, #togglePassword1, #togglePassword2');
+// const passwords = document.querySelectorAll('#password, #password1, #password2');
 
-togglePassword.forEach((button, index) => {
-  button.addEventListener('click', () => {
-      togglePasswordVisibility(passwords[index], button);
-  });
-});
+// togglePassword.forEach((button, index) => {
+//   button.addEventListener('click', () => {
+//       togglePasswordVisibility(passwords[index], button);
+//   });
+// });
