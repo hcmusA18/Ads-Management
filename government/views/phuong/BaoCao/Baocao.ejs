@@ -28,27 +28,21 @@
 
             <!-- Title -->
             <div class="d-block mb-3">
-              <h1 class="fw-bolder">DANH SÁCH ĐIỂM ĐẶT QUẢNG CÁO</h1>
+              <h1 class="fw-bolder">QUẢN LÝ BÁO CÁO VI PHẠM</h1>
             </div>
 
             <!-- Select -->
             <div class="container-fluid mt-3 ps-0">
               <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                  <%- include("../../partials/select.ejs", 
-                    {
-                      current: 'Điểm đặt quảng cáo' , 
-                      options: [ 
-                        {
-                          name: 'Điểm đặt quảng cáo' , 
-                          link: '/phuong/diemdat' 
-                        }, 
-                        { 
-                          name: 'Bảng quảng cáo' , 
-                          link: '/phuong/bangquangcao' 
-                        },
-                      ]
-                    }); %>
+                  <div>Đối tượng: </div>
+                  <%- include("../../partials/select.ejs", {current: 'Tất cả' , options: [ {
+                    name: 'Tất cả' , link: '#' }, { name: 'Điểm đặt' , link: '#' }, { name: 'Bảng quảng cáo' , link: '#' }
+                    ]}); %>
+                  <div class="ms-5">Trạng thái</div>
+                  <%- include("../../partials/select.ejs", {current: 'Tất cả' , options: [ {
+                    name: 'Tất cả' , link: '#' }, { name: 'Chưa xử lý' , link: '#' }, { name: 'Đang xử lý' , link: '#' }, {name: "Đã xử lý", link: "#"},
+                    ]}); %>
                 </div>
               </div>
               <!-- Table -->
@@ -59,26 +53,46 @@
                 <thead>
                   <tr class="row m-0">
                     <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
-                    <th class="col" data-sortable="true" data-field="diemdat">Điểm đặt</th>
-                    <th class="col-2" data-sortable="true" data-field="loai">Loại vị trí</th>
-                    <th class="col-2" data-sortable="true" data-field="htqc">Hình thức quảng cáo</th>
-                    <th class="col-2" data-sortable="true" data-field="thongtin">Thông tin quy hoạch</th>
+                    <th class="col-1" data-sortable="true" data-field="id2">ID Điểm đặt/Bảng QC</th>
+                    <th class="col-2" data-sortable="true" data-field="lhbc">Loại hình báo cáo</th>
+                    <th class="col-2" data-sortable="true" data-field="name">Họ tên người gửi</th>
+                    <th class="col-1" data-sortable="true" data-field="email">Email</th>
+                    <th class="col-1" data-sortable="true" data-field="time">Thời điểm gửi</th>
+                    <th class="col-2" data-sortable="true" data-align="center" data-field="state">Trạng thái</th>
                     <th class="col-1" data-align="center" data-field="detail">Chi tiết</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% for (let i=1; i <=55; i++) { %>
                     <tr class="row m-0">
-                      <td>D0155001</td>
-                      <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, autem.</td>
+                      <td>BC0155001</td>
+                      <td>QC0614001</td>
+                      <td>Lorem ipsum dolor sit amet.</td>
                       <td>Lorem ipsum dolor.</td>
                       <td>Lorem ipsum dolor sit.</td>
-                      <td>Đã quy hoạch</td>
+                      <td>25/12/2023</td>
+                      <td>
+                        <% let x="Processing" ; %>
+                          <% if (i % 3===1) { %>
+                            <div class="d-inline-block p-1" style="background-color: #ff3838; border-radius: 8px; min-width: 6rem; color: white;">
+                              Chưa xử lý
+                            </div>
+                          <% } else if (i % 3===2) { %>
+                            <div class="d-inline-block p-1" style="background-color: #58f; border-radius: 8px; min-width: 6rem; color: white;">
+                              Đang xử lý
+                            </div>
+                          <% } else { %>
+                            <div class="d-inline-block p-1"
+                              style="background-color: #41ff54; border-radius: 8px; min-width: 6rem; color: white;">
+                              Đã xử lý
+                            </div>
+                          <% }%>
+                      </td>
                       <td>
                         <div class="d-flex flex-row align-items-center justify-content-center">
-                            <a href="/phuong/diemdat/123">
-                                <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
-                            </a>
+                          <a href="/phuong/baocao/123">
+                            <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
+                          </a>
                         </div>
                       </td>
                     </tr>
@@ -108,6 +122,8 @@
                   </div>
                 </div>
               </div>
+
+
             </div>
     </main>
 </body>

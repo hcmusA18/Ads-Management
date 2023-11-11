@@ -25,4 +25,14 @@ router.get('/bangquangcao', (req, res) => {
 router.get('/bangquangcao/:id', (req, res) => {
   res.render('phuong/BangQuangCao/ChiTietBangQC', { title: 'Phường - Chi tiết cbng Quảng cáo', toolbars: toolbars});
 })
+
+router.get('/baocao', (req, res) => {
+  res.render('phuong/BaoCao/Baocao', { title: 'Phường - Báo cáo', toolbars: toolbars });
+});
+
+router.get('/baocao/:id', (req, res) => {
+  res.render('phuong/BaoCao/ChitietBC', { title: 'Phường - Chi tiết báo cáo', toolbars: toolbars });
+})
+
+
 export default router;
