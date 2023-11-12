@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%- title %></title>
-  <%- include('../../partials/head.ejs') %>
+  <%- include('../partials/head.ejs') %>
   <!-- <style>
     table th .th-inner {
       height: 100%;
@@ -27,19 +27,16 @@
           <%- include("../../partials/profile_card.ejs", {user: {name: 'John Doe' , level: 'Quận 2' }}); %>
 
             <!-- Title -->
-            <div class="d-block mb-3">
-              <h1 class="fw-bolder">QUẢN LÝ BÁO CÁO VI PHẠM</h1>
+            <div class="d-flex pt-2 mb-3 justify-content-between align-items-center">
+              <h1 class="fw-bolder">QUẢN LÝ YÊU CẦU CẤP PHÉP QUẢNG CÁO</h1>
+              <a href="/phuong/yeucau/cp-new" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true" style="height: fit-content;">Tạo yêu cầu</a>
             </div>
 
             <!-- Select -->
             <div class="container-fluid mt-3 ps-0">
               <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                  <div>Đối tượng: </div>
-                  <%- include("../../partials/select.ejs", {current: 'Tất cả' , options: [ {
-                    name: 'Tất cả' , link: '#' }, { name: 'Điểm đặt' , link: '#' }, { name: 'Bảng quảng cáo' , link: '#' }
-                    ]}); %>
-                  <div class="ms-5">Trạng thái</div>
+                  <div>Trạng thái</div>
                   <%- include("../../partials/select.ejs", {current: 'Tất cả' , options: [ {
                     name: 'Tất cả' , link: '#' }, { name: 'Chưa xử lý' , link: '#' }, { name: 'Đang xử lý' , link: '#' }, {name: "Đã xử lý", link: "#"},
                     ]}); %>
@@ -52,12 +49,12 @@
                 class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                 <thead>
                   <tr class="row m-0">
-                    <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
-                    <th class="col-1" data-sortable="true" data-field="id2">ID Điểm đặt/Bảng QC</th>
-                    <th class="col-3" data-sortable="true" data-field="lhbc">Loại hình báo cáo</th>
-                    <th class="col-2" data-sortable="true" data-field="name">Họ tên người gửi</th>
-                    <th class="col-1" data-sortable="true" data-field="email">Email</th>
-                    <th class="col-1" data-sortable="true" data-field="time">Thời điểm gửi</th>
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Yêu cầu</th>
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="phuong">ID Điểm đặt</th>
+                    <th class="col-1" data-sortable="true" data-field="id2">Phường</th>
+                    <th class="col-2" data-sortable="true" data-field="lhbc">Công ty yêu cầu</th>
+                    <th class="col-2" data-sortable="true" data-field="name">Thời điểm bắt đầu</th>
+                    <th class="col-2" data-sortable="true" data-field="email">Thời điểm kết thúc</th>
                     <th class="col-2" data-sortable="true" data-align="center" data-field="state">Trạng thái</th>
                     <th class="col-1" data-align="center" data-field="detail">Chi tiết</th>
                   </tr>
@@ -65,12 +62,14 @@
                 <tbody>
                   <% for (let i=1; i <=55; i++) { %>
                     <tr class="row m-0">
-                      <td>BC0155001</td>
-                      <td>QC0614001</td>
-                      <td>Lorem ipsum dolor sit amet.</td>
-                      <td>Lorem ipsum dolor.</td>
-                      <td>Lorem ipsum dolor sit.</td>
-                      <td>25/12/2023</td>
+                      <td>CP155001</td>
+                      <td>D0155001</td>
+                      <td>
+                        <%= i %>
+                      </td>
+                      <td>Công ty Cổ phần CivicAds Vietnam</td>
+                      <td>01-01-2023</td>
+                      <td>31-12-2023</td>
                       <td>
                         <% let x="Processing" ; %>
                           <% if (i % 3===1) { %>
@@ -90,7 +89,7 @@
                       </td>
                       <td>
                         <div class="d-flex flex-row align-items-center justify-content-center">
-                          <a href="/phuong/baocao/123">
+                          <a href="/phuong/yeucau/cp/123">
                             <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
                           </a>
                         </div>
@@ -122,8 +121,6 @@
                   </div>
                 </div>
               </div>
-
-
             </div>
     </main>
 </body>

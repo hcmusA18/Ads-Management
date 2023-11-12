@@ -34,5 +34,20 @@ router.get('/baocao/:id', (req, res) => {
   res.render('phuong/BaoCao/ChitietBC', { title: 'Phường - Chi tiết báo cáo', toolbars: toolbars });
 })
 
+router.get('/yeucau/cp', (req, res) => {
+  res.render('quan/YeuCauCP', { title: 'Phường - Yêu cầu cấp phép', toolbars: toolbars });
+})
+
+router.get('/yeucau/cp/:id', (req, res) => {
+  res.render('quan/ChitietYeuCauCP', { title: 'Phường - Chi tiết yêu cầu cấp phép', toolbars: toolbars });
+})
+
+router.get('/yeucau/cs/diemdat/:id', (req, res) => {
+  res.render('quan/YeuCauCS-diem', { title: 'Phường - Yêu cầu chỉnh sửa điểm đặt', toolbars: toolbars });
+})
+
+router.get('/yeucau/cs/bangquangcao/:id', (req, res) => {
+  res.render('quan/YeuCauCS-bang', { title: 'Phường - Yêu cầu chỉnh sửa bảng quảng cáo', toolbars: toolbars });
+})
 
 export default router;
