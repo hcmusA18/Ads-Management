@@ -35,10 +35,6 @@ app.use('/phuong', phuongRoutes)
 // EJS
 app.set('view engine', 'ejs')
 
-
-const server = app.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
 });
-
-server.keepAliveTimeout = 120 * 1000; 
-server.headersTimeout = 125 * 1000;
