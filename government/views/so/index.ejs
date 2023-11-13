@@ -9,6 +9,12 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet"/>
     <script defer src="/js/index/map.js"></script>
     <style>
+            .mapboxgl-canvas-container {
+                cursor: default!important;
+            }
+            .mapboxgl-canvas-container.dragging {
+                cursor: grabbing !important;
+            }
 			.mapboxgl-ctrl-top-left {
 				left: 5rem !important;
 			}
@@ -269,14 +275,6 @@
         href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
         type="text/css"/>
 <header></header>
-<% const toolbars = [
-    {icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: '/so',},
-    {icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan'},
-    {icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc',},
-    {icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/yeucau',},
-    {icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao',},
-    {icon: 'bi bi-person-badge', name: 'Phân công', link: '/so/phancong',}
-] %>
 <aside class="position-absolute z-3 h-100">
     <%- include('../partials/sidebar.ejs', {toolbars: toolbars}); %>
 </aside>
@@ -377,7 +375,10 @@
                 </div>
                 <div class="tab-pane list-group fade p-0 overflow-auto" id="ads-tab-pane" role="tabpanel"
                      aria-labelledby="ads-tab" tabindex="0">
-
+                    <div class="px-3 my-2">
+                        <i class="bi bi-plus-circle-fill me-1" style="color: #3c77ff;"></i>
+                        <a href="/so/bangquangcao/new/123" style="text-decoration: none; color: #355ded;">Thêm bảng quảng cáo mới</a>
+                    </div>
                     <div class="list-group-item list-group-item-action">
                         <h5 class="mb-1 fw-semibold">Cổng chào</h5>
                         <small>Số 123, đường Lý Thường Kiệt, phường 10, quận 10</small>

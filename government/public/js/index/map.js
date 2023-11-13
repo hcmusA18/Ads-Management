@@ -220,6 +220,10 @@ function attachToggle(toggleId, layerId, map) {
 mapboxScript.onload = function () {
 	mapboxgl.accessToken = MAPBOX_TOKEN;
 
+	const marker = new mapboxgl.Marker({
+		color: '#F84C4C'
+	});
+
 	const map = new mapboxgl.Map({
 		container: 'map',
 		style: 'mapbox://styles/mapbox/streets-v12',
@@ -261,6 +265,7 @@ mapboxScript.onload = function () {
 	// Wait until the map has finished loading.
 	map.on('load', () => {
 		addSource(map);
+		// showPopup(map);
 	});
 	// After the last frame rendered before the map enters an "idle" state.
 	map.on('idle', () => {
@@ -271,5 +276,44 @@ mapboxScript.onload = function () {
 
 		attachToggle('bao-cao', 'bao-cao', map);
 		attachToggle('quang-cao', 'quang-cao', map);
+	});
+
+	map.on('click', (e) => {
+		if (map.getCanvas().style.cursor === 'pointer') {
+			return;
+		}
+		marker.setLngLat(e.lngLat).addTo(map);
+
+		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+
+		fetch(api)
+		.then(res => res.json())
+		.then(res => {
+			const coordinates = res.features[0].geometry.coordinates.slice();
+			let description = res.features[0].place_name.replace(/,\s*\d+,\s*Vietnam/, '').replace(', Ho Chi Minh City', '');
+			description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
+
+			const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+
+			const divElement = document.createElement('div');
+			const assignBtn = document.createElement('div');
+			assignBtn.innerHTML = `<a href="/so/diemdat/new?lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
+			divElement.innerHTML = innerHtmlContent;
+			divElement.appendChild(assignBtn);
+
+			new mapboxgl.Popup({ offset: [0, -30] })
+			.setLngLat(coordinates)
+			.setDOMContent(divElement)
+			.addTo(map);
+
+		});
+	})
+
+	// Change the cursor to grab when user drag the map
+	map.on('dragstart', () => {
+		map.getCanvas().style.cursor = 'move';
+	});
+	map.on('dragend', () => {
+		map.getCanvas().style.cursor = '';
 	});
 }

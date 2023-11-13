@@ -4,6 +4,7 @@ const router = express.Router();
 const toolbars = [
     { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/so', },
     { icon: 'bi bi-building-fill', name: 'Danh sách quận huyện' , link: '/so/qlquan' },
+    { icon: 'bi bi-geo-fill', name: 'Điểm đặt / bảng quảng cáo' , link: '/so/diemdat' },
     { icon: 'bi bi-badge-ad-fill' , name: 'Loại hình quảng cáo' , link: '/so/lhqc' , },
     { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu' , link:'/so/yeucau', },
     { icon: 'bi bi-journal-bookmark-fill' , name: 'Thống kê báo cáo' , link: '/so/baocao' , },
@@ -56,6 +57,22 @@ router.get('/baocao/:id', (req, res) => {
 
 router.get('/baocao', (req, res) => {
   res.render('so/ThongKeBC', { title: 'Sở - Thống kê báo cáo', toolbars: toolbars });
+})
+
+router.get('/diemdat', (req, res) => {
+  res.render('so/DiemDat', { title: 'Sở - Điểm đặt quảng cáo', toolbars: toolbars });
+})
+
+router.get('/bangquangcao', (req, res) => {
+  res.render('so/BangQC', { title: 'Sở - Điểm đặt quảng cáo', toolbars: toolbars });
+})
+
+router.get('/diemdat/new', (req, res) => {
+  res.render('so/ThemDiemDat', { title: 'Sở - Thêm điểm đặt quảng cáo', toolbars: toolbars });
+})
+
+router.get('/bangquangcao/new/:id', (req, res) => {
+  res.render('so/ThemBangQC', { title: 'Sở - Thêm bảng quảng cáo', toolbars: toolbars });
 })
 
 export default router;
