@@ -1,17 +1,13 @@
 import express from 'express'
 import path from 'path'
-import http from 'http'
 import dotenv from 'dotenv'
-
 import soRoutes from './routes/gov.soRoutes.js'
 import quanRoutes from './routes/gov.quanRoutes.js'
 import phuongRoutes from './routes/gov.phuongRoutes.js'
-import citizenRoutes from './routes/citizenRoutes.js'
 
 const PORT = process.env.PORT || 3000
 const __dirname = path.resolve() // return the current working directory
 const app = express()
-
 
 dotenv.config(path.join(__dirname, '.env'))
 // Government
@@ -44,5 +40,5 @@ const server = app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
 });
 
-server.keepAliveTimeout = 61 * 1000;
-server.headersTimeout = 65 * 1000;
+server.keepAliveTimeout = 120 * 1000; 
+server.headersTimeout = 125 * 1000;
