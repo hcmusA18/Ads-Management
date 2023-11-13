@@ -4,13 +4,16 @@ import dotenv from 'dotenv'
 import soRoutes from './routes/gov.soRoutes.js'
 import quanRoutes from './routes/gov.quanRoutes.js'
 import phuongRoutes from './routes/gov.phuongRoutes.js'
+// middleware import
+import morgan from 'morgan'
+import cors from 'cors'
+import * as https from 'https';
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 const __dirname = path.resolve() // return the current working directory
 const app = express()
 
 dotenv.config(path.join(__dirname, '.env'))
-// Government
 
 // Public folder
 app.use(express.static(path.join(__dirname, 'public')))
@@ -35,6 +38,10 @@ app.use('/phuong', phuongRoutes)
 // EJS
 app.set('view engine', 'ejs')
 
+// Middleware
+app.use(morgan('dev'))
+app.use(cors())
+
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`)
+  console.log(`Server is running on port ${PORT}`)
 });

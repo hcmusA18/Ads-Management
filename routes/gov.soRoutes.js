@@ -24,6 +24,7 @@ router.get('/htbc', (req, res) => {
 
 router.get('/qlquan', (req, res) => {
   res.render('so/QLQuan', { title: 'Sở - Quản lý Quận', toolbars: toolbars });
+  res.send('Quản lý quận');
 });
 
 router.get('/qlphuong', (req, res) => {
