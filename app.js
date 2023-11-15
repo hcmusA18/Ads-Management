@@ -41,6 +41,20 @@ app.set('view engine', 'ejs')
 // Middleware
 app.use(morgan('dev'))
 app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
+// Error handler
+app.use((req, res, next) => {
+  const error = new Error('Not found')
+  error.status = 404
+  next(error) // forward the error request
+})
+app.use((error, req, res, next) => {
+  res.status(error.status || 500)
+  res.render('error', { title: 'Error', error: error.message })
+
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)

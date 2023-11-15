@@ -11,52 +11,52 @@ const toolbars = [
   ];
 
 router.get('/', (req, res) => {
-  res.render('so/index', { title: 'Sở - Trang chủ', toolbars: toolbars });
+  res.render('./so/index', { title: 'Sở - Trang chủ', toolbars: toolbars });
 });
 
 router.get('/lhqc', (req, res) => {
-  res.render('so/LoaihinhQC', { title: 'Sở - Loại hình quảng cáo', toolbars: toolbars });
+  res.render('./so/LoaihinhQC', { title: 'Sở - Loại hình quảng cáo', toolbars: toolbars });
 });
 
 router.get('/htbc', (req, res) => {
-  res.render('so/HinhthucBC', { title: 'Sở - Hình thức báo cáo', toolbars: toolbars });
+  res.render('./so/HinhthucBC', { title: 'Sở - Hình thức báo cáo', toolbars: toolbars });
 });
 
 router.get('/qlquan', (req, res) => {
-  res.render('so/QLQuan', { title: 'Sở - Quản lý Quận', toolbars: toolbars });
+  res.render('./so/QLQuan', { title: 'Sở - Quản lý Quận', toolbars: toolbars });
   res.send('Quản lý quận');
 });
 
 router.get('/qlphuong', (req, res) => {
-  res.render('so/QLPhuong', { title: 'Sở - Quản lý Phường', toolbars: toolbars });
+  res.render('./so/QLPhuong', { title: 'Sở - Quản lý Phường', toolbars: toolbars });
 });
 
 router.get('/yeucau', (req, res) => {
-  res.render('so/YeucauCP', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
+  res.render('./so/YeucauCP', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
 });
 
 router.get('/yeucau/cp', (req, res) => {
-  res.render('so/YeucauCP', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
+  res.render('./so/YeucauCP', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
 });
 
 router.get('/yeucau/cs', (req, res) => {
-  res.render('so/YeucauCS', { title: 'Sở - Yêu cầu chỉnh sửa', toolbars: toolbars });
+  res.render('./so/YeucauCS', { title: 'Sở - Yêu cầu chỉnh sửa', toolbars: toolbars });
 });
 
 router.get('/yeucau/:id', (req, res) => {
-  res.render('so/ChiTietYeuCau', { title: 'Sở - Chi tiết yêu cầu', toolbars: toolbars, id: req.params.id });
+  res.render('./so/ChiTietYeuCau', { title: 'Sở - Chi tiết yêu cầu', toolbars: toolbars, id: req.params.id });
 });
 
 router.get('/phancong', (req, res) => {
-  res.render('so/Phancong', { title: 'Sở - Phân công', toolbars: toolbars });
+  res.render('./so/Phancong', { title: 'Sở - Phân công', toolbars: toolbars });
 });
 
 router.get('/baocao/:id', (req, res) => {
-  res.render('so/ChitietBC', { title: 'Sở - Chi tiết báo cáo', toolbars: toolbars, id: req.params.id  });
+  res.render('./so/ChitietBC', { title: 'Sở - Chi tiết báo cáo', toolbars: toolbars, id: req.params.id  });
 });
 
 router.get('/baocao', (req, res) => {
-  res.render('so/ThongKeBC', { title: 'Sở - Thống kê báo cáo', toolbars: toolbars });
+  res.render('./so/ThongKeBC', { title: 'Sở - Thống kê báo cáo', toolbars: toolbars });
 })
 
 export default router;
