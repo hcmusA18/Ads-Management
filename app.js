@@ -16,7 +16,9 @@ const app = express()
 dotenv.config(path.join(__dirname, '.env'))
 
 // Public folder
-app.use(express.static(path.join(__dirname, 'public')))
+const publicDirectory = path.join(__dirname, './public');
+console.log(publicDirectory);
+app.use(express.static(publicDirectory))
 app.use((req, res, next) => {
   res.locals.url = req.originalUrl
   res.locals.host = req.get('host')
@@ -52,7 +54,7 @@ app.use((req, res, next) => {
 })
 app.use((error, req, res, next) => {
   res.status(error.status || 500)
-  res.render('error', { title: 'Error', error: error.message })
+  res.render('error', { title: 'Error', error: error })
 
 })
 
