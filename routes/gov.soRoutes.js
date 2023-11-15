@@ -32,6 +32,7 @@ router.get('/qlphuong', (req, res) => {
 });
 
 router.get('/yeucau', (req, res) => {
+  console.log('yeu cau');
   res.render('./so/YeucauCP', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
 });
 
