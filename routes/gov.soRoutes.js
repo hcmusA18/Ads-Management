@@ -24,7 +24,6 @@ router.get('/htbc', (req, res) => {
 
 router.get('/qlquan', (req, res) => {
   res.render('./so/QLQuan', { title: 'Sở - Quản lý Quận', toolbars: toolbars });
-  res.send('Quản lý quận');
 });
 
 router.get('/qlphuong', (req, res) => {
@@ -32,7 +31,6 @@ router.get('/qlphuong', (req, res) => {
 });
 
 router.get('/yeucau', (req, res) => {
-  console.log('yeu cau');
   res.render('./so/YeucauCP', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
 });
 
@@ -58,6 +56,10 @@ router.get('/baocao/:id', (req, res) => {
 
 router.get('/baocao', (req, res) => {
   res.render('./so/ThongKeBC', { title: 'Sở - Thống kê báo cáo', toolbars: toolbars });
+})
+
+router.get('/*', (req, res) => {
+  console.log(`You are looking for ${req.originalUrl} in views directory ${req.app.get('views')}`);
 })
 
 export default router;

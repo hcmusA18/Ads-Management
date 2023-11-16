@@ -1,5 +1,7 @@
 import express from 'express'
 import path from 'path'
+import { fileURLToPath } from 'url'
+
 import dotenv from 'dotenv'
 import soRoutes from './routes/gov.soRoutes.js'
 import quanRoutes from './routes/gov.quanRoutes.js'
@@ -10,14 +12,14 @@ import cors from 'cors'
 import * as https from 'https';
 
 const PORT = process.env.PORT || 8080
-const __dirname = path.resolve() // return the current working directory
+const __filename = fileURLToPath(import.meta.url) // return the current file name
+const __dirname = path.dirname(__filename) // return the current directory name
 const app = express()
 
 dotenv.config(path.join(__dirname, '.env'))
 
 // Public folder
 const publicDirectory = path.join(__dirname, './public');
-console.log(publicDirectory);
 app.use(express.static(publicDirectory))
 app.use((req, res, next) => {
   res.locals.url = req.originalUrl
@@ -28,7 +30,7 @@ app.use((req, res, next) => {
 
 //Views folder
 app.set('views', path.join(__dirname, 'views'))
-
+console.log(`${app.get('views')}`)
 // Routes
 app.get('/', (req, res) => {
   res.render('index', { title: 'Cán bộ' })
@@ -57,6 +59,16 @@ app.use((error, req, res, next) => {
   res.render('error', { title: 'Error', error: error })
 
 })
+
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+//   send the tree of the directory
+  res.send('User-agent: *');
+  res.send('Disallow: /');
+  res.send('Allow: /$');
+  res.send('Allow: /so');
+
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
