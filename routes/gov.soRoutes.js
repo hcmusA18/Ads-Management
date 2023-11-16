@@ -31,15 +31,15 @@ router.get('/qlphuong', (req, res) => {
 });
 
 router.get('/yeucau', (req, res) => {
-  res.render('./so/YeucauCP', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
+  res.render('./so/YeuCauCapPhep', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
 });
 
 router.get('/yeucau/cp', (req, res) => {
-  res.render('./so/YeucauCP', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
+  res.render('./so/YeuCauCapPhep', { title: 'Sở - Yêu cầu cấp phép', toolbars: toolbars });
 });
 
 router.get('/yeucau/cs', (req, res) => {
-  res.render('./so/YeucauCS', { title: 'Sở - Yêu cầu chỉnh sửa', toolbars: toolbars });
+  res.render('./so/YeuCauChinhSua', { title: 'Sở - Yêu cầu chỉnh sửa', toolbars: toolbars });
 });
 
 router.get('/yeucau/:id', (req, res) => {
