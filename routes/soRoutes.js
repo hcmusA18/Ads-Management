@@ -40,11 +40,11 @@ router.get('/assign', (req, res) => {
 });
 
 router.get('/report/:id', (req, res) => {
-	controller.reportController.showDetail(req, res);
+	controller.reportsController.showDetail(req, res);
 });
 
 router.get('/reports', (req, res) => {
-	controller.reportController.show(req, res);
+	controller.reportsController.show(req, res);
 })
 
 router.get('/*', (req, res) => {

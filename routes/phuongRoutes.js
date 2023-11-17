@@ -34,6 +34,10 @@ router.get('/baocao/:id', (req, res) => {
   res.render('phuong/BaoCao/ChitietBC', { title: 'Phường - Chi tiết báo cáo', toolbars: toolbars });
 })
 
+router.get('/yeucau', (req, res) => {
+  res.render('phuong/YeuCauCapPhep/YeuCauCP', { title: 'Phường - Yêu cầu', toolbars: toolbars });
+})
+
 router.get('/yeucau/cp', (req, res) => {
   res.render('quan/YeuCauCP', { title: 'Phường - Yêu cầu cấp phép', toolbars: toolbars });
 })

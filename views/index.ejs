@@ -23,12 +23,12 @@
         type="text/css"/>
 <header></header>
 <% const toolbars = [
-    {icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: '/so',},
-    {icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan'},
-    {icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc',},
-    {icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/yeucau',},
-    {icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao',},
-    {icon: 'bi bi-person-badge', name: 'Phân công', link: '/so/phancong',}
+    {icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: '/so'},
+    {icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/locations'},
+    {icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/types?category=ads'},
+    {icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/requests?category=license'},
+    {icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/reports'},
+    {icon: 'bi bi-person-badge', name: 'Phân công', link: '/so/assign'}
 ] %>
 <aside class="position-absolute z-3 h-100">
     <%- include('./partials/sidebar.ejs', {toolbars: toolbars}); %>
@@ -55,7 +55,8 @@
                             <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu"
                                    name="password"
                                    required>
-                            <i id="ico-pass" class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y me-3 fs-5"
+                            <i id="ico-pass"
+                               class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y me-3 fs-5"
                                style="cursor: pointer" onclick="togglePassword()"></i>
                             <label for="password" class="form-label">
                                 Mật khẩu <span class="text-danger">*</span>
@@ -223,12 +224,12 @@
 			const togglePassword = () => {
 				const password = document.getElementById('password');
 				// change icon
-                const eyeIcon = document.getElementById('ico-pass')
-                if (eyeIcon.classList.contains('bi-eye-slash')) {
-                    eyeIcon.classList.replace('bi-eye-slash', 'bi-eye')
-                } else {
-                    eyeIcon.classList.replace('bi-eye', 'bi-eye-slash')
-                }
+				const eyeIcon = document.getElementById('ico-pass')
+				if (eyeIcon.classList.contains('bi-eye-slash')) {
+					eyeIcon.classList.replace('bi-eye-slash', 'bi-eye')
+				} else {
+					eyeIcon.classList.replace('bi-eye', 'bi-eye-slash')
+				}
 				if (password.type === 'password') {
 					password.type = 'text';
 				} else {

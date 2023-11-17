@@ -36,20 +36,20 @@
               <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                   <div>Đối tượng: </div>
-                  <%- include("../../partials/select.ejs", {current: 'Tất cả' , options: [ {
+                  <%- include("../../partials/select.ejs", {current: 0, options: [ {
                     name: 'Tất cả' , link: '#' }, { name: 'Điểm đặt' , link: '#' }, { name: 'Bảng quảng cáo' , link: '#' }
                     ]}); %>
                   <div class="ms-5">Trạng thái</div>
-                  <%- include("../../partials/select.ejs", {current: 'Tất cả' , options: [ {
+                  <%- include("../../partials/select.ejs", {current: 0 , options: [ {
                     name: 'Tất cả' , link: '#' }, { name: 'Chưa xử lý' , link: '#' }, { name: 'Đang xử lý' , link: '#' }, {name: "Đã xử lý", link: "#"},
                     ]}); %>
                 </div>
               </div>
               <!-- Table -->
-              <table data-toggle="table" data-pagination="true" data-search="true" data-pagination="true"
-                data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN"
-                data-show-button-text="true" data-icon-prefix="bi"
-                class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+              <table data-toggle="table" data-search="true" data-pagination="true"
+                     data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN"
+                     data-show-button-text="true" data-icon-prefix="bi"
+                     class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                 <thead>
                   <tr class="row m-0">
                     <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
