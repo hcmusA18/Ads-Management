@@ -269,14 +269,6 @@
         href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
         type="text/css"/>
 <header></header>
-<% const toolbars = [
-    {icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: '/so',},
-    {icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan'},
-    {icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc',},
-    {icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/yeucau',},
-    {icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao',},
-    {icon: 'bi bi-person-badge', name: 'Phân công', link: '/so/phancong',}
-] %>
 <aside class="position-absolute z-3 h-100">
     <%- include('../partials/sidebar.ejs', {toolbars: toolbars}); %>
 </aside>

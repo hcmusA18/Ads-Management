@@ -17,12 +17,16 @@
             <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
             <!-- Title -->
             <div class="d-block">
-                <h1 class="fw-bolder text-uppercase">QUẢN LÝ YÊU CẦU CẤP PHÉP</h1>
+                <h1 class="fw-bolder text-uppercase"><%= title %> </h1>
             </div>
             <!-- Select -->
             <div class="container-fluid mt-3 ps-0">
                 <div class="d-flex flex-row align-items-center gap-2 position-relative">
-                    <%- include("../partials/select.ejs", {current: 'Yêu cầu cấp phép' , options: [ { name: 'Yêu cầu cấp phép' , link: '/so/yeucau/cp' }, { name: 'Yêu cầu chỉnh sửa' , link: '/so/yeucau/cs' }, ]}); %>
+                    <%- include("../partials/select.ejs",
+                    {current: 0,
+                    options: [
+                    { name: 'Yêu cầu cấp phép' , link: '/so/requests?category=license' },
+                    { name: 'Yêu cầu chỉnh sửa' , link: '/so/requests?category=modify' }, ]}); %>
                     <%- include("../partials/info_card.ejs", {title: 'Đã duyệt' , value: '112,983 đơn' , color: '#00b285' }); %>
                     <%- include("../partials/info_card.ejs", {title: 'Chờ duyệt' , value: '112,983 đơn' , color: '#d59633'}); %>
                     <%- include("../partials/info_card.ejs", {title: 'Từ chối' , value: '112,983 đơn' , color: '#e84747' }); %>
@@ -35,40 +39,39 @@
                    class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                 <thead>
                 <tr>
-                    <th data-sortable="true" data-align="center" data-field="id1">ID Yêu cầu</th>
-                    <th data-sortable="true" data-align="center" data-field="id2">ID Điểm đặt</th>
-                    <th data-sortable="true" data-field="type">Phường</th>
-                    <th data-sortable="true" data-align="center" data-field="name">Quận</th>
-                    <th data-sortable="true" data-align="center" data-field="email">Cán bộ</th>
-                    <th data-sortable="true" data-align="center" data-field="date">Thời gian quảng cáo</th>
-                    <th data-sortable="true" data-align="center" data-field="action">Trạng thái</th>
-                    <th data-sortable="true" data-align="center" data-field="detail">Hành động</th>
+                    <th data-sortable="true" data-align="center" data-field="id1"><%= table_header[0]%></th>
+                    <th data-sortable="true" data-align="center" data-field="id2"><%= table_header[1]%></th>
+                    <th data-sortable="true" data-field="type"><%= table_header[2]%></th>
+                    <th data-sortable="true" data-align="center" data-field="name"><%= table_header[3]%></th>
+                    <th data-sortable="true" data-align="center" data-field="email"><%= table_header[4]%></th>
+                    <th data-sortable="true" data-align="center" data-field="date"><%= table_header[5]%></th>
+                    <th data-sortable="true" data-align="center" data-field="status"><%= table_header[6]%></th>
+                    <th data-sortable="true" data-align="center" data-field="action">Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
-                <% let maLoai = "BC015500" %>
-                <% for (let i = 1; i <= 55; i++) { %>
+                <% table_data.forEach((item)=> { %>
                     <tr>
-                        <!-- <td><%= i %></td> -->
-                        <td><%= maLoai + i %></td>
-                        <td>D0614003</td>
-                        <td>Bến Nghé</td>
-                        <td>6</td>
-                        <td>Trần Gia Thịnh</td>
-                        <td>10/02/2023 - 15/05/2023</td>
-                        <td>Đã duyệt</td>
+                        <td><%= item.id%></td>
+                        <td><%= item.point_id%></td>
+                        <td><%= item.ward%></td>
+                        <td><%= item.district%>
+                        <td><%= item.officer%></td>
+                        <td><%= item.time ? item.time : item.content%>
+                        <td><%= item.status%></td>
                         <td>
                             <div class="d-flex flex-row align-items-center justify-content-center">
-                                <a href=<%= "/so/yeucau/" + maLoai + i %> class="mx-3">
+                                <a href='<%= "/so/request/" + item.id %>' class="mx-3">
                                     <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent"/>
                                 </a>
                                 <a href="#" class="mx-3">
-                                    <img src="/images/remove.svg" alt="edit-icon" style="background-color: transparent"/>
+                                    <img src="/images/remove.svg" alt="edit-icon"
+                                         style="background-color: transparent"/>
                                 </a>
                             </div>
                         </td>
                     </tr>
-                <% } %>
+                <% }) %>
                 </tbody>
             </table>
         </div>

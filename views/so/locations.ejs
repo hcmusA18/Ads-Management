@@ -9,13 +9,6 @@
 </head>
 
 <body>
-<% const toolbars = [
-    {icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: '/so',},
-    {icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/qlquan' || '/so/htbc'},
-    {icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/lhqc',},
-    {icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/yeucau',},
-    {icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/baocao',},
-    {icon: 'bi bi-person-badge', name: 'Phân công', link: '/so/phancong',},] %>
 <header></header>
 <main class="container-fluid d-flex bg-light">
     <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
@@ -53,98 +46,98 @@
                     </div>
                     <!-- List District -->
                     <div class="list-district scroll">
-                        <a href="/so/qlphuong?quan=Q001" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q001" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 1</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
                         <!-- Raw Data -> will be changed when apply DB -->
-                        <a href="/so/qlphuong?quan=Q002" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q002" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 2</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q003" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q003" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 3</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q004" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q004" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 4</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q005" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q005" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 5</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q006" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q006" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 6</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q007" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q007" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 7</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q008" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q008" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 8</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q0BT" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q0BT" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Tân</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=QBTH" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=QBTH" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Thạnh</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q0TB" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q0TB" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Tân Bình</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q0TP" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q0TP" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Tân Phú</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q012" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q012" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 12</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q0GV" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q0GV" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Gò Vấp</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q0BC" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q0BC" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Chánh</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>
                             </div>
                         </a>
-                        <a href="/so/qlphuong?quan=Q0CC" style="text-decoration: none">
+                        <a href="/so/locations-detail?quan=Q0CC" style="text-decoration: none">
                             <div class="district-box d-flex">
                                 <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Củ Chi</span>
                                 <i class="fa-solid fa-chevron-right fa-2xs"></i>

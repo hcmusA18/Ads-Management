@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title><%- title %></title>
+    <title><%= title %></title>
     <%- include("../partials/head.ejs"); %>
 </head>
-
 <body>
 <header></header>
 <main class="container-fluid d-flex bg-light">
@@ -18,18 +17,18 @@
             <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
             <!-- Title -->
             <div class="d-block">
-                <h1 class="fw-bolder">LOẠI HÌNH QUẢNG CÁO</h1>
+                <h1 class="fw-bolder text-uppercase"><%= title %></h1>
             </div>
             <!-- Select -->
             <div class="container-fluid mt-3 ps-0">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                    <%- include("../partials/select.ejs", {current: 'Loại hình quảng cáo', options: [
-                    { name: 'Loại hình quảng cáo', link: '/so/lhqc' },
-                    { name: 'Hình thức báo cáo', link: '/so/htbc' },
+                    <%- include("../partials/select.ejs", {current: 0, options: [
+                    { name: 'Loại hình quảng cáo', link: '/so/types?category=ads'},
+                    { name: 'Hình thức báo cáo', link: '/so/types?category=report' },
                     ]}); %>
 
-                    <%- include("../partials/info_card.ejs", {title: 'Mới nhất', value: 'Loại hình A', color: '#00b285'}); %>
-                    <%- include("../partials/info_card.ejs", {title: 'Yêu cầu mới nhất', value: 'Loại hình B', color: '#d59633'}); %>
+                    <%- include("../partials/info_card.ejs", {title: 'Mới nhất', value: 'A', color: '#00b285'}); %>
+                    <%- include("../partials/info_card.ejs", {title: 'Yêu cầu mới nhất', value: 'B', color: '#d59633'}); %>
                 </div>
             </div>
             <!-- Table -->
@@ -39,21 +38,20 @@
                    class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                 <thead>
                 <tr class="row m-0">
-                    <th class="col-1" data-sortable="true" data-align="center" data-field="no">No</th>
-                    <th class="col-1" data-sortable="true" data-align="center" data-field="id">Mã loại</th>
-                    <th class="col-3" data-sortable="true" data-field="name">Loại</th>
-                    <th class="col-5" data-sortable="true" data-field="desc">Mô tả</th>
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="no"><%= table_header[0]%></th>
+                    <th class="col-2" data-sortable="true" data-align="center" data-field="id"><%= table_header[1]%></th>
+                    <th class="col-2" data-sortable="true" data-field="name"><%= table_header[2]%></th>
+                    <th class="col-5" data-sortable="true" data-field="desc"><%= table_header[3]%></th>
                     <th class="col-2" data-field="action">Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
-                <% let maLoai = "L00" %>
-                <% for (let i = 1; i <= 55; i++) { %>
+                <% table_data.forEach((item, i) => { %>
                     <tr class="row m-0">
-                        <td><%= i %></td>
-                        <td><%= maLoai + String(i) %></td>
-                        <td>Lorem ipsum dolor sit amet.</td>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, earum!</td>
+                        <td><%= item.no %></td>
+                        <td><%= item.id %></td>
+                        <td><%= item.name %></td>
+                        <td><%= item.description %></td>
                         <td>
                             <div class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
                                 <a href="" data-bs-toggle="modal" data-bs-target="#editModal-lhqc<%= i %>">
@@ -74,7 +72,7 @@
                                 modal_id: 'editModal-lhqc' + i,
                                 title: 'CHỈNH SỬA LOẠI HÌNH QUẢNG CÁO',
                                 components:
-                                [ { id: 'maloai-lhqc' + i, label: 'Mã loại', required: true, type: 'text', disabled: true, value: maLoai + String(i) },
+                                [ { id: 'maloai-lhqc' + i, label: 'Mã loại', required: true, type: 'text', disabled: true, value: item.id },
                                 { id: 'loai-lhqc' + i, label: 'Loại', required: true, type: 'text' },
                                 { id: 'mota-lhqc' + i, label: 'Mô tả', required: true, type: 'textarea' }, ],
                                 buttons: [ { label: 'Hủy', color: '#e84747', dismiss: true },
@@ -85,7 +83,7 @@
                             </div>
                         </td>
                     </tr>
-                <% } %>
+                <% }) %>
                 </tbody>
             </table>
             <!-- Modal add -->

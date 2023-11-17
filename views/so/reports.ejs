@@ -7,7 +7,6 @@
     <title><%- title %></title>
     <%- include("../partials/head.ejs"); %>
 </head>
-
 <body>
 <main class="container-fluid d-flex bg-light">
     <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
@@ -49,41 +48,41 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% let maLoai = "L00" %>
-                    <% for (let i = 1; i <= 55; i++) { %>
+                    <% table_data.forEach((item) => { %>
                         <tr>
                             <!-- 1 -->
-                            <td><%= i %></td>
+                            <td><%= item.id %></td>
                             <!-- 2 -->
-                            <td><%= maLoai + String(i) %></td>
+                            <td><%= item.ads_id %></td>
                             <!-- 3 -->
-                            <td>Lorem ipsum dolor sit amet.</td>
+                            <td><%= item.ads_type%></td>
                             <!-- 4 -->
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, earum!</td>
+                            <td><%= item.sender%></td>
                             <!-- 5 -->
-                            <td>nckhanh@gmail.com</td>
+                            <td><%= item.email%></td>
                             <!-- 6 -->
-                            <td>30/10/2023</td>
+                            <td><%= item.date%></td>
                             <!-- 7 -->
-                            <td>Chờ xử lý</td>
+                            <td><%= item.status%></td>
                             <!-- 8 Chi tiết -->
                             <td>
-                                <div class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent"
+                                <div class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
                                     <!-- Button trigger modal edit -->
-                                    <a href=<%= "/so/baocao/" + i %> >
+                                    <a href=<%= "/so/report/" + item.id %>>
                                         <img src="/images/info.svg" alt="edit-icon"
                                              style="background-color: transparent"/>
                                     </a>
+                                </div>
                             </td>
                         </tr>
-                    <% } %>
+                    <% }) %>
                     </tbody>
                 </table>
                 <!-- Modal add -->
                 <div class="modal fade" id="addModal-lhqc" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header pb-3" style="border: none">
+                            <div class="modal-header pb-3 border-0">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                             </div>
@@ -130,6 +129,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </main>
 </body>
 

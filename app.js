@@ -3,13 +3,12 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import dotenv from 'dotenv'
-import soRoutes from './routes/gov.soRoutes.js'
-import quanRoutes from './routes/gov.quanRoutes.js'
-import phuongRoutes from './routes/gov.phuongRoutes.js'
+import soRoutes from './routes/soRoutes.js'
+import quanRoutes from './routes/quanRoutes.js'
+import phuongRoutes from './routes/phuongRoutes.js'
 // middleware import
 import morgan from 'morgan'
 import cors from 'cors'
-import * as https from 'https';
 
 const PORT = process.env.PORT || 8080
 const __filename = fileURLToPath(import.meta.url) // return the current file name
