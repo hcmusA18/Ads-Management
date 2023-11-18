@@ -30,6 +30,10 @@ router.get('/spot/:id', (req, res) => {
 	controller.spotsController.showDetail(req, res);
 })
 
+router.get('/spot/:id/modify', (req, res) => {
+	controller.spotsController.showModify(req, res);
+})
+
 router.get('/boards', (req, res) => {
 	controller.boardController.show(req, res);
 })
@@ -38,27 +42,18 @@ router.get('/board/:id', (req, res) => {
 	controller.boardController.showDetail(req, res);
 })
 
-
-router.get('/yeucau/cp', (req, res) => {
-	res.render('quan/YeuCauCP', {title: 'Quận - Yêu cầu cấp phép', toolbars: toolbars});
+router.get('/board/:id/modify', (req, res) => {
+	controller.boardController.showModify(req, res);
 })
 
-router.get('/yeucau/cp/:id', (req, res) => {
-	res.render('quan/ChitietYeuCauCP', {title: 'Quận - Chi tiết yêu cầu cấp phép', toolbars: toolbars});
+router.get('/licenses', (req, res) => {
+	controller.licenseRequestsController.show(req, res);
 })
-
-router.get('/yeucau/cp-new/', (req, res) => {
-	res.render('quan/TaoYeuCauCP', {title: 'Quận - Tạo yêu cầu cấp phép', toolbars: toolbars});
+router.get('/license/create', (req, res) => {
+	controller.licenseRequestsController.showCreate(req, res);
 })
-
-
-router.get('/yeucau/cs/diemdat/:id', (req, res) => {
-	res.render('quan/YeuCauCS-diem', {title: 'Quận - Yêu cầu chỉnh sửa điểm đặt', toolbars: toolbars});
+router.get('/license/:id', (req, res) => {
+	controller.licenseRequestsController.showDetail(req, res);
 })
-
-router.get('/yeucau/cs/bangquangcao/:id', (req, res) => {
-	res.render('quan/YeuCauCS-bang', {title: 'Quận - Yêu cầu chỉnh sửa bảng quảng cáo', toolbars: toolbars});
-})
-
 
 export default router;

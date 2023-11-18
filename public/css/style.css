@@ -248,7 +248,7 @@ input:focus {
   display: flex;
   align-items: flex-start;
   align-self: stretch;
-  background-color: var(--Neutral-3) !important;
+  /*background-color: var(--Neutral-3) !important;*/
   border-bottom-color: var(--Neutral-5);
 }
 
@@ -258,7 +258,7 @@ input:focus {
   border-left: none;
   border-right: none;
   border-radius: 0;
-  background-color: var(--Neutral-3);
+  /*background-color: var(--Neutral-3);*/
   border-bottom-color: var(--Neutral-5);
   width: 100%;
   display: flex;

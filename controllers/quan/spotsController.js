@@ -7,8 +7,11 @@ const show = (req, res) => {
 const showDetail = (req, res) => {
 	res.render('quan/spot-detail', { title: 'Quận - Chi tiết điểm đặt', toolbars: toolbars });
 }
-
+const showModify = (req, res) => {
+	res.render('quan/spot-modify', { title: 'Quận - Yêu cầu chỉnh sửa điểm đặt', toolbars: toolbars });
+}
 export default {
 	show,
-	showDetail
+	showDetail,
+	showModify
 }

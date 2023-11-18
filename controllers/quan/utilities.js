@@ -3,7 +3,7 @@ export const toolbars=[
 	{ icon: 'bi bi-geo-fill', name: 'Điểm đặt quảng cáo' , link: '/quan/spots' },
 	{ icon: 'bi bi-badge-ad-fill', name: 'Bảng quảng cáo' , link: '/quan/boards' },
 	{ icon: 'bi bi-file-earmark-text-fill' ,name: 'Báo cáo vi phạm' , link: '/quan/reports' },
-	{ icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,link: '/quan/yeucau/cp' , },
+	{ icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' ,link: '/quan/licenses' , },
 ]
 
 export default {

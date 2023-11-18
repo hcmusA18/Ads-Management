@@ -29,7 +29,7 @@
             <!-- Title -->
             <div class="d-flex pt-2 mb-3 justify-content-between align-items-center">
                 <h1 class="fw-bolder">QUẢN LÝ YÊU CẦU CẤP PHÉP QUẢNG CÁO</h1>
-                <a href="/quan/yeucau/cp-new" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true"
+                <a href="/quan/license/create" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true"
                    style="height: fit-content;">Tạo yêu cầu</a>
             </div>
             <!-- Check box -->
@@ -68,28 +68,26 @@
                        data-show-button-text="true" data-icon-prefix="bi"
                        class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                     <thead>
-                    <tr class="row m-0">
-                        <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Yêu cầu</th>
-                        <th class="col-1" data-sortable="true" data-align="center" data-field="phuong">ID Điểm đặt</th>
-                        <th class="col-1" data-sortable="true" data-field="id2">Phường</th>
-                        <th class="col-2" data-sortable="true" data-field="lhbc">Công ty yêu cầu</th>
-                        <th class="col-2" data-sortable="true" data-field="name">Thời điểm bắt đầu</th>
-                        <th class="col-2" data-sortable="true" data-field="email">Thời điểm kết thúc</th>
-                        <th class="col-2" data-sortable="true" data-align="center" data-field="state">Trạng thái</th>
-                        <th class="col-1" data-align="center" data-field="detail">Chi tiết</th>
+                    <tr>
+                        <th data-sortable="true" data-align="center" data-field="id1">ID Yêu cầu</th>
+                        <th data-sortable="true" data-align="center" data-field="phuong">ID Điểm đặt</th>
+                        <th data-sortable="true" data-align="center" data-field="id2">Phường</th>
+                        <th data-sortable="true" data-field="lhbc">Công ty yêu cầu</th>
+                        <th data-sortable="true" data-align="center" data-field="time">Thời gian quảng cáo</th>
+                        <th data-sortable="true" data-align="center" data-field="state">Trạng thái</th>
+                        <th data-align="center" data-field="detail">Chi tiết</th>
                     </tr>
                     </thead>
                     <tbody>
                     <% for (let i = 1; i <= 55; i++) { %>
-                        <tr class="row m-0">
+                        <tr>
                             <td>CP155001</td>
                             <td>D0155001</td>
                             <td>
                                 <%= i %>
                             </td>
                             <td>Công ty Cổ phần CivicAds Vietnam</td>
-                            <td>01-01-2023</td>
-                            <td>31-12-2023</td>
+                            <td>01/01/2021 - 01/01/2022</td>
                             <td>
                                 <% let x = "Processing"; %>
                                 <% if (i % 3 === 1) { %>
@@ -111,7 +109,7 @@
                             </td>
                             <td>
                                 <div class="d-flex flex-row align-items-center justify-content-center">
-                                    <a href="/quan/yeucau/cp/123">
+                                    <a href="/quan/license/123">
                                         <img src="/images/info.svg" alt="edit-icon"
                                              style="background-color: transparent"/>
                                     </a>
