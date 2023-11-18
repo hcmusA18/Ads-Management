@@ -1,38 +1,28 @@
 import express from 'express';
+import controller from '../controllers/phuong/index.js';
+
 const router = express.Router();
 
 const toolbars=[ { icon: 'bi bi-house-door-fill' , name: 'Trang chủ' , link:'/phuong', }, 
-{ icon: 'bi bi-geo-fill', name: 'Điểm đặt / bảng quảng cáo' , link: '/phuong/diemdat' }, 
-{ icon: 'bi bi-file-earmark-text-fill' ,name: 'Xử lý báo cáo' , link: '/phuong/baocao' , }, 
+{ icon: 'bi bi-geo-fill', name: 'Điểm đặt / bảng quảng cáo' , link: '/phuong/spots' }, 
+{ icon: 'bi bi-file-earmark-text-fill' ,name: 'Xử lý báo cáo' , link: '/phuong/reports' , }, 
 { icon: 'bi bi-chat-left-dots-fill' , name: 'Yêu cầu cấp phép' , link: '/phuong/yeucau' , }, ]
 
 router.get('/', (req, res) => {
-  res.render('phuong/index', { title: 'Phường - Trang chủ' });
+  res.render('phuong/index', { title: 'Phường - Trang chủ', toolbars: toolbars });
 });
 
-router.get('/diemdat', (req, res) => {
-  res.render('phuong/DiemDatQuangCao/DiemDat', { title: 'Phường - Danh sách Điểm/Bảng QC', toolbars: toolbars});
-})
+router.get('/spots', (req, res) => controller.spotsController.show(req, res));
 
-router.get('/diemdat/:id', (req, res) => {
-  res.render('phuong/DiemDatQuangCao/ChiTietDiemDat', { title: 'Phường - Chi tiết điểm đặt', toolbars: toolbars});
-})
+router.get('/spots/:id', (req, res) => controller.spotsController.showDetail(req, res));
 
-router.get('/bangquangcao', (req, res) => {
-  res.render('phuong/BangQuangCao/BangQC', { title: 'Phường - Chi tiết cbng Quảng cáo', toolbars: toolbars});
-})
+router.get('/boards', (req, res) => controller.boardController.show(req, res));
 
-router.get('/bangquangcao/:id', (req, res) => {
-  res.render('phuong/BangQuangCao/ChiTietBangQC', { title: 'Phường - Chi tiết cbng Quảng cáo', toolbars: toolbars});
-})
+router.get('/boards/:id', (req, res) => controller.boardController.showDetail(req, res));
 
-router.get('/baocao', (req, res) => {
-  res.render('phuong/BaoCao/Baocao', { title: 'Phường - Báo cáo', toolbars: toolbars });
-});
+router.get('/reports', (req, res) => controller.reportsController.show(req, res));
 
-router.get('/baocao/:id', (req, res) => {
-  res.render('phuong/BaoCao/ChitietBC', { title: 'Phường - Chi tiết báo cáo', toolbars: toolbars });
-})
+router.get('/reports/:id', (req, res) => controller.reportsController.showDetail(req, res));
 
 router.get('/yeucau', (req, res) => {
   res.render('phuong/YeuCauCapPhep/YeuCauCP', { title: 'Phường - Yêu cầu', toolbars: toolbars });
