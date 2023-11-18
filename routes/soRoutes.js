@@ -6,6 +6,7 @@ const router = express.Router();
 const toolbars = [
 	{icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: '/so',},
 	{icon: 'bi bi-building-fill', name: 'Danh sách quận huyện', link: '/so/locations'},
+	{icon: 'bi bi-geo-fill', name: 'Điểm đặt / bảng quảng cáo', link: '/so/spots'},
 	{icon: 'bi bi-badge-ad-fill', name: 'Loại hình quảng cáo', link: '/so/types?category=ads',},
 	{icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu', link: '/so/requests?category=license',},
 	{icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/reports',},
@@ -46,6 +47,22 @@ router.get('/report/:id', (req, res) => {
 router.get('/reports', (req, res) => {
 	controller.reportsController.show(req, res);
 })
+
+router.get('/spots', (req, res) => controller.spotsController.show(req, res));
+
+router.get('/spot/new', (req, res) => controller.spotsController.showAdd(req, res));
+
+router.get('/spot/:id', (req, res) => controller.spotsController.showDetail(req, res));
+
+router.get('/spot/:id/modify', (req, res) => controller.spotsController.showModify(req, res));
+
+router.get('/boards', (req, res) => controller.boardController.show(req, res));
+
+router.get('/board/new', (req, res) => controller.boardController.showAdd(req, res));
+
+router.get('/board/:id', (req, res) => controller.boardController.showDetail(req, res));
+
+router.get('/board/:id/modify', (req, res) => controller.boardController.showModify(req, res));
 
 router.get('/*', (req, res) => {
 	console.log(`You are looking for ${req.originalUrl} in views directory ${req.app.get('views')}`);

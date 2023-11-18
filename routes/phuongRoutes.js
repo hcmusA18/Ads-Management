@@ -14,15 +14,17 @@ router.get('/', (req, res) => {
 
 router.get('/spots', (req, res) => controller.spotsController.show(req, res));
 
-router.get('/spots/:id', (req, res) => controller.spotsController.showDetail(req, res));
+router.get('/spot/:id', (req, res) => controller.spotsController.showDetail(req, res));
+
+router.get('/spot/:id/modify', (req, res) => controller.spotsController.showModify(req, res));
 
 router.get('/boards', (req, res) => controller.boardController.show(req, res));
 
-router.get('/boards/:id', (req, res) => controller.boardController.showDetail(req, res));
+router.get('/board/:id', (req, res) => controller.boardController.showDetail(req, res));
 
 router.get('/reports', (req, res) => controller.reportsController.show(req, res));
 
-router.get('/reports/:id', (req, res) => controller.reportsController.showDetail(req, res));
+router.get('/report/:id', (req, res) => controller.reportsController.showDetail(req, res));
 
 router.get('/yeucau', (req, res) => {
   res.render('phuong/YeuCauCapPhep/YeuCauCP', { title: 'Phường - Yêu cầu', toolbars: toolbars });

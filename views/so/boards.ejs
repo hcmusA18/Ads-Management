@@ -6,15 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%- title %></title>
   <%- include('../partials/head.ejs') %>
-  <!-- <style>
-    table th .th-inner {
-      height: 100%;
-      text-wrap: wrap!important;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  </style> -->
 </head>
 
 <body>
@@ -24,41 +15,39 @@
       <div class="container-fluid vw-100 pt-1">
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
           <!-- Profile -->
-          <%- include("../partials/profile_card.ejs", 
-              {user: 
-                {
-                  name: 'John Doe' , 
-                  level: 'Quận 2' 
-                }
-              }
-            ); 
-          %>
+          <%- include("../partials/profile_card.ejs", {user: {name: 'Admin' , level: 'Sở VH - TT' }}); %>
 
             <!-- Title -->
             <div class="d-block mb-3">
               <h1 class="fw-bolder">DANH SÁCH BẢNG QUẢNG CÁO</h1>
             </div>
-
+            <!-- Check box -->
+            <div class="container-fluid checkbox-container">
+              <div class="d-inline-block pb-2" style="padding-left: 15px">
+                <h1 style="color: #1f274a; font-size: 22px; font-weight: 500">THÀNH PHỐ HỒ CHÍ MINH</h1>
+              </div>
+              <div class="container-fluid d-flex flex-wrap">
+                <% for (let i = 1; i <= 12; i++) { %>
+                <div class="form-check me-4 mb-3" style="min-width: 9rem;">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="check<%= i %>"
+                    name="option<%= i %>"
+                    value="something"
+                    checked />
+                  <label class="form-check-label" for="check<%= i %>">Quận <%= i %></label>
+                </div>
+                <% } %>
+              </div>
+            </div>
             <!-- Select -->
             <div class="container-fluid mt-3 ps-0">
               <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                  <%- include("../partials/select.ejs", 
-                      {
-                        current: 0 ,
-                        options: [ 
-                          {
-                            name: 'Điểm đặt quảng cáo' , 
-                            link: '/phuong/spots' 
-                          }, 
-                          { 
-                            name: 'Bảng quảng cáo' , 
-                            link: '/phuong/boards' 
-                          },
-                        ]
-                      }
-                    );
-                  %>
+                  <%- include("../partials/select.ejs", {current: 1 , options: [ {
+                    name: 'Điểm đặt quảng cáo' , link: '/so/spots' }, { name: 'Bảng quảng cáo' , link: '/so/boards' },
+                    ]}); %>
                 </div>
               </div>
               <!-- Table -->
@@ -69,6 +58,8 @@
                 <thead>
                   <tr class="row m-0">
                     <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID</th>
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="quan">Quận</th>
+                    <th class="col-1" data-sortable="true" data-align="center" data-field="phuong">Phường</th>
                     <th class="col" data-sortable="true" data-field="diemdat">Điểm đặt</th>
                     <th class="col-2" data-sortable="true" data-field="loai">Loại bảng quảng cáo</th>
                     <th class="col-2" data-sortable="true" data-field="htqc">Kích thước</th>
@@ -80,13 +71,19 @@
                   <% for (let i=1; i <=55; i++) { %>
                     <tr class="row m-0">
                       <td>B0155001</td>
+                      <td>
+                        <%= i %>
+                      </td>
+                      <td>
+                        <%= i %>
+                      </td>
                       <td>Đồng Khởi - Nguyễn Du (Sở Văn Hóa)</td>
                       <td>Trụ bảng Hiflex</td>
                       <td>2.5m x 10m</td>
                       <td>1 trụ/bảng</td>
                       <td>
                         <div class="d-flex flex-row align-items-center justify-content-center">
-                            <a href="/phuong/board/123">
+                            <a href="/so/boards/123">
                                 <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
                             </a>
                         </div>

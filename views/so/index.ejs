@@ -9,6 +9,9 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet"/>
     <script defer src="/js/index/map.js"></script>
     <style>
+            .mapboxgl-canvas-container {
+                cursor: default!important;
+            }
 			.mapboxgl-ctrl-top-left {
 				left: 5rem !important;
 			}
@@ -369,7 +372,10 @@
                 </div>
                 <div class="tab-pane list-group fade p-0 overflow-auto" id="ads-tab-pane" role="tabpanel"
                      aria-labelledby="ads-tab" tabindex="0">
-
+                     <div class="px-3 my-2">
+                        <i class="bi bi-plus-circle-fill me-1" style="color: #3c77ff;"></i>
+                        <a href="/so/board/new" style="text-decoration: none; color: #355ded;">Thêm bảng quảng cáo mới</a>
+                    </div>
                     <div class="list-group-item list-group-item-action">
                         <h5 class="mb-1 fw-semibold">Cổng chào</h5>
                         <small>Số 123, đường Lý Thường Kiệt, phường 10, quận 10</small>
