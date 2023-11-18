@@ -1,11 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 :root {
-	--Neutral-5: #8c8c8c;
+	--Neutral-5: #677383;
+	--Neutral-4: #c6c9cf;
+	--Neutral-3: #d9d9d9;
 	--Dark: #1f274a;
+	--Dark-1: #2b3655;
 	--Background: #f7fafc;
 	--neutral: #8c8c8c;
+	--Green: #60c98b;
+	--Blue: #3c77ff;
 	--Blue-1: #355ded;
+	--bs-dark-rgb: 140, 140, 140;
+	--bs-light-rgb: 247, 250, 252;
+	--dt-row-selected: 103, 115, 131;
 }
 
 * {
@@ -142,7 +150,7 @@ svg {
 }
 
 .nav-link {
-	width: 100% !important;
+  display: inline-block;
 	border: 0;
 	background-color: transparent !important;
 	height: 100%;
@@ -224,10 +232,6 @@ svg {
 	height: fit-content !important;
 }
 
-.btn:hover {
-	color: var(--Background) !important;
-}
-
 .btn-check:checked + .btn,
 .btn.active,
 .btn.show,
@@ -236,11 +240,95 @@ svg {
 	color: var(--Background) !important;
 }
 
-.btn svg {
-	fill: currentColor !important;
-	color: currentColor !important;
-}
 
 .btn-icon svg {
 	fill: var(--Dark) !important;
 }
+
+.back-icon {
+  border-radius: 50px;
+  background: transparent;
+  margin: 0 auto !important;
+}
+
+.nd-chi-tiet label {
+  color: var(--Blue-1);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.nd-chi-tiet input,
+.nd-chi-tiet textarea,
+#state-baocao {
+  border-radius: 0;
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: var(--Neutral-3) !important;
+  border-bottom-color: var(--Neutral-5);
+}
+
+#dropdown-state-list {
+  font-size: 18px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  background-color: var(--Neutral-3);
+  border-bottom-color: var(--Neutral-5);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#datepicker .input-group-append,
+#datepicker .input-group-text {
+  background-color: var(--Neutral-3);
+  border-radius: 0;
+  border-bottom-color: var(--Neutral-5);
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+#datepicker .input-group-append {
+  cursor: pointer;
+}
+
+.hinhanh-mhoa img {
+  flex-shrink: 0;
+  border-radius: 20px;
+}
+
+.dropdown-menu{
+  /* transform: translate(8px, 41px) !important; */
+  width: 100% !important;
+}
+
+.account-item {
+  color: #000 !important;
+}
+
+/*============= Scroll Bar ========================*/
+/* width */
+.scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+.scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.scroll::-webkit-scrollbar-thumb {
+  background: #1f274a;
+  border-radius: 0.5rem;
+}
+
+/* Handle on hover */
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: #27346e;
+}
+/*============= End Scroll Bar =====================*/

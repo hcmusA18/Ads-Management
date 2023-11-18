@@ -1,14 +1,13 @@
 /* eslint-disable no-undef */
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg'
 
-
-var mapboxScript = document.createElement('script');
+const mapboxScript = document.createElement('script');
 mapboxScript.setAttribute('src', 'https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js');
 document.head.appendChild(mapboxScript);
 
 function addAdvertisementSource(map) {
 	map.loadImage(
-			'assets/blue_elip.png',
+			'./assets/blue_elip.png',
 			(error, image) => {
 				if (error) throw error;
 				map.addImage('quang-cao', image);
@@ -105,8 +104,8 @@ function addAdvertisementSource(map) {
 		});
 
 		// toggle #offcanvas element
-		var offcanvas = document.getElementById('offcanvasRight');
-		var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+		const offcanvas = document.getElementById('offcanvasRight');
+		const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
 		bsOffcanvas.toggle();
 	});
 
@@ -174,8 +173,8 @@ function addReportSource(map) {
 		});
 
 		// toggle #offcanvas element
-		var offcanvas = document.getElementById('offcanvasRight');
-		var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+		const offcanvas = document.getElementById('offcanvasRight');
+		const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
 		bsOffcanvas.toggle();
 	});
 
@@ -205,7 +204,7 @@ function attachToggle(toggleId, layerId, map) {
 
 	toggle.addEventListener('click', () => {
 		const clickedLayer = layerId;
-		if (toggle.checked == true) {
+		if (toggle.checked === true) {
 			console.log(`Hiện ${clickedLayer}`);
 			map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
 		} else {
