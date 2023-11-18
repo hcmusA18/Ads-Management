@@ -12,8 +12,13 @@ const showAdd = (req, res) => {
     res.render('so/spot-add', { title: 'Sở - Thêm điểm đặt', toolbars: toolbars });
 }
 
+const showModify = (req, res) => {
+	res.render('so/spot-modify', { title: 'Sở - Chỉnh sửa điểm đặt', toolbars: toolbars })
+}
+
 export default {
 	show,
 	showDetail,
-    showAdd
+    showAdd,
+	showModify
 }

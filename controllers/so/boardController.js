@@ -12,8 +12,13 @@ const showAdd = (req, res) => {
     res.render('so/board-add', { title: 'Sở - Thêm bảng quảng cáo', toolbars: toolbars });
 }
 
+const showModify = (req, res) => {
+    res.render('so/board-modify', { title: 'Sở - Chỉnh sửa bảng quảng cáo', toolbars: toolbars });
+}
+
 export default {
 	show,
 	showDetail,
-    showAdd
+    showAdd,
+	showModify
 }
