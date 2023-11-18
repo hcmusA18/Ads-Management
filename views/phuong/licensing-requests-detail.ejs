@@ -4,23 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%- title %></title>
-    <%- include("../../partials/head.ejs"); %>
+    <%- include("../partials/head.ejs"); %>
     <link rel="stylesheet" href="/css/carousel.css" />
   </head>
 
   <body>
     <header></header>
     <main class="container-fluid d-flex bg-light">
-      <div class="row"><%- include("../../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+      <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
       <div class="container-fluid vw-100 pt-1">
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
           <!-- Profile -->
-          <%- include("../../partials/profile_card.ejs", {user: {name: 'Admin' , level: 'Sở VH-TT' }}); %>
+          <%- include("../partials/profile_card.ejs", {user: {name: 'John Doe' , level: 'Quận 1' }}); %>
           <!-- Back button -->
-          <%- include("../../partials/back_button.ejs"); %>
+          <%- include("../partials/back_button.ejs"); %>
           <!-- Title -->
           <div class="d-flex flex-row align-items-center" style="gap: 10px">
-            <h1 class="fw-bolder m-0">ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO</h1>
+            <h1 class="fw-bolder m-0">CHI TIẾT YÊU CẦU CẤP PHÉP QUẢNG CÁO</h1>
+            <!-- State -->
+            <div class="py-3">
+                <% let state="pending" %>
+                <% if (state==="pending" ) { %>
+                    <div class="state" style="color: #3c77ff; border-color: #3c77ff">Chờ xử lý</div>
+                <% } else if (state==="approved" ) { %>
+                    <div class="state" style="color: #009973; border-color: #009973">Đã xử lý</div>
+                <% } %>
+            </div>
           </div>
 
           <!-- Content -->
@@ -96,84 +105,83 @@
                 </div>
               </div>
             </div>
-            <div class="container-fluid px-0 nd-chi-tiet">
+            <div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
               <div class="container d-flex justify-content-between">
-                <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
-                <a href="/quan/yeucau/cs/diemdat/123" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Yêu cầu chỉnh sửa</a>
+                <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết quảng cáo</h4>
+                <a href="#"><img src="/images/remove_sign.svg" alt="edit-icon"></a>
               </div>
-              <div class="container mt-4">
-                <label for="id-baocao" style="margin-bottom: 6px">ID Điểm đặt</label>
+              <div class="container mt-2">
+                <label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
                 <input type="text" class="form-control" id="id-diemdat" value="D0155001" disabled />
               </div>
               <div class="container mt-2">
-                <label for="id-baocao" style="margin-bottom: 6px">Địa chỉ</label>
+                <label for="diachi" style="margin-bottom: 6px">Địa chỉ điểm đặt</label>
                 <input type="text" class="form-control" id="diachi" value="227 Nguyễn Văn Cừ" disabled />
+              </div>
+              <div class="container mt-2">
+                <label for="compName" style="margin-bottom: 6px">Công ty yêu cầu cấp phép</label>
+                <input type="text" class="form-control" id="compName" value="Công ty Cổ phần CivicAds Việt Nam" disabled />
               </div>
               <div class="container mt-2 d-flex justify-content-between">
                 <div style="width: calc((100% - 2rem) / 2);">
-                  <label for="id-baocao" style="margin-bottom: 6px;">Phường</label>                  <input type="text" class="form-control" id="diachi" value="Bến Nghé" disabled />
+                  <label for="compPhone" style="margin-bottom: 6px;">Số điện thoại</label>                  
+                  <input type="text" class="form-control" id="compPhone" value="09391389139" disabled />
                 </div>
                 <div style="width: calc((100% - 2rem) / 2);">
-                  <label for="id-baocao" style="margin-bottom: 6px">Quận</label>
-                  <input type="text" class="form-control" id="diachi" value="Bình Thạnh" disabled />
+                  <label for="compEmail" style="margin-bottom: 6px">Email</label>
+                  <input type="text" class="form-control" id="compEmail" value="civicads@gmail.com" disabled />
                 </div>
               </div>
               <div class="container mt-2">
-                <label for="id-baocao" style="margin-bottom: 6px">Loại vị trí</label>
-                <input type="text" class="form-control" id="diachi" value="Đất công/Công viên/Hành lang an toàn giao thông" disabled />
+                <label for="compAdress" style="margin-bottom: 6px">Địa chỉ công ty</label>
+                <input type="text" class="form-control" id="compAdress" value="123 Nguyễn Thị Minh Khai, Phường 3, Quận 3, Thành phố Hồ Chí Minh, Việt Nam" disabled />
               </div>
-              <div class="container mt-2">
-                <label for="id-baocao" style="margin-bottom: 6px">Hình thức quảng cáo</label>
-                <input type="text" class="form-control" id="diachi" value="Quảng cáo thương mại" disabled />
-              </div>
-              <div class="container mt-2">
-                <label for="id-baocao" style="margin-bottom: 6px">Thông tin quy hoạch</label>
-                <input type="text" class="form-control" id="diachi" value="Đã quy hoạch" disabled />
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="startDate" style="margin-bottom: 6px;">Thời gian bắt đầu hợp đồng</label>                  
+                  <div class="input-group date" id="datepicker">
+                    <input type="text" class="form-control" id="startDate" value="01-01-2023" disabled/>
+                    <span class="input-group-append">
+                      <span class="input-group-text h-100">
+                        <i class="fa fa-calendar" style="background-color: transparent;"></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="endDate" style="margin-bottom: 6px">Thời gian kết thúc hợp đồng</label>
+                  <div class="input-group date" id="datepicker">
+                    <input type="text" class="form-control" id="endDate" value="31-12-2023" disabled/>
+                    <span class="input-group-append">
+                      <span class="input-group-text h-100">
+                        <i class="fa fa-calendar" style="background-color: transparent;"></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <!-- Ads list -->
-          <div class="mt-5 mb-2" style="font-size: 20px; font-weight: bold;">Danh sách bảng quảng cáo</div>
-          <table data-toggle="table" data-pagination="true" data-pagination="true"
-            data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-show-button-text="true" data-icon-prefix="bi"
-            class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
-            <thead>
-              <tr class="row m-0">
-                <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID</th>
-                <th class="col-1" data-sortable="true" data-align="center" data-field="phuong">Phường</th>
-                <th class="col" data-sortable="true" data-field="diemdat">Điểm đặt</th>
-                <th class="col-2" data-sortable="true" data-field="loai">Loại bảng quảng cáo</th>
-                <th class="col-2" data-sortable="true" data-field="htqc">Kích thước</th>
-                <th class="col-2" data-sortable="true" data-field="thongtin">Số lượng</th>
-                <th class="col-1" data-align="center" data-field="detail">Chi tiết</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for (let i=1; i <=4; i++) { %>
-                <tr class="row m-0">
-                  <td>B0155001</td>
-                  <td>
-                    <%= i %>
-                  </td>
-                  <td>Đồng Khởi - Nguyễn Du (Sở Văn Hóa)</td>
-                  <td>Trụ bảng Hiflex</td>
-                  <td>2.5m x 10m</td>
-                  <td>1 trụ/bảng</td>
-                  <td>
-                    <div class="d-flex flex-row align-items-center justify-content-center">
-                      <a href="/quan/bangquangcao/123">
-                        <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent" />
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-                <% } %>
-            </tbody>
-          </table>
+          <!-- Dưới ảnh -->
+          <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
+            <div class="container mt-2  custom-col">
+              <label for="nd-baocao" style="margin-bottom: 6px">Nội dung quảng cáo</label>
+              <textarea class="form-control" id="nd-baocao" disabled
+                style="min-height: 80px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam eaque ipsa ut, possimus repellat, sint iure dolor libero, voluptatibus non incidunt atque. Quae neque nostrum fugit ad quia incidunt doloribus!</textarea>
+            </div>
+            <div class="container mt-2  custom-col">
+              <label for="nd-baocao" style="margin-bottom: 6px">Chú thích khác</label>
+              <textarea class="form-control" id="nd-baocao" disabled
+                style="min-height: 100px">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa quod perspiciatis numquam soluta adipisci aperiam magni? Iure laborum esse aperiam totam, laboriosam voluptatibus neque perferendis quas fugit voluptatem laudantium expedita. Natus veritatis illo harum voluptas deleniti, voluptate possimus hic eveniet itaque sunt dolor adipisci corporis? Quisquam perferendis exercitationem quas. Ab.</textarea>
+            </div>
+          </div>
+
         </div>
       </div>
     </main>
-    
+
+    <!-- Ads list -->
+
     
     <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
   </body>
