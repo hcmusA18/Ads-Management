@@ -7,7 +7,12 @@ const showDetail = (req, res) => {
 	res.render('phuong/licensing-requests-detail', { title: 'Phường - Chi tiết yêu cầu cấp phép', toolbars: toolbars });
 }
 
+const showCreate = (req, res) => {
+	res.render('phuong/licensing-requests-create', { title: 'Phường - Tạo yêu cầu cấp phép', toolbars: toolbars });
+}
+
 export default {
 	show,
-	showDetail
+	showDetail,
+	showCreate
 }
