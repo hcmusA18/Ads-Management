@@ -1,4 +1,12 @@
+.mapboxgl-canvas-container {
+  cursor: default !important;
+}
+.mapboxgl-ctrl-top-left {
+  left: 5rem !important;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 :root {
   --Neutral-5: #8c8c8c;
   --Dark: #1f274a;
@@ -32,18 +40,19 @@
 .mapboxgl-ctrl-top-left .mapboxgl-ctrl {
   margin: 16px 0 0 32px !important;
 }
-.mapboxgl-ctrl-top-left {
-  left: 5rem !important;
-}
+
 .mapboxgl-ctrl-geocodecoder {
   font-family: 'Montserrat', sans-serif !important;
 }
+
 svg {
   fill: var(--Dark) !important;
 }
+
 .mapboxgl-ctrl-group {
   background: var(--Background) !important;
 }
+
 .form-check-label {
   font-family: 'Montserrat', sans-serif !important;
   color: var(--Dark) !important;
@@ -54,6 +63,7 @@ svg {
   font-style: normal;
   opacity: 1 !important;
 }
+
 #bottom-menu {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 0.5rem;
@@ -64,7 +74,7 @@ svg {
 }
 
 .modal-backdrop {
-  z-index: var(--bs-offcanvas-zindex) - 1;
+  z-index: var(--bs-offcanvas-zindex) -1;
 }
 
 #btn-close {
@@ -97,7 +107,6 @@ svg {
   justify-content: center;
   align-items: center;
   padding: 0 !important;
-
 }
 
 .offcanvas-header img {
@@ -121,14 +130,14 @@ svg {
   overflow: auto;
 }
 
-.offcanvas .nav {
+.offcanvas-body .nav {
   justify-content: space-between !important;
   border: 1px solid var(--Dark) !important;
   border-radius: 0.8rem;
   height: 3rem;
 }
 
-.offcanvas .nav-item {
+.offcanvas-body .nav-item {
   align-self: stretch !important;
   flex: 1 1 auto;
   text-align: center;
@@ -137,19 +146,18 @@ svg {
   height: 100%;
   width: fit-content;
 }
-.offcanvas .nav-link {
+
+.offcanvas-body .nav-link {
   width: 100% !important;
   border: 0;
   background-color: transparent !important;
   height: 100%;
-  width: fit-content;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: -0.02rem;
-  color: var(--Dark) !important;
 }
 
-.offcanvas .nav-link.active {
+.offcanvas-body.nav-link.active {
   background-color: transparent !important;
   border: 0;
   position: relative;
@@ -157,7 +165,7 @@ svg {
   width: fit-content;
 }
 
-.offcanvas .nav .offcanvas .nav-item + .offcanvas .nav-item::before {
+.offcanvas-body.nav .nav-item + .nav-item::before {
   border-right: 2px solid var(--Dark) !important;
   position: absolute;
   content: '';
@@ -166,17 +174,18 @@ svg {
   bottom: 0.5rem;
 }
 
-.offcanvas .nav-item::after:last-child {
+.offcanvas-body.nav-item::after:last-child {
   border-right: 0;
 }
 
-.offcanvas .nav-tabs .offcanvas .nav-link:focus,
-.offcanvas .nav-tabs .offcanvas .nav-link:hover {
+.offcanvas-body .nav-tabs .nav-link:focus,
+.offcanvas-body .nav-tabs .nav-link:hover {
   border: 0;
   background-color: transparent !important;
+  /*color: var(--Blue-1) !important;*/
   text-decoration: underline;
   text-underline-offset: 0.5rem;
-  text-decoration-color: var(--Blue-1) !important;
+  text-decoration-color: var(--Dark) !important;
   margin: 0;
 }
 
@@ -239,4 +248,12 @@ svg {
 
 .btn-icon svg {
   fill: var(--Dark) !important;
+}
+
+/* Mapox popup */
+.mapboxgl-popup-content {
+  background-color: var(--Background) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 0.25rem 2rem rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }

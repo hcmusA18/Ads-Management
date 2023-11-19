@@ -278,43 +278,45 @@ mapboxScript.onload = function () {
 	});
 
 
-	// Show the info box when any point is clicked.
-	if (window.location.pathname.startsWith('/so')) {
-		map.on('click', (e) => {
-			if (map.getCanvas().style.cursor === 'pointer') {
-				return;
-			}
-			marker.setLngLat(e.lngLat).addTo(map);
-	
-			const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
-	
-			fetch(api)
-			.then(res => res.json())
-			.then(res => {
-				const coordinates = res.features[0].geometry.coordinates.slice();
-				let description = res.features[0].place_name
-				.replace(/,\s*\d+,\s*Vietnam/, '')
-				.replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F.*/g, '')
-				.replace(/,.*Dist\.|,.*Ward\./, '');
-				
-				description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
-	
-				const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
-	
-				const divElement = document.createElement('div');
+	// Show the info popup box when a random point is clicked.
+	map.on('click', (e) => {
+		if (map.getCanvas().style.cursor === 'pointer') {
+			return;
+		}
+		marker.setLngLat(e.lngLat).addTo(map);
+
+		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+
+		fetch(api)
+		.then(res => res.json())
+		.then(res => {
+			const coordinates = res.features[0].geometry.coordinates.slice();
+			let description = res.features[0].place_name
+			.replace(/,\s*\d+,\s*Vietnam/, '')
+			.replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
+			.replace(/,.*Dist\.|,.*Ward\./, '');
+			
+			description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
+
+			const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+			const divElement = document.createElement('div');
+
+			divElement.innerHTML = innerHtmlContent;
+
+			if (window.location.pathname.startsWith('/so')) {
 				const assignBtn = document.createElement('div');
+
 				assignBtn.innerHTML = `<a href="/so/spot/new?lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
-				divElement.innerHTML = innerHtmlContent;
 				divElement.appendChild(assignBtn);
-	
-				new mapboxgl.Popup({ offset: [0, -30] })
-				.setLngLat(coordinates)
-				.setDOMContent(divElement)
-				.addTo(map);
-	
-			});
-		})
-	}
+			}
+			
+			new mapboxgl.Popup({ offset: [0, -30] })
+			.setLngLat(coordinates)
+			.setDOMContent(divElement)
+			.addTo(map);
+
+		});
+	})
 
 	// Change the cursor to grab when user drag the map
 	map.on('dragstart', () => {

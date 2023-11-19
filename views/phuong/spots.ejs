@@ -32,25 +32,7 @@
             </div>
 
             <!-- Select -->
-            <div class="container-fluid mt-3 ps-0">
-              <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                  <%- include("../partials/select.ejs", 
-                    {
-                      current: 0 ,
-                      options: [ 
-                        {
-                          name: 'Điểm đặt quảng cáo' , 
-                          link: '/phuong/spots' 
-                        }, 
-                        { 
-                          name: 'Bảng quảng cáo' , 
-                          link: '/phuong/boards' 
-                        },
-                      ]
-                    }); %>
-                </div>
-              </div>
+
               <!-- Table -->
               <table data-toggle="table" data-search="true" data-pagination="true"
                      data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN"
