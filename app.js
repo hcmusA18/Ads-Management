@@ -9,6 +9,10 @@ import phuongRoutes from './routes/phuongRoutes.js'
 // middleware import
 import morgan from 'morgan'
 import cors from 'cors'
+import { error, log } from 'console'
+
+//mongodb - mongoose import
+import mongoose from 'mongoose'
 
 const PORT = process.env.PORT || 8080
 const __filename = fileURLToPath(import.meta.url) // return the current file name
@@ -69,6 +73,16 @@ app.get('/robots.txt', (req, res) => {
 
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-});
+
+
+//MongoDB connection
+mongoose.connect(process.env.MONGO_URI,)
+.then(() => {
+  console.log("Connected to MongoDB successfullly.");
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
+  });
+})
+.catch((error) => {
+  console.log(error);
+})
