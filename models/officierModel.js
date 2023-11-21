@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const OfficierSchema = new mongoose.Schema({
+const OfficerSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -26,5 +26,5 @@ const OfficierSchema = new mongoose.Schema({
     }
 });
 
-const Officier = mongoose.model('officiers', OfficierSchema);
-export default Officier;
+const Officer = mongoose.model('officers', OfficerSchema);
+export default Officer;
