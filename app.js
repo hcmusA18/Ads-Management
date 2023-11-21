@@ -6,20 +6,42 @@ import dotenv from 'dotenv'
 import soRoutes from './routes/soRoutes.js'
 import quanRoutes from './routes/quanRoutes.js'
 import phuongRoutes from './routes/phuongRoutes.js'
+import { loginController } from './controllers/authController.js'
 // middleware import
 import morgan from 'morgan'
 import cors from 'cors'
-import { error, log } from 'console'
+import { checkAuth } from './middleware/authMiddleware.js'
 
 //mongodb - mongoose import
 import mongoose from 'mongoose'
+
+// Authentication passport + session
+import passport from 'passport'
+import session from 'express-session'
+import passportConfig from './config/passport.js';
 
 const PORT = process.env.PORT || 8080
 const __filename = fileURLToPath(import.meta.url) // return the current file name
 const __dirname = path.dirname(__filename) // return the current directory name
 const app = express()
 
+
 dotenv.config(path.join(__dirname, '.env'))
+
+// Body parser
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
+// Passport and session usage
+passportConfig(passport);
+app.use(session({
+  secret: process.env.SESSION_KEY, // secret key
+  resave: false,
+  saveUninitialized: false
+  // use local session, session store will be cleared when the server restarts
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Public folder
 const publicDirectory = path.join(__dirname, './public');
@@ -38,18 +60,26 @@ console.log(`${app.get('views')}`)
 app.get('/', (req, res) => {
   res.render('index', { title: 'Cán bộ' })
 })
-app.use('/so', soRoutes)
-app.use('/quan', quanRoutes)
-app.use('/phuong', phuongRoutes)
+app.post('/login', loginController);
+app.delete('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+app.use('/so', checkAuth, soRoutes)
+app.use('/quan', checkAuth, quanRoutes)
+app.use('/phuong', checkAuth, phuongRoutes)
+
+// Google OAuth login route
+app.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
+app.get('/oauth2/redirect/google', passport.authenticate('google', {
+  successRedirect: '/so',
+  failureRedirect: '/'
+}));
 
 // EJS
 app.set('view engine', 'ejs')
-
-// Middleware
-app.use(morgan('dev'))
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
 
 // Error handler
 app.use((req, res, next) => {
@@ -73,7 +103,9 @@ app.get('/robots.txt', (req, res) => {
 
 });
 
-
+// Middleware
+app.use(morgan('dev'))
+app.use(cors())
 
 //MongoDB connection
 mongoose.connect(process.env.MONGO_URI,)
