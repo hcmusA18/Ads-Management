@@ -1,25 +1,20 @@
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
-import Officer from '../models/officerModel.js'
+import { getOfficerByUsername, getOfficerByGoogleID } from '../services/officerService.js'
 
 const passportConfig = (passport) => {
   // console.log('passport config');
-  const officer = {
-    username: 'admin1',
-    password: 'admin',
-    email: 'admin@gmail.com',
-    position: 1
-  }
   passport.use(
     new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, async (username, password, done) => {
       try {
         // console.log('passport local strategy')
-        //   const officer = await Officer.findOne({ username: username })
+        const officer = await getOfficerByUsername(username);
         if (!officer || officer.password !== password) {
           // console.log('login failed')
           return done(null, false, { message: 'Incorrect password or username.' })
         }
         // console.log('login success')
+        // console.log(officer)
         return done(null, officer)
       } catch (error) {
         // console.log('login error')
@@ -36,28 +31,19 @@ const passportConfig = (passport) => {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: '/oauth2/redirect/google',
       },
-      (accessToken, refreshToken, profile, done) => {
-        // check if user already exists in our own db
-        // Officer.findOne({ googleId: profile.id }).then((currentUser) => {
-        //   if (currentUser) {
-        //     // already have this user
-        //     console.log('user is: ', currentUser)
-        //     done(null, currentUser)
-        //   } else {
-        //     // if not, create user in our db
-        //     new Officer({
-        //       googleId: profile.id,
-        //       username: profile.displayName,
-        //       thumbnail: profile._json.image.url
-        //     })
-        //       .save()
-        //       .then((newUser) => {
-        //         console.log('created new user: ', newUser)
-        //         done(null, newUser)
-        //       })
-        //   }
-        // })
-        console.log(profile)
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          const officer = await getOfficerByGoogleID(profile.id);
+          if (!officer) {
+            return done(null, false, { message: 'Invalid account.' })
+          }
+          // console.log('Google login success');
+          // console.log(officer);
+        } catch (error) {
+          // console.log('Google login error');
+          return done(error)
+        }
+        // console.log(profile)
         return done(null, officer)
       }
     )
@@ -69,8 +55,8 @@ const passportConfig = (passport) => {
 
   passport.deserializeUser(async (username, done) => {
     try {
-      //   const officer = await Officer.findOne({ username: username })
-      done(null, officer)
+      const officer = await getOfficerByUsername(username);
+      done(null, officer);
     } catch (error) {
       done(error)
     }

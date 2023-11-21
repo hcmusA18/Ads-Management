@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 import soRoutes from './routes/soRoutes.js'
 import quanRoutes from './routes/quanRoutes.js'
 import phuongRoutes from './routes/phuongRoutes.js'
-import { loginController } from './controllers/authController.js'
+import { loginController, ggLoginController } from './controllers/authController.js'
 // middleware import
 import morgan from 'morgan'
 import cors from 'cors'
@@ -73,10 +73,7 @@ app.use('/phuong', checkAuth, phuongRoutes)
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['profile', 'email']
 }));
-app.get('/oauth2/redirect/google', passport.authenticate('google', {
-  successRedirect: '/so',
-  failureRedirect: '/'
-}));
+app.get('/oauth2/redirect/google', ggLoginController);
 
 // EJS
 app.set('view engine', 'ejs')

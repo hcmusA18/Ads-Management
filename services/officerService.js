@@ -75,3 +75,12 @@ export const getOfficersByWardID = async (wardID) => {
     throw new Error(`Error getting officers by wardID: ${error.message}`);
   }
 };
+
+export const getOfficerByGoogleID = async (googleId) => {
+  try {
+    const officers = await Officer.findOne({ googleId: googleId });
+    return officers;
+  } catch (error) {
+    throw new Error(`Error getting officers by GoogleID: ${error.message}`);
+  }
+};
