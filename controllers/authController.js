@@ -7,6 +7,7 @@ export const loginController = (req, res, next) => {
     }
 
     if (!officer) {
+      req.flash('error', info.message)
       return res.redirect('/');
     }
 
@@ -36,6 +37,7 @@ export const ggLoginController = (req, res, next) => {
       }
   
       if (!officer) {
+        req.flash('error', info.message)
         return res.redirect('/');
       }
   

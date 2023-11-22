@@ -43,6 +43,11 @@
                     <h5 class="modal-title mx-auto text-center fw-bold text-center text-uppercase fs-3">Đăng nhập</h5>
                 </div>
                 <div class="modal-body border-0">
+                    <% if (messages.error) { %>
+                        <div class="alert alert-danger">
+                            <%= messages.error %>
+                        </div>
+                    <% } %>
                     <form id="loginForm" method="post" action="/login">
                         <div class="mb-3 form-floating">
                             <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập" name="username" required>
@@ -73,8 +78,11 @@
                                     Quên mật khẩu?
                                 </button>
                             </div>
-                            <div>
-                                <a href="/auth/google">Sign in with google</a>
+                            <div class="col-md-12 shadow text-center border" style="width: 80%;">
+                                <a class="btn btn-lg btn-google d-flex align-items-center justify-content-center" href="/auth/google" style="font-size: 18px;">
+                                    <img src="https://img.icons8.com/color/20/000000/google-logo.png" class="me-2">
+                                    Đăng nhập bằng Google
+                                </a>
                             </div>
                         </div>
                     </form>

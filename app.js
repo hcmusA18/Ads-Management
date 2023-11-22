@@ -12,8 +12,10 @@ import morgan from 'morgan'
 import cors from 'cors'
 import { checkAuth } from './middleware/authMiddleware.js'
 
+
 //mongodb - mongoose import
 import mongoose from 'mongoose'
+import flash from 'express-flash'
 
 // Authentication passport + session
 import passport from 'passport'
@@ -31,6 +33,7 @@ dotenv.config(path.join(__dirname, '.env'))
 // Body parser
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(flash())
 
 // Passport and session usage
 passportConfig(passport);
@@ -65,9 +68,9 @@ app.delete('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
-app.use('/so', checkAuth, soRoutes)
-app.use('/quan', checkAuth, quanRoutes)
-app.use('/phuong', checkAuth, phuongRoutes)
+app.use('/so', soRoutes)
+app.use('/quan', quanRoutes)
+app.use('/phuong', phuongRoutes)
 
 // Google OAuth login route
 app.get('/auth/google', passport.authenticate('google', {

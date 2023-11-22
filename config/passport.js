@@ -3,21 +3,15 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import { getOfficerByUsername, getOfficerByGoogleID } from '../services/officerService.js'
 
 const passportConfig = (passport) => {
-  // console.log('passport config');
   passport.use(
     new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, async (username, password, done) => {
       try {
-        // console.log('passport local strategy')
         const officer = await getOfficerByUsername(username);
         if (!officer || officer.password !== password) {
-          // console.log('login failed')
           return done(null, false, { message: 'Incorrect password or username.' })
         }
-        // console.log('login success')
-        // console.log(officer)
         return done(null, officer)
       } catch (error) {
-        // console.log('login error')
         return done(error)
       }
     })
@@ -37,14 +31,10 @@ const passportConfig = (passport) => {
           if (!officer) {
             return done(null, false, { message: 'Invalid account.' })
           }
-          // console.log('Google login success');
-          // console.log(officer);
+          return done(null, officer)
         } catch (error) {
-          // console.log('Google login error');
           return done(error)
-        }
-        // console.log(profile)
-        return done(null, officer)
+        }        
       }
     )
   )
