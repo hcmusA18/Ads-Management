@@ -306,7 +306,7 @@ mapboxScript.onload = function () {
 			if (window.location.pathname.startsWith('/so')) {
 				const assignBtn = document.createElement('div');
 
-				assignBtn.innerHTML = `<a href="/so/spot/new?lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
+				assignBtn.innerHTML = `<a href="/so/ads/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
 				divElement.appendChild(assignBtn);
 			}
 			

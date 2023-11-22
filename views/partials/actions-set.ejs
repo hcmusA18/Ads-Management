@@ -1,0 +1,38 @@
+<% if (edit) {%>
+<%- include('./icon-button.ejs', {
+url: "",
+target: edit.modal,
+toggle: "modal",
+dismiss: false,
+aClass: "",
+imgSrc: "/images/edit.svg",
+imgAlt: "edit-icon",
+imgClass: "bg-transparent",
+}) %>
+<%}%>
+
+<% if (remove) {%>
+<%- include('./icon-button.ejs', {
+url: remove.url || "#",
+target: remove.modal,
+toggle: "modal",
+dismiss: false,
+aClass: "mx-3",
+imgSrc: "/images/remove.svg",
+imgAlt: "remove-icon",
+imgClass: "bg-transparent",
+}) %>
+<%}%>
+
+<% if (info) {%>
+<%- include('./icon-button.ejs', {
+url: info.url || "#",
+target: "",
+toggle: "",
+dismiss: false,
+aClass: "",
+imgSrc: "/images/info.svg",
+imgAlt: "info-icon",
+imgClass: "bg-transparent",
+}) %>
+<%}%>

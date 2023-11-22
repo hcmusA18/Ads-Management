@@ -5,27 +5,15 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title><%- title %></title>
-    <%- include('../partials/head.ejs') %>
-    <!-- <style>
-      table th .th-inner {
-        height: 100%;
-        text-wrap: wrap!important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    </style> -->
+    <%- include("../partials/head.ejs"); %>
 </head>
-
 <body>
-<header></header>
 <main class="container-fluid d-flex bg-light">
-    <div class="row"><%- include('../partials/sidebar.ejs', { toolbars: toolbars }) %></div>
+    <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
     <div class="container-fluid vw-100 pt-1">
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
             <!-- Profile -->
             <%- include("../partials/profile_card.ejs", {user: {name: 'John Doe' , level: 'Quận 2' }}); %>
-
             <!-- Title -->
             <div class="d-block mb-3">
                 <h1 class="fw-bolder">QUẢN LÝ BÁO CÁO VI PHẠM</h1>
@@ -73,21 +61,21 @@
                    data-show-button-text="true" data-icon-prefix="bi"
                    class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                 <thead>
-                <tr class="row m-0">
-                    <th class="col-1" data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
-                    <th class="col-1" data-sortable="true" data-align="center" data-field="phuong">Phường</th>
-                    <th class="col-1" data-sortable="true" data-field="id2">ID Điểm đặt/Bảng QC</th>
-                    <th class="col-2" data-sortable="true" data-field="lhbc">Loại hình báo cáo</th>
-                    <th class="col-2" data-sortable="true" data-field="name">Họ tên người gửi</th>
-                    <th class="col-1" data-sortable="true" data-field="email">Email</th>
-                    <th class="col-1" data-sortable="true" data-field="time">Thời điểm gửi</th>
-                    <th class="col-2" data-sortable="true" data-align="center" data-field="state">Trạng thái</th>
-                    <th class="col-1" data-align="center" data-field="detail">Chi tiết</th>
+                <tr>
+                    <th data-sortable="true" data-align="center" data-field="id1">ID Báo cáo</th>
+                    <th data-sortable="true" data-align="center" data-field="phuong">Phường</th>
+                    <th data-sortable="true" data-field="id2">ID Điểm đặt/Bảng QC</th>
+                    <th data-sortable="true" data-field="lhbc">Loại hình báo cáo</th>
+                    <th data-sortable="true" data-field="name">Họ tên người gửi</th>
+                    <th data-sortable="true" data-field="email">Email</th>
+                    <th data-sortable="true" data-field="time">Thời điểm gửi</th>
+                    <th data-sortable="true" data-align="center" data-field="state">Trạng thái</th>
+                    <th data-align="center" data-field="detail">Chi tiết</th>
                 </tr>
                 </thead>
                 <tbody>
                 <% for (let i = 1; i <= 55; i++) { %>
-                    <tr class="row m-0">
+                    <tr>
                         <td>BC0155001</td>
                         <td>
                             <%= i %>

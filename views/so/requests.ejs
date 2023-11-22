@@ -33,47 +33,7 @@
                 </div>
             </div>
             <!-- Table -->
-            <table data-toggle="table" data-search="true" data-pagination="true"
-                   data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary"
-                   data-show-button-text="true" data-icon-prefix="bi"
-                   class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
-                <thead>
-                <tr>
-                    <th data-sortable="true" data-align="center" data-field="id1"><%= table_header[0]%></th>
-                    <th data-sortable="true" data-align="center" data-field="id2"><%= table_header[1]%></th>
-                    <th data-sortable="true" data-field="type"><%= table_header[2]%></th>
-                    <th data-sortable="true" data-align="center" data-field="name"><%= table_header[3]%></th>
-                    <th data-sortable="true" data-align="center" data-field="email"><%= table_header[4]%></th>
-                    <th data-sortable="true" data-align="center" data-field="date"><%= table_header[5]%></th>
-                    <th data-sortable="true" data-align="center" data-field="status"><%= table_header[6]%></th>
-                    <th data-sortable="true" data-align="center" data-field="action">Hành động</th>
-                </tr>
-                </thead>
-                <tbody>
-                <% table_data.forEach((item)=> { %>
-                    <tr>
-                        <td><%= item.id%></td>
-                        <td><%= item.point_id%></td>
-                        <td><%= item.ward%></td>
-                        <td><%= item.district%>
-                        <td><%= item.officer%></td>
-                        <td><%= item.time ? item.time : item.content%>
-                        <td><%= item.status%></td>
-                        <td>
-                            <div class="d-flex flex-row align-items-center justify-content-center">
-                                <a href='<%= "/so/request/" + item.id %>' class="mx-3">
-                                    <img src="/images/info.svg" alt="edit-icon" style="background-color: transparent"/>
-                                </a>
-                                <a href="#" class="mx-3">
-                                    <img src="/images/remove.svg" alt="edit-icon"
-                                         style="background-color: transparent"/>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                <% }) %>
-                </tbody>
-            </table>
+            <%- include('../partials/table.ejs')%>
         </div>
     </div>
 </main>

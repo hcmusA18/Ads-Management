@@ -65,9 +65,12 @@ app.delete('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
-app.use('/so', checkAuth, soRoutes)
-app.use('/quan', checkAuth, quanRoutes)
-app.use('/phuong', checkAuth, phuongRoutes)
+app.use('/so', soRoutes)
+app.use('/quan', quanRoutes)
+app.use('/phuong', phuongRoutes)
+// app.use('/so', checkAuth, soRoutes)
+// app.use('/quan', checkAuth, quanRoutes)
+// app.use('/phuong', checkAuth, phuongRoutes)
 
 // Google OAuth login route
 app.get('/auth/google', passport.authenticate('google', {
