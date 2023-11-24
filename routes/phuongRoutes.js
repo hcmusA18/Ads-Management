@@ -7,7 +7,7 @@ const toolbars = [{icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: '/p
 	{icon: 'bi bi-geo-fill', name: 'Điểm đặt quảng cáo', link: '/phuong/ads?category=spot'},
 	{icon: 'bi bi-badge-ad-fill', name: 'Bảng quảng cáo', link: '/phuong/ads?category=board'},
 	{icon: 'bi bi-file-earmark-text-fill', name: 'Xử lý báo cáo', link: '/phuong/reports'},
-	{icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu cấp phép', link: '/phuong/licensing-requests'}]
+	{icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu cấp phép', link: '/phuong/license'}]
 
 router.get('/', (req, res) => {
 	res.render('phuong/index', {title: 'Phường - Trang chủ', toolbars: toolbars});
@@ -20,9 +20,10 @@ router.get('/reports', (req, res) => controller.reportsController.show(req, res)
 
 router.get('/report/:id', (req, res) => controller.reportsController.showDetail(req, res));
 
-router.get('/licensing-requests', (req, res) => controller.licenseController.show(req, res));
+router.get('/license', (req, res) => controller.licenseController.show(req, res));
 
-router.get('/licensing-requests/:id', (req, res) => controller.licenseController.showDetail(req, res));
+router.get('/license/create', (req, res) => controller.licenseController.showDetailOrCreate(req, res, false));
 
+router.get('/license/:id', (req, res) => controller.licenseController.showDetailOrCreate(req, res, true));
 
 export default router;
