@@ -19,7 +19,7 @@ router.get('/reports', (req, res) => {
 	controller.reportsController.show(req, res);
 });
 
-router.get('/report/:id', (req, res) => {
+router.get('/reports/:id', (req, res) => {
 	controller.reportsController.showDetail(req, res);
 })
 

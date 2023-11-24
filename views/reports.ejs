@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title %></title>
+    <%- include('./partials/head.ejs') %>
+</head>
+
+<body>
+<header></header>
+<main class="container-fluid d-flex bg-light">
+    <div class="row"><%- include('./partials/sidebar.ejs', { toolbars: toolbars }) %></div>
+    <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+            <!-- Profile -->
+            <%- include("./partials/profile_card.ejs", {user: {name: 'John Doe' , level: 'Quận 2' }}); %>
+                
+            <!-- Title -->
+            <div class="d-block mb-3">
+                <h1 class="fw-bolder text-uppercase">
+                    <%= title %>
+                </h1>
+            </div>
+                
+            <!-- Check box -->
+            <% if (url.includes('quan')) { %>
+                <div class="container-fluid checkbox-container">
+                    <div class="d-inline-block pb-2" style="padding-left: 15px">
+                        <h1 style="color: #1f274a; font-size: 22px; font-weight: 500">
+                            <%= checkboxHeader%>
+                        </h1>
+                    </div>
+                    <div class="container-fluid d-flex flex-wrap">
+                        <% checkboxData.forEach((item, i)=> {%>
+                            <div class="form-check me-4 mb-3" style="min-width: 9rem;">
+                                <input type="checkbox" class="form-check-input" id="check<%= i %>" name="option<%= i %>"
+                                    value="<%= item %>" checked />
+                                <label class="form-check-label" for="check<%= i %>">
+                                    <%=item%>
+                                </label>
+                            </div>
+                        <%})%>
+                    </div>
+                </div>
+            <% } %>
+                
+            <!-- Select -->
+            <% const [baseUrl, queryParams]=url.split('?'); %>
+                <div class="container-fluid mt-3 ps-0">
+                    <div class="d-flex flex-row align-items-center gap-2 position-relative">
+                        <%- include("./partials/select.ejs", {current: 0 , options: [ { name: 'Tất cả' , link: baseUrl
+                            + '#' }, { name: 'Chưa xử lý' , link: baseUrl + '#' }, { name: 'Đang xử lý' , link: baseUrl
+                            + '#' }, { name: 'Đã xử lý' , link: baseUrl + '#' }] }); %>
+                    </div>
+                </div>
+
+            <!-- Table -->
+            <%- include('./partials/table.ejs') %>
+
+            </div>
+    </main>
+</body>
+
+</html>

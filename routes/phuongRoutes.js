@@ -18,7 +18,7 @@ router.get('/ads/:id', (req, res) => controller.adsController.showDetail(req, re
 router.get('/ads/:id/modify', (req, res) => controller.adsController.showModify(req, res));
 router.get('/reports', (req, res) => controller.reportsController.show(req, res));
 
-router.get('/report/:id', (req, res) => controller.reportsController.showDetail(req, res));
+router.get('/reports/:id', (req, res) => controller.reportsController.showDetail(req, res));
 
 router.get('/license', (req, res) => controller.licenseController.show(req, res));
 
