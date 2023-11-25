@@ -59,3 +59,5 @@ export const ggLoginController = (req, res, next) => {
       });
     })(req, res, next);
   };
+
+export const loginController = authController('local');
