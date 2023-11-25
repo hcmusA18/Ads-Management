@@ -79,7 +79,14 @@ app.get('/auth/google', passport.authenticate('google', {
 app.get('/oauth2/redirect/google', ggLoginController);
 
 // EJS
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
+app.locals.generateDetailLink = ({id, linkDetails}) => {
+  const { basePath, category } = linkDetails;
+  if (category) {
+    return `${basePath}/${id}?category=${category}`;
+  }
+  return `${basePath}/${id}`;
+}
 
 // Error handler
 app.use((req, res, next) => {

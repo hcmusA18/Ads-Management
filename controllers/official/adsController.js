@@ -1,25 +1,23 @@
-import { toolbars } from './utilities.js';
+import {createToolbar} from './utilities.js';
 
 const show = (req, res) => {
+	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
 	let tableHeads = [];
 	let tableData = [];
-	let title = 'Sở - ';
-	let checkboxData = [...Array(13).keys()].map(i => {
-		return 'Quận ' + (i + 1);
-	});
+	let title = (role === 'quan') ? 'Quận' : 'Phường';
 	switch (category) {
 		case 'spot':
-			title = 'Sở - Điểm đặt';
+			title += ' - Điểm đặt quảng cáo';
 			tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch'];
 			break;
 		case 'board':
-			title = 'Sở - Bảng quảng cáo';
+			title += ' - Bảng quảng cáo';
 			tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
 			break;
 		default:
 			res.status(404);
-			return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } });
+			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
 
 	tableData = [...Array(55).keys()].map(i => {
@@ -30,33 +28,40 @@ const show = (req, res) => {
 			spot: `Điểm đặt ${i + 1}`,
 		};
 		commonData = category === 'spot'
-			? {
-				...commonData,
-				locationType: `Loại vị trí ${i + 1}`,
-				type: `Hình thức quảng cáo ${i + 1}`,
-				plan: Math.random() > 0.5 ? 'Đã quy hoạch' : 'Chưa quy hoạch'
-			}
-			: {
-				...commonData,
-				type: `Loại bảng quảng cáo ${i + 1}`,
-				size: `2x${i + 1}m`,
-				quantity: `${i + 1} trụ/bảng`
-			};
+				? {
+					...commonData,
+					locationType: `Loại vị trí ${i + 1}`,
+					type: `Hình thức quảng cáo ${i + 1}`,
+					plan: Math.random() > 0.5 ? 'Đã quy hoạch' : 'Chưa quy hoạch'
+				}
+				: {
+					...commonData,
+					type: `Loại bảng quảng cáo ${i + 1}`,
+					size: `2x${i + 1}m`,
+					quantity: `${i + 1} trụ/bảng`
+				};
 		commonData.actions = {
 			edit: false,
 			remove: false,
 			info: true
 		};
 		return commonData;
-	}
-	);
-
-	res.render('ads', { url: req.originalUrl, title, category, tableHeads, tableData, checkboxHeader: 'THÀNH PHỐ HỒ CHÍ MINH', checkboxData, toolbars });
-};
+	});
+	const checkboxData = [...Array(13).keys()].map(i => `Phường ${i + 1}`);
+	res.render('ads', {url: req.originalUrl, title, category, checkboxHeader: 'Quận 2', checkboxData, tableHeads, tableData, toolbars: createToolbar(role)});
+}
 
 const showDetail = (req, res) => {
+	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
-	const title = 'Sở - Chi tiết ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+	let title = '- Chi tiết ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+
+	if (role === 'quan') {
+		title = 'Quận ' + title;
+	}
+	if (role === 'phuong') {
+		title = 'Phường ' + title;
+	}
 
 	const data = {
 		spotTitle: 'ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO',
@@ -97,43 +102,39 @@ const showDetail = (req, res) => {
 		title, ...data,
 		boardsTableHeads,
 		boardsTableData,
-		toolbars
+		toolbars: createToolbar(role)
 	});
 }
 
 const showAdd = (req, res) => {
+	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
-	switch (category) {
-		case 'spot':
-			res.render('spot-new', {url: req.originalUrl, title: 'Sở - Điểm đặt mới', toolbars: toolbars});
-			break;
-		case 'board':
-			res.render('board-new', {url: req.originalUrl, title: 'Sở - Bảng quảng cáo mới', toolbars: toolbars});
-			break;
-		default:
-			res.status(404);
-			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+	let title = '- Thêm ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+	if (role === 'quan') {
+		title = 'Quận ' + title;
 	}
+	if (role === 'phuong') {
+		title = 'Phường ' + title;
+	}
+	res.render(`${category}-new`, {url: req.originalUrl, title, toolbars: createToolbar(role)});
 }
 
 const showModify = (req, res) => {
+	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
-	switch (category) {
-		case 'spot':
-			res.render('spot-modify', {url: req.originalUrl, title: 'Sở - Chỉnh sửa điểm đặt', toolbars: toolbars});
-			break;
-		case 'board':
-			res.render('board-modify', {url: req.originalUrl, title: 'Sở - Chỉnh sửa bảng quảng cáo', toolbars: toolbars});
-			break;
-		default:
-			res.status(404);
-			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+	let title = 'Phường - Chỉnh sửa ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+	if (role === 'quan') {
+		title = 'Quận ' + title;
 	}
+	if (role === 'phuong') {
+		title = 'Phường ' + title;
+	}
+	res.render(`${category}-modify`, {url: req.originalUrl, title, toolbars: createToolbar(role)});
 }
 
 export default {
 	show,
-	showDetail,
 	showAdd,
+	showDetail,
 	showModify
-}
+};

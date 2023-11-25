@@ -29,15 +29,7 @@
             <% keys.forEach((key) => { %>
                 <% if (key === 'actions') { %>
                     <td>
-                        <% const [baseUrl, queryParams] = url.split('?') %>
-                        <% let infoUrl, editUrl %>
-                        <% if (queryParams) { %>
-                        <% infoUrl = baseUrl + '/' + tableRow.id + '?' + (queryParams) %>
-                        <% editUrl = baseUrl + '/' + tableRow.id + '/modify?' + queryParams %>
-                        <% } else { %>
-                        <% infoUrl = baseUrl + '/' + tableRow.id %>
-                        <% editUrl = baseUrl + '/' + tableRow.id + '/modify' %>
-                        <% } %>
+                        <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
                         <%- include('./actions-set', {
                         edit: tableRow.actions.edit ? {modal: '#editModal' + i} : null,
                         remove: tableRow.actions.remove ? {modal: '#removeModal' + i} : null,

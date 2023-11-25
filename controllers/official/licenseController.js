@@ -1,15 +1,7 @@
-function createToolbar(role) {
-    return [
-        {icon: 'bi bi-house-door-fill', name: 'Trang chủ', link: `/${role}`,},
-        {icon: 'bi bi-geo-fill', name: 'Điểm đặt quảng cáo', link: `/${role}/ads?category=spot`},
-        {icon: 'bi bi-badge-ad-fill', name: 'Bảng quảng cáo', link: `/${role}/ads?category=board`},
-        {icon: 'bi bi-file-earmark-text-fill', name: 'Xử lý báo cáo', link: `/${role}/reports`},
-        {icon: 'bi bi-chat-left-dots-fill', name: 'Yêu cầu cấp phép', link: `/${role}/license`}
-    ]
-}
+import {createToolbar} from './utilities.js';
 
 const show = (req, res) => {
-	const role = req.originalUrl.split('/')[1];
+	const role = String(req.originalUrl.split('/')[1]);
 	let title = ' - Yêu cầu cấp phép quảng cáo';
 	const roleData = {
 		quan: {
@@ -21,7 +13,7 @@ const show = (req, res) => {
 					ward: `Phường ${(i + 1) % 13}`,
 					company: 'Công ty cổ phần CivicAds',
 					time: '01/01/2021 - 01/01/2022',
-					state: Math.random() > 0.667 ? 'Chưa xử lý' : (Math.random() > 0.333? 'Đang xử lý' : 'Đã xử lý'),
+					state: Math.random() > 0.667 ? 'Chưa xử lý' : (Math.random() > 0.333 ? 'Đang xử lý' : 'Đã xử lý'),
 					actions: {
 						edit: false,
 						remove: false,
@@ -40,7 +32,7 @@ const show = (req, res) => {
 					spotId: 'DD' + String(i + 1).padStart(5, '0'),
 					company: 'Công ty cổ phần CivicAds',
 					time: '01/01/2021 - 01/01/2022',
-					state: Math.random() > 0.667 ? 'Chưa xử lý' : (Math.random() > 0.333? 'Đang xử lý' : 'Đã xử lý'),
+					state: Math.random() > 0.667 ? 'Chưa xử lý' : (Math.random() > 0.333 ? 'Đang xử lý' : 'Đã xử lý'),
 					actions: {
 						edit: false,
 						remove: false,
@@ -56,14 +48,14 @@ const show = (req, res) => {
 		res.status(404);
 		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
-	title = (role == 'quan' ? 'Quận' : 'Phường') + title;
+	title = (role === 'quan' ? 'Quận' : 'Phường') + title;
 	res.render('license', {url: req.originalUrl, title: title, ...roleInfo, toolbars: createToolbar(role)});
 }
 
-const showDetailOrCreate = (req, res, detail=false) => {
-	const role = req.originalUrl.split('/')[1];
-    let title = ` - ${detail ? 'Chi tiết' : 'Tạo'} yêu cầu cấp phép quảng cáo`;
-	title = (role == 'quan' ? 'Quận' : 'Phường') + title;
+const showDetailOrCreate = (req, res, detail = false) => {
+	const role = String(req.originalUrl.split('/')[1]);
+	let title = ` - ${detail ? 'Chi tiết' : 'Tạo'} yêu cầu cấp phép quảng cáo`;
+	title = (role === 'quan' ? 'Quận' : 'Phường') + title;
 
 	const data = {
 		spotId: 'DD' + String(Math.floor(Math.random() * 100000)).padStart(5, '0'),
@@ -86,7 +78,13 @@ const showDetailOrCreate = (req, res, detail=false) => {
 			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
 		],
 	}
-    res.render('license-detail-create', {url: req.originalUrl, title, toolbars: createToolbar(role), ...data, detail: detail});
+	res.render('license-detail-create', {
+		detail: detail,
+		title,
+		toolbars: createToolbar(role),
+		...data,
+		url: req.originalUrl
+	});
 }
 
 export default {

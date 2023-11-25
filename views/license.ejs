@@ -60,7 +60,8 @@
                 </div>
             </div>
             <!-- Table -->
-            <%- include('./partials/table.ejs') %>
+            <% const [basePath, category] = url.split('?'); %>
+            <%- include('./partials/table.ejs', {linkDetails: {basePath: basePath, category: category}}) %>
         </div>
     </div>
 </main>
