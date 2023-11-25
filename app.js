@@ -71,6 +71,9 @@ app.delete('/logout', (req, res) => {
 app.use('/so', soRoutes)
 app.use('/quan', quanRoutes)
 app.use('/phuong', phuongRoutes)
+// app.use('/so', checkAuth, soRoutes)
+// app.use('/quan', checkAuth, quanRoutes)
+// app.use('/phuong', checkAuth, phuongRoutes)
 
 // Google OAuth login route
 app.get('/auth/google', passport.authenticate('google', {
@@ -79,7 +82,14 @@ app.get('/auth/google', passport.authenticate('google', {
 app.get('/oauth2/redirect/google', ggLoginController);
 
 // EJS
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
+app.locals.generateDetailLink = ({id, linkDetails}) => {
+  const { basePath, category } = linkDetails;
+  if (category) {
+    return `${basePath}/${id}?category=${category}`;
+  }
+  return `${basePath}/${id}`;
+}
 
 // Error handler
 app.use((req, res, next) => {

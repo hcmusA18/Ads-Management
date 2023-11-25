@@ -3,8 +3,8 @@ import {toolbars} from './utilities.js';
 const controller = {};
 
 controller.show = (req, res) => {
-	const table_header = ['ID Báo cáo', 'ID Điểm/Bảng QC', 'Loại hình', 'Người gửi', 'Email', 'Ngày gửi', 'Trang thái', 'Chi tiết'];
-	const table_data = [...Array(55).keys()].map(i => {
+	const tableHeads = ['ID Báo cáo', 'ID Điểm/Bảng QC', 'Loại hình', 'Người gửi', 'Email', 'Ngày gửi', 'Trang thái'];
+	const tableData = [...Array(55).keys()].map(i => {
 		return {
 			id: `BC${i + 1}`,
 			ads_id: `QC${i + 1}`,
@@ -12,11 +12,16 @@ controller.show = (req, res) => {
 			sender: fakerVI.person.fullName(),
 			email: fakerVI.internet.email(),
 			date: fakerVI.date.anytime({refDate: new Date('2023-01-01')}).toLocaleDateString('vi-VN'),
-			status: 'Chờ xử lý'
+			status: 'Chờ xử lý',
+			actions: {
+				edit: false,
+				remove: false,
+				info: true
+			}
 		}
 	});
 	const title = 'Sở - Thống kê báo cáo';
-	return res.render('./so/reports', {title, table_header, table_data, toolbars});
+	return res.render('./so/reports', {title, tableHeads, tableData, toolbars});
 }
 
 controller.showDetail = (req, res) => {
