@@ -46,13 +46,13 @@ export const ggLoginController = (req, res, next) => {
         if (loginErr) {
           return next(loginErr);
         }
-        if (officer.username == 'admin') {
+        if (officer.username === 'admin') {
           return res.redirect('/so');
         }
-        if (officer.position == 1) {
+        if (officer.position === 1) {
           return res.redirect('/quan');
         }
-        if (officer.position == 2) {
+        if (officer.position === 2) {
           return res.redirect('/phuong');
         }
           return res.redirect('/');

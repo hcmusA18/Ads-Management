@@ -31,122 +31,32 @@
                 </div>
             </div>
             <!-- Table -->
+            <% const keys = Object.keys(tableData[0]) %>
             <table data-toggle="table" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, all]"
                    data-locale="vi-VN" data-buttons-class="primary" data-buttons="buttons" data-show-button-text="true"
                    data-icon-prefix="bi"
                    class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                 <thead>
-                <tr class="row m-0">
-                    <th class="col-1" data-sortable="true" data-align="center" data-field="no">No</th>
-                    <th class="col-2" data-sortable="true" data-align="center" data-field="name">Tên đăng nhập</th>
-                    <th class="col-3" data-sortable="true" data-align="center" data-field="level">Cấp bậc</th>
-                    <th class="col-2" data-sortable="true" data-align="center" data-field="dist">Quận</th>
-                    <th class="col-2" data-sortable="true" data-align="center" data-field="ward">Phường</th>
-                    <th class="col-2" data-field="action" data-align="center">Hành động</th>
+                <tr>
+                    <% for (let i = 0; i < tableHeads.length; i++) { %>
+                        <th data-field="<%= keys[i] %>" data-align="center" data-sortable="true">
+                            <%= tableHeads[i] %>
+                        </th>
+                    <% } %>
+                    <th data-align="center" data-field="actions">
+                        Hành động
+                    </th>
                 </tr>
                 </thead>
-                <% accounts = [
-                    {
-                        'username': 'giathinnnn',
-                        'role': '',
-                        'district': '',
-                        'ward': '',
-                        'isAssigned': 0
-                    },
-                    {
-                        'username': 'cokaaa',
-                        'role': '',
-                        'district': '',
-                        'ward': '',
-                        'isAssigned': 0
-                    },
-                    {
-                        'username': 'ltquannnn',
-                        'role': '',
-                        'district': '',
-                        'ward': '',
-                        'isAssigned': 0
-                    },
-                    {
-                        'username': 'tohaaaa',
-                        'role': '',
-                        'district': '',
-                        'ward': '',
-                        'isAssigned': 0
-                    },
-                    {
-                        'username': 'obitooo',
-                        'role': 'Cán bộ Quận',
-                        'district': '2',
-                        'ward': '',
-                        'isAssigned': 1
-                    },
-                    {
-                        'username': 'ronboogz',
-                        'role': 'Cán bộ Quận',
-                        'district': '6',
-                        'ward': '',
-                        'isAssigned': 1
-                    },
-                    {
-                        'username': 'weanleee',
-                        'role': 'Cán bộ Quận',
-                        'district': '7',
-                        'ward': '',
-                        'isAssigned': 1
-                    },
-                    {
-                        'username': 'puhioooo',
-                        'role': 'Cán bộ Phường',
-                        'district': 'Bình Tân',
-                        'ward': 'An Lạc',
-                        'isAssigned': 1
-                    },
-                    {
-                        'username': 'righttttt',
-                        'role': 'Cán bộ Phường',
-                        'district': '6',
-                        'ward': '5',
-                        'isAssigned': 1
-                    },
-                    {
-                        'username': 'naomiiii',
-                        'role': 'Cán bộ Phường',
-                        'district': 'Tân Phú',
-                        'ward': 'Tân Quý',
-                        'isAssigned': 1
-                    },
-                    {
-                        'username': 'conannnn',
-                        'role': 'Cán bộ Phường',
-                        'district': 'Bình Thạnh',
-                        'ward': '25',
-                        'isAssigned': 1
-                    },
-                    {
-                        'username': 'miraaaa',
-                        'role': 'Cán bộ Phường',
-                        'district': 'Tân Bình',
-                        'ward': '15',
-                        'isAssigned': 1
-                    },
-                    {
-                        'username': 'sherlock',
-                        'role': 'Cán bộ Phường',
-                        'district': '6',
-                        'ward': '6',
-                        'isAssigned': 1
-                    }
-                ] %>
                 <tbody>
-                <% accounts.forEach(function(account, index) { %>
-                    <tr class="row m-0">
-                        <td class="col-1" data-align="center"><%= index + 1 %></td>
-                        <td class="col-2" data-align="center"><%= account.username %></td>
-                        <td class="col-3" data-align="center"><%= account.role %></td>
-                        <td class="col-2"><%= account.district !== '' ? 'Quận ' + account.district : '' %></td>
-                        <td class="col-2"><%= account.ward !== '' ? 'Phường ' + account.ward : '' %></td>
-                        <td class="col-2" data-align="center">
+                <% tableData.forEach(function(account, index) { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= account.username %></td>
+                        <td><%= account.position %></td>
+                        <td><%= account.district !== '' ? 'Quận ' + account.district : '' %></td>
+                        <td><%= account.ward !== '' ? 'Phường ' + account.ward : '' %></td>
+                        <td>
                             <div class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
                                 <% if (!account.isAssigned) { %>
                                     <button type="button" class="btn btn-success border-0 text-wrap text-center"

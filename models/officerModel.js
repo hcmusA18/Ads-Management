@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const OfficerSchema = new mongoose.Schema({
     username: {
@@ -19,10 +19,12 @@ const OfficerSchema = new mongoose.Schema({
         required: true
     },
     districtID: {
-        type: String
+        type: String,
+        ref: 'districts'
     },
     wardID: {
-        type: String
+        type: String,
+        ref: 'wards'
     }
 });
 

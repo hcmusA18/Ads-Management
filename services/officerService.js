@@ -1,86 +1,115 @@
 import Officer from '../models/officerModel.js';
+import {hashPassword} from './passwordService.js';
+import {Model} from 'mongoose';
+
+const handleAsyncError = async (promise) => {
+	try {
+		const result = await promise;
+		return {result};
+	} catch (error) {
+		throw new Error(`Error: ${error.message}`);
+	}
+}
 
 export const createOfficer = async (data) => {
-  try {
-    const newOfficer = new Officer(data);
-    await newOfficer.save();
-    return { message: 'Officer created successfully' };
-  } catch (error) {
-    throw new Error(`Error creating officer: ${error.message}`);
-  }
+	// hash password
+	data.password = await hashPassword(data.password);
+	return handleAsyncError(new Officer(data).save());
 };
 
 export const updatePasswordByUsername = async (username, newPassword) => {
-  try {
-    await Officer.findOneAndUpdate(
-      { username },
-      { $set: { password: newPassword } },
-    );
-    return { message: 'Password updated successfully' };
-  } catch (error) {
-    throw new Error(`Error updating password by username: ${error.message}`);
-  }
+	return handleAsyncError(Officer.findOneAndUpdate({username}, {$set: {password: newPassword}}));
 };
 
 export const deleteOfficerByUsername = async (username) => {
-  try {
-    await Officer.findOneAndDelete({ username });
-    return { message: 'Officer deleted successfully' };
-  } catch (error) {
-    throw new Error(`Error deleting officer by username: ${error.message}`);
-  }
+	return handleAsyncError(Officer.findOneAndDelete({username}));
 };
 
 export const getOfficerByUsername = async (username) => {
-  try {
-    const officer = await Officer.findOne({ username });
-    return officer;
-  } catch (error) {
-    throw new Error(`Error getting officer by username: ${error.message}`);
-  }
+	return handleAsyncError(Officer.findOne({username}));
 };
 
-// 1: cho cán bộ Quận, 2 cho cán bộ Phường
-// 0 cho tài khoản chưa được cấp quyền
-// -1 để generate toàn bộ tài khoản
-export const getAllOfficersByPosition = async (position) => {
-  try {
-    let officers;
-    if(position == -1){
-        officers = await Officer.find();
-    }
-    else{
-        officers = await Officer.find({ position });
-    }
-    return officers;
-  } catch (error) {
-    throw new Error(`Error getting officers by position: ${error.message}`);
-  }
+// 1:  for district officer
+// 2:  for ward officer
+// 0 is not assigned
+// -1 get all
+export const getAllOfficersByPosition = async (position = -1) => {
+	const options = [
+		{
+			$match: {
+				username: {$ne: 'admin'},
+				position: {$ne: -1}
+			}
+		},
+		{
+			$lookup: {
+				from: 'districts',
+				localField: 'districtID',
+				foreignField: 'districtID',
+				as: 'district',
+			}
+		},
+		{
+			$lookup: {
+				from: 'wards',
+				localField: 'wardID',
+				foreignField: 'wardID',
+				as: 'ward',
+			}
+		},
+		{
+			$unwind: {
+				path: '$district',
+				preserveNullAndEmptyArrays: true
+			},
+		},
+		{
+			$unwind: {
+				path: '$ward',
+				preserveNullAndEmptyArrays: true
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				username: 1,
+				email: 1,
+				position: 1,
+				districtID: 1,
+				wardID: 1,
+				districtName: '$district.districtName',
+				wardName: '$ward.wardName'
+			}
+		}
+	];
+	if (position === -1) {
+		return handleAsyncError(Officer.aggregate(options));
+	} else if (position < 3) {
+		const matchOptions = {position};
+		return handleAsyncError(Officer.aggregate([...options, {$match: matchOptions}]));
+	}
+	else throw new Error('Invalid position');
 };
 
 export const getOfficersByDistrictID = async (districtID) => {
-  try {
-    const officers = await Officer.find({ districtID });
-    return officers;
-  } catch (error) {
-    throw new Error(`Error getting officers by districtID: ${error.message}`);
-  }
+	return handleAsyncError(Officer.find({districtID}));
 };
 
 export const getOfficersByWardID = async (wardID) => {
-  try {
-    const officers = await Officer.find({ wardID });
-    return officers;
-  } catch (error) {
-    throw new Error(`Error getting officers by wardID: ${error.message}`);
-  }
+	return handleAsyncError(Officer.find({wardID}));
 };
 
 export const getOfficerByGoogleID = async (googleId) => {
-  try {
-    const officers = await Officer.findOne({ googleId: googleId });
-    return officers;
-  } catch (error) {
-    throw new Error(`Error getting officers by GoogleID: ${error.message}`);
-  }
+	return handleAsyncError(Officer.findOne({googleId}));
 };
+
+export default {
+	createOfficer,
+	deleteOfficerByUsername,
+	getAllOfficersByPosition,
+	getOfficerByGoogleID,
+	getOfficerByUsername,
+	getOfficersByDistrictID,
+	getOfficersByWardID,
+	updatePasswordByUsername
+}
