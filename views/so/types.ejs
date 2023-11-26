@@ -32,8 +32,10 @@
                 </div>
             </div>
             <!-- Table -->
+            <% const [basePath, category] = url.split('?'); %>
             <%- include('../partials/table.ejs', {
             add_button: true,
+            linkDetails: {basePath: basePath, category: category.split('=')[1]},
             edit_modal: {
             title: 'CHỈNH SỬA',
             components: [
