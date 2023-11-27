@@ -9,8 +9,12 @@ const AdsFormSchema = new mongoose.Schema({
     formName: {
         type: String,
         required: true
+    },
+    description: {
+        type: String,
+        required: true
     }
 });
 
-const AdsForm = mongoose.model('adsForms', AdsFormSchema);
+const AdsForm = mongoose.model('adsforms', AdsFormSchema);
 export default AdsForm;

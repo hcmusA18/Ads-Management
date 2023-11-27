@@ -25,8 +25,9 @@
             <div class="container-fluid mt-3 ps-0">
                 <div class="d-flex flex-row align-items-center gap-2 position-relative">
                     <div class="d-flex flex-row align-items-center gap-2 position-relative">
-                        <%- include("../partials/info_card.ejs", {title: 'Số lượng tài khoản' , value: '25' , color: '#00b285' }); %>
-                        <%- include("../partials/info_card.ejs", {title: 'Đã phân công' , value: '20' , color: '#d59633' }); %>
+                        <%- include("../partials/info_card.ejs", { title: "Số lượng tài khoản", value: totalOfficers, color: "#00b285" }); %>
+                        <%- include("../partials/info_card.ejs", { title: "Đã phân công", value: numberOfAssignedOfficers, color: "#d59633" }); %>
+                        
                     </div>
                 </div>
             </div>
@@ -69,8 +70,8 @@
                                        class="mx-3 bg-transparent">
                                         <img src="/images/edit.svg" alt="edit-icon">
                                     </a>
-                                    <a href="#" class="mx-3 bg-transparent">
-                                        <img src="/images/remove.svg" alt="remove-icon">
+                                    <a href="" onclick="deleteAccount('<%= account.username %>')" class="mx-3 bg-transparent">
+                                        <img src="/images/remove.svg" onclick="" alt="remove-icon">
                                     </a>
                                 <% } %>
                             </div>
@@ -97,11 +98,11 @@
                                                     <select class="form-select" aria-label="Default select example"
                                                             style="width: 95%;"
                                                             onfocus='this.size=5;' onblur='this.size=1;'
-                                                            onchange='this.size=1; this.blur();'>
-                                                        <option selected><%= account.district ? 'Quận ' + account.district : 'Chọn quận' %> </option>
-                                                        <% for (let i = 1; i <= 12; i++) { %>
-                                                            <option value="<%= i %>">Quận <%= i %></option>
-                                                        <% } %>
+                                                            onchange='this.size=1; this.blur(); changeWards(this.value);'>
+                                                        <option value="<%= account.districtID %>" selected><%= account.district ? 'Quận ' + account.district : 'Chọn quận' %> </option>
+                                                        <% districts.forEach((district) => { %>
+                                                            <option value="<%= district.districtID %>">Quận <%= district.districtName %></option>
+                                                        <% }) %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -109,16 +110,16 @@
                                                 <label for="loai-lhqc" class="col-form-label mb-1">Phường:</label>
                                                 <div class="dropdown justify-content-end px-1 flex-fill"
                                                      style="height: 2.2rem;">
-                                                    <select class="form-select" aria-label="Default select example"
+                                                    <select class="form-select" id="wardSelect" aria-label="Default select example"
                                                             style="width: 95%;"
                                                             onfocus='this.size=5;' onblur='this.size=1;'
-                                                            onchange='this.size=1; this.blur();'
-                                                            <% account.role === 'Cán bộ Quận' ? 'disabled' : '' %>
-                                                    >
-                                                        <option selected><%= account.ward ? 'Phường ' + account.ward : 'Chọn phường' %></option>
-                                                        <% for (let i = 1; i <= 12; i++) { %>
-                                                            <option value="<%= i %>">Phường <%= i %></option>
-                                                        <% } %>
+                                                            onchange='this.size=1; this.blur();'>
+                                                        <option value="<%= account.wardID %>" selected><%= account.ward ? 'Phường ' + account.ward : 'Chọn phường' %></option>
+                                                        <% wards.forEach((ward) => { %>
+                                                            <% if(ward.districtID === account.districtID) { %>
+                                                                <option value="<%= ward.wardID %>">Phường <%= ward.wardName %></option>
+                                                            <% } %>
+                                                        <% }) %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -157,81 +158,51 @@
             {label: 'Thêm', color: '#3c77ff', dismiss: false}]
             }) %>
 
-            <!-- Modal edit -->
-
-            <div class="modal fade" id="assigntModal1" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header pb-3" style="border: none">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body pt-1 pb-2" style="border: none">
-                            <h5 class="modal-title pb-2" style="font-size: 22px; font-weight: 700; text-align: center">
-                                CẤP QUYỀN CHO gt
-                            </h5>
-                            <form>
-                                <div class="d-flex" style="justify-content: space-between;">
-                                    <div class="mb-3 d-flex" style="justify-content: space-between;">
-                                        <label for="maloai-pc" class="col-form-label mb-1">Quận:</label>
-                                        <div class="dropdown"
-                                             style="padding: 7px 0; height: 36.6px; width: 170px; justify-content: flex-end;">
-                                            <select class="form-select" aria-label="Default select example"
-                                                    style="width: 95%;" onfocus='this.size=5;' onblur='this.size=1;'
-                                                    onchange='this.size=1; this.blur();'>
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 d-flex" style="justify-content: space-between;">
-                                        <label for="loai-pc" class="col-form-label mb-1">Phường:</label>
-                                        <div class="dropdown"
-                                             style="padding: 7px 0; height: 36.6px; width: 150px; justify-content: flex-end;">
-                                            <select class="form-select" aria-label="Default select example"
-                                                    style="width: 95%;" onfocus='this.size=5;' onblur='this.size=1;'
-                                                    onchange='this.size=1; this.blur();'>
-                                                <option selected>Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer pt-1 d-flex justify-content-around"
-                             style="border: none; background-color: #f7fafc">
-                            <button type="button" class="btn" data-bs-dismiss="modal"
-                                    style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                                Hủy
-                            </button>
-                            <button type="button" class="btn"
-                                    style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                                Xác nhận
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </main>
+<script>
+    const deleteAccount = async (username) => {
+        console.log(`/so/assign/${username}`);
+        try {
+            const response = await fetch(`/so/assign/${username}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any additional headers as needed
+                },
+            });
+        } catch (error) {
+            console.error('Error during DELETE request:', error.message);
+        }
+    };
+    
 
+    const changeWards = async (selectedDistrict) => {
+        // console.log(selectedDistrict);
+        const response = await fetch(`/so/getWards`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any additional headers as needed
+                },
+            });
+        const wards = await response.json();
+        console.log(wards);
+        let wardSelectTag = document.querySelector("#wardSelect");
+        wardSelectTag.setAttribute('id','abc');
+        wardSelectTag.innerHTML = "";
+        // wardSelect.append('<option value="" selected>Chọn phường</option>');
+        // wards.forEach((ward) => { 
+        //     if (ward.districtID === selectedDistrict) {
+        //         const option = document.createElement('option');
+        //         option.value = ward.wardID;
+        //         option.textContent = `Phường ${ward.wardName}`;
+        //         wardSelect.append(option);
+        //     }
+        // }) 
+    }
+</script>
 
 </body>
 

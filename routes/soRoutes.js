@@ -35,9 +35,18 @@ router.get('/requests', (req, res) => {
 router.get('/requests/:id', (req, res) => {
 	controller.requestsController.showDetail(req, res);
 });
+
 router.get('/assign', (req, res) => {
 	controller.assignController.show(req, res);
 });
+
+router.delete('/assign/:username', (req, res) => {
+	controller.assignController.deleteAccount(req, res);
+})
+
+router.get('/getWards', (req, res) => {
+	controller.assignController.getWards(req, res);
+})
 
 
 router.get('/reports', (req, res) => {
