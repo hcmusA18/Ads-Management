@@ -9,10 +9,10 @@
 </head>
 <body>
 <header></header>
-<main class="container-fluid d-flex bg-light">
+<main class="container-fluid d-flex bg-light" style="height: 100vh;;">
     <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
     <div class="container-fluid vw-100 pt-1">
-        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative" style="min-height: 80vh;">
             <!-- Profile -->
             <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
             <!-- Title -->
@@ -22,7 +22,9 @@
             <!-- Select -->
             <div class="container-fluid mt-3 ps-0">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                    <%- include("../partials/select.ejs", {current: 0, options: [
+                    <% let current = 0; %>
+                    <% if (title.includes("báo cáo")) { current = 1; } %>
+                    <%- include("../partials/select.ejs", {current: current, options: [
                     { name: 'Loại hình quảng cáo', link: '/so/types?category=ads'},
                     { name: 'Hình thức báo cáo', link: '/so/types?category=report' },
                     ]}); %>

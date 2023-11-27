@@ -20,6 +20,9 @@ router.get('/', (req, res) => {
 router.get('/types', (req, res) => {
 	controller.typesController.show(req, res);
 });
+router.get('/types/:id', (req, res) => {
+	controller.typesController.showDetail(req, res);
+});
 router.get('/locations', (req, res) => {
 	res.render('./so/locations', {title: 'Sở - Quản lý Quận', toolbars: toolbars});
 });
