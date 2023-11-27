@@ -88,4 +88,21 @@ controller.showDetail = async (req, res) => {
 	return res.render('./so/type-detail', {title, detail, toolbars});
 }
 
+controller.add = async (req, res) => {
+	const category = req.query.category || '';
+	let title = '';
+	switch (category) {
+		case 'ads':
+			title = 'Sở - Thêm loại hình quảng cáo';
+			break;
+		case 'report':
+			title = 'Sở - Thêm hình thức báo cáo';
+			break;
+		default:
+			res.status(404);
+			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+	}
+	return res.render('./so/type-add', {title, category, toolbars});
+}
+
 export default controller;

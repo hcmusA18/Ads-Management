@@ -36,8 +36,7 @@ export const deleteAdsFormByID = async (formID) => {
 
 export const getAllAdsForms = async () => {
   try {
-    const adsForms = await AdsForm.find();
-    return adsForms;
+    return await AdsForm.find();
   } catch (error) {
     throw new Error(`Error getting all ads forms: ${error.message}`);
   }

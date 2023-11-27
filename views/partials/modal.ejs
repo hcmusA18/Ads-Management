@@ -18,7 +18,7 @@
                     </h5>
                 <% } %>
                 <!-- Form -->
-                <form>
+                <form id="formPost" method="post" action=<%= url %>>
                     <% components.forEach(function(component) { %>
                         <div class="mb-3">
                             <label for="<%= component.id %>" class="col-form-label mb-1"><%= component.label %>
@@ -55,10 +55,26 @@
             </div>
             <div class="modal-footer pt-1 d-flex justify-content-around border-0">
                 <% buttons.forEach(function(button) { %>
-                <button type="button" class="btn" <%= button.dismiss ? 'data-bs-dismiss="modal"' : '' %>
-                        style="min-width: 6.5rem; background-color: <%= button.color %>; color: #f7fafc">
-                    <%= button.label %>
-                </button>
+                    <% if (typeof button.submit !== 'undefined' && button.submit) { %>
+                        <button
+                                type="submit"
+                                form="formPost"
+                                value="submit"
+                                class="btn"
+                                onclick="!this.form && document.getElementById('formPost').submit()"
+                                <%= button.dismiss ? 'data-bs-dismiss="modal"' : '' %>
+                                style="min-width: 6.5rem; background-color: <%= button.color %>; color: #f7fafc">
+                            <%= button.label %>
+                        </button>
+                    <% } else { %>
+                        <button
+                                type="button"
+                                class="btn"
+                                <%= button.dismiss ? 'data-bs-dismiss="modal"' : '' %>
+                                style="min-width: 6.5rem; background-color: <%= button.color %>; color: #f7fafc">
+                            <%= button.label %>
+                        </button>
+                    <% } %>
                 <% }) %>
             </div>
         </div>
