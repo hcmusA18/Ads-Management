@@ -12,7 +12,8 @@
 <main class="container-fluid d-flex bg-light" style="height: 100vh;;">
     <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
     <div class="container-fluid vw-100 pt-1">
-        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative" style="min-height: 80vh;">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative"
+             style="min-height: 80vh;">
             <!-- Profile -->
             <%- include("../partials/profile_card.ejs", {user: {name: 'Admin', level: 'Sở VH-TT'}}); %>
             <!-- Title -->
@@ -23,7 +24,9 @@
             <div class="container-fluid mt-3 ps-0">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                     <% let current = 0; %>
-                    <% if (title.includes("báo cáo")) { current = 1; } %>
+                    <% if (title.includes("báo cáo")) {
+                        current = 1;
+                    } %>
                     <%- include("../partials/select.ejs", {current: current, options: [
                     { name: 'Loại hình quảng cáo', link: '/so/types?category=ads'},
                     { name: 'Hình thức báo cáo', link: '/so/types?category=report' },
@@ -34,35 +37,106 @@
                 </div>
             </div>
             <!-- Table -->
-            <% const [basePath, category] = url.split('?'); %>
+            <% const [basePath, category] = url.split('?');
+            const components = [
+                {id: 'typeID', label: 'Mã loại', required: true, type: 'text', disabled: true},
+                {id: 'type', label: 'Loại', required: true, type: 'text'},
+                {id: 'desc', label: 'Mô tả', required: true, type: 'textarea'}
+            ];
+            const buttons = [
+                {label: 'Hủy', color: '#e84747', dismiss: true, type: 'button'},
+                {label: 'Xác nhận', color: '#3c77ff', dismiss: true, type: 'submit'}
+            ];
+            %>
             <%- include('../partials/table.ejs', {
             add_button: true,
             linkDetails: {basePath: basePath, category: category.split('=')[1]},
             edit_modal: {
             title: 'CHỈNH SỬA',
-            components: [
-            { id: 'typeID', label: 'Mã loại', required: true, type: 'text', disabled: true },
-            { id: 'type', label: 'Loại', required: true, type: 'text' },
-            { id: 'desc', label: 'Mô tả', required: true, type: 'textarea' },
-            ],
-            buttons: [
-            { label: 'Hủy', color: '#e84747', dismiss: true },
-            { label: 'Xác nhận', color: '#3c77ff', dismiss: true },
-            ], }
+            components: components,
+            buttons: buttons,
+            }
             }); %>
-            <!-- Modal add -->
-            <%- include('../partials/modal.ejs', {
-            modal_id: 'addModal-lhqc',
-            title: 'THÊM MỚI',
-            components:
-            [ { id: 'type', label: 'Loại', required: true, type: 'text' },
-            { id: 'desc', label: 'Mô tả', required: true, type: 'textarea' }, ],
-            buttons: [ { label: 'Thêm', color: '#3c77ff', dismiss: false, submit: true }, ],
-            }); %>
-            }) %>
+            <script defer type="module">
+							import createModal from '/js/modal.js';
+
+							const components = [
+								{
+									id: 'typeID',
+									label: 'Mã loại',
+									required: true,
+									type: 'input',
+									inputType: 'text',
+									placeholder: 'Loại hình quảng cáo',
+									disabled: true
+								},
+								{
+									id: 'type',
+									label: 'Loại',
+									required: true,
+									type: 'input',
+									inputType: 'text',
+									placeholder: 'Loại hình quảng cáo'
+								},
+								{id: 'desc', label: 'Mô tả', required: true, type: 'textarea', rows: 3, placeholder: 'Mô tả'}
+							];
+							const buttons = [
+								{label: 'Hủy', color: '#e84747', dismiss: true, type: 'button'},
+								{label: 'Xác nhận', color: '#3c77ff', dismiss: true, type: 'submit'}
+							];
+							const len = JSON.parse('<%- JSON.stringify(tableData.length) %>');
+							const dataID = JSON.parse('<%- JSON.stringify(tableData.map(item => item.id)) %>');
+							for (let i = 0; i < len; i++) {
+								components[0].value = dataID[i];
+								const editModal = {
+									id: `editModal-${i}`,
+									title: 'CHỈNH SỬA',
+									form: {
+										id: `editForm-${i}`,
+                                        method: 'PATCH',
+										components: components,
+										buttons: buttons,
+										action: JSON.parse(`<%- JSON.stringify(url) %>`)
+									}
+								}
+								createModal(editModal);
+							}
+
+            </script>
+
         </div>
     </div>
 </main>
+<!-- Modal add -->
+<script defer type="module">
+	import createModal from '/js/modal.js';
+
+	const options = {
+		id: 'addModal-lhqc',
+		title: 'THÊM MỚI',
+		form: {
+			id: 'addForm-lhqc',
+			method: 'POST',
+			action: JSON.parse('<%- JSON.stringify(url) %>'),
+			components: [
+				{
+					id: 'type',
+					label: 'Loại',
+					required: true,
+					type: 'input',
+					inputType: 'text',
+					placeholder: 'Loại hình quảng cáo'
+				},
+				{id: 'desc', label: 'Mô tả', required: true, type: 'textarea', rows: 3, placeholder: 'Mô tả'},
+			],
+			buttons: [
+				{type: 'button', label: 'Hủy', color: '#e84747', dismiss: true},
+				{type: 'submit', label: 'Xác nhận', color: '#3c77ff', dismiss: true},
+			],
+		}
+	}
+	createModal(options);
+</script>
 </body>
 
 </html>

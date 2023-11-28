@@ -61,7 +61,6 @@
                                 form="formPost"
                                 value="submit"
                                 class="btn"
-                                onclick="!this.form && document.getElementById('formPost').submit()"
                                 <%= button.dismiss ? 'data-bs-dismiss="modal"' : '' %>
                                 style="min-width: 6.5rem; background-color: <%= button.color %>; color: #f7fafc">
                             <%= button.label %>
@@ -80,3 +79,20 @@
         </div>
     </div>
 </div>
+<script>
+	document.querySelector('button[type=\'submit\']').addEventListener('click', e => {
+		// prevent form submit
+		e.preventDefault();
+		// get form element
+		const form = document.getElementById('formPost');
+		// get all form inputs
+		const inputs = form.querySelectorAll('input, select, textarea');
+		// get all form values
+		const values = {};
+		inputs.forEach(input => {
+			values[input.name] = input.value;
+		});
+		console.log(values);
+	});
+
+</script>

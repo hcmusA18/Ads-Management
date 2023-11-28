@@ -24,8 +24,7 @@ export const getWardByID = async (wardID) => {
 
 export const getAllWards = async () => {
   try {
-    const wards = await Ward.find();
-    return wards;
+    return await Ward.find();
   } catch (error) {
     throw new Error(`Error getting all wards: ${error.message}`);
   }
@@ -33,8 +32,7 @@ export const getAllWards = async () => {
 
 export const getWardsOfDistrict = async (districtID) => {
   try {
-    const wards = await Ward.find({ districtID });
-    return wards;
+    return await Ward.find({districtID});
   } catch (error) {
     throw new Error(`Error getting wards of district: ${error.message}`);
   }

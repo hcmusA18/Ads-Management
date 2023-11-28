@@ -23,6 +23,9 @@ router.get('/types', (req, res) => {
 router.get('/types/:id', (req, res) => {
 	controller.typesController.showDetail(req, res);
 });
+router.post('/types', (req, res) => {
+	console.log(req.body);
+});
 router.get('/locations', (req, res) => {
 	res.render('./so/locations', {title: 'Sở - Quản lý Quận', toolbars: toolbars});
 });
@@ -47,8 +50,8 @@ router.delete('/assign/:username', (req, res) => {
 	controller.assignController.deleteAccount(req, res);
 })
 
-router.get('/getWards', (req, res) => {
-	controller.assignController.getWards(req, res);
+router.get('/getWards/:id', async (req, res) => {
+	await controller.assignController.getWards(req, res);
 })
 
 

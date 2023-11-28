@@ -31,9 +31,9 @@
                     <td>
                         <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
                         <%- include('./actions-set', {
-                        edit: tableRow.actions.edit ? {modal: '#editModal' + i} : null,
-                        remove: tableRow.actions.remove ? {modal: '#removeModal' + i} : null,
-                        info: tableRow.actions.info ? {modal: '#infoModal' + i, url: infoUrl} : null,
+                        edit: tableRow.actions.edit ? {modal: '#editModal-' + i} : null,
+                        remove: tableRow.actions.remove ? {modal: '#removeModal-' + i} : null,
+                        info: tableRow.actions.info ? {modal: '#infoModal-' + i, url: infoUrl} : null,
                         }) %>
                     </td>
                 <% }else { %>
@@ -41,23 +41,6 @@
                 <% } %>
             <% }) %>
         </tr>
-        <!--Modal edit-->
-        <% if (typeof edit_modal !== 'undefined') { %>
-            <% edit_modal.components.forEach((component) => { %>
-                <% if (component.id.includes('ID')) { %>
-                    <% component.value = tableRow.id %>
-                <% } %>
-            <% }) %>
-            %>
-            <%-
-            include('./modal.ejs', {
-            modal_id: 'editModal' + i,
-            title: edit_modal.title,
-            components: edit_modal.components,
-            buttons: edit_modal.buttons,
-            })
-            %>
-        <% } %>
     <% }) %>
     </tbody>
 </table>
