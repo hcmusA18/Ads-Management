@@ -27,7 +27,7 @@
                     <div class="d-flex flex-row align-items-center gap-2 position-relative">
                         <%- include("../partials/info_card.ejs", { title: "Số lượng tài khoản", value: totalOfficers, color: "#00b285" }); %>
                         <%- include("../partials/info_card.ejs", { title: "Đã phân công", value: numberOfAssignedOfficers, color: "#d59633" }); %>
-                        
+
                     </div>
                 </div>
             </div>
@@ -39,11 +39,21 @@
                    class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
                 <thead>
                 <tr>
-                    <% for (let i = 0; i < tableHeads.length; i++) { %>
-                        <th data-field="<%= keys[i] %>" data-align="center" data-sortable="true">
-                            <%= tableHeads[i] %>
-                        </th>
-                    <% } %>
+                    <th data-align="center" data-field="index" data-sortable="true" data-width-unit="%" data-width="5">
+                        No.
+                    </th>
+                    <th data-align="center" data-field="username" data-sortable="true" data-width-unit="%" data-width="15">
+                        Tên tài khoản
+                    </th>
+                    <th data-align="center" data-field="position" data-sortable="true">
+                        Chức vụ
+                    </th>
+                    <th data-align="center" data-field="district" data-sortable="true" data-width-unit="%" data-width="25">
+                        Quận
+                    </th>
+                    <th data-align="center" data-field="ward" data-sortable="true" data-width-unit="%" data-width="25">
+                        Phường
+                    </th>
                     <th data-align="center" data-field="actions">
                         Hành động
                     </th>
@@ -60,148 +70,204 @@
                         <td>
                             <div class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
                                 <% if (!account.isAssigned) { %>
-                                    <button type="button" class="btn btn-success border-0 text-wrap text-center"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#modal<%= index %>"
+                                    <button type="button" class="btn btn-success border-0 text-wrap text-center" onclick="showEditModal(JSON.parse('<%= JSON.stringify(account) %>'))"
                                             style="width: 70%; background-color: #60c98b;">Phân công
                                     </button>
                                 <% } else { %>
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#modal<%= index %>"
-                                       class="mx-3 bg-transparent">
+                                    <a href="javascript:" class="mx-3 bg-transparent" onclick="showEditModal(JSON.parse('<%= JSON.stringify(account) %>'))">
                                         <img src="/images/edit.svg" alt="edit-icon">
                                     </a>
-                                    <a href="" onclick="deleteAccount('<%= account.username %>')" class="mx-3 bg-transparent">
+                                    <a href="" onclick="deleteAccount('<%= account.username %>')"
+                                       class="mx-3 bg-transparent">
                                         <img src="/images/remove.svg" onclick="" alt="remove-icon">
                                     </a>
                                 <% } %>
                             </div>
                         </td>
                     </tr>
-                    <!-- Modal edit -->
-                    <div class="modal fade" id="modal<%= index %>" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header pb-3 border-0">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body pt-1 pb-2 border-0">
-                                    <h5 class="modal-title pb-2 text-center fw-bold fs-4">
-                                        CẤP QUYỀN CHO <span style="color: #355ded;"><%= account.username %></span>
-                                    </h5>
-                                    <form>
-                                        <div class="d-flex justify-content-between">
-                                            <div class="mb-3 d-flex justify-content-between flex-fill">
-                                                <label for="maloai-lhqc" class="col-form-label mb-1">Quận:</label>
-                                                <div class="dropdown justify-content-end px-1 flex-fill"
-                                                     style="height: 2.2rem;">
-                                                    <select class="form-select" aria-label="Default select example"
-                                                            style="width: 95%;"
-                                                            onfocus='this.size=5;' onblur='this.size=1;'
-                                                            onchange='this.size=1; this.blur(); changeWards(this.value);'>
-                                                        <option value="<%= account.districtID %>" selected><%= account.district ? 'Quận ' + account.district : 'Chọn quận' %> </option>
-                                                        <% districts.forEach((district) => { %>
-                                                            <option value="<%= district.districtID %>">Quận <%= district.districtName %></option>
-                                                        <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 d-flex justify-content-between flex-fill">
-                                                <label for="loai-lhqc" class="col-form-label mb-1">Phường:</label>
-                                                <div class="dropdown justify-content-end px-1 flex-fill"
-                                                     style="height: 2.2rem;">
-                                                    <select class="form-select" id="wardSelect" aria-label="Default select example"
-                                                            style="width: 95%;"
-                                                            onfocus='this.size=5;' onblur='this.size=1;'
-                                                            onchange='this.size=1; this.blur();'>
-                                                        <option value="<%= account.wardID %>" selected><%= account.ward ? 'Phường ' + account.ward : 'Chọn phường' %></option>
-                                                        <% wards.forEach((ward) => { %>
-                                                            <% if(ward.districtID === account.districtID) { %>
-                                                                <option value="<%= ward.wardID %>">Phường <%= ward.wardName %></option>
-                                                            <% } %>
-                                                        <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <div class="modal-footer pt-1 d-flex justify-content-around border-0"
-                                     style="background-color: #f7fafc">
-                                    <button type="button" class="btn" data-bs-dismiss="modal"
-                                            style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
-                                        Hủy
-                                    </button>
-                                    <button type="button" class="btn"
-                                            style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                                        Xác nhận
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                 <% }); %>
                 </tbody>
             </table>
 
-            <!-- Modal add -->
-            <%- include('../partials/modal.ejs',
-            {modal_id: 'addModal-pc',
-            sub_title: 'Hãy điền tên tài khoản (Mật khẩu sẽ được tạo ngẫu nhiên)',
-            title: 'Tạo tài khoản',
-            components: [
-            {label: 'Tên tài khoản', type: 'text', id: 'input1', required: true}],
-            buttons: [
-            {label: 'Hủy', color: '#e84747', dismiss: true},
-            {label: 'Thêm', color: '#3c77ff', dismiss: false}]
-            }) %>
+        </div>
+    </div>
+    <!-- Modal edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="min-width: 600px">
+            <div class="modal-content">
+                <div class="modal-header pb-3 border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-1 pb-2 border-0">
+                    <h5 class="modal-title pb-2 text-center fw-bold fs-4">
+                        CẤP QUYỀN CHO <span style="color: #355ded;">username</span>
+                    </h5>
+                    <form>
+                        <div class="d-flex justify-content-between">
+                            <div class="mb-3 d-flex justify-content-between flex-fill">
+                                <label for="maloai-lhqc" class="col-form-label mb-1">Quận:</label>
+                                <div class="dropdown justify-content-end px-1"
+                                     style="height: 2.2rem;">
+                                    <select class="form-select" aria-label="Default select example"
+                                            style="min-width: 6.5rem;" id="districtSelect"
+                                            onfocus='this.size=5;'
+                                            onblur='this.size=1;'
+                                            onchange='this.size=1; this.blur(); changeWards(this.value);'>
+                                        <option value="selectedDistrict" selected>
+                                            accountDistrict
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 d-flex justify-content-between flex-fill">
+                                <label for="loai-lhqc" class="col-form-label mb-1">Phường:</label>
+                                <div class="dropdown justify-content-end px-1"
+                                     style="height: 2.2rem;">
+                                    <select class="form-select" id="wardSelect"
+                                            aria-label="Ward selector"
+                                            style="min-width: 6.5rem;"
+                                            onfocus='this.size=5;' onblur='this.size=1;'
+                                            onchange='this.size=1; this.blur();'>
+                                        <option value="selectedWard" selected>
+                                            accountWard
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
+                <div class="modal-footer pt-1 d-flex justify-content-around border-0"
+                     style="background-color: #f7fafc">
+                    <button type="button" class="btn" data-bs-dismiss="modal"
+                            style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
+                        Hủy
+                    </button>
+                    <button type="button" class="btn"
+                            style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                        Xác nhận
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </main>
-<script>
-    const deleteAccount = async (username) => {
-        console.log(`/so/assign/${username}`);
-        try {
-            const response = await fetch(`/so/assign/${username}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Add any additional headers as needed
-                },
-            });
-        } catch (error) {
-            console.error('Error during DELETE request:', error.message);
-        }
-    };
-    
+<!-- Modal add -->
+<script defer type="module">
+	import createModal from '/js/modal.js';
 
-    const changeWards = async (selectedDistrict) => {
-        // console.log(selectedDistrict);
-        const response = await fetch(`/so/getWards`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Add any additional headers as needed
-                },
-            });
-        const wards = await response.json();
-        console.log(wards);
-        let wardSelectTag = document.querySelector("#wardSelect");
-        wardSelectTag.setAttribute('id','abc');
-        wardSelectTag.innerHTML = "";
-        // wardSelect.append('<option value="" selected>Chọn phường</option>');
-        // wards.forEach((ward) => { 
-        //     if (ward.districtID === selectedDistrict) {
-        //         const option = document.createElement('option');
-        //         option.value = ward.wardID;
-        //         option.textContent = `Phường ${ward.wardName}`;
-        //         wardSelect.append(option);
-        //     }
-        // }) 
+	const options = {
+		id: 'addModal-lhqc',
+		title: 'Tạo tài khoản',
+		form: {
+			id: 'addModal-pc',
+			method: 'POST',
+			action: JSON.parse('<%- JSON.stringify(url) %>'),
+			components: [
+				{
+					id: 'username',
+					label: 'Tên tài khoản',
+					required: true,
+					type: 'input',
+					inputType: 'text',
+					placeholder: 'Tên tài khoản'
+				},
+			],
+			buttons: [
+				{type: 'button', label: 'Hủy', color: '#e84747', dismiss: true},
+				{type: 'submit', label: 'Xác nhận', color: '#3c77ff', dismiss: true},
+			],
+		}
+	}
+	createModal(options);
+</script>
+
+<script defer>
+	const deleteAccount = async (username) => {
+		console.log(`/so/assign/${username}`);
+		try {
+			const response = await fetch(`/so/assign/${username}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					// Add any additional headers as needed
+				},
+			});
+		} catch (error) {
+			console.error('Error during DELETE request:', error.message);
+		}
+	};
+
+    const showEditModal = (account) => {
+      const modal = document.getElementById('editModal');
+      // put data into modal
+      const modalTitle = modal.querySelector('.modal-title');
+      modalTitle.textContent = account.username;
+
+      const districtSelect = modal.querySelector('#districtSelect');
+      // remove all options
+      districtSelect.innerHTML = '';
+      districtSelect.appendChild(document.createElement('option')); // Add an empty option
+      const districts = JSON.parse('<%- JSON.stringify(districts) %>');
+      // add options
+      districts.forEach((district) => {
+        const option = document.createElement('option');
+        option.value = district.districtID;
+        option.textContent = `Quận ${district.districtName}`;
+        districtSelect.appendChild(option);
+      });
+
+      const wardSelect = modal.querySelector('#wardSelect');
+      // remove all options
+      wardSelect.innerHTML = '';
+      wardSelect.appendChild(document.createElement('option')); // Add an empty option
+      // get wards of selected district
+      const selectedDistrict = account.district;
+      changeWards(selectedDistrict);
+
+        // show modal
+      const modalInstance = new bootstrap.Modal(modal);
+      modalInstance.show($('main'));
     }
+
+	const changeWards = async (selectedDistrict) => {
+		try {
+			// Use fetch for better handling of asynchronous requests
+			const response = await fetch(`/so/getWards/${selectedDistrict}`);
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			const wards = await response.json();
+			console.log(wards);
+
+			let wardSelectTag = document.getElementById('wardSelect');
+			wardSelectTag.innerHTML = '';
+			wardSelectTag.appendChild(document.createElement('option')); // Add an empty option
+
+            if (wards.length === 0) {
+              const option = document.createElement('option');
+              option.value = '';
+              option.textContent = 'Chưa có phường';
+              wardSelectTag.appendChild(option);
+              return;
+            }
+
+			wards.forEach((ward) => {
+              const option = document.createElement('option');
+              option.value = ward.wardID;
+              option.textContent = `Phường ${ward.wardName}`;
+              wardSelectTag.appendChild(option);
+              console.log("I'm changeing")
+			});
+		} catch (error) {
+			console.error(`Error in changeWards: ${error.message}`);
+		}
+	};
 </script>
 
 </body>

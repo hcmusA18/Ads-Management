@@ -58,51 +58,48 @@
             }
             }); %>
             <script defer type="module">
-							import createModal from '/js/modal.js';
-
-							const components = [
-								{
-									id: 'typeID',
-									label: 'Mã loại',
-									required: true,
-									type: 'input',
-									inputType: 'text',
-									placeholder: 'Loại hình quảng cáo',
-									disabled: true
-								},
-								{
-									id: 'type',
-									label: 'Loại',
-									required: true,
-									type: 'input',
-									inputType: 'text',
-									placeholder: 'Loại hình quảng cáo'
-								},
-								{id: 'desc', label: 'Mô tả', required: true, type: 'textarea', rows: 3, placeholder: 'Mô tả'}
-							];
-							const buttons = [
-								{label: 'Hủy', color: '#e84747', dismiss: true, type: 'button'},
-								{label: 'Xác nhận', color: '#3c77ff', dismiss: true, type: 'submit'}
-							];
-							const len = JSON.parse('<%- JSON.stringify(tableData.length) %>');
-							const dataID = JSON.parse('<%- JSON.stringify(tableData.map(item => item.id)) %>');
-							for (let i = 0; i < len; i++) {
-								components[0].value = dataID[i];
-								const editModal = {
-									id: `editModal-${i}`,
-									title: 'CHỈNH SỬA',
-									form: {
-										id: `editForm-${i}`,
-                                        method: 'PATCH',
-										components: components,
-										buttons: buttons,
-										action: JSON.parse(`<%- JSON.stringify(url) %>`)
-									}
-								}
-								createModal(editModal);
-							}
-
-            </script>
+              import createModal from '/js/modal.js';
+              const components = [
+                {
+                  id: 'typeID',
+                  label: 'Mã loại',
+                  required: true,
+                  type: 'input',
+                  inputType: 'text',
+                  placeholder: 'Loại hình quảng cáo',
+                  disabled: true
+                },
+                {
+                  id: 'type',
+                  label: 'Loại',
+                  required: true,
+                  type: 'input',
+                  inputType: 'text',
+                  placeholder: 'Loại hình quảng cáo'
+                },
+                {id: 'desc', label: 'Mô tả', required: true, type: 'textarea', rows: 3, placeholder: 'Mô tả'}
+              ];
+              const buttons = [
+                {label: 'Hủy', color: '#e84747', dismiss: true, type: 'button'},
+                {label: 'Xác nhận', color: '#3c77ff', dismiss: true, type: 'submit'}
+              ];
+              const len = JSON.parse('<%- JSON.stringify(tableData.length) %>');
+              const dataID = JSON.parse('<%- JSON.stringify(tableData.map(item => item.id)) %>');
+              for (let i = 0; i < len; i++) {
+                components[0].value = dataID[i];
+                const editModal = {
+                  id: `editModal-${i}`,
+                  title: 'CHỈNH SỬA',
+                  form: {
+                    id: `editForm-${i}`,
+                    method: 'PATCH',
+                    components: components,
+                    buttons: buttons,
+                    action: JSON.parse(`<%- JSON.stringify(url) %>`)
+                  }
+                }
+                createModal(editModal);
+              }</script>
 
         </div>
     </div>
