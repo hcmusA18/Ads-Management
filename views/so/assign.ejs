@@ -210,7 +210,10 @@
       const districtSelect = modal.querySelector('#districtSelect');
       // remove all options
       districtSelect.innerHTML = '';
-      districtSelect.appendChild(document.createElement('option')); // Add an empty option
+      const emptyOption = document.createElement('option');
+      emptyOption.value = '';
+      emptyOption.textContent = 'Chọn quận';
+      districtSelect.appendChild(emptyOption); // Add an empty option
       const districts = JSON.parse('<%- JSON.stringify(districts) %>');
       // add options
       districts.forEach((district) => {
@@ -219,12 +222,6 @@
         option.textContent = `Quận ${district.districtName}`;
         districtSelect.appendChild(option);
       });
-
-      const wardSelect = modal.querySelector('#wardSelect');
-      // remove all options
-      wardSelect.innerHTML = '';
-      wardSelect.appendChild(document.createElement('option')); // Add an empty option
-      // get wards of selected district
       const selectedDistrict = account.district;
       changeWards(selectedDistrict);
 
@@ -247,13 +244,13 @@
 
 			let wardSelectTag = document.getElementById('wardSelect');
 			wardSelectTag.innerHTML = '';
-			wardSelectTag.appendChild(document.createElement('option')); // Add an empty option
+			const emptyOption = document.createElement('option');
+			emptyOption.value = '';
+			emptyOption.textContent = 'Chọn phường';
+			wardSelectTag.appendChild(emptyOption); // Add an empty option
 
             if (wards.length === 0) {
-              const option = document.createElement('option');
-              option.value = '';
-              option.textContent = 'Chưa có phường';
-              wardSelectTag.appendChild(option);
+              emptyOption.textContent = 'Không có phường';
               return;
             }
 
@@ -262,7 +259,6 @@
               option.value = ward.wardID;
               option.textContent = `Phường ${ward.wardName}`;
               wardSelectTag.appendChild(option);
-              console.log("I'm changeing")
 			});
 		} catch (error) {
 			console.error(`Error in changeWards: ${error.message}`);
