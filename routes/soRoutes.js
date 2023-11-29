@@ -17,14 +17,14 @@ router.get('/', (req, res) => {
 	res.render('./so/index', {title: 'Sở - Trang chủ', toolbars: toolbars});
 });
 
-router.get('/types', (req, res) => {
-	controller.typesController.show(req, res);
+router.get('/types', async (req, res) => {
+	await controller.typesController.show(req, res);
 });
 router.get('/types/:id', (req, res) => {
 	controller.typesController.showDetail(req, res);
 });
-router.post('/types', (req, res) => {
-	console.log(req.body);
+router.post('/types', async (req, res) => {
+	await controller.typesController.add(req, res);
 });
 router.get('/locations', (req, res) => {
 	res.render('./so/locations', {title: 'Sở - Quản lý Quận', toolbars: toolbars});

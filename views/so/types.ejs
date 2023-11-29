@@ -12,6 +12,13 @@
 <main class="container-fluid d-flex bg-light" style="height: 100vh;;">
     <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
     <div class="container-fluid vw-100 pt-1">
+        <% if (typeof message !== undefined && message.success) {%>
+        <div class="alert alert-success alert-dismissible"
+             role="alert">
+            <strong>Thành công!</strong> <%= message.success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative"
              style="min-height: 80vh;">
             <!-- Profile -->

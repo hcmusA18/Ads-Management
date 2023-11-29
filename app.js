@@ -50,9 +50,10 @@ app.use(passport.session());
 const publicDirectory = path.join(__dirname, './public');
 app.use(express.static(publicDirectory))
 app.use((req, res, next) => {
-  res.locals.url = req.originalUrl
-  res.locals.host = req.get('host')
-  res.locals.protocol = req.protocol
+  res.locals.url = req.originalUrl;
+  res.locals.host = req.get('host');
+  res.locals.protocol = req.protocol;
+  req.locals.message = req.flash();
   next()
 })
 

@@ -90,19 +90,22 @@ controller.showDetail = async (req, res) => {
 
 controller.add = async (req, res) => {
 	const category = req.query.category || '';
-	let title = '';
+	const {type, desc} = req.body;
+	let message = '';
 	switch (category) {
 		case 'ads':
-			title = 'Sở - Thêm loại hình quảng cáo';
+			message = await adsFormService.createAdsForm({formName: type, description: desc}).message;
 			break;
 		case 'report':
-			title = 'Sở - Thêm hình thức báo cáo';
+			message = await reportTypeService.createReportType({typeName: type, description: desc}).message;
 			break;
 		default:
 			res.status(404);
-			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+			return res.render('error', {error: {status: 404, message: 'Không thể thực hiện'}});
 	}
-	return res.render('./so/type-add', {title, category, toolbars});
+	req.flash('success', message);
+	console.log('Do you see me')
+	return res.redirect(req.originalUrl);
 }
 
 export default controller;
