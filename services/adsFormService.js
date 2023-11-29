@@ -3,7 +3,7 @@ import AdsForm from '../models/adsFormModel.js';
 // Thêm export đầu mỗi hàm
 // Ở file cần dùng thì import * as [abcd]Service from 'path/[abcd]Service.js'
 
-export const createAdsForm = async (data) => {
+export const create = async (data) => {
   try {
     const newAdsForm = new AdsForm(data);
     await newAdsForm.save();
@@ -25,7 +25,7 @@ export const updateAdsFormByID = async (formID, newData) => {
   }
 };
 
-export const deleteAdsFormByID = async (formID) => {
+export const remove = async (formID) => {
   try {
     await AdsForm.findOneAndDelete({ formID });
     return { message: 'Ads form deleted successfully' };

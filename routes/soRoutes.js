@@ -26,6 +26,15 @@ router.get('/types/:id', (req, res) => {
 router.post('/types', async (req, res) => {
 	await controller.typesController.add(req, res);
 });
+
+router.put('/types/:id', async (req, res) => {
+	await controller.typesController.update(req, res);
+});
+
+router.delete('/types/:id', async (req, res) => {
+	await controller.typesController.remove(req, res);
+});
+
 router.get('/locations', (req, res) => {
 	controller.locationsController.findAllDistricts(req, res);
 });

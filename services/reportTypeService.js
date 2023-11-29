@@ -1,6 +1,6 @@
 import ReportType from '../models/reportTypeModel.js';
 
-export const createReportType = async (data) => {
+export const create = async (data) => {
   try {
     const newReportType = new ReportType(data);
     await newReportType.save();
@@ -22,7 +22,7 @@ export const updateReportTypeByID = async (typeID, newData) => {
   }
 };
 
-export const deleteReportTypeByID = async (typeID) => {
+export const remove = async (typeID) => {
   try {
     await ReportType.findOneAndDelete({ typeID });
     return { message: 'Report type deleted successfully' };

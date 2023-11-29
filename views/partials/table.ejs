@@ -1,4 +1,4 @@
-<% const keys = Object.keys(tableData[0]) %>
+<% const keys = (tableData && tableData.length > 0) ? Object.keys(tableData[0]) : [] %>
 <table id="table"
        data-toggle="table"
        data-search="true"
@@ -30,11 +30,16 @@
                 <% if (key === 'actions') { %>
                     <td>
                         <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
-                        <%- include('./actions-set', {
-                        edit: tableRow.actions.edit ? {modal: '#editModal-' + i} : null,
-                        remove: tableRow.actions.remove ? {modal: '#removeModal-' + i} : null,
-                        info: tableRow.actions.info ? {modal: '#infoModal-' + i, url: infoUrl} : null,
-                        }) %>
+                        <% const removeUrl = (tableRow.actions.remove) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
+                        <% if (tableRow.actions.edit) { %>
+                            <%- include('./edit_button.ejs', {target: '#editModal-' + i}) %>
+                        <% } %>
+                        <% if (tableRow.actions.remove) { %>
+                            <%- include('./remove_button.ejs', {url: removeUrl, removeHandler: 'removeHandler'}) %>
+                        <% } %>
+                        <% if (tableRow.actions.info) { %>
+                            <%- include('./info_button.ejs', {url: infoUrl}) %>
+                        <% } %>
                     </td>
                 <% }else { %>
                     <td><%= tableRow[key] %></td>
@@ -42,5 +47,20 @@
             <% }) %>
         </tr>
     <% }) %>
+    
     </tbody>
 </table>
+
+<script defer>
+	const removeHandler = async (e, url) => {
+		try {
+			e.preventDefault();
+			const confirm = window.confirm('Bạn có chắc chắn muốn xóa?');
+			if (confirm) {
+			    const result = await fetch(url, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+	};
+</script>
