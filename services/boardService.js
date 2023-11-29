@@ -60,3 +60,12 @@ export const getBoardsOfSpot = async (spotID) => {
     throw new Error(`Error getting boards of spot: ${error.message}`);
   }
 };
+
+
+export const countAll = async () => {
+  try {
+    return Board.countDocuments();
+  } catch (error) {
+    throw new Error(`Error couting boards of spot: ${error.message}`);
+  }
+};

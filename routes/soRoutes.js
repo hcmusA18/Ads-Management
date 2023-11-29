@@ -27,7 +27,7 @@ router.post('/types', async (req, res) => {
 	await controller.typesController.add(req, res);
 });
 router.get('/locations', (req, res) => {
-	res.render('./so/locations', {title: 'Sở - Quản lý Quận', toolbars: toolbars});
+	controller.locationsController.findAllDistricts(req, res);
 });
 
 router.get('/locations-detail', (req, res) => {

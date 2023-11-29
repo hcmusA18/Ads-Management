@@ -84,3 +84,11 @@ export const getSpotsByPlanned = async (planned) => {
     throw new Error(`Error getting spots by planned: ${error.message}`);
   }
 };
+
+export const countAll = async () => {
+  try {
+    return Spot.countDocuments();
+  } catch (error) {
+    throw new Error(`Error couting spots by planned: ${error.message}`);
+  }
+};
