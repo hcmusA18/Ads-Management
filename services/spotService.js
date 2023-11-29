@@ -92,3 +92,11 @@ export const countAll = async () => {
     throw new Error(`Error couting spots by planned: ${error.message}`);
   }
 };
+
+export const countAllOfDistrict = async (districtID) => {
+  try {
+    return Spot.countDocuments({districtID: districtID});
+  } catch (error) {
+    throw new Error(`Error get wards of count documents: ${error.message}`)
+  }
+}

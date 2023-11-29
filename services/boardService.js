@@ -69,3 +69,11 @@ export const countAll = async () => {
     throw new Error(`Error couting boards of spot: ${error.message}`);
   }
 };
+
+export const countAllOfDistrict = async (districtID) => {
+  try {
+    return Board.countDocuments({districtID: districtID});
+  } catch (error) {
+    throw new Error(`Error get wards of count documents: ${error.message}`)
+  }
+}
