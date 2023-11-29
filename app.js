@@ -53,7 +53,6 @@ app.use((req, res, next) => {
   res.locals.url = req.originalUrl;
   res.locals.host = req.get('host');
   res.locals.protocol = req.protocol;
-  req.locals.message = req.flash();
   next()
 })
 
