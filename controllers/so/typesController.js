@@ -14,11 +14,12 @@ controller.show = async (req, res) => {
 			tableHeads = ['No', 'Mã Loại', 'Tên Loại', 'Mô tả'];
 			tableData = await adsFormService.getAllAdsForms();
 			tableData = tableData.map((adsForm, index) => {
-				const {_id, formID, ...rest} = adsForm.toObject();
+				const {_id, formID, formName, description} = adsForm.toObject();
 				return {
 					no: index + 1,
 					id: formID,
-					...rest,
+					name: formName,
+					description: description,
 					actions: {
 						edit: true,
 						remove: true,
@@ -51,7 +52,7 @@ controller.show = async (req, res) => {
 			res.status(404);
 			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
-
+	console.log('You are getting something');
 	return res.render('./so/types', {title, category, tableHeads, tableData, toolbars});
 }
 
@@ -88,24 +89,72 @@ controller.showDetail = async (req, res) => {
 	return res.render('./so/type-detail', {title, detail, toolbars});
 }
 
+const createForm = async (service, formName, type, desc) => {
+	const {message}= await service.create({[`${formName.toLowerCase()}Name`]: type, description: desc});
+	return message;
+}
+
 controller.add = async (req, res) => {
-	const category = req.query.category || '';
-	const {type, desc} = req.body;
-	let message = '';
-	switch (category) {
-		case 'ads':
-			message = await adsFormService.createAdsForm({formName: type, description: desc}).message;
-			break;
-		case 'report':
-			message = await reportTypeService.createReportType({typeName: type, description: desc}).message;
-			break;
-		default:
-			res.status(404);
-			return res.render('error', {error: {status: 404, message: 'Không thể thực hiện'}});
+	try {
+		const {category = ''} = req.query;
+		const {type, desc} = req.body;
+		let message = 'hello';
+
+		switch (category) {
+			case 'ads':
+				message = await createForm(adsFormService, 'form', type, desc);
+				break;
+			case 'report':
+				message = await createForm(reportTypeService, 'type', type, desc);
+				break;
+			default:
+				req.fresh('error', 'Không tìm thấy loại hình');
+				return res.redirect(req.originalUrl);
+		}
+		console.log(`Message: ${message}`);
+		req.flash('success', message);
+		return res.redirect(req.originalUrl);
 	}
-	req.flash('success', message);
-	console.log('Do you see me')
-	return res.redirect(req.originalUrl);
+	catch (error) {
+		console.log(`Error adding new type: ${error.message}`);
+		req.flash('error', error.message);
+		return res.redirect(req.originalUrl);
+	}
+}
+
+const removeForm = async (service, formName, id) => {
+	const {message} = await service.remove(id);
+	return message;
+}
+
+controller.remove = async (req, res) => {
+	const newUrl = req.originalUrl.replace(`/${req.params.id}`, '');
+	res.method = 'GET';
+	try {
+		const {category = ''} = req.query;
+		const {id} = req.params;
+		let message = 'hello';
+
+		switch (category) {
+			case 'ads':
+				message = await removeForm(adsFormService, 'form', id);
+				break;
+			case 'report':
+				message = await removeForm(reportTypeService, 'type', id);
+				break;
+			default:
+				req.flash('error', 'Không tìm thấy loại hình');
+				return res.redirect(303, newUrl);
+		}
+		console.log(`Message: ${message}`);
+		req.flash('success', message);
+		return res.redirect(303, newUrl);
+	}
+	catch (error) {
+		console.log(`Error removing type: ${error.message}`);
+		req.flash('error', error.message);
+		return res.redirect(303, newUrl);
+	}
 }
 
 export default controller;

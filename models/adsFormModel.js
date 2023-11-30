@@ -7,7 +7,8 @@ const AdsFormSchema = new mongoose.Schema({
     },
     formName: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     description: {
         type: String,
