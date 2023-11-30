@@ -1,3 +1,4 @@
+import e from 'cors';
 import Officer from '../models/officerModel.js';
 import {hashPassword} from './passwordService.js';
 import {Model} from 'mongoose';
@@ -103,6 +104,16 @@ export const getOfficerByGoogleID = async (googleId) => {
 	return handleAsyncError(Officer.findOne({googleId}));
 };
 
+export const updateOfficer = async (username, dataToUpdate) => {
+	// console.log(username);
+	// console.log(dataToUpdate);
+	try {
+		await Officer.findOneAndUpdate({ username }, { $set: dataToUpdate });
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
 export default {
 	createOfficer,
 	deleteOfficerByUsername,
@@ -111,5 +122,6 @@ export default {
 	getOfficerByUsername,
 	getOfficersByDistrictID,
 	getOfficersByWardID,
-	updatePasswordByUsername
+	updatePasswordByUsername,
+	updateOfficer
 }

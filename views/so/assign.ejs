@@ -101,7 +101,7 @@
                             aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-1 pb-2 border-0">
-                    <h5 class="modal-title pb-2 text-center fw-bold fs-4">
+                    <h5 class="modal-title pb-2 text-center fw-bold fs-4" id="username-edit">
                         CẤP QUYỀN CHO <span style="color: #355ded;">username</span>
                     </h5>
                     <form>
@@ -146,7 +146,7 @@
                             style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc">
                         Hủy
                     </button>
-                    <button type="button" class="btn"
+                    <button type="button" class="btn" onclick="updateAccount()"
                             style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
                         Xác nhận
                     </button>
@@ -174,6 +174,14 @@
 					type: 'input',
 					inputType: 'text',
 					placeholder: 'Tên tài khoản'
+				},
+                {
+					id: 'email',
+					label: 'Email',
+					required: true,
+					type: 'input',
+					inputType: 'email',
+					placeholder: 'Email'
 				},
 			],
 			buttons: [
@@ -220,9 +228,13 @@
         const option = document.createElement('option');
         option.value = district.districtID;
         option.textContent = `Quận ${district.districtName}`;
+
+        if(district.districtID == account.districtID)
+            option.selected = true;
         districtSelect.appendChild(option);
       });
-      const selectedDistrict = account.district;
+      const selectedDistrict = (account.districtID === "") ? "none" : account.districtID;
+
       changeWards(selectedDistrict);
 
         // show modal
@@ -240,7 +252,7 @@
 			}
 
 			const wards = await response.json();
-			console.log(wards);
+			// console.log(wards.length);
 
 			let wardSelectTag = document.getElementById('wardSelect');
 			wardSelectTag.innerHTML = '';
@@ -264,6 +276,43 @@
 			console.error(`Error in changeWards: ${error.message}`);
 		}
 	};
+    
+    const updateAccount = async () => {
+        const districtSelect = document.getElementById('districtSelect').value;
+        const wardSelect = document.getElementById('wardSelect').value;
+        const username = document.getElementById('username-edit').innerHTML;
+
+        const position = (wardSelect === "") ? 1 : 2;
+
+        const dataToUpdate = {
+            position: position,
+            districtID: districtSelect,
+            wardID: wardSelect
+        };
+
+        try {
+            const response = await fetch(`/so/assign/${username}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // You might need to include other headers like authorization token
+                },
+                body: JSON.stringify(dataToUpdate)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to update user: ${response.status}`);
+            }
+
+            
+            // Handle success, if needed
+        } catch (error) {
+            console.error(`Error updating user: ${error.message}`);
+        } finally {
+            location.reload();
+        }
+    
+    }
 </script>
 
 </body>

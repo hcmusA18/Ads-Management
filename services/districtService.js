@@ -24,7 +24,7 @@ export const getDistrictByID = async (districtID) => {
 
 export const getAllDistricts = async () => {
     try {
-        const districts = await District.find();
+        const districts = await District.find().sort({districtID: 1});
         return districts;
     } catch (error) {
         throw new Error(`Error getting all districts: ${error.message}`);

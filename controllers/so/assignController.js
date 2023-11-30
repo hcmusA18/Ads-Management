@@ -2,7 +2,6 @@ import {toolbars} from './utilities.js';
 import officerService from '../../services/officerService.js';
 import * as districtService from '../../services/districtService.js';
 import * as wardService from '../../services/wardService.js';
-import * as adsFormService from '../../services/adsFormService.js';
 
 const show = async (req, res) => {
 	const {result: officers} = await officerService.getAllOfficersByPosition();
@@ -56,5 +55,43 @@ const getWards = async (req, res) => {
 	res.json(wards);
 }
 
+const updateOfficer = async (req, res) => {
+	const username = req.params.username;
+	const dataToUpdate = req.body;
 
-export default {show, deleteAccount, getWards};
+	await officerService.updateOfficer(username, dataToUpdate);
+
+	res.redirect("/so/assign");
+}
+
+const addOfficer = async (req, res)  => {
+	const {username, email} = req.body;
+	// console.log(username);
+	// console.log(email);
+	const newData = {
+		username: username,
+		password: generateRandomPassword(),
+		email: email,
+		position: 0,
+		districtID: "",
+		wardID: ""
+	}
+
+	await officerService.createOfficer(newData);
+
+	res.redirect("/so/assign");
+}
+
+function generateRandomPassword() {
+    const length = 8;
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset.charAt(randomIndex);
+    }
+    return password;
+}
+
+
+export default {show, deleteAccount, getWards, updateOfficer, addOfficer};

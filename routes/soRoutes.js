@@ -50,6 +50,14 @@ router.delete('/assign/:username', (req, res) => {
 	controller.assignController.deleteAccount(req, res);
 })
 
+router.patch('/assign/:username', (req, res) => {
+	controller.assignController.updateOfficer(req, res);
+})
+
+router.post('/assign', (req, res) => {
+	controller.assignController.addOfficer(req, res);
+})
+
 router.get('/getWards/:id', async (req, res) => {
 	await controller.assignController.getWards(req, res);
 })
