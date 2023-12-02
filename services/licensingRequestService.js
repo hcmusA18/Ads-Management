@@ -1,68 +1,64 @@
-import EditRequest from '../models/editRequestModel.js';
+import LicensingRequest from '../models/licensingRequestModel.js';
 
-export const createEditRequest = async (data) => {
+export const create = async (data) => {
   try {
-    const newEditRequest = new EditRequest(data);
-    await newEditRequest.save();
-    return { message: 'Edit request created successfully' };
+    const newRequest = new LicensingRequest(data);
+    await newRequest.save();
+    return { message: 'Licensing request created successfully' };
   } catch (error) {
-    throw new Error(`Error creating edit request: ${error.message}`);
+    throw new Error(`Error creating licensing request: ${error.message}`);
   }
 };
 
-export const updateRequestByID = async (requestID, newData) => {
+export const updateByID = async (id, newData) => {
   try {
-    await EditRequest.findOneAndUpdate(
-      { requestID },
+    await LicensingRequest.findOneAndUpdate(
+      { id },
       { $set: newData },
     );
-    return { message: 'Edit request updated successfully' };
+    return { message: 'Licensing request updated successfully' };
   } catch (error) {
-    throw new Error(`Error updating edit request by ID: ${error.message}`);
+    throw new Error(`Error updating licensing request by ID: ${error.message}`);
   }
 };
 
-export const deleteRequestByID = async (requestID) => {
+export const remove = async (id) => {
   try {
-    await EditRequest.findOneAndDelete({ requestID });
-    return { message: 'Edit request deleted successfully' };
+    await LicensingRequest.findOneAndDelete({ id });
+    return { message: 'Licensing request deleted successfully' };
   } catch (error) {
-    throw new Error(`Error deleting edit request by ID: ${error.message}`);
+    throw new Error(`Error deleting licensing request by ID: ${error.message}`);
   }
 };
 
-export const getAllRequests = async () => {
+export const getAll = async () => {
   try {
-    const editRequests = await EditRequest.find();
-    return editRequests;
+    return await LicensingRequest.find();
   } catch (error) {
-    throw new Error(`Error getting all edit requests: ${error.message}`);
+    throw new Error(`Error getting all licensing requests: ${error.message}`);
   }
 };
 
-export const getRequestByID = async (requestID) => {
+export const getByID = async (id) => {
   try {
-    const editRequest = await EditRequest.findOne({ requestID });
-    return editRequest;
+    return await LicensingRequest.findOne({ id });
   } catch (error) {
-    throw new Error(`Error getting edit request by ID: ${error.message}`);
+    throw new Error(`Error getting licensing request by ID: ${error.message}`);
   }
 };
 
-export const getRequestsByObjectID = async (objectID) => {
+export const getByObjectID = async (objectID) => {
   try {
-    const editRequests = await EditRequest.find({ objectID });
-    return editRequests;
+    return await LicensingRequest.find({ objectID });
   } catch (error) {
-    throw new Error(`Error getting edit requests by objectID: ${error.message}`);
+    throw new Error(`Error getting licensing requests by objectID: ${error.message}`);
   }
 };
 
-export const getRequestsByStatus = async (status) => {
+export const getByStatus = async (status) => {
   try {
-    const editRequests = await EditRequest.find({ status });
-    return editRequests;
+    return await LicensingRequest.find({ status });
   } catch (error) {
-    throw new Error(`Error getting edit requests by status: ${error.message}`);
+    throw new Error(`Error getting licensing requests by status: ${error.message}`);
   }
 };

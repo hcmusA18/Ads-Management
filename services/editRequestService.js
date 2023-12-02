@@ -1,19 +1,19 @@
-import EditRequest from '../models/editRequestModel.js';
+import EditRequest from '../models/editRequestModel.js'
 
-export const createEditRequest = async (data) => {
+export const create = async (data) => {
   try {
-    const newEditRequest = new EditRequest(data);
-    await newEditRequest.save();
-    return { message: 'Edit request created successfully' };
+    const newEditRequest = new EditRequest(data)
+    await newEditRequest.save()
+    return { message: 'Edit request created successfully' }
   } catch (error) {
-    throw new Error(`Error creating edit request: ${error.message}`);
+    throw new Error(`Error creating edit request: ${error.message}`)
   }
-};
+}
 
-export const updateRequestByID = async (requestID, newData) => {
+export const updateByID = async (id, newData) => {
   try {
     await EditRequest.findOneAndUpdate(
-      { requestID },
+      { id },
       { $set: newData },
     );
     return { message: 'Edit request updated successfully' };
@@ -22,9 +22,9 @@ export const updateRequestByID = async (requestID, newData) => {
   }
 };
 
-export const deleteRequestByID = async (requestID) => {
+export const deleteByID = async (id) => {
   try {
-    await EditRequest.findOneAndDelete({ requestID });
+    await EditRequest.findOneAndDelete({ id });
     return { message: 'Edit request deleted successfully' };
   } catch (error) {
     throw new Error(`Error deleting edit request by ID: ${error.message}`);
@@ -33,36 +33,32 @@ export const deleteRequestByID = async (requestID) => {
 
 export const getAllRequests = async () => {
   try {
-    const editRequests = await EditRequest.find();
-    return editRequests;
+    return await EditRequest.find()
   } catch (error) {
-    throw new Error(`Error getting all edit requests: ${error.message}`);
+    throw new Error(`Error getting all edit requests: ${error.message}`)
   }
-};
+}
 
-export const getRequestByID = async (requestID) => {
+export const getByID = async (id) => {
   try {
-    const editRequest = await EditRequest.findOne({ requestID });
-    return editRequest;
+    return await EditRequest.findOne({ id })
   } catch (error) {
-    throw new Error(`Error getting edit request by ID: ${error.message}`);
+    throw new Error(`Error getting edit request by ID: ${error.message}`)
   }
-};
+}
 
-export const getRequestsByObjectID = async (objectID) => {
+export const getByObjectID = async (objectID) => {
   try {
-    const editRequests = await EditRequest.find({ objectID });
-    return editRequests;
+    return await EditRequest.find({ objectID })
   } catch (error) {
-    throw new Error(`Error getting edit requests by objectID: ${error.message}`);
+    throw new Error(`Error getting edit requests by objectID: ${error.message}`)
   }
-};
+}
 
-export const getRequestsByStatus = async (status) => {
+export const getByStatus = async (status) => {
   try {
-    const editRequests = await EditRequest.find({ status });
-    return editRequests;
+    return await EditRequest.find({ status })
   } catch (error) {
-    throw new Error(`Error getting edit requests by status: ${error.message}`);
+    throw new Error(`Error getting edit requests by status: ${error.message}`)
   }
-};
+}
