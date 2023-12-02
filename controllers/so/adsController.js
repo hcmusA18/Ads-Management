@@ -50,7 +50,6 @@ const show = (req, res) => {
 		return commonData;
 	}
 	);
-
 	res.render('ads', { url: req.originalUrl, title, category, tableHeads, tableData, checkboxHeader: 'THÀNH PHỐ HỒ CHÍ MINH', checkboxData, toolbars });
 };
 

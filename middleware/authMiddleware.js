@@ -1,5 +1,5 @@
 export const checkAuth = (req, res, next) => {
-    if (!req.isAuthenticated() || !req.user || req.user.position == 0) {
+    if (!req.isAuthenticated() || !req.user || req.user.position === 0) {
         return res.redirect('/');
     }
     const desRoute = req.originalUrl;

@@ -11,28 +11,28 @@ const redirectUrl = (officer, res) => {
 }
 
 const authController = (strategy) => (req, res, next) => {
-  passport.authenticate(strategy, (err, officer, info) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (!officer) {
-      req.flash('error', info.message)
-      return res.redirect('/');
-    }
-
-    req.login(officer, (loginErr) => {
-      if (loginErr) {
-        return next(loginErr);
+  passport.authenticate(strategy, { failureRedirect: '/' }, (err, officer, info) => {
+      if (err) {
+        return next(err);
       }
-      return redirectUrl(officer, res);
-    });
-  })(req, res, next);
+
+      if (!officer) {
+        req.flash('error', info.message)
+        return res.redirect('/');
+      }
+
+      req.login(officer, (loginErr) => {
+        if (loginErr) {
+          return next(loginErr);
+        }
+        return redirectUrl(officer, res);
+      });
+    })(req, res, next);
 };
 
 
 export const ggLoginController = (req, res, next) => {
-    passport.authenticate('google', (err, officer, info) => {
+    passport.authenticate('google', { failureRedirect: '/' }, (err, officer, info) => {
       if (err) {
         return next(err);
       }

@@ -12,7 +12,10 @@ const toolbars = [
 	{icon: 'bi bi-journal-bookmark-fill', name: 'Thống kê báo cáo', link: '/so/reports',},
 	{icon: 'bi bi-person-badge', name: 'Phân công', link: '/so/assign'}];
 
-
+router.get('*', (req, res, next) => {
+	res.locals.user = req.user;
+	next();
+});
 router.get('/', (req, res) => {
 	res.render('./so/index', {title: 'Sở - Trang chủ', toolbars: toolbars});
 });
