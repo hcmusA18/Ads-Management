@@ -59,8 +59,19 @@
 			if (confirm) {
 			    const result = await fetch(url, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
             }
+			location.reload();
         } catch (error) {
             console.log(error);
         }
 	};
+
+    const updateHandler = async (e, url, data) => {
+        try {
+            e.preventDefault();
+            const result = await fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            location.reload();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 </script>

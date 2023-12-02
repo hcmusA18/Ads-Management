@@ -3,54 +3,60 @@ import * as adsFormService from '../../services/adsFormService.js';
 import * as reportTypeService from '../../services/reportTypeService.js';
 
 const controller = {};
+const createForm = async (service, formName, type, desc) => {
+	const {message}= await service.create({[`${formName.toLowerCase()}Name`]: type, description: desc});
+	return message;
+}
+const removeForm = async (service, formName, id) => {
+	const {message} = await service.remove(id);
+	return message;
+}
 
 controller.show = async (req, res) => {
 	const category = req.query.category || '';
 	let tableHeads = [];
 	let tableData = [];
 	let title = '';
-	switch (category) {
-		case 'ads':
-			tableHeads = ['No', 'Mã Loại', 'Tên Loại', 'Mô tả'];
-			tableData = await adsFormService.getAllAdsForms();
-			tableData = tableData.map((adsForm, index) => {
-				const {_id, formID, formName, description} = adsForm.toObject();
-				return {
-					no: index + 1,
-					id: formID,
-					name: formName,
-					description: description,
-					actions: {
-						edit: true,
-						remove: true,
-						info: true
-					}
+	if (category === 'ads') {
+		tableHeads = ['No', 'Mã Loại', 'Tên Loại', 'Mô tả'];
+		tableData = await adsFormService.getAllAdsForms();
+		tableData = tableData.map((adsForm, index) => {
+			const {formID, formName, description} = adsForm.toObject();
+			return {
+				no: index + 1,
+				id: formID,
+				name: formName,
+				description: description,
+				actions: {
+					edit: true,
+					remove: true,
+					info: true
 				}
-			});
-			
-			title = 'Sở - Loại hình quảng cáo';
-			break;
-		case 'report':
-			tableHeads = ['No', 'Mã Hinh Thức', 'Tên Hình Thức', 'Mô tả'];
-			tableData = await reportTypeService.getAllReportTypes();
-			tableData = tableData.map((adsForm, index) => {
-				const {_id, typeID, ...rest} = adsForm.toObject();
-				return {
-					no: index + 1,
-					id: typeID,
-					...rest,
-					actions: {
-						edit: true,
-						remove: true,
-						info: true
-					}
+			}
+		});
+
+		title = 'Sở - Loại hình quảng cáo';
+	} else if (category === 'report') {
+		tableHeads = ['No', 'Mã Hinh Thức', 'Tên Hình Thức', 'Mô tả'];
+		tableData = await reportTypeService.getAllReportTypes();
+		tableData = tableData.map((adsForm, index) => {
+			const {typeID, typeName, description } = adsForm.toObject();
+			return {
+				no: index + 1,
+				id: typeID,
+				name: typeName,
+				description: description,
+				actions: {
+					edit: true,
+					remove: true,
+					info: true
 				}
-			});
-			title = 'Sở - Hình thức báo cáo';
-			break;
-		default:
-			res.status(404);
-			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+			}
+		});
+		title = 'Sở - Hình thức báo cáo';
+	} else {
+		res.status(404);
+		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
 	console.log('You are getting something');
 	return res.render('./so/types', {title, category, tableHeads, tableData, toolbars});
@@ -89,11 +95,6 @@ controller.showDetail = async (req, res) => {
 	return res.render('./so/type-detail', {title, detail, toolbars});
 }
 
-const createForm = async (service, formName, type, desc) => {
-	const {message}= await service.create({[`${formName.toLowerCase()}Name`]: type, description: desc});
-	return message;
-}
-
 controller.add = async (req, res) => {
 	try {
 		const {category = ''} = req.query;
@@ -108,7 +109,7 @@ controller.add = async (req, res) => {
 				message = await createForm(reportTypeService, 'type', type, desc);
 				break;
 			default:
-				req.fresh('error', 'Không tìm thấy loại hình');
+				req.flash('error', 'Không tìm thấy loại hình');
 				return res.redirect(req.originalUrl);
 		}
 		console.log(`Message: ${message}`);
@@ -120,11 +121,6 @@ controller.add = async (req, res) => {
 		req.flash('error', error.message);
 		return res.redirect(req.originalUrl);
 	}
-}
-
-const removeForm = async (service, formName, id) => {
-	const {message} = await service.remove(id);
-	return message;
 }
 
 controller.remove = async (req, res) => {
@@ -144,17 +140,47 @@ controller.remove = async (req, res) => {
 				break;
 			default:
 				req.flash('error', 'Không tìm thấy loại hình');
-				return res.redirect(303, newUrl);
+				res.send({message: 'Không tìm thấy loại hình'});
 		}
 		console.log(`Message: ${message}`);
 		req.flash('success', message);
-		return res.redirect(303, newUrl);
+		res.send({message});
 	}
 	catch (error) {
 		console.log(`Error removing type: ${error.message}`);
 		req.flash('error', error.message);
-		return res.redirect(303, newUrl);
+		res.send({message: error.message});
 	}
 }
 
+controller.modify = async (req, res) => {
+	const newUrl = req.originalUrl.replace(`/${req.params.id}`, '');
+	try {
+		const {category = ''} = req.query;
+		const {id} = req.params;
+		const {type, desc} = req.body;
+		let message = 'hello';
+
+		console.log('You are updating something');
+		switch (category) {
+			case 'ads':
+				message = await adsFormService.updateAdsFormByID(id, {formName: type, description: desc});
+				break;
+			case 'report':
+				message = await reportTypeService.updateReportTypeByID(id, {typeName: type, description: desc});
+				break;
+			default:
+				req.flash('error', 'Không tìm thấy loại hình');
+				return res.redirect(newUrl);
+		}
+		console.log(`Message: ${message}`);
+		req.flash('success', message);
+		return res.redirect(newUrl);
+	}
+	catch (error) {
+		console.log(`Error editing type: ${error.message}`);
+		req.flash('error', error.message);
+		return res.redirect(newUrl);
+	}
+}
 export default controller;

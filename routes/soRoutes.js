@@ -23,12 +23,15 @@ router.get('/types', async (req, res) => {
 router.get('/types/:id', (req, res) => {
 	controller.typesController.showDetail(req, res);
 });
+
+// add data
 router.post('/types', async (req, res) => {
 	await controller.typesController.add(req, res);
 });
 
-router.put('/types/:id', async (req, res) => {
-	await controller.typesController.update(req, res);
+// updata data
+router.post('/types/:id', async (req, res) => {
+	await controller.typesController.modify(req, res);
 });
 
 router.delete('/types/:id', async (req, res) => {

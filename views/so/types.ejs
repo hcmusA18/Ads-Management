@@ -100,6 +100,9 @@
               ];
               const len = JSON.parse('<%- JSON.stringify(tableData.length) %>');
               const dataID = JSON.parse('<%- JSON.stringify(tableData.map(item => item.id)) %>');
+              const url = JSON.parse('<%- JSON.stringify(url) %>');
+              const [basePath, category] = url.split('?');
+
               for (let i = 0; i < len; i++) {
                 components[0].value = dataID[i];
                 const editModal = {
@@ -107,10 +110,10 @@
                   title: 'CHỈNH SỬA',
                   form: {
                     id: `editForm-${i}`,
-                    method: 'PATCH',
+                    method: 'POST',
                     components: components,
                     buttons: buttons,
-                    action: JSON.parse(`<%- JSON.stringify(url) %>`)
+                    action: `${basePath}/${dataID[i]}?category=${category.split('=')[1]}`
                   }
                 }
                 createModal(editModal);
