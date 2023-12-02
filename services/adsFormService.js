@@ -1,4 +1,4 @@
-import AdsForm from '../models/adsFormModel.js';
+import AdsForm from "../models/adsFormModel.js";
 
 // Thêm export đầu mỗi hàm
 // Ở file cần dùng thì import * as [abcd]Service from 'path/[abcd]Service.js'
@@ -44,9 +44,8 @@ export const getAllAdsForms = async () => {
 
 export const getAdsFormByID = async (formID) => {
   try {
-    const adsForm = await AdsForm.findOne({ formID });
-    return adsForm;
+    return await AdsForm.findOne({ formID })
   } catch (error) {
-    throw new Error(`Error getting ads form by ID: ${error.message}`);
+    throw new Error(`Error getting ads form by ID: ${error.message}`)
   }
-};
+}

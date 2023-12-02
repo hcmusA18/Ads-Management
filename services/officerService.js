@@ -2,32 +2,43 @@ import e from 'cors';
 import Officer from '../models/officerModel.js';
 import {hashPassword} from './passwordService.js';
 import {Model} from 'mongoose';
-
-const handleAsyncError = async (promise) => {
-	try {
-		const result = await promise;
-		return {result};
-	} catch (error) {
-		throw new Error(`Error: ${error.message}`);
-	}
-}
+import officerModel from "../models/officerModel.js";
 
 export const createOfficer = async (data) => {
 	// hash password
 	data.password = await hashPassword(data.password);
-	return handleAsyncError(new Officer(data).save());
+	try {
+		await Officer.create(data);
+		return {message: 'Officer created successfully'};
+	} catch (error) {
+		throw new Error(`Error creating officer: ${error.message}`);
+	}
 };
 
 export const updatePasswordByUsername = async (username, newPassword) => {
-	return handleAsyncError(Officer.findOneAndUpdate({username}, {$set: {password: newPassword}}));
+	try {
+		await Officer.findOneAndUpdate({username}, {$set: {password: newPassword}});
+		return {message: 'Password updated successfully'};
+	} catch (error) {
+		throw new Error(`Error updating password: ${error.message}`);
+	}
 };
 
 export const deleteOfficerByUsername = async (username) => {
-	return handleAsyncError(Officer.findOneAndDelete({username}));
+	try {
+		await Officer.findOneAndDelete({username});
+		return {message: 'Officer deleted successfully'};
+	} catch (error) {
+		throw new Error(`Error deleting officer: ${error.message}`);
+	}
 };
 
 export const getOfficerByUsername = async (username) => {
-	return handleAsyncError(Officer.findOne({username}));
+	try {
+		return Officer.findOne({username});
+	}	catch (error) {
+		throw new Error(`Error getting officer ${username}: ${error.message}`);
+	}
 };
 
 // 1:  for district officer
@@ -83,34 +94,51 @@ export const getAllOfficersByPosition = async (position = -1) => {
 			}
 		}
 	];
-	if (position === -1) {
-		return handleAsyncError(Officer.aggregate(options));
-	} else if (position < 3) {
-		const matchOptions = {position};
-		return handleAsyncError(Officer.aggregate([...options, {$match: matchOptions}]));
+	try {
+		if (position === -1) {
+			return await Officer.aggregate(options);
+		}
+		else if (position < 3) {
+			const matchOptions = {position};
+			return await Officer.aggregate([...options, {$match: matchOptions}]);
+		}
+		else throw new Error('Invalid position');
 	}
-	else throw new Error('Invalid position');
+	catch (error) {
+		throw new Error(`Error getting officers ${position}: ${error.message}`);
+	}
 };
 
 export const getOfficersByDistrictID = async (districtID) => {
-	return handleAsyncError(Officer.find({districtID}));
+	try {
+		return await Officer.find({districtID});
+	} catch (error) {
+		throw new Error(`Error getting officers ${districtID}: ${error.message}`);
+	}
 };
 
 export const getOfficersByWardID = async (wardID) => {
-	return handleAsyncError(Officer.find({wardID}));
+	try {
+		return await Officer.find({wardID});
+	} catch (error) {
+		throw new Error(`Error getting officers ${wardID}: ${error.message}`);
+	}
 };
 
 export const getOfficerByGoogleID = async (googleId) => {
-	return handleAsyncError(Officer.findOne({googleId}));
+	try {
+		return await Officer.findOne({googleId});
+	} catch (error) {
+		throw new Error(`Error getting officer ${googleId}: ${error.message}`);
+	}
 };
 
 export const updateOfficer = async (username, dataToUpdate) => {
-	// console.log(username);
-	// console.log(dataToUpdate);
 	try {
 		await Officer.findOneAndUpdate({ username }, { $set: dataToUpdate });
+		return { message: 'Officer updated successfully' };
 	} catch (error) {
-		throw new Error(error);
+		throw new Error(`Error updating officer ${username}: ${error.message}`);
 	}
 };
 

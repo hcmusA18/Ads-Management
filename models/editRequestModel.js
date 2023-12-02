@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const EditRequestSchema = new mongoose.Schema({
     requestID: {
@@ -24,6 +24,10 @@ const EditRequestSchema = new mongoose.Schema({
     },
     newInfo: {
         type: Object,
+        required: true
+    },
+    officerUsername: {
+        type: String,
         required: true
     }
 });

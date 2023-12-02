@@ -47,7 +47,7 @@ const passportConfig = (passport) => {
   passport.deserializeUser(async (username, done) => {
     try {
       const officer = await getOfficerByUsername(username);
-      done(null, officer);
+      done(null, officer)
     } catch (error) {
       done(error)
     }

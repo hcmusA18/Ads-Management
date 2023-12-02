@@ -4,7 +4,7 @@ import * as districtService from '../../services/districtService.js';
 import * as wardService from '../../services/wardService.js';
 
 const show = async (req, res) => {
-	const {result: officers} = await officerService.getAllOfficersByPosition();
+	const officers = await officerService.getAllOfficersByPosition();
 	const tableHeads = ['No', 'Tên đăng nhập', 'Chức vụ', 'Quận', 'Phường'];
 	const tableData = officers.map((officer) => {
 		return {
@@ -43,8 +43,14 @@ const show = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
 	const username = req.params.username;
-	if (username != null) {
-		await officerService.deleteOfficerByUsername(username);
+	try {
+		if (username != null) {
+			const message = await officerService.deleteOfficerByUsername(username);
+			console.log(message);
+		}
+	} catch (error) {
+		console.log(error.message);
+		req.flash('error', error.message);
 	}
 	// res.redirect('/so/assign');
 }
@@ -59,27 +65,39 @@ const updateOfficer = async (req, res) => {
 	const username = req.params.username;
 	const dataToUpdate = req.body;
 
-	await officerService.updateOfficer(username, dataToUpdate);
-
-	res.redirect("/so/assign");
+	try {
+		const message = await officerService.updateOfficer(username, dataToUpdate);
+		console.log(message);
+		res.redirect('/so/assign');
+	} catch (error) {
+		console.log(error.message);
+		req.flash('error', error.message);
+		res.redirect('/so/assign');
+	}
 }
 
 const addOfficer = async (req, res)  => {
 	const {username, email} = req.body;
-	// console.log(username);
-	// console.log(email);
 	const newData = {
 		username: username,
-		password: generateRandomPassword(),
+		password: '123456',
 		email: email,
 		position: 0,
-		districtID: "",
-		wardID: ""
+		districtID: '',
+		wardID: ''
 	}
 
-	await officerService.createOfficer(newData);
+	try {
+		const message = await officerService.createOfficer(newData);
+		console.log(message);
+		req.flash('success', message);
+		res.redirect('/so/assign');
+	} catch (error) {
+		console.log(error.message);
+		req.flash('error', error.message);
+		res.redirect('/so/assign');
+	}
 
-	res.redirect("/so/assign");
 }
 
 function generateRandomPassword() {

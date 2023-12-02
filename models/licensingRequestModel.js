@@ -42,7 +42,10 @@ const LicensingRequestSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-
+    officerUsername: {
+        type: String,
+        required: true
+    },
     
 });
 
