@@ -24,11 +24,11 @@
             <div class="container-fluid mt-3 ps-0">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                     <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                        <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value: '112' ,
+                        <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value: NoWards ,
                         color: '#ae57ff' }); %>
-                        <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value: '211' ,
+                        <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value: NoSpots ,
                         color: '#00B285' }); %>
-                        <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' , value: '1022' ,
+                        <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' , value: NoBoards ,
                         color: '#D59633' }); %>
                     </div>
                 </div>
@@ -46,107 +46,16 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                     </div>
-                    <!-- List District -->
+                    <!-- List Ward -->
                     <div class="list-district scroll">
-                        <a href="/so/locations-detail?quan=Q001" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 1</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <!-- Raw Data -> will be changed when apply DB -->
-                        <a href="/so/locations-detail?quan=Q002" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 2</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q003" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 3</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q004" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 4</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q005" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 5</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q006" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 6</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q007" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 7</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q008" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 8</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q0BT" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Tân</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=QBTH" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Thạnh</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q0TB" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Tân Bình</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q0TP" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Tân Phú</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q012" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận 12</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q0GV" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Gò Vấp</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q0BC" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Bình Chánh</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-                        <a href="/so/locations-detail?quan=Q0CC" style="text-decoration: none">
-                            <div class="district-box d-flex">
-                                <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận Củ Chi</span>
-                                <i class="fa-solid fa-chevron-right fa-2xs"></i>
-                            </div>
-                        </a>
-
-                        <!-- Raw Data -> will be changed when apply DB -->
+                        <% listOfDistricts.forEach(district => { %>
+                            <a href="/so/locations-detail?quan=<%=district.districtID%>" style="text-decoration: none">
+                                <div class="district-box d-flex">
+                                    <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)"><%=district.districtName%></span>
+                                    <i class="fa-solid fa-chevron-right fa-2xs"></i>
+                                </div>
+                            </a>
+                        <% });%>
                     </div>
                     <a href="/so/locations" style="font-size: 14px">Xem chi tiết danh sách QUẬN</a>
                 </div>
@@ -170,13 +79,15 @@
                         </tr>
                         </thead>
                         <tbody id="wardData">
-                        <tr class="row m-0">
-                            <td>P01BT</td>
-                            <td>Phường 1</td>
-                            <td>10</td>
-                            <td>15</td>
-                            <td>20</td>
-                        </tr>
+                        <%listOfWards.forEach(element => {%>
+                            <tr class="row m-0">
+                                <td><%=element.wardID%></td>
+                                <td><%=element.wardName%></td>
+                                <td><%=element.districtID%></td>
+                                <td><%=details[element.wardID].spotCnt%></td>
+                                <td><%=details[element.wardID].boardCnt%></td>
+                            </tr>
+                        <%});%>
                         </tbody>
                     </table>
                 </div>

@@ -97,6 +97,14 @@ export const countAllOfDistrict = async (districtID) => {
   try {
     return Spot.countDocuments({districtID: districtID});
   } catch (error) {
-    throw new Error(`Error get wards of count documents: ${error.message}`)
+    throw new Error(`Error get District of count documents: ${error.message}`)
   }
 }
+
+export const countByWard = async (wardID) => {
+  try {
+    return Spot.countDocuments({wardID: wardID});
+  } catch (error) {
+    throw new Error(`Error get wards of count documents: ${error.message}`)
+  }
+};

@@ -11,7 +11,7 @@ export const createWard = async (data) => {
   } catch (error) {
     throw new Error(`Error creating ward: ${error.message}`)
   }
-}
+};
 
 export const getWardByID = async (wardID) => {
   try {
@@ -20,7 +20,7 @@ export const getWardByID = async (wardID) => {
   } catch (error) {
     throw new Error(`Error getting ward by ID: ${error.message}`)
   }
-}
+};
 
 export const getAllWards = async () => {
   try {
@@ -28,7 +28,7 @@ export const getAllWards = async () => {
   } catch (error) {
     throw new Error(`Error getting all wards: ${error.message}`)
   }
-}
+};
 
 export const getWardsOfDistrict = async (districtID) => {
   try {
@@ -36,7 +36,7 @@ export const getWardsOfDistrict = async (districtID) => {
   } catch (error) {
     throw new Error(`Error getting wards of district: ${error.message}`)
   }
-}
+};
 
 export const updateWardByID = async (wardID, newData) => {
   try {
@@ -45,7 +45,7 @@ export const updateWardByID = async (wardID, newData) => {
   } catch (error) {
     throw new Error(`Error updating ward by ID: ${error.message}`)
   }
-}
+};
 
 export const deleteWardByID = async (wardID) => {
   try {
@@ -54,7 +54,7 @@ export const deleteWardByID = async (wardID) => {
   } catch (error) {
     throw new Error(`Error deleting ward by ID: ${error.message}`)
   }
-}
+};
 
 export const deleteWardsOfDistrict = async (districtID) => {
   try {
@@ -63,7 +63,7 @@ export const deleteWardsOfDistrict = async (districtID) => {
   } catch (error) {
     throw new Error(`Error deleting wards of district: ${error.message}`)
   }
-}
+};
 
 export const findWards = async (criteria) => {
   try {
@@ -76,16 +76,16 @@ export const findWards = async (criteria) => {
 
 export const countAll = async () => {
   try {
-    return Ward.countDocuments();
+    return await Ward.countDocuments();
   } catch (error) {
     throw new Error(`Error get wards of count documents: ${error.message}`)
   }
-}
+};
 
 export const countAllOfDistrict = async (districtID) => {
   try {
-    return Ward.countDocuments({districtID: districtID});
+    return await Ward.countDocuments({districtID: districtID});
   } catch (error) {
     throw new Error(`Error get wards of count documents: ${error.message}`)
   }
-}
+};
