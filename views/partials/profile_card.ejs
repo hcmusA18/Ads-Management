@@ -8,7 +8,13 @@
           <%= user.username || "Username" %>
       </p>
       <p class="h6 mb-0 fw-lighter">
-        Sở VH-TT
+          <% if (user.username === "admin") {%>
+              Sở VH-TT
+          <% } else if (user.position === 1) { %>
+              Cán bộ Quận
+          <% } else { %>
+              Cán bộ Phường
+          <% } %>
       </p>
     </div>
   </div>
