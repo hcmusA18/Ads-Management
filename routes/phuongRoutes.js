@@ -17,7 +17,7 @@ router.get('/reports/:id', (req, res) => controller.reportsController.showDetail
 
 router.get('/license', (req, res) => controller.licenseController.show(req, res));
 
-router.get('/license/create', (req, res) => controller.licenseController.showDetailOrCreate(req, res, false));
+router.get('/license/create', (req, res) => controller.licenseController.showCreate(req, res, false));
 
 router.get('/license/:id', (req, res) => controller.licenseController.showDetailOrCreate(req, res, true));
 

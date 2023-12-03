@@ -1,4 +1,5 @@
 import {createToolbar} from './utilities.js';
+import { getAllSpots } from '../../services/spotService.js'
 
 const show = (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
@@ -87,7 +88,34 @@ const showDetailOrCreate = (req, res, detail = false) => {
 	});
 }
 
+const showCreate = async (req, res) => {
+	const role = String(req.originalUrl.split('/')[1]);
+	let title = ' - Tạo yêu cầu cấp phép quảng cáo';
+	title = (role === 'quan' ? 'Quận' : 'Phường') + title;
+
+	//get spots
+	let spots = await getAllSpots();
+	spots = spots.map(spot => {
+		const {spotID, spotName, spotType, address, districtID, wardID, districtName, wardName, planned} = spot;
+		return {
+			id: spotID,
+			name: spotName,
+			type: spotType,
+			address: `${address}, Phường ${wardName}, Quận ${districtName}`,
+			districtId: districtID,
+			wardId: wardID,
+			districtName: districtName,
+			wardName: wardName,
+			planned: planned,
+		}
+	});
+	// console.log(JSON.stringify(spots, null, 2));
+
+	res.render('license-create', {url: req.originalUrl, title, spots, toolbars: createToolbar(role)});
+}
+
 export default {
 	show,
 	showDetailOrCreate,
+	showCreate
 };

@@ -15,8 +15,8 @@ router.get('/reports/:id', (req, res) => controller.reportsController.showDetail
 router.get('/ads', (req, res) => controller.adsController.show(req, res));
 router.get('/ads/:id', (req, res) => controller.adsController.showDetail(req, res));
 router.get('/ads/:id/modify', (req, res) => controller.adsController.showModify(req, res));
-router.get('/license', (req, res) => controller.licenseController.show(req, res))
-router.get('/license/create', (req, res) => controller.licenseController.showDetailOrCreate(req, res, false))
+router.get('/license', (req, res) => controller.licenseController.show(req, res));
+router.get('/license/create', (req, res) => controller.licenseController.showCreate(req, res));
 router.get('/license/:id', (req, res) => controller.licenseController.showDetailOrCreate(req, res, true))
 
 export default router;

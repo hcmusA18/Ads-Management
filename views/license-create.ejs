@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title; %></title>
+    <%- include("./partials/head.ejs"); %>
+    <link rel="stylesheet" href="/css/carousel.css" />
+</head>
+
+<body>
+<header></header>
+<main class="container-fluid d-flex bg-light">
+    <div class="row"><%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+    <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+            <!-- Profile -->
+            <%- include("./partials/profile_card.ejs"); %>
+            <!-- Back button -->
+            <%- include("./partials/back_button.ejs"); %>
+            <!-- Title -->
+            <div class="d-flex flex-row align-items-center" style="gap: 10px">
+                <h1 class="fw-bolder m-0 text-uppercase"><%= title; %></h1>
+            </div>
+
+            <!-- Content -->
+            <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4 gap-1">
+                <!-- Carousel -->
+                <!--
+                const imgUrls = [
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
+                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
+                ]
+                -->
+                <!-- include("./partials/carousel.ejs", {imgUrls: imgUrls}); -->
+                <!-- Image chooser -->
+                <div class="container-fluid px-0">
+                    <div class="row position-relative h-100">
+                        <!-- Badge -->
+                        <div class="badge border border-dark top-0 start-0 translate-middle position-absolute rounded-pill bg-white text-center" style="width: 50px; height:50px;" hidden>
+                            <span class="d-inline-flex align-items-center justify-content-center text-dark fs-5 fw-bold h-100 w-100" id="badge-text">1</span>
+                        </div>
+                        <label for="input-image" id="drop-area" class="bg-white rounded-5 p-3">
+                            <input type="file" id="input-image" accept="image/*" hidden multiple/>
+                            <div id="img-view" class="d-flex flex-column align-items-center justify-content-center text-center rounded-4"
+                                style="border: 2px dashed #bbb5ff; width: 100%; height: 100%; background: #f7f8ff center; background-size: cover;">
+                                <img src="/images/upload-icon.png" alt="Ảnh xem trước" class="img-fluid" />
+                                <p class="text-black">Drag and drop or click here <br>to upload image</p>
+                                <span class="d-block fw-lighter fs-6 text-body-secondary">Upload any images from desktop</span>
+                            </div>
+                        </label>
+                    </div>
+                    <script defer src="/js/uploadImage.js"></script>
+                </div>
+
+                <div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
+                    <div class="container d-flex justify-content-between">
+                        <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">
+                            Chi tiết quảng cáo
+                        </h4>
+                    </div>
+                    <div class="container mt-2">
+                        <label for="spotID" class="mb-1">ID Điểm đặt</label>
+                        <input type="text" class="form-control" id="spotID" />
+                    </div>
+                    <div class="container mt-2">
+                        <label for="spotName" class="mb-1">Điểm đặt</label>
+                        <input type="text" list="spotList" class="form-control" id="spotName" autocomplete="on" />
+                        <datalist id="spotList" style="display: none;">
+                            <% spots.forEach((spot) => { %>
+                                <option value="<%= spot.name; %>"></option>
+                            <% }); %>
+                        </datalist>
+                    </div>
+                    <div class="container mt-2">
+                        <label for="spotAddress" class="mb-1">Địa chỉ điểm đặt</label>
+                        <input type="text" class="form-control" id="spotAddress" />
+                    </div>
+                    <div class="container mt-2">
+                        <label for="compName" class="mb-1">Công ty yêu cầu cấp phép</label>
+                        <input type="text" class="form-control" id="compName" />
+                    </div>
+                    <div class="container mt-2 d-flex justify-content-between">
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="compPhone" class="mb-1">Số điện thoại</label>
+                            <input type="tel" class="form-control" id="compPhone" pattern="[0-9]{10}" />
+                        </div>
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="compEmail" class="mb-1">Email</label>
+                            <input type="email" class="form-control" id="compEmail" />
+                        </div>
+                    </div>
+                    <div class="container mt-2">
+                        <label for="compAddress" class="mb-1">Địa chỉ công ty</label>
+                        <input type="text" class="form-control" id="compAddress" />
+                    </div>
+                    <div class="container mt-2 d-flex justify-content-between">
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="startDate" class="mb-1">Thời gian bắt đầu hợp đồng</label>
+                            <input type="date" class="form-control" id="startDate" />
+                        </div>
+                        <div style="width: calc((100% - 2rem) / 2);">
+                            <label for="endDate" class="mb-1">Thời gian kết thúc hợp đồng</label>
+                            <input type="date" class="form-control" id="endDate" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dưới ảnh -->
+            <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
+                <div class="container mt-2  custom-col">
+                    <label for="content" class="mb-1">Nội dung quảng cáo</label>
+                    <textarea class="form-control" id="content" rows="3"></textarea>
+                </div>
+                <div class="container mt-2  custom-col">
+                    <label for="note" class="mb-1">Chú thích khác</label>
+                    <textarea class="form-control" id="note" rows="3"></textarea>
+                </div>
+            </div>
+            <!-- Button -->
+            <div class="container-fluid px-0 mt-4 mb-2">
+                <div class="container flex-row mt-2 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-danger">Huỷ</button>
+                    <button type="button" class="btn btn-primary" onclick="submitHandler(event)">Tạo yêu cầu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script defer>
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const data = {
+      spotID: document.getElementById('spotID').value,
+      spotAddress: document.getElementById('spotAddress').value,
+      compName: document.getElementById('compName').value,
+      compPhone: document.getElementById('compPhone').value,
+      compEmail: document.getElementById('compEmail').value,
+      compAddress: document.getElementById('compAddress').value,
+      startDate: document.getElementById('startDate').value,
+      endDate: document.getElementById('endDate').value,
+      content: document.getElementById('content').value,
+      note: document.getElementById('note').value,
+    }
+    console.log(data);
+  }
+
+  const spots = JSON.parse('<%- JSON.stringify(spots); %>');
+  const spotIDInput = document.getElementById('spotID');
+  const spotNameInput = document.getElementById('spotName');
+  const spotAddressInput = document.getElementById('spotAddress');
+  spotNameInput.addEventListener('keyup', (e) => {
+    const spotName = e.target.value;
+    const spot = spots.find((spot) => spot.name === spotName);
+    if (spot) {
+      spotIDInput.value = spot.id;
+      spotAddressInput.value = spot.address;
+    }
+  })
+</script>
+</body>
+</html>
