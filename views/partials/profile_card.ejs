@@ -5,16 +5,10 @@
     <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
     <div class="ps-2 d-flex flex-sm-column">
       <p class="h6 mb-0">
-        <%= user.username || "Username" %>
+          <%= user.username || "Username" %>
       </p>
       <p class="h6 mb-0 fw-lighter">
-        <% if (user.username === "admin") {%>
-          Sở VH-TT
-        <% } else if (user.position === 1) { %>
-          Cán bộ Quận
-        <% } else { %>
-          Cán bộ Phường
-        <% } %>
+        Sở VH-TT
       </p>
     </div>
   </div>

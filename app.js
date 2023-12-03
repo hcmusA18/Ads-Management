@@ -40,7 +40,7 @@ passportConfig(passport);
 app.use(session({
   secret: process.env.SESSION_KEY, // secret key
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true
   // use local session, session store will be cleared when the server restarts
 }));
 app.use(passport.initialize());
@@ -69,18 +69,18 @@ app.delete('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
-// app.use('/so', soRoutes)
-// app.use('/quan', quanRoutes)
-// app.use('/phuong', phuongRoutes)
-app.use('/so', checkAuth, soRoutes)
-app.use('/quan', checkAuth, quanRoutes)
-app.use('/phuong', checkAuth, phuongRoutes)
+app.use('/so', soRoutes)
+app.use('/quan', quanRoutes)
+app.use('/phuong', phuongRoutes)
+// app.use('/so', checkAuth, soRoutes)
+// app.use('/quan', checkAuth, quanRoutes)
+// app.use('/phuong', checkAuth, phuongRoutes)
 
 // Google OAuth login route
-app.get('/auth/google', passport.authenticate('google', {
-  scope: ['profile', 'email']
-}));
-app.get('/oauth2/redirect/google', ggLoginController);
+// app.get('/auth/google', passport.authenticate('google', {
+//   scope: ['profile', 'email']
+// }));
+// app.get('/oauth2/redirect/google', ggLoginController);
 
 // EJS
 app.set('view engine', 'ejs');

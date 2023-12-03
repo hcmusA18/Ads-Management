@@ -46,7 +46,8 @@ router.get('/locations', (req, res) => {
 });
 
 router.get('/locations-detail', (req, res) => {
-	res.render('./so/location-detail', {title: 'Sở - Quản lý Phường', toolbars: toolbars});
+	// res.render('./so/location-detail', {title: 'Sở - Quản lý Phường', toolbars: toolbars});
+	controller.locationsController.locationsDetails(req, res);
 });
 
 router.get('/requests', (req, res) => {

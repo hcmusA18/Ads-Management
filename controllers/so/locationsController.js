@@ -7,10 +7,10 @@ import * as boardService from '../../services/boardService.js'
 const controller = {}
 
 controller.findAllDistricts = async (req, res) => {
-  const districts = await districtService.getAllDistricts()
-  const wardsCnt = await wardService.countAll()
-  const boardCnt = await boardService.countAll()
-  const spotCnt = await spotService.countAll()
+  const districts = await districtService.getAllDistricts();
+  const wardsCnt = await wardService.countAll();
+  const boardCnt = await boardService.countAll();
+  const spotCnt = await spotService.countAll();
 
   // Fetch counts for each district concurrently
   const specificDistrictsData = {};
@@ -30,7 +30,7 @@ controller.findAllDistricts = async (req, res) => {
     })
   );
 
-  console.log(specificDistrictsData);
+  // console.log(specificDistrictsData);
 
   const inputs = {
     title: 'Sở - Quản lý Quận',
@@ -43,5 +43,57 @@ controller.findAllDistricts = async (req, res) => {
   }
   return res.render('./so/locations', inputs)
 }
+
+controller.locationsDetails = async (req, res) => {
+  let districtID = req.query.quan;
+  
+  // const {NoWards, NoBoards, NoSpots, listOfDistricts, listOfWards} = await Promise.all([
+  //   wardService.countAll(),
+  //   boardService.countAll(),
+  //   spotService.countAll(),
+  //   districtService.getAllDistricts(),
+  //   wardService.getWardsOfDistrict(districtID),
+  // ]);
+
+  const data = {
+    toolbars: toolbars,
+    title: 'Sở - Quản lý Phường',
+    NoWards: await wardService.countAll(),
+    NoBoards: await boardService.countAll(),
+    NoSpots: await spotService.countAll(),
+    listOfDistricts: await districtService.getAllDistricts(),
+    listOfWards: await wardService.getWardsOfDistrict(districtID),
+  }
+
+  const details = {};
+
+  const promises = data.listOfWards.map(async (ward) => {
+    const [boardCnt, spotCnt] = [
+      await boardService.countByWard(ward.wardID),
+      await spotService.countByWard(ward.wardID),
+    ];
+    
+    details[ward.wardID] = {
+      boardCnt,
+      spotCnt,
+    };
+  });
+
+  await Promise.all(promises);
+  data.details = details;
+  // console.log(listOfDistricts);
+
+  // const data = {
+  //   toolbars: toolbars,
+  //   title: 'Sở - Quản lý Phường',
+  //   NoWards: NoWards,
+  //   NoBoards: NoBoards,
+  //   NoSpots: NoSpots,
+  //   listOfDistricts: listOfDistricts,
+  //   listOfWards: listOfWards,
+  //   details: details, 
+  // }
+  res.render('./so/location-detail', data);
+};
 
 export default controller
