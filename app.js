@@ -7,11 +7,11 @@ import soRoutes from './routes/soRoutes.js'
 import quanRoutes from './routes/quanRoutes.js'
 import phuongRoutes from './routes/phuongRoutes.js'
 import { loginController, ggLoginController } from './controllers/authController.js'
+import imgurController from './controllers/imgurController.js';
 // middleware import
 import morgan from 'morgan'
 import cors from 'cors'
 import { checkAuth } from './middleware/authMiddleware.js'
-
 
 //mongodb - mongoose import
 import mongoose from 'mongoose'
@@ -61,6 +61,7 @@ app.use((req, res, next) => {
 app.set('views', path.join(__dirname, 'views'))
 console.log(`${app.get('views')}`)
 // Routes
+app.get('/imgur', checkAuth, imgurController.getAccessToken);
 app.get('/', (req, res) => {
   res.render('index', { title: 'Cán bộ' })
 })
@@ -69,18 +70,18 @@ app.delete('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
-app.use('/so', soRoutes)
-app.use('/quan', quanRoutes)
-app.use('/phuong', phuongRoutes)
-// app.use('/so', checkAuth, soRoutes)
-// app.use('/quan', checkAuth, quanRoutes)
-// app.use('/phuong', checkAuth, phuongRoutes)
+// app.use('/so', soRoutes)
+// app.use('/quan', quanRoutes)
+// app.use('/phuong', phuongRoutes)
+app.use('/so', checkAuth, soRoutes)
+app.use('/quan', checkAuth, quanRoutes)
+app.use('/phuong', checkAuth, phuongRoutes)
 
 // Google OAuth login route
-// app.get('/auth/google', passport.authenticate('google', {
-//   scope: ['profile', 'email']
-// }));
-// app.get('/oauth2/redirect/google', ggLoginController);
+app.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
+app.get('/oauth2/redirect/google', ggLoginController);
 
 // EJS
 app.set('view engine', 'ejs');
@@ -101,7 +102,6 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
   res.status(error.status || 500)
   res.render('error', { title: 'Error', error: error })
-
 })
 
 app.get('/robots.txt', (req, res) => {
@@ -121,7 +121,7 @@ app.use(cors())
 //MongoDB connection
 mongoose.connect(process.env.MONGO_URI,)
 .then(() => {
-  console.log("Connected to MongoDB successfullly.");
+  console.log('Connected to MongoDB successfullly.');
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
   });

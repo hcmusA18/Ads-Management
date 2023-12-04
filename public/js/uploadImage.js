@@ -14,6 +14,10 @@ const uploadImage = () => {
     imgLinks.push(URL.createObjectURL(files[i]))
   }
 
+  // upload2Imgur(files).then((data) => {
+  //   console.log(data)
+  // })
+
   badgeText.textContent = files.length.toString()
   // remove hidden attribute from badgeText's parent element when files.length > 0
   if (files.length > 0) {
