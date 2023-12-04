@@ -2,7 +2,30 @@ import {toolbars} from './utilities.js';
 import * as adsFormService from '../../services/adsFormService.js';
 import * as reportTypeService from '../../services/reportTypeService.js';
 
-const controller = {};
+const mapData = (data, idKey, nameKey, descKey) => {
+	return data.map((item, index) => {
+		const { [idKey]: id, [nameKey]: name, [descKey]: description } = item.toObject();
+		return {
+			no: index + 1,
+			id,
+			name,
+			description,
+			actions: {edit: true, remove: true, info: true}
+		};
+	});
+};
+
+const handleCategory = async (category, service, idKey, nameKey, descKey) => {
+	const tableHeads = {
+		ads: ['No', 'Mã Loại', 'Tên Loại', 'Mô tả'],
+		report: ['No', 'Mã Hinh Thức', 'Tên Hình Thức', 'Mô tả']
+	};
+	let tableData = await service();
+	tableData = mapData(tableData, idKey, nameKey, descKey);
+
+	return {tableHeads: tableHeads[category], tableData};
+}
+
 const createForm = async (service, formName, type, desc) => {
 	const {message}= await service.create({[`${formName.toLowerCase()}Name`]: type, description: desc});
 	return message;
@@ -12,90 +35,59 @@ const removeForm = async (service, formName, id) => {
 	return message;
 }
 
-controller.show = async (req, res) => {
+const show = async (req, res) => {
 	const category = req.query.category || '';
 	let tableHeads = [];
 	let tableData = [];
 	let title = '';
-	if (category === 'ads') {
-		tableHeads = ['No', 'Mã Loại', 'Tên Loại', 'Mô tả'];
-		tableData = await adsFormService.getAllAdsForms();
-		tableData = tableData.map((adsForm, index) => {
-			const {formID, formName, description} = adsForm.toObject();
-			return {
-				no: index + 1,
-				id: formID,
-				name: formName,
-				description: description,
-				actions: {
-					edit: true,
-					remove: true,
-					info: true
-				}
-			}
-		});
 
-		title = 'Sở - Loại hình quảng cáo';
-	} else if (category === 'report') {
-		tableHeads = ['No', 'Mã Hinh Thức', 'Tên Hình Thức', 'Mô tả'];
-		tableData = await reportTypeService.getAllReportTypes();
-		tableData = tableData.map((adsForm, index) => {
-			const {typeID, typeName, description } = adsForm.toObject();
-			return {
-				no: index + 1,
-				id: typeID,
-				name: typeName,
-				description: description,
-				actions: {
-					edit: true,
-					remove: true,
-					info: true
-				}
-			}
-		});
-		title = 'Sở - Hình thức báo cáo';
-	} else {
-		res.status(404);
-		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+	try {
+		if (category === 'ads' || category === 'report') {
+			const {tableHeads: heads, tableData: data} =
+				await handleCategory(category,
+					category === 'ads' ? adsFormService.getAllAdsForms : reportTypeService.getAllReportTypes,
+					category === 'ads' ? 'formID' : 'typeID',
+					category === 'ads' ? 'formName' : 'typeName',
+					'description');
+			tableHeads = heads;
+			tableData = data;
+			title = category === 'ads' ? 'Sở - Loại hình quảng cáo' : 'Sở - Hình thức báo cáo';
+		} else {
+			res.status(404);
+			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+		}
+
+		console.log('You are getting something');
+		return res.render('./so/types', {title, category, tableHeads, tableData, toolbars});
+	} catch (error) {
+		console.error(`Error getting ${category} data: ${error.message}`);
+		return res.render('error', {error: {status: 404, message: 'Lỗi hệ thống'}});
 	}
-	console.log('You are getting something');
-	return res.render('./so/types', {title, category, tableHeads, tableData, toolbars});
 }
 
-controller.showDetail = async (req, res) => {
+const showDetail = async (req, res) => {
 	const category = req.query.category || '';
 	const id = req.params.id;
 	let detail = {};
 	let title = '';
-	switch (category) {
-		case 'ads':
-			detail = await adsFormService.getAdsFormByID(id);
-			detail = detail.toObject();
-			detail = {
-				id: detail.formID,
-				name: detail.formName,
-				description: detail.description,
-			}
-			title = 'Sở - Chi tiết loại hình quảng cáo';
-			break;
-		case 'report':
-			detail = await reportTypeService.getReportTypeByID(id);
-			detail = detail.toObject();
-			detail = {
-				id: detail.typeID,
-				name: detail.typeName,
-				description: detail.description,
-			}
-			title = 'Sở - Hình thức báo cáo';
-			break;
-		default:
-			res.status(404);
-			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
+	try {
+		const service = category === 'ads' ? adsFormService.getAdsFormByID : reportTypeService.getReportTypeByID;
+		detail = await service(id);
+		detail = {
+			id: detail[category === 'ads' ? 'formID' : 'typeID'],
+			name: detail[category === 'ads' ? 'formName' : 'typeName'],
+			description: detail.description
+		}
+		title = category === 'ads' ? 'Sở - Loại hình quảng cáo' : 'Sở - Hình thức báo cáo';
+		return res.render('./so/type-detail', { title, detail, toolbars });
+	} catch (error) {
+		console.error(`Error in showDetail: ${error.message}`);
+		res.status(404);
+		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
-	return res.render('./so/type-detail', {title, detail, toolbars});
 }
 
-controller.add = async (req, res) => {
+const add = async (req, res) => {
 	try {
 		const {category = ''} = req.query;
 		const {type, desc} = req.body;
@@ -123,8 +115,7 @@ controller.add = async (req, res) => {
 	}
 }
 
-controller.remove = async (req, res) => {
-	const newUrl = req.originalUrl.replace(`/${req.params.id}`, '');
+const remove = async (req, res) => {
 	res.method = 'GET';
 	try {
 		const {category = ''} = req.query;
@@ -153,7 +144,7 @@ controller.remove = async (req, res) => {
 	}
 }
 
-controller.modify = async (req, res) => {
+const modify = async (req, res) => {
 	const newUrl = req.originalUrl.replace(`/${req.params.id}`, '');
 	try {
 		const {category = ''} = req.query;
@@ -183,4 +174,10 @@ controller.modify = async (req, res) => {
 		return res.redirect(newUrl);
 	}
 }
-export default controller;
+export default {
+	show,
+	showDetail,
+	add,
+	remove,
+	modify
+}

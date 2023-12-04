@@ -85,9 +85,58 @@ export const getAllSpots = async () => {
 
 export const getSpotByID = async (spotID) => {
   try {
-    return await Spot.findOne({ spotID })
+    const options = [
+      {
+        $match: {
+          spotID: spotID,
+        }
+      },
+      {
+        $lookup: {
+          from: 'districts',
+          localField: 'districtID',
+          foreignField: 'districtID',
+          as: 'district',
+        },
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'wardID',
+          foreignField: 'wardID',
+          as: 'ward',
+        }
+      },
+      {
+        $unwind: {
+          path: '$district',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$ward',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          spotID: 1,
+          spotName: 1,
+          spotType: 1,
+          address: 1,
+          districtID: 1,
+          wardID: 1,
+          districtName: '$district.districtName',
+          wardName: '$ward.wardName',
+          planned: 1,
+        }
+      }
+    ]
+    return await Spot.aggregate(options);
   } catch (error) {
-    throw new Error(`Error getting spot by ID: ${error.message}`)
+    throw new Error(`Error getting all spots: ${error.message}`)
   }
 }
 

@@ -3,15 +3,14 @@ import mongoose from 'mongoose';
 const LicensingRequestSchema = new mongoose.Schema({
     requestID: {
         type: String,
-        required: true,
         unique: true
     },
     spotID: {
         type: String,
         required: true
     },
-    adsImage: {
-        type: String,
+    adsImages: {
+        type: Array,
         required: true
     },
     companyName: {
@@ -40,13 +39,26 @@ const LicensingRequestSchema = new mongoose.Schema({
     },
     status: {
         type: Number,
-        required: true
     },
     officerUsername: {
         type: String,
         required: true
     },
-    
+    content: {
+        type: String,
+    },
+    reason: {
+        type: String,
+    },
+});
+
+LicensingRequestSchema.pre('save', function (next) {
+    const request = this;
+    // generate requestID based on spotID
+    request.requestID = 'CP' + (request.spotID.slice(2) + Math.floor(Math.random() * 100000)).toString().padStart(5, '0');
+    request.status = 0;
+    request.updatedAt = Date.now();
+    next();
 });
 
 const LicensingRequest = mongoose.model('licensingRequests', LicensingRequestSchema);

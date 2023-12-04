@@ -3,6 +3,9 @@ export const checkAuth = (req, res, next) => {
         return res.redirect('/');
     }
     const desRoute = req.originalUrl;
+    if (desRoute.includes('/imgur')) {
+        return next();
+    }
     if (req.user.position === 1 && desRoute.includes('/quan')) {
         return next();
     }

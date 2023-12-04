@@ -2,6 +2,7 @@ import LicensingRequest from '../models/licensingRequestModel.js';
 
 export const create = async (data) => {
   try {
+    // console.log(data);
     const newRequest = new LicensingRequest(data);
     await newRequest.save();
     return { message: 'Licensing request created successfully' };
@@ -39,9 +40,17 @@ export const getAll = async () => {
   }
 };
 
+export const getByUsername = async (username) => {
+  try {
+    return await LicensingRequest.find({ officerUsername: username });
+  } catch (error) {
+    throw new Error(`Error getting licensing requests by username ${username}: ${error.message}`);
+  }
+}
+
 export const getByID = async (id) => {
   try {
-    return await LicensingRequest.findOne({ id });
+    return await LicensingRequest.findOne({ requestID: id });
   } catch (error) {
     throw new Error(`Error getting licensing request by ID: ${error.message}`);
   }
