@@ -1,43 +1,47 @@
-import {fakerVI} from '@faker-js/faker';
 import {toolbars} from './utilities.js';
+import * as reportService from '../../services/reportService.js';
 const controller = {};
 
-controller.show = (req, res) => {
-	const tableHeads = ['ID Báo cáo', 'ID Điểm/Bảng QC', 'Loại hình', 'Người gửi', 'Email', 'Ngày gửi', 'Trang thái'];
-	const tableData = [...Array(55).keys()].map(i => {
-		return {
-			id: `BC${i + 1}`,
-			ads_id: `QC${i + 1}`,
-			ads_type: `Loại ${i + 1}`,
-			sender: fakerVI.person.fullName(),
-			email: fakerVI.internet.email(),
-			date: fakerVI.date.anytime({refDate: new Date('2023-01-01')}).toLocaleDateString('vi-VN'),
-			status: 'Chờ xử lý',
-			actions: {
-				edit: false,
-				remove: false,
-				info: true
-			}
+controller.show = async (req, res) => {
+	let tableData = [];
+	const tableHeads = ['ID Báo cáo', 'ID Điểm/Bảng QC', 'Loại hình', 'Người gửi', 'Email', 'Ngày gửi', 'Trạng thái'];
+	tableData = await reportService.getAllReports();
+	tableData = tableData.map(report => ({
+		id: report.reportID,
+		ads_id: report.objectID,
+		ads_type: report.reportTypeName,
+		sender: report.reporterName,
+		email: report.reporterEmail,
+		date: report.sendTime.toLocaleDateString('vi-VN'),
+		status: report.status === 0 ? 'Đang chờ duyệt' : report.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
+		actions: {
+			edit: false,
+			remove: false,
+			info: true
 		}
-	});
+	}));
+
 	const title = 'Sở - Thống kê báo cáo';
 	return res.render('./so/reports', {title, tableHeads, tableData, toolbars});
 }
 
-controller.showDetail = (req, res) => {
+controller.showDetail = async (req, res) => {
 	const id = req.params.id;
+	let data = {};
+	data = await reportService.getReportByID(id);
 	const detail = {
-		id: id,
-		ads_id: 'QC1',
-		ads_type: 'Loại 1',
-		sender: 'Nguyễn Văn A',
-		phone: '0123456789',
-		email: 'nguyenvana@gmail.com',
-		report_type: 'Tố giác sai phạm',
-		date: fakerVI.date.anytime({refDate: new Date('2023-01-01')}).toLocaleDateString('vi-VN'),
-		state: 'pending',
-		content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa quod perspiciatis numquam soluta adipisci aperiam magni? Iure laborum esse aperiam totam, laboriosam voluptatibus neque perferendis quas fugit voluptatem laudantium expedita. Natus veritatis illo harum voluptas deleniti, voluptate possimus hic eveniet itaque sunt dolor adipisci corporis? Quisquam perferendis exercitationem quas. Ab.',
-		solution: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate eum, id veniam odio eveniet tempore provident tempora ex beatae laborum quisquam quae culpa minima eligendi, qui quas tenetur repudiandae blanditiis.'
+		id: data.reportID,
+		ads_id: data.objectID,
+		ads_type: data.reportTypeName,
+		sender: data.reporterName,
+		phone: data.reporterPhone,
+		email: data.reporterEmail,
+		report_type: data.reportTypeName,
+		date: data.sendTime.toLocaleDateString('vi-VN'),
+		state: data.status === 0 ? 'Đang chờ duyệt' : data.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
+		content: data.reportInfo,
+		solution: data.solution,
+		images: data.reportImages
 	}
 	const title = 'Sở - Chi tiết báo cáo';
 	return res.render('./so/report-detail', {title, detail, toolbars});

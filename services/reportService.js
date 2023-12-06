@@ -33,7 +33,37 @@ export const deleteReportByID = async (reportID) => {
 
 export const getAllReports = async () => {
   try {
-    const reports = await Report.find();
+    const options = [
+      {
+        $lookup: {
+          from: 'reportTypes',
+          localField: 'reportType',
+          foreignField: 'typeID',
+          as: 'reportType'
+        }
+      },
+      {
+        $unwind: {
+          path: '$reportType',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          reportID: 1,
+          objectID: 1,
+          reportType: 1,
+          reportTypeName: '$reportType.typeName',
+          reporterName: 1,
+          reporterEmail: 1,
+          sendTime: 1,
+          status: 1
+        }
+      }
+    ]
+
+    const reports = await Report.aggregate(options);
     return reports;
   } catch (error) {
     throw new Error(`Error getting all reports: ${error.message}`);
@@ -42,7 +72,43 @@ export const getAllReports = async () => {
 
 export const getReportByID = async (reportID) => {
   try {
-    const report = await Report.findOne({ reportID });
+    const options = [
+      {
+        $lookup: {
+          from: 'reportTypes',
+          localField: 'reportType',
+          foreignField: 'typeID',
+          as: 'reportType'
+        }
+      },
+      {
+        $unwind: {
+          path: '$reportType',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          reportID: 1,
+          objectID: 1,
+          reportType: 1,
+          reportTypeName: '$reportType.typeName',
+          reporterName: 1,
+          reporterEmail: 1,
+          reporterPhone: 1,
+          sendTime: 1,
+          status: 1,
+          reportInfo: 1,
+          solution: 1,
+          reportImages: 1
+        }
+      }
+    ]
+    let report = await Report.aggregate([
+      { $match: { 'reportID': reportID } }, ...options
+    ]);
+    report = report[0];
     return report;
   } catch (error) {
     throw new Error(`Error getting report by ID: ${error.message}`);

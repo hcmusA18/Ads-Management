@@ -51,6 +51,22 @@ export const getAllSpots = async () => {
         }
       },
       {
+        $lookup: {
+          from: 'spottypes',
+          localField: 'spotType',
+          foreignField: 'typeID',
+          as: 'spottypes',
+        }
+      },
+      {
+        $lookup: {
+          from: 'adsforms',
+          localField: 'adsForm',
+          foreignField: 'formID',
+          as: 'adsforms',
+        }
+      },
+      {
         $unwind: {
           path: '$district',
           preserveNullAndEmptyArrays: true,
@@ -63,16 +79,31 @@ export const getAllSpots = async () => {
         }
       },
       {
+        $unwind: {
+          path: '$spottypes',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$adsforms',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
         $project: {
           _id: 0,
           spotID: 1,
           spotName: 1,
           spotType: 1,
+          adsForm: 1,
           address: 1,
           districtID: 1,
           wardID: 1,
           districtName: '$district.districtName',
           wardName: '$ward.wardName',
+          adsFormName: '$adsforms.formName',
+          spotTypeName: '$spottypes.typeName',
           planned: 1,
         }
       }

@@ -20,7 +20,7 @@
             <%- include("../partials/back_button.ejs"); %>
             <!-- Title -->
             <div class="d-flex flex-row align-items-center" style="gap: 10px">
-                <h1 class="fw-bolder m-0">CHI TIẾT BÁO CÁO VI PHẠM</h1>
+                <h1 class="fw-bolder m-0 text-uppercase"><%= title %></h1>
             </div>
 
             <!-- Content -->
@@ -106,9 +106,10 @@
                     <div class="col-md-12 custom-col hinhanh-mhoa">
                         <label for="images" style="margin-bottom: 6px">Hình ảnh minh họa</label>
                         <div class="d-flex flex-row" style="gap: 20px">
-                            <img src="https://placehold.co/371x278?text=Img1" alt="img1">
-                            <img src="https://placehold.co/371x278?text=Img2" alt="img2">
-                        </div>
+                            <% detail.images.forEach((el, index) => { %>
+                                <img src="<%= el %>" alt="img<%= index + 1 %>">
+                            <% }); %>
+                        </div>                        
                     </div>
                 </div>
             </div>

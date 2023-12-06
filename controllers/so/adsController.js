@@ -1,56 +1,73 @@
 import { toolbars } from './utilities.js';
+import * as spotService from '../../services/spotService.js';
+import * as boardService from '../../services/boardService.js';
 
-const show = (req, res) => {
-	const category = req.query.category || '';
-	let tableHeads = [];
-	let tableData = [];
-	let title = 'Sở - ';
-	let checkboxData = [...Array(13).keys()].map(i => {
-		return 'Quận ' + (i + 1);
+const show = async (req, res) => {
+    const category = req.query.category || '';
+    let tableHeads = [];
+    let tableData = [];
+    let title = 'Sở - ';
+	let checkboxData = [...Array(12).keys()].map(i => {
+		return `Quận ${i + 1}`;
 	});
-	switch (category) {
-		case 'spot':
-			title = 'Sở - Điểm đặt';
-			tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch'];
-			break;
-		case 'board':
-			title = 'Sở - Bảng quảng cáo';
-			tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
-			break;
-		default:
-			res.status(404);
-			return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } });
-	}
+	
+	const additionalDistricts = ['Tân Bình', 'Tân Phú', 'Bình Thạnh'];
+	
+	checkboxData = [...checkboxData, ...additionalDistricts.map(district => `Quận ${district}`)];
+	
 
-	tableData = [...Array(55).keys()].map(i => {
-		let commonData = {
-			id: `${category === 'spot' ? 'DD' : 'BQC'}${String(i + 1).padStart(5, '0')}`,
-			district: `Quận ${(i + 1) % 13}`,
-			ward: `Phường ${(i + 1) % 13}`,
-			spot: `Điểm đặt ${i + 1}`,
-		};
-		commonData = category === 'spot'
-			? {
-				...commonData,
-				locationType: `Loại vị trí ${i + 1}`,
-				type: `Hình thức quảng cáo ${i + 1}`,
-				plan: Math.random() > 0.5 ? 'Đã quy hoạch' : 'Chưa quy hoạch'
-			}
-			: {
-				...commonData,
-				type: `Loại bảng quảng cáo ${i + 1}`,
-				size: `2x${i + 1}m`,
-				quantity: `${i + 1} trụ/bảng`
-			};
-		commonData.actions = {
-			edit: false,
-			remove: false,
-			info: true
-		};
-		return commonData;
-	}
-	);
-	res.render('ads', { url: req.originalUrl, title, category, tableHeads, tableData, checkboxHeader: 'THÀNH PHỐ HỒ CHÍ MINH', checkboxData, toolbars });
+    try {
+        switch (category) {
+            case 'spot':
+                title = 'Sở - Điểm đặt';
+                tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch'];
+                tableData = await spotService.getAllSpots();
+				tableData = tableData.map(spot => ({
+					id: spot.spotID,
+					district: spot.districtName,
+					ward: spot.wardName,
+					spot: spot.spotName,
+					locationType: spot.spotTypeName,
+					type: spot.adsFormName,
+					plan: spot.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
+					actions: {
+						edit: false,
+						remove: false,
+						info: true
+					}
+				}));
+
+                break;
+            case 'board':
+                title = 'Sở - Bảng quảng cáo';
+                tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
+                tableData = await boardService.getAllBoards();
+				tableData = tableData.map(board => ({
+					id: board.boardID,
+					district: board.districtName,
+					ward: board.wardName,
+					spot: board.spotName,
+					type: board.boardTypeName,
+					size: `${board.width}x${board.height}m`,
+					quantity: '1 trụ/bảng',
+					actions: {
+						edit: false,
+						remove: false,
+						info: true
+					}
+				}));
+                break;
+            default:
+                res.status(404);
+                return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } });
+        }
+
+        res.render('ads', { url: req.originalUrl, title, category, tableHeads, tableData, checkboxHeader: 'THÀNH PHỐ HỒ CHÍ MINH', checkboxData, toolbars });
+    } catch (error) {
+        // Handle errors (e.g., log them or render an error page)
+        console.error(error);
+        res.status(500).render('error', { error: { status: 500, message: 'Lỗi server' } });
+    }
 };
 
 const showDetail = (req, res) => {

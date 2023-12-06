@@ -3,48 +3,48 @@ import {licensingRequestService, editRequestService} from '../../services/reques
 
 const controller = {};
 
-controller.show = (req, res) => {
+controller.show = async (req, res) => {
 	const category = req.query.category || '';
 	let tableHeads = [];
 	let tableData = [];
 	let title = '';
 	if (category === 'license') {
 		tableHeads = ['ID Yêu cầu', 'ID Điểm đặt', 'Phường', 'Quận', 'Cán bộ', 'Thời gian quảng cáo', 'Trạng thái'];
-		tableData = [...Array(55).keys()].map(i => {
-			return {
-				id: i + 1,
-				point_id: `DD${i + 1}`,
-				ward: `Phường ${i + 1}`,
-				district: `Quận ${i + 1}`,
-				officer: `Cán bộ ${i + 1}`,
-				time: '1/1/2021 - 1/1/2022',
-				status: 'Đang chờ duyệt',
-				actions: {
-					edit: false,
-					remove: false,
-					info: true
-				}
+		tableData = await licensingRequestService.getAll();
+		tableData = tableData.map(request => ({
+			id: request.requestID,
+			point_id: request.spotID,
+			ward: request.wardName,
+			district: request.districtName,
+			officer: request.officerUsername,
+			time: `${request.startDate.toLocaleDateString('vi-VN')} - ${request.endDate.toLocaleDateString('vi-VN')}`,
+			status: request.status === 0 ? 'Đang chờ duyệt' : request.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
+			actions: {
+				edit: false,
+				remove: false,
+				info: true
 			}
-		});
+		}));
+
+
 		title = 'Sở - Yêu cầu cấp phép';
 	} else if (category === 'modify') {
 		tableHeads = ['ID Yêu cầu', 'ID Điểm đặt', 'Phường', 'Quận', 'Cán bộ', 'Tóm tắt chỉnh sửa', 'Trạng thái'];
-		tableData = [...Array(55).keys()].map(i => {
-			return {
-				id: i + 1,
-				point_id: `DD${i + 1}`,
-				ward: `Phường ${i + 1}`,
-				district: `Quận ${i + 1}`,
-				officer: `Cán bộ ${i + 1}`,
-				content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl vitae tincidunt ultricies, nunc nisl ultricies nunc, vitae ultricies',
-				status: 'Đang chờ duyệt',
-				actions: {
-					edit: false,
-					remove: false,
-					info: true
-				}
+		tableData = await editRequestService.getAll();
+		tableData = tableData.map(request => ({
+			id: request.requestID,
+			point_id: request.objectID,
+			ward: request.wardName,
+			district: request.districtName,
+			officer: request.officerUsername,
+			reason: request.reason,
+			status: request.status === 0 ? 'Đang chờ duyệt' : request.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
+			actions: {
+				edit: false,
+				remove: false,
+				info: true
 			}
-		});
+		}));
 		title = 'Sở - Yêu cầu chỉnh sửa';
 	} else {
 		res.status(404);

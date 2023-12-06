@@ -36,7 +36,96 @@ export const deleteBoardByID = async (boardID) => {
 
 export const getAllBoards = async () => {
   try {
-    const boards = await Board.find();
+    const options = [
+      {
+        $lookup: {
+          from: 'boardtypes',
+          localField: 'boardType',
+          foreignField: 'typeID',
+          as: 'boardtypes',
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardtypes',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'spotID',
+          foreignField: 'spotID',
+          as: 'spot',
+        }
+      },
+      {
+        $unwind: {
+          path: '$spot',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'districts',
+          localField: 'spot.districtID',
+          foreignField: 'districtID',
+          as: 'district',
+        }
+      },
+      {
+        $unwind: {
+          path: '$district',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'spot.wardID',
+          foreignField: 'wardID',
+          as: 'ward',
+        }
+      },
+      {
+        $unwind: {
+          path: '$ward',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'boardtypes',
+          localField: 'boardType',
+          foreignField: 'typeID',
+          as: 'boardtypes',
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardtypes',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          boardID: 1,
+          spotID: 1,
+          spotName: '$spot.spotName',
+          districtID: '$spot.districtID',
+          districtName: '$district.districtName',
+          wardID: '$spot.wardID',
+          wardName: '$ward.wardName',
+          boardType: 1,
+          boardTypeName: '$boardtypes.typeName',
+          height: 1,
+          width: 1,
+        }
+      }
+    ];
+
+    const boards = await Board.aggregate(options);
     return boards;
   } catch (error) {
     throw new Error(`Error getting all boards: ${error.message}`);
