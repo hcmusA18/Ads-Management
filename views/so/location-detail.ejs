@@ -41,17 +41,19 @@
                     <!-- Search Bar -->
                     <div class="searchBar">
                         <div class="search">
-                            <input type="text" name="searchInfo" class="searchFill" placeholder="Search a District"
-                                   style="background: transparent;"/>
+                            <label>
+                                <input type="text" name="searchInfo" class="searchFill" placeholder="Search a District"
+                                       style="background: transparent;"/>
+                            </label>
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                     </div>
                     <!-- List Ward -->
                     <div class="list-district scroll">
-                        <% listOfDistricts.forEach(district => { %>
+                        <% districts.forEach(district => { %>
                             <a href="/so/locations-detail?quan=<%=district.districtID%>" style="text-decoration: none">
-                                <div class="district-box d-flex">
-                                    <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)"><%=district.districtName%></span>
+                                <div class="district-box d-flex <% if (district.districtID === districtID) {%>active<% } %>" >
+                                    <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận <%=district.districtName%></span>
                                     <i class="fa-solid fa-chevron-right fa-2xs"></i>
                                 </div>
                             </a>
@@ -61,33 +63,36 @@
                 </div>
                 <!-- Table -->
                 <div class="container-fluid d-inline-block ps-0" style="width: 80%;  padding: 0;  margin: 0;">
-                    <table data-toggle="table" data-search="true" data-pagination="true"
-                           data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary"
-                           data-buttons="buttons" data-show-button-text="true" data-icon-prefix="bi"
+                    <table data-toggle="table"
+                           data-search="true"
+                           data-pagination="true"
+                           data-page-list="[10, 25, 50, 100, all]"
+                           data-locale="vi-VN"
+                           data-buttons-class="primary"
+                           data-buttons="buttons"
+                           data-show-button-text="true"
+                           data-icon-prefix="bi"
                            class="table table-bordered table-hover table-striped table-responsive-md rounded"
                            smart-display>
                         <thead>
                         <tr class="row m-0">
                             <th class="col" data-sortable="true" data-align="center" data-field="id">Mã Phường</th>
                             <th class="col" data-sortable="true" data-align="center" data-field="name">Tên Phường</th>
-                            <th class="col" data-sortable="true" data-align="center" data-field="num1">Trực thuộc Quận
-                            </th>
                             <th class="col" data-sortable="true" data-align="center" data-field="num2">Số điểm đặt</th>
                             <th class="col" data-sortable="true" data-align="center" data-field="num3">Số bảng quảng
                                 cáo
                             </th>
                         </tr>
                         </thead>
-                        <tbody id="wardData">
-                        <%listOfWards.forEach(element => {%>
-                            <tr class="row m-0">
-                                <td><%=element.wardID%></td>
-                                <td><%=element.wardName%></td>
-                                <td><%=element.districtID%></td>
-                                <td><%=details[element.wardID].spotCnt%></td>
-                                <td><%=details[element.wardID].boardCnt%></td>
-                            </tr>
-                        <%});%>
+                        <tbody>
+                        <% wards.forEach(ward => { %>
+                        <tr class="row m-0">
+                            <td><%= ward.wardID %></td>
+                            <td>Phường <%= ward.wardName %></td>
+                            <td><%= ward.spotsCount %></td>
+                            <td><%= ward.boardsCount %></td>
+                        </tr>
+                        <% }); %>
                         </tbody>
                     </table>
                 </div>

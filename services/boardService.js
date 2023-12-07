@@ -174,3 +174,11 @@ export const countBySpot = async (spotID) => {
     throw new Error(`Error get wards of count documents: ${error.message}`)
   }
 }
+
+export const countByWard = async (wardID) => {
+  try {
+    return Board.countDocuments({wardID: wardID});
+  } catch (error) {
+    throw new Error(`Error get wards of count documents: ${error.message}`)
+  }
+}

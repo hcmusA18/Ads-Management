@@ -24,9 +24,9 @@
             <div class="d-flex flex-row align-items-center gap-2 position: relative">
               <div class="d-flex flex-row align-items-center gap-2 position-relative">
                 <%- include("../partials/info_card.ejs", {title: 'Tổng số quận', value: districts.length, color: '#00b285' }); %>
-                <%- include("../partials/info_card.ejs", {title: 'Tổng số phường', value: wardsCnt, color: '#e84747' }); %>
-                <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo', value: spotCnt, color: '#d59633' }); %>
-                <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo', value: boardCnt, color: '#ae57ff' }); %>
+                <%- include("../partials/info_card.ejs", {title: 'Tổng số phường', value: wardsTotal, color: '#e84747' }); %>
+                <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo', value: spotsTotal, color: '#d59633' }); %>
+                <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo', value: boardsTotal, color: '#ae57ff' }); %>
               </div>
             </div>
           </div>
@@ -38,22 +38,24 @@
               <!-- Search Bar -->
               <div class="searchBar">
                 <div class="search">
-                  <input
-                    type="text"
-                    name="searchInfo"
-                    class="searchFill"
-                    placeholder="Search a District"
-                    style="background: transparent" />
+                  <label>
+                    <input
+                      type="text"
+                      name="searchInfo"
+                      class="searchFill"
+                      placeholder="Search a District"
+                      style="background: transparent" />
+                  </label>
                   <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
               </div>
               <!-- List District -->
               <div class="list-district scroll">
-                <% districts.forEach(element => { %>
-                <a href="/so/locations-detail?quan=<%= element.districtID %>" style="text-decoration: none">
+                <% districts.forEach(item => { %>
+                <a href="/so/locations-detail?quan=<%= item.districtID %>" style="text-decoration: none">
                   <div class="district-box d-flex">
                     <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)"
-                      ><%= element.districtName %></span
+                      >Quận <%= item.districtName %></span
                     >
                     <i class="fa-solid fa-chevron-right fa-2xs"></i>
                   </div>
@@ -110,7 +112,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#editModal-qlquan"
                         style="background-color: #00000000; display: block">
-                        <%= details[district.districtID].wardsCnt %>
+                        <%= district.wardsCount %>
                       </a>
                     </td>
                     <td>
@@ -118,7 +120,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#editModal-qlquan"
                         style="background-color: #00000000; display: block">
-                        <%= details[district.districtID].spotCnt %>
+                        <%= district.spotsCount %>
                       </a>
                     </td>
                     <td>
@@ -126,7 +128,7 @@
                         data-bs-toggle="modal"
                         data-bs-target="#editModal-qlquan"
                         style="background-color: #00000000; display: block">
-                        <%= details[district.districtID].boardCnt %>
+                        <%= district.boardsCount %>
                       </a>
                     </td>
                   </tr>

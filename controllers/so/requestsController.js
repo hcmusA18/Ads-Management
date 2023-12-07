@@ -53,7 +53,9 @@ controller.show = async (req, res) => {
 	return res.render('./so/requests', {url: req.originalUrl, title, category, tableHeads, tableData, toolbars});
 }
 
-controller.showDetail = (req, res) => {
+controller.showDetail = async (req, res) => {
+	const id = req.params.id;
+	let data = {};
 	const title = 'Sở - Chi tiết yêu cầu';
 	const category = req.query.category || '';
 	if (category !== 'license' && category !== 'modify') {
@@ -61,6 +63,20 @@ controller.showDetail = (req, res) => {
 		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
 	console.log(req.params.id);
+	switch (category){
+		case 'license':
+			data = await licensingRequestService.getByID(id);
+			const detail = {
+				id: id,
+				spotID: data.spotID,
+
+			}
+			break;
+		case 'modify':
+			break;
+	}
+
+
 	return res.render('./so/request-detail', {title, toolbars, id: req.params.id});
 }
 

@@ -196,6 +196,11 @@ input:focus {
   margin-bottom: 0.6rem;
 }
 
+.list-district .active {
+  background-color: var(--Blue);
+  color: var(--Background);
+}
+
 .district-box:hover {
   background-color: #e2e2e2;
 }
