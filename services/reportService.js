@@ -141,3 +141,85 @@ export const getReportsByStatus = async (status) => {
     throw new Error(`Error getting reports by status: ${error.message}`);
   }
 };
+
+export const getReportByOfficerRole = async (officerRole)  => {
+  try {
+    const reports = await Report.aggregate([
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'objectID',
+          foreignField: 'spotID',
+          as: 'spotInfo'
+        }
+      },
+      {
+        $lookup: {
+          from: 'boards',
+          localField: 'objectID',
+          foreignField: 'boardID',
+          as: 'boardInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'boardInfo.spotID',
+          foreignField: 'spotID',
+          as: 'boardSpotInfo'
+        }
+      },
+      {
+        $match: {
+          $or: [
+            { 'spotInfo.districtID': officerRole },
+            { 'spotInfo.wardID': officerRole },
+            { 'boardSpotInfo.districtID': officerRole },
+            { 'boardSpotInfo.wardID': officerRole }
+          ]
+        }
+      },
+      {
+        $lookup: {
+          from : 'reporttypes',
+          localField: 'reportType',
+          foreignField: 'typeID',
+          as: 'htbc'
+        }
+      },
+      {
+        $unwind: {
+          path: '$htbc',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          reportID: 1,
+          objectID: 1,
+          // reportImages: 0,
+          reportType: '$htbc.typeName',
+          reporterName: 1,
+          reporterEmail: 1,
+          // reporterPhone: 0,
+          sendTime: 1,
+          // reportInfo: 0,
+          status: 1,
+          // solution: 0
+        }
+      }
+    ]);
+
+    return reports;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error;
+  }
+}

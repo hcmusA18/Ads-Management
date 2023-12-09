@@ -142,6 +142,27 @@ export const updateOfficer = async (username, dataToUpdate) => {
 	}
 };
 
+export const getRoleByUsername = async (username) => {
+	try {
+        const officer = await Officer.findOne({ username });
+
+        if (!officer) {
+            return "Officer not found";
+        }
+
+        if (officer.position === 0 || officer.position === 1) {
+            return officer.districtID;
+        } else if (officer.position === 2) {
+            return officer.wardID;
+        } else {
+            return "Invalid position value";
+        }
+    } catch (error) {
+        console.error("Error fetching officer details:", error);
+        return "Error fetching officer details";
+    }
+}
+
 export default {
 	createOfficer,
 	deleteOfficerByUsername,
@@ -151,5 +172,6 @@ export default {
 	getOfficersByDistrictID,
 	getOfficersByWardID,
 	updatePasswordByUsername,
-	updateOfficer
+	updateOfficer,
+	getRoleByUsername
 }

@@ -1,8 +1,27 @@
 import {createToolbar} from './utilities.js';
+import {getRoleByUsername} from '../../services/officerService.js';
+import {getReportByOfficerRole} from '../../services/reportService.js';
 
-const show = (req, res) => {
+const convertDate = (date) => {
+	const dateString = '2023-02-07T17:00:00.000Z';
+	const dateObject = new Date(dateString);
+
+	const day = dateObject.getDate().toString().padStart(2, '0');
+	const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+	const year = dateObject.getFullYear();
+
+	return `${day}/${month}/${year}`;
+}
+
+const show = async (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
-	let title = ' - Quản lí Báo cáo vi phạm';
+	let title = role === 'quan' ? 'Quận - Quản lý báo cáo vi phạm' : 'Phường - Quản lý báo cáo vi phạm';
+	// console.log(req.user.username);
+	const officerRole = await getRoleByUsername(req.user.username);
+	// console.log(officerRole);
+	const data = await getReportByOfficerRole(officerRole);
+	// // console.log(data);
+	// convertDate('2023-02-07T17:00:00.000Z');
 	const roleData = {
 		quan: {
 			tableHeads: ['ID Báo Cáo', 'ID DD / QC', 'Loại hình báo cáo', 'Phường'
@@ -30,15 +49,15 @@ const show = (req, res) => {
 		phuong: {
 			tableHeads: ['ID Báo Cáo', 'ID DD / QC', 'Loại hình báo cáo',
 				'Họ tên người gửi', 'Email', 'Thời điểm gửi', 'Trạng thái'],
-			tableData: [...Array(55).keys()].map(i => {
+			tableData: data.map((item) => {
 				return {
-					id: 'BC' + String(i + 1).padStart(5, '0'),
-					objectID: 'DD' + String(i + 1).padStart(5, '0'),
-					reportType: 'Tố giác sai phạm',
-					reporterName: 'Nguyễn Công Khanh',
-					reporterEmail: 'abcxyz@gmail.com',
-					sendTime: '01/01/2021',
-					state: Math.random() > 0.667 ? 'Chưa xử lý' : (Math.random() > 0.333 ? 'Đang xử lý' : 'Đã xử lý'),
+					id: item.reportID,
+					objectID: item.objectID,
+					reportType: item.reportType,
+					reporterName: item.reporterName,
+					reporterEmail: item.reporterEmail,
+					sendTime: convertDate(item.sendTime),
+					state: item.status === 1 ? "Đã xử lí" : "Đang xử lí",
 					actions: {
 						edit: false,
 						remove: false,
@@ -54,7 +73,6 @@ const show = (req, res) => {
 		res.status(404);
 		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
-	title = (role === 'quan' ? 'Quận' : 'Phường') + title;
 	res.render('reports', {url: req.originalUrl, title: title, ...roleInfo, toolbars: createToolbar(role)});
 }
 
