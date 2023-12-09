@@ -41,7 +41,7 @@
                             <%- include('./info_button.ejs', {url: infoUrl}) %>
                         <% } %>
                     </td>
-                <% }else { %>
+                <% }else if (tableRow[key] !== undefined) { %>
                     <td><%= tableRow[key] %></td>
                 <% } %>
             <% }) %>

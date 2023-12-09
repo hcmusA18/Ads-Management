@@ -1,6 +1,6 @@
 export const checkAuth = (req, res, next) => {
     if (!req.isAuthenticated() || !req.user || req.user.position === 0) {
-        return res.redirect('/');
+        return res.redirect(`/?reqUrl=${req.originalUrl}`);
     }
     const desRoute = req.originalUrl;
     if (desRoute.includes('/imgur')) {

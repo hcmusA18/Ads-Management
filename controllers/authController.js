@@ -21,9 +21,25 @@ const authController = (strategy) => (req, res, next) => {
         return res.redirect('/');
       }
 
+      if (req.body.rememberPass) {
+        res.cookie('username', req.body.username, {
+          maxAge: 60 * 60 * 1000,
+          httpOnly: false,
+          signed: true,
+        });
+        res.cookie('password', req.body.password, {
+          maxAge: 60 * 60 * 1000,
+          httpOnly: true,
+          signed: true,
+        });
+      }
+
       req.login(officer, (loginErr) => {
         if (loginErr) {
           return next(loginErr);
+        }
+        if (req.query.reqUrl) {
+          return res.redirect(req.query.reqUrl);
         }
         return redirectUrl(officer, res);
       });

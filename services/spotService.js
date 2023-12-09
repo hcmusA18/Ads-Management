@@ -173,7 +173,87 @@ export const getSpotByID = async (spotID) => {
 
 export const getSpotsByDistrictID = async (districtID) => {
   try {
-    return await Spot.find({ districtID })
+    const options = [
+      {
+        $match: {
+          districtID: districtID,
+        }
+      },
+      {
+        $lookup: {
+          from: 'districts',
+          localField: 'districtID',
+          foreignField: 'districtID',
+          as: 'district',
+        },
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'wardID',
+          foreignField: 'wardID',
+          as: 'ward',
+        }
+      },
+      {
+        $lookup: {
+          from: 'spottypes',
+          localField: 'spotType',
+          foreignField: 'typeID',
+          as: 'spottypes',
+        }
+      },
+      {
+        $lookup: {
+          from: 'adsforms',
+          localField: 'adsForm',
+          foreignField: 'formID',
+          as: 'adsforms',
+        }
+      },
+      {
+        $unwind: {
+          path: '$district',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$ward',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$spottypes',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$adsforms',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          spotID: 1,
+          spotName: 1,
+          spotType: 1,
+          adsForm: 1,
+          address: 1,
+          districtID: 1,
+          wardID: 1,
+          districtName: '$district.districtName',
+          wardName: '$ward.wardName',
+          adsFormName: '$adsforms.formName',
+          spotTypeName: '$spottypes.typeName',
+          planned: 1,
+        }
+      }
+    ]
+    return await Spot.aggregate(options);
   } catch (error) {
     throw new Error(`Error getting spots by districtID: ${error.message}`)
   }
@@ -181,7 +261,72 @@ export const getSpotsByDistrictID = async (districtID) => {
 
 export const getSpotsByWardID = async (wardID) => {
   try {
-    return await Spot.find({ wardID })
+    const options = [
+      {
+        $match: {
+          wardID: wardID,
+        }
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'wardID',
+          foreignField: 'wardID',
+          as: 'ward',
+        }
+      },
+      {
+        $lookup: {
+          from: 'spottypes',
+          localField: 'spotType',
+          foreignField: 'typeID',
+          as: 'spottypes',
+        }
+      },
+      {
+        $lookup: {
+          from: 'adsforms',
+          localField: 'adsForm',
+          foreignField: 'formID',
+          as: 'adsforms',
+        }
+      },
+      {
+        $unwind: {
+          path: '$ward',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$spottypes',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$adsforms',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          spotID: 1,
+          spotName: 1,
+          spotType: 1,
+          adsForm: 1,
+          address: 1,
+          districtID: 1,
+          wardID: 1,
+          wardName: '$ward.wardName',
+          adsFormName: '$adsforms.formName',
+          spotTypeName: '$spottypes.typeName',
+          planned: 1,
+        }
+      }
+    ]
+    return await Spot.aggregate(options);
   } catch (error) {
     throw new Error(`Error getting spots by wardID: ${error.message}`)
   }

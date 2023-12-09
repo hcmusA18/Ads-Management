@@ -42,7 +42,7 @@
                 <div class="modal-header border-0 pb-0 mt-2 mb-2">
                     <h5 class="modal-title mx-auto text-center fw-bold text-center text-uppercase fs-3">Đăng nhập</h5>
                 </div>
-                <form id="loginForm" method="post" action="/login">
+                <form id="loginForm" method="post" action="">
                     <div class="modal-body border-0">
                         <% if (messages.error) { %>
                             <div class="alert alert-danger">
@@ -50,14 +50,14 @@
                             </div>
                         <% } %>
                         <div class="mb-3 form-floating">
-                            <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập"
+                            <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập" value="<% if (username) { %><%= username %><% } %>" 
                                    name="username" required>
                             <label for="username" class="form-label">Tên đăng nhập<span
                                         class="text-danger">*</span></label>
                         </div>
                         <div class="mb-3 form-floating position-relative">
                             <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu"
-                                   name="password" required>
+                                   name="password" value="<%= password %>" required>
                             <i id="ico-pass"
                                class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y me-3 fs-5"
                                style="cursor: pointer" onclick="togglePassword()"></i>
@@ -66,7 +66,7 @@
                             </label>
                         </div>
                         <div class="form-check mx-auto">
-                            <input type="checkbox" id="rememberPass" class="form-check-input"/>
+                            <input type="checkbox" id="rememberPass" class="form-check-input" name="rememberPass"/>
                             <label for="rememberPass">Ghi nhớ mật khẩu</label>
                         </div>
 

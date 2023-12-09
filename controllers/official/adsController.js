@@ -1,6 +1,7 @@
 import {createToolbar} from './utilities.js';
+import * as spotService from '../../services/spotService.js';
 
-const show = (req, res) => {
+const show = async (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
 	let tableHeads = [];
@@ -9,21 +10,51 @@ const show = (req, res) => {
 	switch (category) {
 		case 'spot':
 			title += ' - Điểm đặt quảng cáo';
-			tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch'];
+			if (role === 'quan')
+				tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch'];
+			else if (role === 'phuong')
+				tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch'];
 			break;
 		case 'board':
 			title += ' - Bảng quảng cáo';
-			tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
+			if (role === 'quan')
+				tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
+			else if (role === 'phuong')
+				tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
 			break;
 		default:
 			res.status(404);
 			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
 
+	const getTableData = async (spots, role) => {
+    return spots.map((spot) => ({
+      id: spot.spotID,
+      district: role === 'quan' ? spot.districtName : undefined,
+      ward: spot.wardName,
+      spot: spot.spotName,
+      locationType: spot.spotTypeName,
+      type: spot.adsFormName,
+      plan: spot.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
+      actions: {
+        edit: false,
+        remove: false,
+        info: true
+      }
+    }))
+  }
+
+  if (category === 'spot') {
+    if (role === 'quan') {
+      tableData = await getTableData(await spotService.getSpotsByDistrictID(req.user.districtID), role)
+    } else if (role === 'phuong') {
+      tableData = await getTableData(await spotService.getSpotsByWardID(req.user.wardID), role)
+    }
+  }
+  else {
 	tableData = [...Array(55).keys()].map(i => {
 		let commonData = {
 			id: `${category === 'spot' ? 'DD' : 'BQC'}${String(i + 1).padStart(5, '0')}`,
-			district: `Quận ${(i + 1) % 13}`,
 			ward: `Phường ${(i + 1) % 13}`,
 			spot: `Điểm đặt ${i + 1}`,
 		};
@@ -47,6 +78,8 @@ const show = (req, res) => {
 		};
 		return commonData;
 	});
+  }
+
 	const checkboxData = [...Array(13).keys()].map(i => `Phường ${i + 1}`);
 	res.render('ads', {url: req.originalUrl, title, category, checkboxHeader: 'Quận 2', checkboxData, tableHeads, tableData, toolbars: createToolbar(role)});
 }
