@@ -13,6 +13,7 @@ router.get('/ads/:id', (req, res) => controller.adsController.showDetail(req, re
 router.get('/ads/:id/modify', (req, res) => controller.adsController.showModify(req, res));
 router.get('/reports', (req, res) => controller.reportsController.show(req, res));
 router.get('/reports/:id', (req, res) => controller.reportsController.showDetail(req, res));
+router.post('/reports/:id', (req, res) => controller.reportsController.updateReport(req, res));
 
 router.get('/license', async (req, res) => await controller.licenseController.show(req, res));
 

@@ -50,15 +50,19 @@
                       </ul>
                     </div> -->
                     
-                    <select class="form-select" aria-label="Default select example" id="state-baocao">
-                      <% if(state == 0) { %>
-                        <option selected value="0">Chưa xử lí</option>
+
+                    <% if(state == 0) { %>
+                      <select class="form-select" aria-label="Default select example" id="state-baocao" >
+                        <option selected value="0">Đang xử lí</option>
                         <option value="1">Đã xử lí</option>
-                      <% } else { %>
-                        <option value="0">Chưa xử lí</option>
+                      </select>
+                    <% } else { %>
+                      <select class="form-select" aria-label="Default select example" id="state-baocao" disabled>
+                        <option value="0">Đang xử lí</option>
                         <option selected value="1">Đã xử lí</option>
-                      <% } %>
-                    </select>
+                      </select>
+                    <% } %>
+
                     
                   </div>
                 </div>
@@ -110,8 +114,11 @@
                   <div class="col-md-12 custom-col">
                     <div class="col-md-12 custom-col">
                       <label for="nd-baocao1" style="margin-bottom: 6px">Cách thức xử lí</label>
-                      <textarea class="form-control" id="nd-baocao1"
-                        ><%- solution %></textarea>
+                      <% if(state == 0) { %>
+                        <textarea class="form-control" id="sol-baocao1"><%- solution %></textarea>
+                      <% } else { %>
+                        <textarea class="form-control" id="sol-baocao1" disabled><%- solution %></textarea>
+                      <% } %>
                     </div>
                   </div>
                 </div>
@@ -125,10 +132,15 @@
                   </div>
                 </div>
               </div>
-              <div class="d-flex flex-row align-items-center justify-content-start" style="gap: 20px; margin-top: 15px;">
-                <a href="/<%- role %>/reports"><button type="button" class="btn btn-success" style="width: 150px;">Xác nhận</button></a>
-              </div>
+              <% if(state == 0) { %>
+                <div class="d-flex flex-row align-items-center justify-content-start" style="gap: 20px; margin-top: 15px;">
+                  <button type="button" class="btn btn-success" id="confirmButton" style="width: 150px;">Xác nhận</button>
+                </div>
+              <% } %>
+              <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
+
         </div>
+        
       </div>
     </main>
 
@@ -136,6 +148,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="/js/ChitietBC.js"></script>
+    <script>
+      // function confirmChange() {
+      //   const status = document.getElementById("state-baocao").value;
+      //   const solution = document.getElementById("sol-baocao1").value;
+      //   console.log(status);
+      //   if (status === '0' || solution.trim() === '') {
+      //       // Show the alert
+      //       $('#errorAlert').removeClass("fade").addClass("show");
+      //   } else {
+      //       // Perform other actions if the condition is not met
+      //       console.log("Change confirmed successfully");
+      //   }
+      // }
+      const alertPlaceholder = document.getElementById('alertConfirm')
+      const appendAlert = (message, type) => {
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = [
+          `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+          `   <div>${message}</div>`,
+          '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+          '</div>'
+        ].join('')
+
+        alertPlaceholder.append(wrapper)
+      }
+
+      const alertTrigger = document.getElementById('confirmButton')
+      if (alertTrigger) {
+        alertTrigger.addEventListener('click', () => {
+          const status = document.getElementById("state-baocao").value;
+          const solution = document.getElementById("sol-baocao1").value;
+          // console.log(status);
+          if (status === '0' || solution.trim() === '') {
+            appendAlert('VUI LÒNG XỬ LÝ BÁO CÁO VI PHẠM! (Trạng thái và Cách thức xử lí)', 'danger')
+          } else {
+            updateReport(status, solution);
+          }
+        })
+      }
+
+      const updateReport = async (status, solution) => {
+        // console.log(status);
+        // console.log(solution);
+        const url = JSON.parse('<%- JSON.stringify(url) %>')
+        // console.log(url);
+
+        const dataToUpdate = {
+          status: status,
+          solution: solution
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // You might need to include other headers like authorization token
+                },
+                body: JSON.stringify(dataToUpdate)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to update user: ${response.status}`);
+            }
+            // Handle success, if needed
+
+            window.location.href = '/phuong/reports';
+        } catch (error) {
+          console.error(`Error updating user: ${error.message}`);
+        } finally{
+          // location.reload();
+        }
+      }
+    </script>
 </body>
 
 </html>

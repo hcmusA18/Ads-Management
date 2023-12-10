@@ -204,15 +204,52 @@ export const getReportByOfficerRole = async (officerRole)  => {
           _id: 0,
           reportID: 1,
           objectID: 1,
-          // reportImages: 0,
           reportType: '$htbc.typeName',
           reporterName: 1,
           reporterEmail: 1,
-          // reporterPhone: 0,
           sendTime: 1,
-          // reportInfo: 0,
           status: 1,
-          // solution: 0
+          // test1: {$arrayElemAt: ['$spotInfo.spotID', 0]},
+          // test2: '$objectID',
+          wardID: {
+            $cond: {
+              if: {$eq : ['$objectID', {$arrayElemAt: ['$spotInfo.spotID', 0]}]},
+              then: '$spotInfo.wardID',
+              else: {
+                $cond: {
+                  if: {$eq: ['$objectID', '$boardInfo.boardID']},
+                  then: '$boardSpotInfo.wardID',
+                  else: null,
+                }
+              },
+            }
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'wardID',
+          foreignField: 'wardID',
+          as: 'wardInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$wardInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          reportID: 1,
+          objectID: 1,
+          reportType: 1,
+          reporterName: 1,
+          reporterEmail: 1,
+          sendTime: 1,
+          status: 1,
+          wardName: '$wardInfo.wardName'
         }
       }
     ]);
