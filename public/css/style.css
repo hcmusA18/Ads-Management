@@ -137,6 +137,10 @@ td {
   align-items: flex-start;
 }
 
+.inner-container {
+  min-height: 87vh;
+}
+
 .list-bar {
   width: 18%;
   height: fit-content;

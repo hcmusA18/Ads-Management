@@ -150,6 +150,166 @@ export const getBoardsOfSpot = async (spotID) => {
   }
 };
 
+export const getBoardsByDistrictID = async (districtID) => {
+  try {
+    const options = [
+      {
+        $lookup: {
+          from: 'boardtypes',
+          localField: 'boardType',
+          foreignField: 'typeID',
+          as: 'boardtypes',
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardtypes',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'spotID',
+          foreignField: 'spotID',
+          as: 'spot',
+        }
+      },
+      {
+        $unwind: {
+          path: '$spot',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $match: {
+          'spot.districtID': districtID,
+        }
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'spot.wardID',
+          foreignField: 'wardID',
+          as: 'ward',
+        }
+      },
+      {
+        $unwind: {
+          path: '$ward',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'boardtypes',
+          localField: 'boardType',
+          foreignField: 'typeID',
+          as: 'boardtypes',
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardtypes',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          boardID: 1,
+          spotID: 1,
+          spotName: '$spot.spotName',
+          districtID: '$spot.districtID',
+          wardID: '$spot.wardID',
+          wardName: '$ward.wardName',
+          boardType: 1,
+          boardTypeName: '$boardtypes.typeName',
+          height: 1,
+          width: 1,
+          quantity: 1,
+        }
+      }
+    ];
+    return await Board.aggregate(options);
+  } catch (error) {
+    throw new Error(`Error getting spots by districtID: ${error.message}`)
+  }
+}
+
+export const getBoardsByWardID = async (wardID) => {
+  try {
+    const options = [
+      {
+        $lookup: {
+          from: 'boardtypes',
+          localField: 'boardType',
+          foreignField: 'typeID',
+          as: 'boardtypes',
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardtypes',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'spotID',
+          foreignField: 'spotID',
+          as: 'spot',
+        }
+      },
+      {
+        $unwind: {
+          path: '$spot',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $match: {
+          'spot.wardID': wardID,
+        }
+      },
+      {
+        $lookup: {
+          from: 'boardtypes',
+          localField: 'boardType',
+          foreignField: 'typeID',
+          as: 'boardtypes',
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardtypes',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          boardID: 1,
+          spotID: 1,
+          spotName: '$spot.spotName',
+          districtID: '$spot.districtID',
+          wardID: '$spot.wardID',
+          wardName: '$ward.wardName',
+          boardType: 1,
+          boardTypeName: '$boardtypes.typeName',
+          height: 1,
+          width: 1,
+          quantity: 1,
+        }
+      }
+    ];
+    return await Board.aggregate(options);
+  } catch (error) {
+    throw new Error(`Error getting spots by districtID: ${error.message}`)
+  }
+}
+
 
 export const countAll = async () => {
   try {

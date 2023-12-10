@@ -1,37 +1,50 @@
 import {createToolbar} from './utilities.js';
 import * as spotService from '../../services/spotService.js';
+import * as boardService from '../../services/boardService.js';
+import * as wardService from '../../services/wardService.js';
+import * as districtService from '../../services/districtService.js';
 
 const show = async (req, res) => {
-	const role = String(req.originalUrl.split('/')[1]);
-	const category = req.query.category || '';
-	let tableHeads = [];
-	let tableData = [];
-	let title = (role === 'quan') ? 'Quận' : 'Phường';
-	switch (category) {
-		case 'spot':
-			title += ' - Điểm đặt quảng cáo';
-			if (role === 'quan')
-				tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch'];
-			else if (role === 'phuong')
-				tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch'];
-			break;
-		case 'board':
-			title += ' - Bảng quảng cáo';
-			if (role === 'quan')
-				tableHeads = ['ID', 'Quận', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
-			else if (role === 'phuong')
-				tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
-			break;
-		default:
-			res.status(404);
-			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
-	}
+  const role = String(req.originalUrl.split('/')[1])
+  const category = req.query.category || ''
+  let tableHeads = []
+  let tableData = []
+  let title = role === 'quan' ? 'Quận' : 'Phường'
+  let checkboxHeader = ''
 
-	const getTableData = async (spots, role) => {
+  if (role === 'quan') {
+    checkboxHeader = await districtService.getDistrictByID(req.user.districtID)
+    if (checkboxHeader) checkboxHeader = 'Quận ' + checkboxHeader.districtName
+    else checkboxHeader = 'Không có thông tin quận'
+  }
+  else if (role === 'phuong') {
+    checkboxHeader = await wardService.getWardByID(req.user.wardID)
+    if (checkboxHeader) checkboxHeader = 'Phường ' + checkboxHeader.wardName
+    else checkboxHeader = 'Không có thông tin phường'
+  }
+
+  switch (category) {
+    case 'spot':
+      title += ' - Điểm đặt quảng cáo'
+      if (role === 'quan')
+        tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch']
+      else if (role === 'phuong')
+        tableHeads = ['ID', 'Điểm đặt', 'Loại vị trí', 'Hình thức quảng cáo', 'Thông tin quy hoạch']
+      break
+    case 'board':
+      title += ' - Bảng quảng cáo'
+      if (role === 'quan') tableHeads = ['ID', 'Phường', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
+      else if (role === 'phuong') tableHeads = ['ID', 'Điểm đặt', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
+      break
+    default:
+      res.status(404)
+      return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } })
+  }
+
+  const getSpotTableData = async (spots, role) => {
     return spots.map((spot) => ({
       id: spot.spotID,
-      district: role === 'quan' ? spot.districtName : undefined,
-      ward: spot.wardName,
+      ward: role === 'quan' ? spot.wardName : undefined,
       spot: spot.spotName,
       locationType: spot.spotTypeName,
       type: spot.adsFormName,
@@ -44,44 +57,52 @@ const show = async (req, res) => {
     }))
   }
 
-  if (category === 'spot') {
-    if (role === 'quan') {
-      tableData = await getTableData(await spotService.getSpotsByDistrictID(req.user.districtID), role)
-    } else if (role === 'phuong') {
-      tableData = await getTableData(await spotService.getSpotsByWardID(req.user.wardID), role)
-    }
-  }
-  else {
-	tableData = [...Array(55).keys()].map(i => {
-		let commonData = {
-			id: `${category === 'spot' ? 'DD' : 'BQC'}${String(i + 1).padStart(5, '0')}`,
-			ward: `Phường ${(i + 1) % 13}`,
-			spot: `Điểm đặt ${i + 1}`,
-		};
-		commonData = category === 'spot'
-				? {
-					...commonData,
-					locationType: `Loại vị trí ${i + 1}`,
-					type: `Hình thức quảng cáo ${i + 1}`,
-					plan: Math.random() > 0.5 ? 'Đã quy hoạch' : 'Chưa quy hoạch'
-				}
-				: {
-					...commonData,
-					type: `Loại bảng quảng cáo ${i + 1}`,
-					size: `2x${i + 1}m`,
-					quantity: `${i + 1} trụ/bảng`
-				};
-		commonData.actions = {
-			edit: false,
-			remove: false,
-			info: true
-		};
-		return commonData;
-	});
+  const getBoardTableData = async (boards, role) => {
+    return boards.map((board) => ({
+      id: board.boardID,
+      ward: role === 'quan' ? board.wardName : undefined,
+      spot: board.spotName,
+      type: board.boardTypeName,
+      size: `${board.height}x${board.width}m`,
+      quantity: `${board.quantity} trụ/bảng`,
+      actions: {
+        edit: false,
+        remove: false,
+        info: true
+      }
+    }))
   }
 
-	const checkboxData = [...Array(13).keys()].map(i => `Phường ${i + 1}`);
-	res.render('ads', {url: req.originalUrl, title, category, checkboxHeader: 'Quận 2', checkboxData, tableHeads, tableData, toolbars: createToolbar(role)});
+  if (category === 'spot') {
+    if (role === 'quan') {
+      tableData = await getSpotTableData(await spotService.getSpotsByDistrictID(req.user.districtID), role)
+    } else if (role === 'phuong') {
+      tableData = await getSpotTableData(await spotService.getSpotsByWardID(req.user.wardID), role)
+    }
+  } else {
+    if (role === 'quan') {
+      tableData = await getBoardTableData(await boardService.getBoardsByDistrictID(req.user.districtID), role)
+    } else if (role === 'phuong') {
+      tableData = await getBoardTableData(await boardService.getBoardsByWardID(req.user.wardID), role)
+    }
+  }
+
+  let checkboxData = []
+  if (role === 'quan') {
+    checkboxData = await wardService.getWardsOfDistrict(req.user.districtID)
+    checkboxData = checkboxData.map((ward) => `Phường ${ward.wardName}`);
+  }
+
+  res.render('ads', {
+    url: req.originalUrl,
+    title,
+    category,
+    checkboxHeader,
+    checkboxData,
+    tableHeads,
+    tableData,
+    toolbars: createToolbar(role),
+  })
 }
 
 const showDetail = (req, res) => {
