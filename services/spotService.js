@@ -124,6 +124,22 @@ export const getSpotByID = async (spotID) => {
       },
       {
         $lookup: {
+          from: 'adsforms',
+          localField: 'adsForm',
+          foreignField: 'formID',
+          as: 'adsform',
+        }
+      },
+      {
+        $lookup: {
+          from: 'spottypes',
+          localField: 'spotType',
+          foreignField: 'typeID',
+          as: 'spottype',
+        }
+      },
+      {
+        $lookup: {
           from: 'districts',
           localField: 'districtID',
           foreignField: 'districtID',
@@ -151,21 +167,37 @@ export const getSpotByID = async (spotID) => {
         }
       },
       {
+        $unwind: {
+          path: '$spottype',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$adsform',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
         $project: {
           _id: 0,
           spotID: 1,
           spotName: 1,
           spotType: 1,
+          spotTypeName: '$spottype.typeName',
           address: 1,
           districtID: 1,
           wardID: 1,
           districtName: '$district.districtName',
           wardName: '$ward.wardName',
           planned: 1,
+          adsFormName: '$adsform.formName',
+          spotImage: 1,
         }
       }
     ]
-    return await Spot.aggregate(options);
+    const data = await Spot.aggregate(options);
+    return data[0];
   } catch (error) {
     throw new Error(`Error getting all spots: ${error.message}`)
   }
@@ -369,5 +401,42 @@ export const countByWard = async (wardID) => {
     return Spot.countDocuments({wardID: wardID});
   } catch (error) {
     throw new Error(`Error get wards of count documents: ${error.message}`)
+  }
+};
+
+export const getAdsFormBySpotID = async (spotID) => {
+  try {
+    const options = [
+      {
+        $match: {
+          spotID: spotID,
+        }
+      },
+      {
+        $lookup: {
+          from: 'adsforms',
+          localField: 'adsForm',
+          foreignField: 'formID',
+          as: 'adsform',
+        }
+      },
+      {
+        $unwind: {
+          path: '$adsform',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          adsForm: 1,
+          adsFormName: '$adsform.formName',
+          adsFormDescription: '$adsform.description',
+        }
+      }
+    ]
+    return await Spot.aggregate(options);
+  } catch (error) {
+    throw new Error(`Error getting ads form by spotID: ${error.message}`);
   }
 };

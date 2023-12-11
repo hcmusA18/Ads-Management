@@ -134,8 +134,104 @@ export const getAllBoards = async () => {
 
 export const getBoardByID = async (boardID) => {
   try {
-    const board = await Board.findOne({ boardID });
-    return board;
+    const options = [
+      {
+        $match: {
+          boardID: boardID,
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'spotID',
+          foreignField: 'spotID',
+          as: 'spot',
+        }
+      },
+      {
+        $lookup: {
+          from: 'licensingrequests',
+          localField: 'licensingID',
+          foreignField: 'requestID',
+          as: 'licensereq',
+        }
+      },
+      {
+        $lookup: {
+          from: 'boardtypes',
+          localField: 'boardType',
+          foreignField: 'typeID',
+          as: 'boardtype',
+        }
+      },
+      {
+        $lookup: {
+          from: 'spottypes',
+          localField: 'spot.spotType',
+          foreignField: 'typeID',
+          as: 'spottype',
+        }
+      },
+      {
+        $lookup: {
+          from: 'adsforms',
+          localField: 'spot.adsForm',
+          foreignField: 'formID',
+          as: 'adsform',
+        }
+      },
+      {
+        $unwind: {
+          path: '$spot',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $unwind: {
+          path: '$licensereq',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardtype',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $unwind: {
+          path: '$spottype',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $unwind: {
+          path: '$adsform',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          boardID: 1,
+          spotID: 1,
+          spotAddress: '$spot.address',
+          authCompany: '$licensereq.companyName',
+          authCompanyPhone: '$licensereq.companyPhone',
+          authCompanyEmail: '$licensereq.companyEmail',
+          authCompanyAddress: '$licensereq.companyAddress',
+          startDate: '$licensereq.startDate',
+          endDate: '$licensereq.endDate',
+          boardTypeName: '$boardtype.typeName',
+          quantity: 1,
+          height: 1,
+          width: 1,
+          spotTypeName: '$spottype.typeName',
+          adsFormName: '$adsform.formName',
+        }
+      }
+    ]
+    const board = await Board.aggregate(options);
+    return board[0];
   } catch (error) {
     throw new Error(`Error getting board by ID: ${error.message}`);
   }
@@ -143,7 +239,40 @@ export const getBoardByID = async (boardID) => {
 
 export const getBoardsOfSpot = async (spotID) => {
   try {
-    const boards = await Board.find({ spotID });
+    const options = [
+      {
+        $lookup: {
+          from: 'boardtypes',
+          localField: 'boardType',
+          foreignField: 'typeID',
+          as: 'boardtypes',
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardtypes',
+          preserveNullAndEmptyArrays: true
+        }
+      }, 
+      {
+        $match: {
+          spotID: spotID,
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          boardID: 1,
+          spotID: 1,
+          boardType: 1,
+          boardTypeName: '$boardtypes.typeName',
+          height: 1,
+          width: 1,
+          quantity: 1,
+        }
+      }
+    ]
+    const boards = await Board.aggregate(options);
     return boards;
   } catch (error) {
     throw new Error(`Error getting boards of spot: ${error.message}`);

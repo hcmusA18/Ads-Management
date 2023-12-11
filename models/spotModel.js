@@ -39,7 +39,7 @@ const SpotSchema = new mongoose.Schema({
         required: true
     },
     spotImage: {
-        type: String,
+        type: Array,
         required: true
     },
     planned: {

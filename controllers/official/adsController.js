@@ -3,6 +3,7 @@ import * as spotService from '../../services/spotService.js';
 import * as boardService from '../../services/boardService.js';
 import * as wardService from '../../services/wardService.js';
 import * as districtService from '../../services/districtService.js';
+import * as editRequestService from '../../services/editRequestService.js';
 
 const show = async (req, res) => {
   const role = String(req.originalUrl.split('/')[1])
@@ -105,60 +106,96 @@ const show = async (req, res) => {
   })
 }
 
-const showDetail = (req, res) => {
-	const role = String(req.originalUrl.split('/')[1]);
-	const category = req.query.category || '';
-	let title = '- Chi tiết ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+const showDetail = async (req, res, isEdit) => {
+  const ID = req.params.id;
+  const role = String(req.originalUrl.split('/')[1]);
+  const category = req.query.category || '';
+  const isSpotCategory = category === 'spot';
+  let title = '';
+  if (isEdit) 
+    title = `${role === 'quan' ? 'Quận ' : role === 'phuong' ? 'Phường ' : '-'} Chỉnh sửa ${isSpotCategory ? 'điểm đặt' : 'bảng quảng cáo'}`;
+  else 
+    title = `${role === 'quan' ? 'Quận ' : role === 'phuong' ? 'Phường ' : '-'} Chi tiết ${isSpotCategory ? 'điểm đặt' : 'bảng quảng cáo'}`;
 
-	if (role === 'quan') {
-		title = 'Quận ' + title;
-	}
-	if (role === 'phuong') {
-		title = 'Phường ' + title;
-	}
+  const getData = isSpotCategory ? spotService.getSpotByID : boardService.getBoardByID;
+  const detailData = await getData(ID);
 
-	const data = {
-		spotTitle: 'ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO',
-		spotId: req.params.id,
-		address: '227 Nguyễn Văn Cừ',
-		ward: 'Bến Nghé',
-		district: 'Quận 1',
-		locationType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-		adsType: 'Quảng cáo thương mại',
-		plan: 'Đã quy hoạch',
-		imgUrls: [
-			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201',
-			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202',
-			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203',
-			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204',
-			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
-			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
-		],
-	}
+  const commonData = {
+    url: req.originalUrl,
+    title,
+    toolbars: createToolbar(role),
+  };
 
-	const boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
-	const boardsTableData = [...Array(3).keys()].map(i => {
-		return {
-			id: `BQC${String(i + 1).padStart(5, '0')}`,
-			type: 'Trụ bảng Hiflex',
-			size: `2x${i + 1}m`,
-			quantity: `${i + 1} trụ/bảng`,
-			actions: {
-				edit: false,
-				remove: false,
-				info: true
-			}
-		}
-	});
+  if (isSpotCategory) {
+    const { spotName, address, wardName, districtName, spotTypeName, adsFormName, planned, spotImage } = detailData;
+    const data = {
+      spotTitle: spotName,
+      spotId: ID,
+      address,
+      ward: wardName,
+      district: districtName,
+      locationType: spotTypeName,
+      adsType: adsFormName,
+      plan: planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
+      imgUrls: spotImage,
+    };
 
-	res.render(`${category}-detail`, {
-		url: req.originalUrl,
-		title, ...data,
-		boardsTableHeads,
-		boardsTableData,
-		toolbars: createToolbar(role)
-	});
-}
+    const boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
+    const boardsTableData = (!isEdit)? await boardService.getBoardsOfSpot(ID) : [];
+    const transformedBoardsTableData = boardsTableData.map((board) => ({
+      id: board.boardID,
+      type: board.boardTypeName,
+      size: `${board.height}x${board.width}m`,
+      quantity: `${board.quantity} trụ/bảng`,
+      actions: { edit: false, remove: false, info: true },
+    }));
+
+    if (isEdit) {
+      let spots = []
+      if (role === 'quan') {
+        spots = await spotService.getSpotsByDistrictID(req.user.districtID);
+      } else if (role === 'phuong') {
+        spots = await spotService.getSpotsByWardID(req.user.wardID);
+      }
+      res.render('spot-modify', { ...commonData, ...data, spots });
+    } else {
+      res.render('spot-detail', { ...commonData, ...data, boardsTableHeads, boardsTableData: transformedBoardsTableData });
+    }
+  } else {
+    const data = {
+      id: detailData.boardID,
+      spotID: detailData.spotID,
+      spotAddress: detailData.spotAddress,
+      authCompany: detailData.authCompany,
+      authCompanyAddress: detailData.authCompanyAddress,
+      authCompanyPhone: detailData.authCompanyPhone,
+      authCompanyEmail: detailData.authCompanyEmail,
+      startDate: detailData.startDate.toLocaleDateString('vi-VN'),
+      endDate: detailData.endDate.toLocaleDateString('vi-VN'),
+      boardTypeName: detailData.boardTypeName,
+      quantity: detailData.quantity,
+      size: `${detailData.height}x${detailData.width}m`,
+      spotTypeName: detailData.spotTypeName,
+      adsFormName: detailData.adsFormName,
+    };
+
+    if (isEdit) {
+      let spots = []
+      if (role === 'quan') {
+        spots = await spotService.getSpotsByDistrictID(req.user.districtID);
+      } else if (role === 'phuong') {
+        spots = await spotService.getSpotsByWardID(req.user.wardID);
+      }
+      // console.log('====================================');
+      // console.log(spots);
+      // console.log('====================================');
+      res.render('board-modify', { ...commonData, ...data, spots });
+    } else {
+      res.render('board-detail', { ...commonData, ...data });
+    }
+  }
+};
+
 
 const showAdd = (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
@@ -173,10 +210,13 @@ const showAdd = (req, res) => {
 	res.render(`${category}-new`, {url: req.originalUrl, title, toolbars: createToolbar(role)});
 }
 
+
+// ... Khong xai ...
+// Gop chung voi show detail
 const showModify = (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
 	const category = req.query.category || '';
-	let title = 'Phường - Chỉnh sửa ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+	let title = 'Chỉnh sửa ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
 	if (role === 'quan') {
 		title = 'Quận ' + title;
 	}
@@ -185,10 +225,37 @@ const showModify = (req, res) => {
 	}
 	res.render(`${category}-modify`, {url: req.originalUrl, title, toolbars: createToolbar(role)});
 }
+// ..................
+
+const request = async (req, res) => {
+  try {
+		let data = req.body;
+    const { reason, officerUsername, ...rest } = data;
+    data = {
+      requestID: 'CS1111',
+      requestTime: new Date(),
+      objectID: data.spotID,
+      reason: reason,
+      newInfo: rest,
+      status: 0,
+      officerUsername: officerUsername,
+    }
+    // console.log(data);
+		let { message } = await editRequestService.create(data);
+		console.log(`Message: ${message}`);
+		req.flash('success', message);
+		return res.redirect(req.originalUrl);
+	} catch (error) {
+		console.log(`Error sending edit request: ${error.message}`);
+		req.flash('error', error.message);
+		return res.redirect(req.originalUrl);
+	}
+}
 
 export default {
 	show,
 	showAdd,
 	showDetail,
-	showModify
+	showModify,
+  request,
 };

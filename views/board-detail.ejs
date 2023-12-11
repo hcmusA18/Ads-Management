@@ -47,43 +47,43 @@
                     <div class="container mt-2 d-flex justify-content-between">
                         <div style="width: calc((100% - 2rem) / 2);">
                             <label for="id-quangcao" style="margin-bottom: 6px;">ID Quảng cáo</label>
-                            <input type="text" class="form-control" id="id-quangcao" value="B0155001" disabled/>
+                            <input type="text" class="form-control" id="id-quangcao" value="<%= id %>" disabled/>
                         </div>
                         <div style="width: calc((100% - 2rem) / 2);">
                             <label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
-                            <input type="text" class="form-control" id="id-diemdat" value="D0155001" disabled/>
+                            <input type="text" class="form-control" id="id-diemdat" value="<%= spotID %>" disabled/>
                         </div>
                     </div>
                     <div class="container mt-2">
                         <label for="diachi" style="margin-bottom: 6px">Địa chỉ điểm đặt</label>
-                        <input type="text" class="form-control" id="diachi" value="227 Nguyễn Văn Cừ" disabled/>
+                        <input type="text" class="form-control" id="diachi" value="<%= spotAddress %>" disabled/>
                     </div>
                     <div class="container mt-2">
                         <label for="compName" style="margin-bottom: 6px">Công ty yêu cầu cấp phép</label>
-                        <input type="text" class="form-control" id="compName" value="Công ty Cổ phần CivicAds Việt Nam"
+                        <input type="text" class="form-control" id="compName" value="<%= authCompany %>"
                                disabled/>
                     </div>
                     <div class="container mt-2 d-flex justify-content-between">
                         <div style="width: calc((100% - 2rem) / 2);">
                             <label for="compPhone" style="margin-bottom: 6px;">Số điện thoại</label>
-                            <input type="text" class="form-control" id="compPhone" value="09391389139" disabled/>
+                            <input type="text" class="form-control" id="compPhone" value="<%= authCompanyPhone %>" disabled/>
                         </div>
                         <div style="width: calc((100% - 2rem) / 2);">
                             <label for="compEmail" style="margin-bottom: 6px">Email</label>
-                            <input type="text" class="form-control" id="compEmail" value="civicads@gmail.com" disabled/>
+                            <input type="text" class="form-control" id="compEmail" value="<%= authCompanyEmail %>" disabled/>
                         </div>
                     </div>
                     <div class="container mt-2">
                         <label for="compAdress" style="margin-bottom: 6px">Địa chỉ công ty</label>
                         <input type="text" class="form-control" id="compAdress"
-                               value="123 Nguyễn Thị Minh Khai, Phường 3, Quận 3, Thành phố Hồ Chí Minh, Việt Nam"
+                               value="<%= authCompanyAddress %>"
                                disabled/>
                     </div>
                     <div class="container mt-2 d-flex justify-content-between">
                         <div style="width: calc((100% - 2rem) / 2);">
                             <label for="startDate" style="margin-bottom: 6px;">Thời gian bắt đầu hợp đồng</label>
                             <div class="input-group date" id="datepicker">
-                                <input type="text" class="form-control" id="startDate" value="01-01-2023" disabled/>
+                                <input type="text" class="form-control" id="startDate" value="<%= startDate %>" disabled/>
                                 <span class="input-group-append">
                       <span class="input-group-text h-100">
                         <i class="fa fa-calendar" style="background-color: transparent;"></i>
@@ -94,7 +94,7 @@
                         <div style="width: calc((100% - 2rem) / 2);">
                             <label for="endDate" style="margin-bottom: 6px">Thời gian kết thúc hợp đồng</label>
                             <div class="input-group date" id="datepicker">
-                                <input type="text" class="form-control" id="endDate" value="31-12-2023" disabled/>
+                                <input type="text" class="form-control" id="endDate" value="<%= endDate %>" disabled/>
                                 <span class="input-group-append">
                       <span class="input-group-text h-100">
                         <i class="fa fa-calendar" style="background-color: transparent;"></i>
@@ -110,26 +110,26 @@
                 <div class="container mt-2 d-flex justify-content-between">
                     <div style="width: calc((100% - 3rem) / 3);">
                         <label for="adsType" style="margin-bottom: 6px;">Loại quảng cáo</label>
-                        <input type="text" class="form-control" id="adsType" value="Trụ bảng hiflex" disabled/>
+                        <input type="text" class="form-control" id="adsType" value="<%= boardTypeName %>" disabled/>
                     </div>
                     <div style="width: calc((100% - 3rem) / 3);">
                         <label for="count" style="margin-bottom: 6px">Số lượng</label>
-                        <input type="text" class="form-control" id="count" value="1 trụ / bảng" disabled/>
+                        <input type="text" class="form-control" id="count" value="<%= quantity %> trụ/bảng" disabled/>
                     </div>
                     <div style="width: calc((100% - 3rem) / 3);">
                         <label for="size" style="margin-bottom: 6px">Kích thước</label>
-                        <input type="text" class="form-control" id="size" value="2.5m x 10m" disabled/>
+                        <input type="text" class="form-control" id="size" value="<%= size %>" disabled/>
                     </div>
                 </div>
                 <div class="container mt-2 d-flex justify-content-between">
                     <div style="width: calc((100% - 2rem) / 2);">
                         <label for="locationType" style="margin-bottom: 6px;">Phân loại</label>
                         <input type="text" class="form-control" id="locationType"
-                               value="Đất công / Công viên / Hành lang an toàn giao thông" disabled/>
+                               value="<%= spotTypeName %>" disabled/>
                     </div>
                     <div style="width: calc((100% - 2rem) / 2);">
                         <label for="adsForm" style="margin-bottom: 6px">Hình thức</label>
-                        <input type="text" class="form-control" id="adsForm" value="Cổ động chính trị" disabled/>
+                        <input type="text" class="form-control" id="adsForm" value="<%= adsFormName %>" disabled/>
                     </div>
                 </div>
                 <div class="container mt-2  custom-col">

@@ -87,8 +87,8 @@ router.get('/reports/:id', (req, res) => {
 });
 router.get('/ads', (req, res) => controller.adsController.show(req, res));
 router.get('/ads/new', (req, res) => controller.adsController.showAdd(req, res));
-router.get('/ads/:id', (req, res) => controller.adsController.showDetail(req, res));
-router.get('/ads/:id/modify', (req, res) => controller.adsController.showModify(req, res));
+router.get('/ads/:id', (req, res) => controller.adsController.showDetail(req, res, false));
+router.get('/ads/:id/modify', (req, res) => controller.adsController.showDetail(req, res, true));
 router.get('/*', (req, res) => {
 	console.log(`You are looking for ${req.originalUrl} in views directory ${req.app.get('views')}`);
 })

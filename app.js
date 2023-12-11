@@ -66,6 +66,9 @@ app.use((req, res, next) => {
 app.set('views', path.join(__dirname, 'views'))
 console.log(`${app.get('views')}`)
 // Routes
+app.get('/mini-map', (req, res) => {
+  res.render('mini-map', { title: 'Bản đồ' })
+});
 app.get('/imgur', checkAuth, imgurController.getAccessToken)
 app.get('/', (req, res) => {
   res.render('index', {
