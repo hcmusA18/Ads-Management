@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 import soRoutes from './routes/soRoutes.js'
 import quanRoutes from './routes/quanRoutes.js'
 import phuongRoutes from './routes/phuongRoutes.js'
+import apiRoutes from "./routes/apiRoutes.js";
 import { loginController, ggLoginController } from './controllers/authController.js'
 import imgurController from './controllers/imgurController.js'
 // middleware import
@@ -89,6 +90,7 @@ app.get('/logout', (req, res) => {
 // app.use('/so', soRoutes)
 // app.use('/quan', quanRoutes)
 // app.use('/phuong', phuongRoutes)
+app.use('/api', apiRoutes)
 app.use('/so', checkAuth, soRoutes)
 app.use('/quan', checkAuth, quanRoutes)
 app.use('/phuong', checkAuth, phuongRoutes)
