@@ -191,7 +191,9 @@
       const updateReport = async (status, solution) => {
         // console.log(status);
         // console.log(solution);
-        const url = JSON.parse('<%- JSON.stringify(url) %>')
+        const url = JSON.parse('<%- JSON.stringify(url) %>');
+        const role = JSON.parse('<%- JSON.stringify(role) %>');
+
         // console.log(url);
 
         const dataToUpdate = {
@@ -214,7 +216,7 @@
             }
             // Handle success, if needed
 
-            window.location.href = '/phuong/reports';
+            window.location.href = `/${role}/reports`;
         } catch (error) {
           console.error(`Error updating user: ${error.message}`);
         } finally{

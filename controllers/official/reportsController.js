@@ -1,6 +1,8 @@
 import {createToolbar} from './utilities.js';
 import {getRoleByUsername} from '../../services/officerService.js';
 import {getReportByOfficerRole, getReportByID, updateReportByID} from '../../services/reportService.js';
+import {getDistrictByID} from '../../services/districtService.js';
+import {getWardsOfDistrict} from '../../services/wardService.js';
 
 const convertDate = (date) => {
 	const dateObject = new Date(date);
@@ -15,12 +17,24 @@ const convertDate = (date) => {
 const show = async (req, res) => {
 	const role = String(req.originalUrl.split('/')[1]);
 	let title = role === 'quan' ? 'Quận - Quản lý báo cáo vi phạm' : 'Phường - Quản lý báo cáo vi phạm';
-	// console.log(req.user.username);
+
 	const officerRole = await getRoleByUsername(req.user.username);
-	// console.log(officerRole);
+	let officerRoleName = "";
+	if(role === 'quan'){
+		officerRoleName = await getDistrictByID(officerRole);
+		officerRoleName = officerRoleName.districtName;
+	}
+	
+	let wardsOfDistrict = []
+	if (role === 'quan') {
+		wardsOfDistrict = await getWardsOfDistrict(officerRole)
+		wardsOfDistrict = wardsOfDistrict.map((ward) => `Phường ${ward.wardName}`);
+	}
+
+	// console.log(wardsOfDistrict);
+
 	const data = await getReportByOfficerRole(officerRole);
-	// console.log(data);
-	// convertDate('2023-02-07T17:00:00.000Z');
+
 	const roleData = {
 		quan: {
 			tableHeads: ['ID Báo Cáo', 'ID DD / QC', 'Loại hình báo cáo', 'Phường'
@@ -34,7 +48,7 @@ const show = async (req, res) => {
 					reporterName: item.reporterName,
 					reporterEmail: item.reporterEmail,
 					sendTime: convertDate(item.sendTime),
-					state: item.status === 1 ? "Đã xử lí" : "Đang xử lí",
+					state: item.status === 1 ? "Đã xử lý" : "Đang xử lý",
 					actions: {
 						edit: false,
 						remove: false,
@@ -42,8 +56,8 @@ const show = async (req, res) => {
 					}
 				}
 			}),
-			checkboxData: [...Array(13).keys()].map(i => `Phường ${i + 1}`),
-			checkboxHeader: 'QUẬN 2',
+			checkboxData: [...wardsOfDistrict],
+			checkboxHeader: "Quận " + officerRoleName,
 		},
 		phuong: {
 			tableHeads: ['ID Báo Cáo', 'ID DD / QC', 'Loại hình báo cáo',
@@ -56,7 +70,7 @@ const show = async (req, res) => {
 					reporterName: item.reporterName,
 					reporterEmail: item.reporterEmail,
 					sendTime: convertDate(item.sendTime),
-					state: item.status === 1 ? "Đã xử lí" : "Đang xử lí",
+					state: item.status === 1 ? "Đã xử lý" : "Đang xử lý",
 					actions: {
 						edit: false,
 						remove: false,
@@ -101,6 +115,7 @@ const showDetail = async (req, res) => {
 const updateReport = async (req, res) => {
 	const reportID = req.params.id;
 	const dataToUpdate = req.body;
+	const role = String(req.originalUrl.split('/')[1]);
 	
 	// console.log(reportID);
 	// console.log(dataToUpdate);
@@ -108,7 +123,7 @@ const updateReport = async (req, res) => {
 	try {
 		const message = await updateReportByID(reportID, dataToUpdate);
 		console.log(message);
-		res.redirect('/phuong/reports');
+		res.redirect(`/${role}/reports`);
 	} catch (error) {
 		console.log(error.message);
 		req.flash('error', error.message);

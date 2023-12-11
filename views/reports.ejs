@@ -34,7 +34,7 @@
                     </div>
                     <div class="container-fluid d-flex flex-wrap">
                         <% checkboxData.forEach((item, i)=> {%>
-                            <div class="form-check me-4 mb-3" style="min-width: 9rem;">
+                            <div class="form-check me-4 mb-3" style="min-width: 11rem;">
                                 <input type="checkbox" class="form-check-input" id="check<%= i %>" name="option<%= i %>"
                                     value="<%= item %>" checked />
                                 <label class="form-check-label" for="check<%= i %>">
@@ -61,7 +61,10 @@
             <%- include('./partials/table.ejs', {linkDetails: {basePath: basePath, category: category}}) %>
 
             </div>
-    </main>
+</main>
+
+<script defer src="/js/checkbox.js"></script>
+<script defer src="/js/select.js"></script>
 </body>
 
 </html>
