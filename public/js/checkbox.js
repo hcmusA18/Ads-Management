@@ -5,35 +5,53 @@ $(document).ready(function () {
         return $(this).data('name');
     }).get();
 
+    const checkboxHeaderText = document.querySelector('.checkbox-container h1').textContent.trim().split(" ")[0];
+
+    // console.log(checkboxHeaderText);
+
+
     checkboxes.on('change', function () {
         let checkedValues = checkboxes.filter(':checked')
-            .map(function () {
+        if(checkboxHeaderText !== "Quận"){
+            checkedValues = checkedValues.map(function () {
+                return $(this).val().replace('Quận ', '');
+            })
+            .get();
+        } else {
+            checkedValues = checkedValues.map(function () {
                 return $(this).val().replace('Phường ', '');
             })
             .get();
-
+        }
+        
+        // console.log(checkedValues);
         const stateSelected = $('#dropdownMenuLink').text().trim();
-        console.log(stateSelected);
+        // console.log(stateSelected);
 
         table.bootstrapTable('refresh');
 
-        if(stateSelected !== ""){
-            if(stateSelected === "Tất cả"){
-                table.bootstrapTable('filterBy', {
-                    state: dataNames.slice(1),
-                    ward: checkedValues,
-                });
+        if(checkboxHeaderText !== "Quận"){
+            table.bootstrapTable('filterBy', {
+                district: checkedValues,
+            })
+        } else {
+            if(stateSelected !== ""){
+                if(stateSelected === "Tất cả"){
+                    table.bootstrapTable('filterBy', {
+                        state: dataNames.slice(1),
+                        ward: checkedValues,
+                    });
+                } else {
+                    table.bootstrapTable('filterBy', {
+                        state: stateSelected,
+                        ward: checkedValues,
+                    });
+                }
             } else {
                 table.bootstrapTable('filterBy', {
-                    state: stateSelected,
                     ward: checkedValues,
                 });
-            }
-        } else {
-            table.bootstrapTable('filterBy', {
-                ward: checkedValues,
-            });
+            } 
         }
-
     });
 });

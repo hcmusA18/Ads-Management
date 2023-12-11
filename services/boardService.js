@@ -121,8 +121,14 @@ export const getAllBoards = async () => {
           boardTypeName: '$boardtypes.typeName',
           height: 1,
           width: 1,
+          quantity: 1,
         }
-      }
+      },
+      {
+        $sort: {
+          boardID: 1, // 1 for ascending, -1 for descending
+        },
+      },
     ];
 
     const boards = await Board.aggregate(options);

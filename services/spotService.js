@@ -106,7 +106,12 @@ export const getAllSpots = async () => {
           spotTypeName: '$spottypes.typeName',
           planned: 1,
         }
-      }
+      },
+      {
+        $sort: {
+          spotID: 1, // 1 for ascending, -1 for descending
+        },
+      },
     ]
     return await Spot.aggregate(options);
   } catch (error) {

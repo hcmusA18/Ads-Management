@@ -45,17 +45,19 @@
             </div>
             <% } %>
             <!-- Select -->
-            <!-- <% const [baseUrl, queryParams] = url.split('?'); %>
+            <% if (url.includes('so')) { %>
+            <% const [baseUrl, queryParams] = url.split('?'); %>
             <div class="container-fluid mt-3 ps-0">
                 <div class="d-flex flex-row align-items-center gap-2 position-relative">
                     <%- include("./partials/select.ejs",
-                    {current: 0 ,
+                    {current: current ,
                     options: [
                     { name: 'Điểm đặt quảng cáo' , link: baseUrl + '?category=spot'},
                     { name: 'Bảng quảng cáo' , link: baseUrl + '?category=board'}]
                     }); %>
                 </div>
-            </div> -->
+            </div>
+            <% } %>
             <!-- Table -->
             <% const [basePath, category] = url.split('?'); %>
             <%- include('./partials/table.ejs', {linkDetails: {basePath: basePath, category: category.split('=')[1]}}) %>
@@ -64,6 +66,7 @@
 </main>
 
 <script defer src="/js/checkbox.js"></script>
+<script defer src="/js/select.js"></script>
 
 </body>
 

@@ -1,20 +1,16 @@
 import { toolbars } from './utilities.js';
 import * as spotService from '../../services/spotService.js';
 import * as boardService from '../../services/boardService.js';
+import * as districtService from '../../services/districtService.js';
 
 const show = async (req, res) => {
     const category = req.query.category || '';
     let tableHeads = [];
     let tableData = [];
     let title = 'Sở - ';
-	let checkboxData = [...Array(12).keys()].map(i => {
-		return `Quận ${i + 1}`;
-	});
 	
-	const additionalDistricts = ['Tân Bình', 'Tân Phú', 'Bình Thạnh'];
-	
-	checkboxData = [...checkboxData, ...additionalDistricts.map(district => `Quận ${district}`)];
-	
+	let checkboxData = await districtService.getAllDistricts();
+	checkboxData = checkboxData.map((dist) => `Quận ${dist.districtName}`);
 
     try {
         switch (category) {
@@ -36,6 +32,7 @@ const show = async (req, res) => {
 						info: true
 					}
 				}));
+				current = 0;
 
                 break;
             case 'board':
@@ -49,20 +46,21 @@ const show = async (req, res) => {
 					spot: board.spotName,
 					type: board.boardTypeName,
 					size: `${board.width}x${board.height}m`,
-					quantity: '1 trụ/bảng',
+					quantity: `${board.quantity} trụ / bảng`,
 					actions: {
 						edit: false,
 						remove: false,
 						info: true
 					}
 				}));
+				current = 1;
                 break;
             default:
                 res.status(404);
                 return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } });
         }
 
-        res.render('ads', { url: req.originalUrl, title, category, tableHeads, tableData, checkboxHeader: 'THÀNH PHỐ HỒ CHÍ MINH', checkboxData, toolbars });
+        res.render('ads', { url: req.originalUrl, title, category, tableHeads, tableData, checkboxHeader: 'THÀNH PHỐ HỒ CHÍ MINH', checkboxData, toolbars, current });
     } catch (error) {
         // Handle errors (e.g., log them or render an error page)
         console.error(error);
