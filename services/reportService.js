@@ -256,7 +256,7 @@ export const getReportByOfficerRole = async (officerRole)  => {
 
     return reports;
   } catch (error) {
-    console.error("Error fetching reports:", error);
+    console.error('Error fetching reports:', error);
     throw error;
   }
-}
+};

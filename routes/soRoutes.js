@@ -92,5 +92,17 @@ router.get('/ads/:id/modify', (req, res) => controller.adsController.showDetail(
 router.get('/*', (req, res) => {
 	console.log(`You are looking for ${req.originalUrl} in views directory ${req.app.get('views')}`);
 })
+router.post('/ads', (req, res) => controller.adsController.show(req, res));
 
 export default router;
+
+
+// Task
+/*
+Sở-Điểm đặt -> Check box
+Sở-Chi tiết bảng quảng cáoo -> Hình ảnh
+Sở-Chi tiết bảng quảng cáo -> Yêu cầu chỉnh sửa
+Sở-Yêu cầu cấp phép -> Thông tin đã duyệt, Chờ duyệt, Từ chối
+Sở-Chi tiết yêu cầu (Cấp phép, chỉnh sửa) -> Phê duyệt, Từ chối
+Sở-Thống kê báo cáo -> Thông tin đã duyệt, Chờ duyệt, Từ chối
+*/

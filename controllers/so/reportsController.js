@@ -1,10 +1,23 @@
 import {toolbars} from './utilities.js';
 import * as reportService from '../../services/reportService.js';
+import * as boardService from '../../services/boardService.js';
+import * as spotService from '../../services/spotService.js';
+import * as districtService from '../../services/districtService.js';
+
+
 const controller = {};
 
 controller.show = async (req, res) => {
 	let tableData = [];
 	const tableHeads = ['ID Báo cáo', 'ID Điểm/Bảng QC', 'Loại hình', 'Người gửi', 'Email', 'Ngày gửi', 'Trạng thái'];
+	let {spotMostReported, boardMostReported, districtMostReported} = [0, 0, 0];
+	let spotCnt = {};
+	let boardCnt = {};
+	let districtCnt = {};
+	let spotMaxId;
+	let boardMaxId;
+	let districtMaxId;
+
 	tableData = await reportService.getAllReports();
 	tableData = tableData.map(report => ({
 		id: report.reportID,
@@ -21,8 +34,91 @@ controller.show = async (req, res) => {
 		}
 	}));
 
+	let objectIDs = [];
+	tableData.map(entry => {
+		objectIDs.push(entry.ads_id);
+	});
+
+	const promises = objectIDs.map(async (ad) => {
+		let board = await boardService.getBoardByID(ad);
+		let spotIdOwnBoard = -1;
+		if (board != undefined) {
+			if (board.boardID in boardCnt) {
+				boardCnt[board.boardID] += 1;
+			} else {
+				boardCnt[board.boardID] = 1;
+			}
+			spotIdOwnBoard = await spotService.getSpotByID(board.spotID);
+			
+			if (spotIdOwnBoard.districtID in districtCnt) {
+				districtCnt[spotIdOwnBoard.districtID] += 1;
+			} else {
+				districtCnt[spotIdOwnBoard.districtID] = 1;
+			}
+		}
+
+		let spot = await spotService.getSpotByID(ad);
+		if (spot != undefined) {
+			if (spot.spotID in spotCnt) {
+				spotCnt[spot.spotID] += 1;
+			} else {
+				spotCnt[spot.spotID] = 1;
+			}
+			if (spot.districtID in districtCnt) {
+				districtCnt[spot.districtID] += 1;
+			} else {
+				districtCnt[spot.districtID] = 1;
+			}
+		}
+	});
+
+	await Promise.all(promises);
+	// console.log('Spot');
+	// console.log(spotCnt);
+
+	spotMostReported = -1;
+	for(let key in spotCnt) {
+		if (spotCnt[key] > spotMostReported) {
+			spotMostReported = spotCnt[key];
+			spotMaxId = key;
+		}
+	}
+
+	// console.log('Board');
+	// console.log(boardCnt);
+
+	boardMostReported = -1;
+	for(let key in boardCnt) {
+		if (boardCnt[key] > boardMostReported) {
+			boardMostReported = boardCnt[key];
+			boardMaxId = key;
+		}
+	}
+
+	// console.log('District');
+	// console.log(districtCnt);
+
+
+	districtMostReported = -1;
+	for(let key in districtCnt) {
+		if (districtCnt[key] > districtMostReported) {
+			districtMostReported = districtCnt[key];
+			districtMaxId = key;
+		}
+	}
+
+	let district = await districtService.getDistrictByID(districtMaxId);
+	districtMaxId = district.districtName;
+
+	let statisticalData = {
+		spotMaxId: spotMaxId,
+		boardMaxId: boardMaxId,
+		districtMaxId: districtMaxId
+	}
+	// console.log(objectIDs);
+	// console.log(statisticalData);
 	const title = 'Sở - Thống kê báo cáo';
-	return res.render('./so/reports', {title, tableHeads, tableData, toolbars});
+	return res.render('./so/reports', {title, tableHeads, tableData, toolbars, statisticalData});
 }
 
 controller.showDetail = async (req, res) => {

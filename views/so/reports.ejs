@@ -22,11 +22,11 @@
             <div class="container-fluid mt-3 ps-0">
                 <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                     <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                        <%- include("../partials/info_card.ejs", {title: 'Điểm có báo cáo nhiều nhất' , value: 'Địa điểm A' ,
+                        <%- include("../partials/info_card.ejs", {title: 'Điểm có báo cáo nhiều nhất' , value: statisticalData.spotMaxId,
                         color: '#00b285' }); %>
-                        <%- include("../partials/info_card.ejs", {title: 'Bảng có báo cáo nhiều nhất' , value: 'Bảng báo B' ,
+                        <%- include("../partials/info_card.ejs", {title: 'Bảng có báo cáo nhiều nhất' , value: statisticalData.boardMaxId,
                         color: '#d59633' }); %>
-                        <%- include("../partials/info_card.ejs", {title: 'Quận có báo cáo nhiều nhất' , value: 'Quận C' ,
+                        <%- include("../partials/info_card.ejs", {title: 'Quận có báo cáo nhiều nhất' , value: statisticalData.districtMaxId,
                         color: '#e84747' }); %>
                     </div>
                 </div>

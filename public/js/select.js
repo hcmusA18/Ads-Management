@@ -17,7 +17,7 @@ $(document).ready(function () {
 
         table.bootstrapTable('refresh');
 
-        if(selectedName === "Tất cả"){
+        if(selectedName === 'Tất cả'){
             if(checkedValues.length === 0){
                 table.bootstrapTable('filterBy', {
                     state: dataNames.slice(1)
