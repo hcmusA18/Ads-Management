@@ -26,27 +26,6 @@ function generateSpotHTML(spot) {
           </div>`;
 }
 
-function generateSpotMarker(spot) {
-  const marker = document.createElement('div');
-  marker.className = 'marker';
-  marker.style.width = '50px';
-  marker.style.height = '50px';
-  marker.style.backgroundSize = 'cover';
-  marker.style.cursor = 'pointer';
-
-  marker.addEventListener('click', () => {
-    const popup = new mapboxgl.Popup({ offset: 25 })
-      .setHTML(spot.description);
-
-      // new mapboxgl.Marker()
-      // .setLngLat([spot.longitude, spot.latitude])
-      // .setPopup(popup)
-      // .addTo(map);
-  });
-
-  return marker;
-}
-
 async function getSpotsData() {
   try {
     const spots = await request.getAllSpots();
