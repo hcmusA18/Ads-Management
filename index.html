@@ -1,207 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<title>Ads Management</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ads Management</title>
 
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-	<!-- Google Font -->
-	<link rel="preconnect" href="https://fonts.googleapis.com"/>
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"/>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600&display=swap"
-		rel="stylesheet"/>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet" />
 
-	<!-- Bootstrap 5 -->
-	<link
-		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-		rel="stylesheet"
-		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-		crossorigin="anonymous"/>
-	<script
-		defer
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-		crossorigin="anonymous"></script>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-	<!-- Bootstrap Datatables -->
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"/>
-	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.bootstrap5.min.css"/>
+  <!-- Bootstrap Datatables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/select/1.7.0/css/select.bootstrap5.min.css" />
 
-	<!-- Bootstrap-table -->
-	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css">
+  <!-- Bootstrap-table -->
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css">
 
-	<!-- Bootstrap-table -->
-	<script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
-	<script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
-	<script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/locale/bootstrap-table-vi-VN.min.js"></script>
-	<script defer src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-	<script defer src="js/table.js"></script>
-	<script defer type="module" crossorigin="anonymous" src="js/script.js"></script>
+  <!-- Bootstrap-table -->
+  <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+  <script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/locale/bootstrap-table-vi-VN.min.js"></script>
+  <script defer src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script defer src="js/table.js"></script>
+  <script defer type="module" crossorigin="anonymous" src="js/script.js"></script>
 
-	<!-- CSS stylesheets -->
-	<link rel="stylesheet" href="css/style.css"/>
-	<!-- Bootstrap icon -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <!-- CSS stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Bootstrap icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-	<!-- Mapbox -->
-	<link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet"/>
+  <!-- Mapbox -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
 
 </head>
+
 <body>
-<!--- Load the mapbox geocoder plugin -->
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link
-	rel="stylesheet"
-	href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
-	type="text/css"/>
+  <!--- Load the mapbox geocoder plugin -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css" />
 
-<div id="map"></div>
-<div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 start-0 z-index-3">
-	<div id="toggle-container" class="row align-items-center justify-content-start mx-2">
-		<div class="col-3">
-			<div class="form-check form-switch">
-				<input class="form-check-input" type="checkbox" id="ads-toggle" aria-checked="false" checked/>
-				<label class="form-check-label" for="ads-toggle">Bảng quảng cáo</label>
-			</div>
-		</div>
+  <div id="map"></div>
+  <div id="bottom-menu" class="container-lg mb-3 mx-3 p-2 bg-white position-absolute bottom-0 start-0 z-index-3">
+    <div id="toggle-container" class="row align-items-center justify-content-start mx-2">
+      <div class="col-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="ads-toggle" aria-checked="false" checked />
+          <label class="form-check-label" for="ads-toggle">Bảng quảng cáo</label>
+        </div>
+      </div>
 
-		<div class="col-3">
-			<div class="form-check form-switch">
-				<input class="form-check-input" type="checkbox" id="report-toggle" aria-checked="false" checked/>
-				<label class="form-check-label" for="report-toggle">Báo cáo vi phạm</label>
-			</div>
-		</div>
+      <div class="col-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="report-toggle" aria-checked="false" checked />
+          <label class="form-check-label" for="report-toggle">Báo cáo vi phạm</label>
+        </div>
+      </div>
 
-    <div class="col-3">
-			<div class="form-check form-switch">
-				<input class="form-check-input" type="checkbox" id="planned-toggle" aria-checked="false" checked/>
-				<label class="form-check-label" for="planned-toggle">Đã quy hoạch</label>
-			</div>
-		</div>
-	</div>
-</div>
-<div
-	class="offcanvas offcanvas-end"
-	tabindex="-1"
-	id="offcanvasRight"
-	aria-labelledby="offcanvasRightLabel"
-	data-bs-backdrop="false">
-	<div class="offcanvas-header container-fluid">
-		<img src="assets/san-cau-long-phu-tho-1.webp" class="img-fluid" alt="Nhà thi đấu Phú Thọ" style="margin: 0"/>
-		<h4 class="offcanvas-title" id="offcanvasRightLabel">Nhà thi đấu Phú Thọ</h4>
-		<p class="subtitle">cổng Lý Thường Kiệt</p>
-		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="btn-close"></button>
-	</div>
-	<div class="offcanvas-body">
-		<ul class="nav nav-tabs">
-			<li class="nav-item" role="presentation">
-				<button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-tab-pane" type="button"
-				        role="tab" aria-controls="info-tab-pane" aria-selected="true">
-					Thông tin
-				</button>
-			</li>
-			<li class="nav-item">
-				<button class="nav-link" id="ads-tab" data-bs-toggle="tab" data-bs-target="#ads-tab-pane" type="button"
-				        role="tab" aria-controls="ads-tab-pane" aria-selected="false">
-					B.Quảng cáo
-				</button>
-			</li>
-			<li class="nav-item">
-				<button class="nav-link" id="report-tab" data-bs-toggle="tab" data-bs-target="#report-tab-pane" type="button"
-				        role="tab" aria-controls="report-tab-pane" aria-selected="false">
-					Báo cáo
-				</button>
-			</li>
-		</ul>
+      <div class="col-3">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="planned-toggle" aria-checked="false" checked />
+          <label class="form-check-label" for="planned-toggle">Đã quy hoạch</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header container-fluid">
+      <img src="assets/san-cau-long-phu-tho-1.webp" class="img-fluid" alt="Nhà thi đấu Phú Thọ" style="margin: 0" />
+      <h4 class="offcanvas-title" id="offcanvasRightLabel">Nhà thi đấu Phú Thọ</h4>
+      <p class="subtitle">cổng Lý Thường Kiệt</p>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="btn-close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav nav-tabs">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-tab-pane" type="button" role="tab" aria-controls="info-tab-pane" aria-selected="true">
+            Thông tin
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="ads-tab" data-bs-toggle="tab" data-bs-target="#ads-tab-pane" type="button" role="tab" aria-controls="ads-tab-pane" aria-selected="false">
+            B.Quảng cáo
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="report-tab" data-bs-toggle="tab" data-bs-target="#report-tab-pane" type="button" role="tab" aria-controls="report-tab-pane" aria-selected="false">
+            Báo cáo
+          </button>
+        </li>
+      </ul>
 
-		<div class="tab-content" id="tabContent">
-			<div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab" tabindex="0">
-				<p>Số 123, đường Lý Thường Kiệt, phường 10, quận 10</p>
-				<p>Đất công/công viên/hành lang an toàn giao thông</p>
-				<p>Hình thức: Quảng cáo thương mại, cổ động chính trị</p>
-				<p id="status">Đã quy hoạch</p>
-				<div class="options">
-					<a href="spot-detail.htmld=123" class="btn btn-icon" role="button">
-						<i class="bi bi-info-circle"></i>
-					</a>
-					<a href="report-detail.htmld=123" class="btn btn-outline-danger">
-						<i class="bi bi-exclamation-octagon"></i>
-						Báo cáo vi phạm
-					</a>
-				</div>
-			</div>
-			<div class="tab-pane list-group fade p-0 overflow-auto" id="ads-tab-pane" role="tabpanel"
-			     aria-labelledby="ads-tab" tabindex="0">
-				<script>
-					document.addEventListener('DOMContentLoaded', () => {
-						const ads_tab = document.getElementById('ads-tab-pane')
-						const data = [...Array(5).keys()].map(i => ({
-							id: i,
-							name: `Cổng chào ${i + 1}`,
-							address: `Số ${i + 1}, đường Lý Thường Kiệt, phường 10, quận 10`,
-							size: `2.5 x 10m`,
-							quantity: `1 cổng`,
-							type: `cổ động chính trị`,
-							options: `<a href="board-detail.htmld=123" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>
+      <div class="tab-content" id="tabContent">
+        <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab" tabindex="0">
+          <p>Số 123, đường Lý Thường Kiệt, phường 10, quận 10</p>
+          <p>Đất công/công viên/hành lang an toàn giao thông</p>
+          <p>Hình thức: Quảng cáo thương mại, cổ động chính trị</p>
+          <p id="status">Đã quy hoạch</p>
+          <div class="options">
+            <a href="spot-detail.htmld=123" class="btn btn-icon" role="button">
+              <i class="bi bi-info-circle"></i>
+            </a>
+            <a href="report-detail.htmld=123" class="btn btn-outline-danger">
+              <i class="bi bi-exclamation-octagon"></i>
+              Báo cáo vi phạm
+            </a>
+          </div>
+        </div>
+        <div class="tab-pane list-group fade p-0 overflow-auto" id="ads-tab-pane" role="tabpanel" aria-labelledby="ads-tab" tabindex="0">
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              const ads_tab = document.getElementById('ads-tab-pane')
+              const data = [...Array(5).keys()].map(i => ({
+                id: i,
+                name: `Cổng chào ${i + 1}`,
+                address: `Số ${i + 1}, đường Lý Thường Kiệt, phường 10, quận 10`,
+                size: `2.5 x 10m`,
+                quantity: `1 cổng`,
+                type: `cổ động chính trị`,
+                options: `<a href="board-detail.htmld=123" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>
 												<a href="report-detail.htmld=123" class="btn btn-outline-danger" role="button"><i class="bi bi-exclamation-octagon"></i>Báo cáo vi phạm</a>`
-						}));
+              }));
 
-						data.forEach(item => {
-							let newItem = new DOMParser().parseFromString(`<div class="list-group-item list-group-item-action"></div>`, 'text/html').body.firstChild;
-							newItem.innerHTML = `<h5 class="mb-1 fw-semibold">${item.name}</h5>
+              data.forEach(item => {
+                let newItem = new DOMParser().parseFromString(`<div class="list-group-item list-group-item-action"></div>`, 'text/html').body.firstChild;
+                newItem.innerHTML = `<h5 class="mb-1 fw-semibold">${item.name}</h5>
 							<small>${item.address}</small>
 							<p class="mb-1">Kích thước: ${item.size}</p>
 							<p class="mb-1">Số lượng: ${item.quantity}</p>
 							<p class="mb-1">Hình thức: ${item.type}</p>
 							<div class="options">${item.options}</div>`;
-							ads_tab.appendChild(newItem);
-						});
-					})
-				</script>
+                ads_tab.appendChild(newItem);
+              });
+            })
+          </script>
 
-			</div>
-			<div class="tab-pane list-group fade p-0 overflow-auto" id="report-tab-pane" role="tabpanel"
-			     aria-labelledby="report-tab" tabindex="0">
-				<script>
-					document.addEventListener('DOMContentLoaded', () => {
-						const report_tab = document.getElementById('report-tab-pane')
-						const data = [...Array(5).keys()].map(i => ({
-							type: 'Tố giác sai phạm',
-							sender: `Nguyễn Văn A`,
-							date: `02/07/2023`,
-							status: `Chưa xử lý`,
-							options: `<a href="report-detail.htmld=123" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>`
-						}));
+        </div>
+        <div class="tab-pane list-group fade p-0 overflow-auto" id="report-tab-pane" role="tabpanel" aria-labelledby="report-tab" tabindex="0">
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              const report_tab = document.getElementById('report-tab-pane')
+              const data = [...Array(5).keys()].map(i => ({
+                type: 'Tố giác sai phạm',
+                sender: `Nguyễn Văn A`,
+                date: `02/07/2023`,
+                status: `Chưa xử lý`,
+                options: `<a href="report-detail.htmld=123" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>`
+              }));
 
-						data.forEach(item => {
-							let newItem = new DOMParser().parseFromString(`<div class="list-group-item list-group-item-action position-relative"></div>`, 'text/html').body.firstChild;
-							newItem.innerHTML = `<h5 class="mb-1 fw-semibold">${item.type}</h5>
+              data.forEach(item => {
+                let newItem = new DOMParser().parseFromString(`<div class="list-group-item list-group-item-action position-relative"></div>`, 'text/html').body.firstChild;
+                newItem.innerHTML = `<h5 class="mb-1 fw-semibold">${item.type}</h5>
 							<p class="mb-1">${item.sender}</p>
 							<p class="mb-1">Ngày gửi: ${item.date}</p>
 							<p class="mb-1">Tình trạng: <b>${item.status}</b></p>
 							${item.options}`;
-							report_tab.appendChild(newItem);
-						});
-					})
-				</script>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- Script -->
-<script
-	src="https://code.jquery.com/jquery-3.7.0.min.js"
-	integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-	crossorigin="anonymous"></script>
-<!-- End of Script -->
+                report_tab.appendChild(newItem);
+              });
+            })
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Script -->
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+  <script>
+    function openSpotDetail(spotID) {
+      // toggle #offcanvas element
+      console.log(spotID);
+      const offcanvas = document.getElementById('offcanvasRight');
+      const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
+      bsOffcanvas.toggle();
+    }
+  </script>
+  <!-- End of Script -->
 </body>
+
 </html>

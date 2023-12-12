@@ -22,6 +22,7 @@ function generateSpotHTML(spot) {
               <p class="card-text">${spot.spotTypeName}</p>
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
+              <div class="btn btn-primary btn-sm" onclick="openSpotDetail('${spot.spotID}')">Xem chi tiết</div>
             </div>
           </div>`;
 }
@@ -87,7 +88,7 @@ function createMap() {
     placeholder: 'Tìm kiếm địa điểm',
     language: 'vi-VN',
     countries: 'vn',
-  }));
+  }), 'top-left');
 
   return map;
 }
@@ -225,11 +226,6 @@ async function addSpotLayer(map, spotsGeojson) {
       essential: true, // this animation is considered essential with respect to prefers-reduced-motion
       zoom: 16
     });
-
-    // toggle #offcanvas element
-    const offcanvas = document.getElementById('offcanvasRight');
-    const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-    bsOffcanvas.toggle();
   });
 
   map.on('mouseenter', 'unclustered-point-spots', function () {
@@ -261,30 +257,6 @@ mapboxScript.onload = async function () {
     'planned': true,
     'ads': true,
   }
-  // toggle.addEventListener('change', async (e) => {
-  //   filterOptions['report'] = e.target.checked;
-  //   console.log(filterOptions);
-
-  //   filteredSpotsGeojson = {
-  //     type: 'FeatureCollection',
-  //     features: spotsGeojson.features.filter((spot) => {
-  //       let allow = true;
-  //       if (!filterOptions['report'] && spot.properties.hasReport) {
-  //         return false;
-  //       }
-  //       if (!filterOptions['planned'] && spot.properties.planned === 'Đã quy hoạch') {
-  //         return false;
-  //       }
-  //       if (!filterOptions['ads'] && spot.properties.hasAds) {
-  //         return false;
-  //       }
-  //       return allow;
-  //     })
-  //   };
-
-  //   map.getSource('spots').setData(filteredSpotsGeojson);
-
-  // });
 
   toggles.forEach((toggle) => {
     toggle.addEventListener('change', async (e) => {
