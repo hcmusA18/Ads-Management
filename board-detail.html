@@ -41,51 +41,51 @@
 	<script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
 	<script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/locale/bootstrap-table-vi-VN.min.js"></script>
 	<script defer src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-	<script defer src="./js/table.js"></script>
+	<script defer src="js/table.js"></script>
 
 	<!-- CSS stylesheets -->
-	<link rel="stylesheet" href="./css/style.css"/>
-	<link rel="stylesheet" href="./css/carousel.css"/>
-	<link rel="stylesheet" href="./css/sidebar.css"/>
-	<link rel="stylesheet" href="./css/carousel.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/carousel.css"/>
+	<link rel="stylesheet" href="css/sidebar.css"/>
+	<link rel="stylesheet" href="css/carousel.css"/>
 	<!-- Bootstrap icon -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
 <header></header>
 <main class="container-fluid d-flex bg-light">
-	<div class="row">
-		<!-- Sidebar -->
-		<div class="d-flex flex-column p-0 flex-shrink-0 sidebar-wrap">
-			<a
-				href="/"
-				class="d-block p-3 link-body-emphasis text-decoration-none logo-wrap"
-				data-bs-toggle="tooltip"
-				data-bs-placement="right"
-				data-bs-original-title="Icon only">
-				<div class="icon-wrap">
-					<i class="bi bi-bootstrap"></i>
-				</div>
-			</a>
-			<!-- <hr /> -->
-			<ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
-				<li class="nav-item">
-					<a
-						href="/"
-						class="nav-link rounded-0 py-3 border-bottom border-dark  "
-						aria-current="page"
-						data-bs-toggle="tooltip"
-						data-bs-placement="right"
-						aria-label="Trang chủ"
-						data-bs-original-title="Trang chủ">
-						<i class="bi bi-house-door-fill"></i>
-						<span>Trang chủ</span>
-					</a>
-				</li>
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="d-flex flex-column p-0 flex-shrink-0 sidebar-wrap">
+      <a
+        href="/public"
+        class="d-block p-3 link-body-emphasis text-decoration-none logo-wrap"
+        data-bs-toggle="tooltip"
+        data-bs-placement="right"
+        data-bs-original-title="Icon only">
+        <div class="icon-wrap">
+          <i class="bi bi-bootstrap"></i>
+        </div>
+      </a>
+      <!-- <hr /> -->
+      <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+        <li class="nav-item">
+          <a
+            href="/public"
+            class="nav-link rounded-0 py-3 border-bottom border-dark  "
+            aria-current="page"
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            aria-label="Trang chủ"
+            data-bs-original-title="Trang chủ">
+            <i class="bi bi-house-door-fill"></i>
+            <span>Trang chủ</span>
+          </a>
+        </li>
 
-			</ul>
-		</div>
-	</div>
+      </ul>
+    </div>
+  </div>
 	<div class="container-fluid vw-100 pt-1">
 		<div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
 			<!-- Back button -->
@@ -93,17 +93,17 @@
 			     style="max-width: fit-content;">
 				<button class="d-flex align-items-center justify-content-center text-white rounded-pill border-0"
 				        style="background-color: #3c77ff; height: 50px; width: 50px" onclick="window.history.back()">
+					<!--        <img src="/images/back.svg" alt="back" style="background-color: #3c77ff; border-radius: 50%"/>-->
 					<i class="bi bi-arrow-90deg-left"></i>
 				</button>
 			</div>
 			<!-- Title -->
 			<div class="d-flex flex-row align-items-center" style="gap: 10px">
-				<h1 class="fw-bolder m-0">ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO</h1>
+				<h1 class="fw-bolder m-0">CHI TIẾT BẢNG QUẢNG CÁO</h1>
 			</div>
 
 			<!-- Content -->
-			<div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4"
-			     style="gap: 1rem;">
+			<div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
 				<!-- Carousel -->
 				<div class="container-fluid px-0">
 					<!--Main image-->
@@ -143,7 +143,6 @@
 						</div>
 
 					</div>
-
 					<div class="row thumbnails-item d-none mt-2">
 
 						<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
@@ -162,7 +161,6 @@
 						</div>
 
 					</div>
-
 					<div class="row thumbnails-item d-none mt-2">
 
 						<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
@@ -181,7 +179,6 @@
 						</div>
 
 					</div>
-
 					<div class="row thumbnails-item d-none mt-2">
 
 						<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
@@ -200,7 +197,6 @@
 						</div>
 
 					</div>
-
 					<div class="row thumbnails-item d-none mt-2">
 
 						<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
@@ -219,7 +215,6 @@
 						</div>
 
 					</div>
-
 					<div class="row thumbnails-item d-none mt-2">
 
 						<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
@@ -240,66 +235,157 @@
 					</div>
 
 				</div>
-				<div class="container-fluid px-0 nd-chi-tiet">
+
+				<script>
+					const firstThreeThumbnails = document.querySelectorAll('.thumbnails-item')[0];
+					firstThreeThumbnails.classList.remove('d-none');
+
+					// active first img
+					document.querySelector('.thumbnails-item:not(.d-none)')
+							.children[0].children[0].classList.add('border', 'border-primary');
+
+					const changeMainImg = (img) => {
+						document.getElementById('mainImg').src = img.src;
+						// 	add border to img
+						document.querySelectorAll('img.border').forEach(img => {
+							img.classList.remove('border', 'border-primary');
+						});
+						img.classList.add('border', 'border-primary');
+					}
+
+					const moveSlides = (direction) => {
+						const thumbnails = document.querySelectorAll('.thumbnails-item');
+						const currentThumbnails = document.querySelector('.thumbnails-item:not(.d-none)');
+						const currentIndex = Array.from(thumbnails).indexOf(currentThumbnails);
+
+						// remove the border of current img
+						const currentImg = currentThumbnails.querySelector('img.border');
+						if (currentImg) {
+							currentImg.classList.remove('border', 'border-primary');
+						}
+
+						let newIndex = 0;
+						if (direction === 'left') {
+							newIndex = Math.max(currentIndex - 1, 0) % thumbnails.length;
+
+						} else {
+							newIndex = (currentIndex + 1) % thumbnails.length;
+						}
+						currentThumbnails.classList.add('d-none');
+						thumbnails[newIndex].classList.remove('d-none');
+
+						// change img to center
+						if (newIndex !== currentIndex) {
+							const centerImg = thumbnails[newIndex].children[1].children[0];
+							document.getElementById('mainImg').src = centerImg.src;
+							centerImg.classList.add('border', 'border-primary');
+						}
+					}
+				</script>
+				<div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
 					<div class="container d-flex justify-content-between">
-						<h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
-						<button class="btn btn-outline-danger">
-							<i class="bi bi-exclamation-octagon"></i>
-							Báo cáo vi phạm
-						</button>
-					</div>
-					<div class="container mt-4">
-						<label for="spot-id" style="margin-bottom: 6px">ID Điểm đặt</label>
-						<input type="text" class="form-control" id="spot-id" value="D0155001" disabled/>
-					</div>
-					<div class="container mt-2">
-						<label for="address" style="margin-bottom: 6px">Địa chỉ</label>
-						<input type="text" class="form-control" id="address" value="227 Nguyễn Văn Cừ" disabled/>
+						<h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết bảng quảng cáo</h4>
+            <button class="btn btn-outline-danger">
+              <i class="bi bi-exclamation-octagon"></i>
+              Báo cáo vi phạm
+            </button>
 					</div>
 					<div class="container mt-2 d-flex justify-content-between">
 						<div style="width: calc((100% - 2rem) / 2);">
-							<label for="ward" style="margin-bottom: 6px;">Phường</label>
-							<input type="text" class="form-control" id="ward" value="Bến Nghé" disabled/>
+							<label for="id-quangcao" style="margin-bottom: 6px;">ID Quảng cáo</label>
+							<input type="text" class="form-control" id="id-quangcao" value="B0155001" disabled/>
 						</div>
 						<div style="width: calc((100% - 2rem) / 2);">
-							<label for="district" style="margin-bottom: 6px">Quận</label>
-							<input type="text" class="form-control" id="district" value="Bình Thạnh" disabled/>
+							<label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
+							<input type="text" class="form-control" id="id-diemdat" value="D0155001" disabled/>
 						</div>
 					</div>
 					<div class="container mt-2">
-						<label for="spot-type" style="margin-bottom: 6px">Loại vị trí</label>
-						<input type="text" class="form-control" id="spot-type"
-						       value="Đất công/Công viên/Hành lang an toàn giao thông" disabled/>
+						<label for="diachi" style="margin-bottom: 6px">Địa chỉ điểm đặt</label>
+						<input type="text" class="form-control" id="diachi" value="227 Nguyễn Văn Cừ" disabled/>
 					</div>
 					<div class="container mt-2">
-						<label for="ads-type" style="margin-bottom: 6px">Hình thức quảng cáo</label>
-						<input type="text" class="form-control" id="ads-type" value="Quảng cáo thương mại" disabled/>
+						<label for="compName" style="margin-bottom: 6px">Công ty yêu cầu cấp phép</label>
+						<input type="text" class="form-control" id="compName" value="Công ty Cổ phần CivicAds Việt Nam" disabled/>
+					</div>
+					<div class="container mt-2 d-flex justify-content-between">
+						<div style="width: calc((100% - 2rem) / 2);">
+							<label for="compPhone" style="margin-bottom: 6px;">Số điện thoại</label>
+							<input type="text" class="form-control" id="compPhone" value="09391389139" disabled/>
+						</div>
+						<div style="width: calc((100% - 2rem) / 2);">
+							<label for="compEmail" style="margin-bottom: 6px">Email</label>
+							<input type="text" class="form-control" id="compEmail" value="civicads@gmail.com" disabled/>
+						</div>
 					</div>
 					<div class="container mt-2">
-						<label for="status" style="margin-bottom: 6px">Thông tin quy hoạch</label>
-						<input type="text" class="form-control" id="status" value="Đã quy hoạch" disabled/>
+						<label for="compAdress" style="margin-bottom: 6px">Địa chỉ công ty</label>
+						<input type="text" class="form-control" id="compAdress"
+						       value="123 Nguyễn Thị Minh Khai, Phường 3, Quận 3, Thành phố Hồ Chí Minh, Việt Nam" disabled/>
+					</div>
+					<div class="container mt-2 d-flex justify-content-between">
+						<div style="width: calc((100% - 2rem) / 2);">
+							<label for="startDate" style="margin-bottom: 6px;">Thời gian bắt đầu hợp đồng</label>
+							<div class="input-group date" id="datepicker1">
+								<input type="text" class="form-control" id="startDate" value="01-01-2023" disabled/>
+								<span class="input-group-append">
+                      <span class="input-group-text h-100">
+                        <i class="bi bi-calendar" style="background-color: transparent;"></i>
+                      </span>
+                    </span>
+							</div>
+						</div>
+						<div style="width: calc((100% - 2rem) / 2);">
+							<label for="endDate" style="margin-bottom: 6px">Thời gian kết thúc hợp đồng</label>
+							<div class="input-group date" id="datepicker2">
+								<input type="text" class="form-control" id="endDate" value="31-12-2023" disabled/>
+								<span class="input-group-append">
+                      <span class="input-group-text h-100">
+                        <i class="bi bi-calendar" style="background-color: transparent;"></i>
+                      </span>
+                    </span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<!-- Ads list -->
-			<div class="mt-5 mb-2" style="font-size: 20px; font-weight: bold;">Danh sách bảng quảng cáo</div>
-			<table id="table"
-			       data-toggle="table">
-				<thead>
-				<tr>
-					<th data-sortable="true" data-align="center" data-field="id">ID</th>
-					<th data-sortable="true" data-align="center" data-field="type">Loại bảng quảng cáo</th>
-					<th data-sortable="true" data-align="center" data-field="size">Kích thước</th>
-					<th data-sortable="true" data-align="center" data-field="quantity">Số lượng</th>
-					<th data-align="center" data-field="detail">Chi tiết</th>
-				</tr>
-				</thead>
-			</table>
+			<!-- Dưới ảnh -->
+			<div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
+				<div class="container mt-2 d-flex justify-content-between">
+					<div style="width: calc((100% - 3rem) / 3);">
+						<label for="adsType" style="margin-bottom: 6px;">Loại quảng cáo</label>
+						<input type="text" class="form-control" id="adsType" value="Trụ bảng hiflex" disabled/>
+					</div>
+					<div style="width: calc((100% - 3rem) / 3);">
+						<label for="count" style="margin-bottom: 6px">Số lượng</label>
+						<input type="text" class="form-control" id="count" value="1 trụ / bảng" disabled/>
+					</div>
+					<div style="width: calc((100% - 3rem) / 3);">
+						<label for="size" style="margin-bottom: 6px">Kích thước</label>
+						<input type="text" class="form-control" id="size" value="2.5m x 10m" disabled/>
+					</div>
+				</div>
+				<div class="container mt-2 d-flex justify-content-between">
+					<div style="width: calc((100% - 2rem) / 2);">
+						<label for="locationType" style="margin-bottom: 6px;">Phân loại</label>
+						<input type="text" class="form-control" id="locationType"
+						       value="Đất công / Công viên / Hành lang an toàn giao thông" disabled/>
+					</div>
+					<div style="width: calc((100% - 2rem) / 2);">
+						<label for="adsForm" style="margin-bottom: 6px">Hình thức</label>
+						<input type="text" class="form-control" id="adsForm" value="Cổ động chính trị" disabled/>
+					</div>
+				</div>
+				<div class="container mt-2  custom-col">
+					<label for="nd-baocao" style="margin-bottom: 6px">Nội dung báo cáo</label>
+					<textarea class="form-control" id="nd-baocao" disabled
+					          style="min-height: 100px">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa quod perspiciatis numquam soluta adipisci aperiam magni? Iure laborum esse aperiam totam, laboriosam voluptatibus neque perferendis quas fugit voluptatem laudantium expedita. Natus veritatis illo harum voluptas deleniti, voluptate possimus hic eveniet itaque sunt dolor adipisci corporis? Quisquam perferendis exercitationem quas. Ab.</textarea>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </main>
 
-
-<script defer type="text/javascript" src="./js/carousel.js"></script>
 </body>
 </html>

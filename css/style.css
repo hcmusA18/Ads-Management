@@ -332,3 +332,25 @@ svg {
   background: #27346e;
 }
 /*============= End Scroll Bar =====================*/
+
+
+.mapboxgl-popup-content {
+  font-family: 'Montserrat', sans-serif !important;
+  color: var(--Dark) !important;
+  padding: 0 !important;
+  width: 20rem;
+}
+
+.mapboxgl-popup-content p {
+  margin: 0 !important;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.mapboxgl-popup-close-button {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  opacity: 1 !important;
+  font-size: 1.5rem !important;
+  line-height: 1.5rem !important;
+  filter: drop-shadow(0px 4px 6px rgba(60, 64, 67, 0.3));
+}
