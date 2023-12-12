@@ -27,9 +27,9 @@
                     options: [
                     { name: 'Yêu cầu cấp phép' , link: '/so/requests?category=license' },
                     { name: 'Yêu cầu chỉnh sửa' , link: '/so/requests?category=modify' }, ]}); %>
-                    <%- include("../partials/info_card.ejs", {title: 'Đã duyệt' , value: '112,983 đơn' , color: '#00b285' }); %>
-                    <%- include("../partials/info_card.ejs", {title: 'Chờ duyệt' , value: '112,983 đơn' , color: '#d59633'}); %>
-                    <%- include("../partials/info_card.ejs", {title: 'Từ chối' , value: '112,983 đơn' , color: '#e84747' }); %>
+                    <%- include("../partials/info_card.ejs", {title: 'Đã duyệt' , value: (statusCnt['done'] + ' đơn') , color: '#00b285' }); %>
+                    <%- include("../partials/info_card.ejs", {title: 'Chờ duyệt' , value: (statusCnt['waiting'] + ' đơn') , color: '#d59633'}); %>
+                    <%- include("../partials/info_card.ejs", {title: 'Từ chối' , value: (statusCnt['decline'] + ' đơn') , color: '#e84747' }); %>
                 </div>
             </div>
             <!-- Table -->

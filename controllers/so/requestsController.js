@@ -50,7 +50,29 @@ controller.show = async (req, res) => {
 		res.status(404);
 		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
-	return res.render('./so/requests', {url: req.originalUrl, title, category, tableHeads, tableData, toolbars});
+
+	let statusCnt = {
+		done: 0,
+		waiting: 0,
+		decline: 0,
+	};
+
+	tableData.forEach(entry => {
+		if(entry.status == 'Đang chờ duyệt') {
+			statusCnt['waiting']++;
+		}
+
+		if(entry.status == 'Đã duyệt') {
+			statusCnt['done']++;
+		}
+
+		if(entry.status == 'Đã từ chối') {
+			statusCnt['decline']++;
+		}
+	});
+
+	console.log(statusCnt);
+	return res.render('./so/requests', {url: req.originalUrl, title, category, tableHeads, tableData, toolbars, statusCnt});
 }
 
 controller.showDetail = async (req, res) => {
@@ -66,13 +88,9 @@ controller.showDetail = async (req, res) => {
 	switch (category){
 		case 'license':
 			data = await licensingRequestService.getByID(id);
-			const detail = {
-				id: id,
-				spotID: data.spotID,
-
-			}
 			break;
 		case 'modify':
+			data = await modifyLicenseRequestService.getByID(id);
 			break;
 	}
 
