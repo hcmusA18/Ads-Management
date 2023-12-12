@@ -4,21 +4,77 @@ const getAllSpots = async () => {
   const options = [
     {
       $lookup: {
-        from: 'districts',
-        localField: 'districtID',
-        foreignField: 'districtID',
-        as: 'district'
+        as: 'boards',
+        from: 'boards',
+        foreignField: 'spotID',
+        localField: 'spotID',
+        pipeline: [
+          {
+            $lookup: {
+              as: 'reports',
+              from: 'reports',
+              foreignField: 'objectID',
+              localField: 'boardID'
+            }
+          },
+          {
+            $project: {
+              _id: 0,
+              boardID: 1,
+              reports: {
+                $size: '$reports'
+              }
+            }
+          }
+        ]
       }
     },
     {
       $lookup: {
-        from: 'wards',
-        localField: 'wardID',
-        foreignField: 'wardID',
-        as: 'ward'
+        as: 'reports',
+        from: 'reports',
+        foreignField: 'objectID',
+        localField: 'spotID'
       }
     },
     {
+      // lookup district
+      $lookup: {
+        from: 'districts',
+        localField: 'districtID',
+        foreignField: 'districtID',
+        as: 'district',
+        pipeline: [
+          {
+            $project: {
+              _id: 0,
+              districtID: 1,
+              districtName: 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      // lookup ward
+      $lookup: {
+        from: 'wards',
+        localField: 'wardID',
+        foreignField: 'wardID',
+        as: 'ward',
+        pipeline: [
+          {
+            $project: {
+              _id: 0,
+              wardID: 1,
+              wardName: 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      // lookup spot type
       $lookup: {
         from: 'spottypes',
         localField: 'spotType',
@@ -27,6 +83,7 @@ const getAllSpots = async () => {
       }
     },
     {
+      // lookup ads form
       $lookup: {
         from: 'adsforms',
         localField: 'adsForm',
@@ -65,6 +122,7 @@ const getAllSpots = async () => {
         spotName: 1,
         latitude: 1,
         longitude: 1,
+        spotImage: 1,
         address: {
           $concat: ['$address', ', Phường ', '$ward.wardName', ', Quận ', '$district.districtName']
         },
@@ -72,11 +130,37 @@ const getAllSpots = async () => {
         spotTypeName: '$spottypes.typeName',
         planned: {
           $cond: {
-            if: { $eq: ['$planned', 1] },
+            if: {
+              $eq: ['$planned', 1]
+            },
             then: 'Đã quy hoạch',
             else: 'Chưa quy hoạch'
           }
+        },
+        hasReport: {
+          $cond: {
+            if: {
+              $or: [
+                { $gte: [{ $size: '$reports' }, 1]},
+                { $gte: [{ $sum: '$boards.report' }, 1] }
+              ]
+            },
+            then: true,
+            else: false
+          }
+        },
+        hasAds: {
+          $cond: {
+            if: { $eq: [{ $size: '$boards' }, 0] },
+            then: false,
+            else: true
+          }
         }
+      }
+    },
+    {
+      $sort: {
+        spotID: 1
       }
     }
   ]
@@ -89,5 +173,5 @@ const getAllSpots = async () => {
 }
 
 export default {
-  getAllSpots,
-}
+  getAllSpots
+};
