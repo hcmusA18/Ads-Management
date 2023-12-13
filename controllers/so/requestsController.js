@@ -14,8 +14,8 @@ controller.show = async (req, res) => {
 		tableData = tableData.map(request => ({
 			id: request.requestID,
 			point_id: request.spotID,
-			ward: request.wardName,
-			district: request.districtName,
+			ward: request.wardName || 'N/A',
+			district: request.districtName || 'N/A',
 			officer: request.officerUsername,
 			time: `${request.startDate.toLocaleDateString('vi-VN')} - ${request.endDate.toLocaleDateString('vi-VN')}`,
 			status: request.status === 0 ? 'Đang chờ duyệt' : request.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
@@ -34,8 +34,8 @@ controller.show = async (req, res) => {
 		tableData = tableData.map(request => ({
 			id: request.requestID,
 			point_id: request.objectID,
-			ward: request.wardName,
-			district: request.districtName,
+			ward: request.wardName || 'N/A',
+			district: request.districtName || 'N/A',
 			officer: request.officerUsername,
 			reason: request.reason,
 			status: request.status === 0 ? 'Đang chờ duyệt' : request.status === 1 ? 'Đã duyệt' : 'Đã từ chối',

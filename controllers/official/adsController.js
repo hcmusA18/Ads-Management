@@ -4,6 +4,8 @@ import * as boardService from '../../services/boardService.js';
 import * as wardService from '../../services/wardService.js';
 import * as districtService from '../../services/districtService.js';
 import * as editRequestService from '../../services/editRequestService.js';
+import * as adsFromsService from '../../services/adsFormService.js';
+import * as spotTypeService from '../../services/spotTypeService.js';
 
 const show = async (req, res) => {
   const role = String(req.originalUrl.split('/')[1])
@@ -151,13 +153,10 @@ const showDetail = async (req, res, isEdit) => {
     }));
 
     if (isEdit) {
-      let spots = []
-      if (role === 'quan') {
-        spots = await spotService.getSpotsByDistrictID(req.user.districtID);
-      } else if (role === 'phuong') {
-        spots = await spotService.getSpotsByWardID(req.user.wardID);
-      }
-      res.render('spot-modify', { ...commonData, ...data, spots });
+      let other = {}
+      other.spottypes = await spotTypeService.getAllSpotTypes() || [];
+      other.adsforms = await adsFromsService.getAllAdsForms() || [];
+      res.render('spot-modify', { ...commonData, ...data, other });
     } else {
       res.render('spot-detail', { ...commonData, ...data, boardsTableHeads, boardsTableData: transformedBoardsTableData });
     }
@@ -177,6 +176,7 @@ const showDetail = async (req, res, isEdit) => {
       size: `${detailData.height}x${detailData.width}m`,
       spotTypeName: detailData.spotTypeName,
       adsFormName: detailData.adsFormName,
+      imgUrls: detailData.image,
     };
 
     if (isEdit) {

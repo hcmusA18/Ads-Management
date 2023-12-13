@@ -227,7 +227,89 @@ class RequestService {
 
   async getAll() {
     try {
-      return await this.model.aggregate(this.buildAggregateOptions())
+      let options = [];
+      if (this.model === LicensingRequest) {
+        options = this.buildAggregateOptions();
+      } else {
+        options = [
+          {
+            $lookup: {
+              from: 'boards',
+              localField: 'objectID',
+              foreignField: 'boardID',
+              as: 'board'
+            }
+          },
+          {
+            $unwind: {
+              path: '$board',
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $addFields: {
+              combinedSpotID: { $ifNull: ['$board.spotID', '$objectID'] }
+            }
+          },
+          {
+            $lookup: {
+              from: 'spots',
+              localField: 'combinedSpotID',
+              foreignField: 'spotID',
+              as: 'spot'
+            }
+          },
+          {
+            $unwind: {
+              path: '$spot',
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $lookup: {
+              from: 'districts',
+              localField: 'spot.districtID',
+              foreignField: 'districtID',
+              as: 'district'
+            }
+          },
+          {
+            $unwind: {
+              path: '$district',
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $lookup: {
+              from: 'wards',
+              localField: 'spot.wardID',
+              foreignField: 'wardID',
+              as: 'ward'
+            }
+          },
+          {
+            $unwind: {
+              path: '$ward',
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $project: {
+              _id: 0,
+              requestID: 1,
+              objectID: 1,
+              wardID: 1,
+              districtID: 1,
+              wardName: '$ward.wardName',
+              districtName: '$district.districtName',
+              officerUsername: 1,
+              reason: 1,
+              status: 1
+            }
+          }
+        ]
+      }
+      return await this.model.aggregate(options)
     } catch (error) {
       throw new Error(`Error getting all ${this.model.modelName}: ${error.message}`)
     }
