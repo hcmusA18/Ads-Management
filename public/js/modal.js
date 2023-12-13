@@ -83,6 +83,7 @@ const createButton = (button, formID) => {
 
 const createModal = (options) => {
 	console.log('create modal');
+	// console.log(options);
 	const modal = $(`
 		<div class="modal fade" id="${options.id}" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 			<div class="modal-dialog modal-dialog-centered" >

@@ -5,11 +5,11 @@ import District from '../models/districtModel.js';
 
 export const createDistrict = async (data) => {
     try {
-        const newDistrict = new District(data);
-        await newDistrict.save();
-    } catch (error) {
-        throw new Error(`Error creating district: ${error.message}`);
-    }
+		await District.create(data);
+		return {message: 'District created successfully'};
+	} catch (error) {
+		throw new Error(`Error creating district: ${error.message}`);
+	}
 }
 
 export const getDistrictByID = async (districtID) => {
@@ -36,8 +36,8 @@ export const updateDistrictByID = async (districtID, newData) => {
         await District.findOneAndUpdate(
             { districtID },
             { $set: newData },
-            { new: true }
         );
+        return {message: 'District updated successfully'};
     } catch (error) {
         throw new Error(`Error updating district by ID: ${error.message}`);
     }
@@ -46,6 +46,7 @@ export const updateDistrictByID = async (districtID, newData) => {
 export const deleteDistrictByID = async (districtID) => {
     try {
         await District.findOneAndDelete({ districtID });
+        return {message: 'Officer deleted successfully'};
     } catch (error) {
         throw new Error(`Error deleting district by ID: ${error.message}`);
     }

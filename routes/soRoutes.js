@@ -45,8 +45,19 @@ router.get('/locations', (req, res) => {
 	controller.locationsController.findAllDistricts(req, res);
 });
 
+router.post('/locations', (req, res) => {
+	controller.locationsController.addDistrict(req, res);
+})
+
+router.delete('/locations/:districtID', (req, res) => {
+	controller.locationsController.deleteDistrict(req, res);
+})
+
+router.patch('/locations/:districtID', (req, res) => {
+	controller.locationsController.updateDistrict(req, res);
+})
+
 router.get('/locations-detail', (req, res) => {
-	// res.render('./so/location-detail', {title: 'Sở - Quản lý Phường', toolbars: toolbars});
 	controller.locationsController.locationsDetails(req, res);
 });
 
