@@ -99,10 +99,10 @@ export default router;
 
 // Task
 /*
-Sở-Điểm đặt -> Check box
+Sở-Điểm đặt -> Check box (xong)
 Sở-Chi tiết bảng quảng cáoo -> Hình ảnh
 Sở-Chi tiết bảng quảng cáo -> Yêu cầu chỉnh sửa
-Sở-Yêu cầu cấp phép -> Thông tin đã duyệt, Chờ duyệt, Từ chối
-Sở-Chi tiết yêu cầu (Cấp phép, chỉnh sửa) -> Phê duyệt, Từ chối
-Sở-Thống kê báo cáo -> Thông tin đã duyệt, Chờ duyệt, Từ chối
+Sở-Yêu cầu cấp phép -> Thông tin đã duyệt, Chờ duyệt, Từ chối (cái này cũng xong r nè)
+Sở-Chi tiết yêu cầu (Cấp phép, chỉnh sửa) -> Phê duyệt, Từ chối (cái này chưa check)
+Sở-Thống kê báo cáo -> Thông tin đã duyệt, Chờ duyệt, Từ chối (Done)
 */

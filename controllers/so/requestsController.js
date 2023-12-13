@@ -71,7 +71,7 @@ controller.show = async (req, res) => {
 		}
 	});
 
-	console.log(statusCnt);
+	// console.log(statusCnt);
 	return res.render('./so/requests', {url: req.originalUrl, title, category, tableHeads, tableData, toolbars, statusCnt});
 }
 
@@ -84,17 +84,21 @@ controller.showDetail = async (req, res) => {
 		res.status(404);
 		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
-	console.log(req.params.id);
+	// console.log(req.params);
 	switch (category){
 		case 'license':
+			console.log('license');
 			data = await licensingRequestService.getByID(id);
+			console.log(data);
 			break;
 		case 'modify':
-			data = await modifyLicenseRequestService.getByID(id);
+			console.log('modify');
+			data = await editRequestService.getByID(id);
+			console.log(data);
 			break;
 	}
 
-
+	
 	return res.render('./so/request-detail', {title, toolbars, id: req.params.id});
 }
 

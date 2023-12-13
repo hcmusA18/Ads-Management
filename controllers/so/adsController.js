@@ -68,9 +68,11 @@ const show = async (req, res) => {
     }
 };
 
-const showDetail = (req, res) => {
+const showDetail = async (req, res) => {
 	const category = req.query.category || '';
 	const title = 'Sở - Chi tiết ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
+	const id = req.params.id || '';
+	const isSpotCategory = (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo');
 
 	const data = {
 		spotTitle: 'ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO',
@@ -89,6 +91,41 @@ const showDetail = (req, res) => {
 			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
 			'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
 		],
+	};
+
+	const getDataObject = (category == 'spot' ? spotService.getSpotByID : boardService.getBoardByID);
+	const object = await getDataObject(id);
+
+	// {
+	// 	spotID: 'DD0001',
+	// 	address: '887 Trần Hưng Đạo',
+	// 	districtID: 'Q0005',
+	// 	wardID: 'P00501',
+	// 	spotType: 'VT004',
+	// 	planned: 0,
+	// 	spotName: 'Nhà hàng Sài Gòn 2',
+	// 	spotImage: [
+	// 	  'https://drive.google.com/uc?export=view&id=18-945o400Cg8VZ-gNP3NKCurRbCpaga0',
+	// 	  'https://drive.google.com/uc?export=view&id=1aqXkU6onBekkS4PNtJqil4R7SUTaZfVP'
+	// 	],
+	// 	spotTypeName: 'Chợ',
+	// 	districtName: '05',
+	// 	wardName: '01',
+	// 	adsFormName: 'Cổ động chính trị'
+	//   }
+	if (isSpotCategory) {
+		console.log(object);
+	} else {
+		data.id = id;
+		data.spotTitle = object.spotName;
+		data.spotID = object.spotID;
+		data.address = object.address;
+		data.ward = object.districtName;
+		data.district = object.districtName;
+		data.locationType = object.spotTypeName;
+		data.adsType = object.adsFormName;
+		data.plan = object.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch';
+		data.imgUrls = object.imgUrls;
 	}
 
 	const boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
