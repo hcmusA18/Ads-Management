@@ -119,7 +119,7 @@ async function addSpotLayer(map, spotsGeojson) {
         'case',
         ['==', ['get', 'hasReport'], true],
         COLORS.red,
-        ['==', ['get', 'planned'], "Đã quy hoạch"],
+        ['==', ['get', 'planned'], false],
         COLORS.yellow,
         COLORS.blue
       ],
@@ -162,7 +162,7 @@ async function addSpotLayer(map, spotsGeojson) {
         COLORS.red,
         ['==', ['get', 'hasAds'], true],
         COLORS.blue,
-        ['==', ['get', 'planned'], "Đã quy hoạch"],
+        ['==', ['get', 'planned'], "Chưa quy hoạch"],
         COLORS.yellow,
         COLORS.blue
       ],
@@ -249,40 +249,67 @@ mapboxScript.onload = async function () {
   let filteredSpotsGeojson = spotsGeojson;
   map.on('load', async () => {
     await addSpotLayer(map, filteredSpotsGeojson);
+    applyFilter();
   });
 
   const toggles = document.querySelectorAll('#toggle-container input[type="checkbox"]');
   const filterOptions = {
-    'report': true,
-    'planned': true,
-    'ads': true,
+    'report': false,
+    'planned': false,
+    'ads': false,
+    'all': true
+  }
+
+  const applyFilter = () => {
+    filteredSpotsGeojson = {
+      type: 'FeatureCollection',
+      features: spotsGeojson.features.filter((spot) => {
+        if (filterOptions['all']) {
+          return true;
+        }
+        if (!filterOptions['report'] && spot.properties.hasReport) {
+          return false;
+        }
+        if (!filterOptions['planned'] && spot.properties.planned === 'Đã quy hoạch') {
+          return false;
+        } else if (filterOptions['planned'] && spot.properties.planned === 'Chưa quy hoạch') {
+          return false;
+        }
+        if (!filterOptions['ads'] && spot.properties.hasAds) {
+          return false;
+        }
+        return true;
+      })
+    };
+    console.log('filtered');
+    map.getSource('spots').setData(filteredSpotsGeojson);
   }
 
   toggles.forEach((toggle) => {
+    // set default value
+    toggle.checked = filterOptions[toggle.id.split('-')[0]];
+
     toggle.addEventListener('change', async (e) => {
       console.log(e.target.id);
       const key = e.target.id.split('-')[0];
+
+      if (key === 'all' && e.target.checked) {
+        toggles.forEach((toggle) => {
+          toggle.checked = false;
+          filterOptions[toggle.id.split('-')[0]] = false;
+        });
+        toggle.checked = true;
+      } else if (key !== 'all') {
+        // uncheck the all toggle
+        toggles[toggles.length - 1].checked = false;
+        filterOptions['all'] = false;
+
+      }
+
       filterOptions[key] = e.target.checked;
       console.log(filterOptions);
 
-      filteredSpotsGeojson = {
-        type: 'FeatureCollection',
-        features: spotsGeojson.features.filter((spot) => {
-          let allow = true;
-          if (!filterOptions['report'] && spot.properties.hasReport) {
-            return false;
-          }
-          if (!filterOptions['planned'] && spot.properties.planned === 'Đã quy hoạch') {
-            return false;
-          }
-          if (!filterOptions['ads'] && spot.properties.hasAds) {
-            return false;
-          }
-          return allow;
-        })
-      };
-
-      map.getSource('spots').setData(filteredSpotsGeojson);
+      applyFilter();
 
     });
   });
