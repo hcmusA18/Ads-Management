@@ -83,9 +83,9 @@ const show = async (req, res) => {
 const showDetail = async (req, res, isEdit) => {
   const category = req.query.category || ''
   const title = 'Sở - Chi tiết ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo')
-  const role = String(req.originalUrl.split('/')[1]);
+  const role = String(req.originalUrl.split('/')[1])
   const ID = req.params.id || ''
-  const isSpotCategory = category === 'spot' ? 1 : 0;
+  const isSpotCategory = category === 'spot' ? 1 : 0
 
   var data = {
     spotTitle: 'ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO',
@@ -113,7 +113,7 @@ const showDetail = async (req, res, isEdit) => {
     url: req.originalUrl,
     title,
     toolbars: toolbars,
-	role: role
+    role: role
   }
   // {
   // 	spotID: 'DD0001',
@@ -133,7 +133,7 @@ const showDetail = async (req, res, isEdit) => {
   // 	adsFormName: 'Cổ động chính trị'
   //   }
   if (isSpotCategory) {
-	// console.log('Spot');
+    // console.log('Spot');
     // console.log(object)
     const { spotName, address, wardName, districtName, spotTypeName, adsFormName, planned, spotImage } = object
     data = {
@@ -172,8 +172,8 @@ const showDetail = async (req, res, isEdit) => {
       })
     }
   } else {
-	// console.log('Board');
-	// console.log(object)
+    // console.log('Board');
+    // console.log(object)
     data = {
       id: object.boardID,
       spotID: object.spotID,
