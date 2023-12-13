@@ -10,6 +10,17 @@
 
   <body>
     <header></header>
+    
+    <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Yêu cầu chỉnh sửa được gửi đi thành công!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Có lỗi xảy ra khi gửi yêu cầu chỉnh sửa!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <main class="container-fluid d-flex bg-light">
       <div class="row"><%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %></div>
       <div class="container-fluid vw-100 pt-1">
@@ -27,14 +38,7 @@
           <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
             <!-- Carousel -->
             <%- include("./partials/carousel.ejs",
-            {imgUrls: [
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
-            ]}); %>
+            {imgUrls: imgUrls}); %>
             <div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
               <div class="container d-flex justify-content-between">
                 <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chỉnh sửa bảng quảng cáo</h4>
@@ -250,17 +254,32 @@
         });
 
         console.log(result);
+        // ......... Xu ly ket qua va hien thong bao ............
+
+        if (result.status == 200) {
+          document.getElementById('alert-success').removeAttribute('hidden');
+          // clear all inputs
+          document.querySelectorAll('.form-control').forEach(input => {
+            input.value = '';
+          });
+          // when the alert is closed, redirect
+          document.getElementById('alert-success').addEventListener('closed.bs.alert', () => {
+            window.location.href = result.url;
+          });
+        } else {
+          document.getElementById('alert-danger').removeAttribute('hidden');
+        }
+
+        // .......................................................
       }
 
       document.getElementById('submitBtn').addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('====================================');
-        console.log('submit');
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('submit');
+        // console.log('====================================');
         submitHandler(e);
       });
-
-
 
 
 
