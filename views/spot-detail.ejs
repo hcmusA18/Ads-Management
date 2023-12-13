@@ -36,7 +36,7 @@
                         <% const [baseUrl, queryParams] = url.split('?'); %>
                         <a href="<%= baseUrl + '/modify?' + queryParams %>" class="btn btn-primary" tabindex="-1"
                            role="button"
-                           aria-disabled="true">Yêu cầu chỉnh sửa</a>
+                           aria-disabled="true"><%= (role == 'so' ? 'Chỉnh sửa' : 'Yêu cầu chỉnh sửa')%></a>
                     </div>
                     <div class="container mt-2">
                         <label for="spotId" style="margin-bottom: 6px">ID Điểm đặt</label>

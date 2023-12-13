@@ -83,8 +83,9 @@ const show = async (req, res) => {
 const showDetail = async (req, res, isEdit) => {
   const category = req.query.category || ''
   const title = 'Sở - Chi tiết ' + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo')
+  const role = String(req.originalUrl.split('/')[1]);
   const ID = req.params.id || ''
-  const isSpotCategory = category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo'
+  const isSpotCategory = category === 'spot' ? 1 : 0;
 
   var data = {
     spotTitle: 'ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO',
@@ -111,7 +112,8 @@ const showDetail = async (req, res, isEdit) => {
   const commonData = {
     url: req.originalUrl,
     title,
-    toolbars: toolbars
+    toolbars: toolbars,
+	role: role
   }
   // {
   // 	spotID: 'DD0001',
@@ -131,7 +133,8 @@ const showDetail = async (req, res, isEdit) => {
   // 	adsFormName: 'Cổ động chính trị'
   //   }
   if (isSpotCategory) {
-    console.log(object)
+	// console.log('Spot');
+    // console.log(object)
     const { spotName, address, wardName, districtName, spotTypeName, adsFormName, planned, spotImage } = object
     data = {
       spotTitle: spotName,
@@ -169,6 +172,8 @@ const showDetail = async (req, res, isEdit) => {
       })
     }
   } else {
+	// console.log('Board');
+	// console.log(object)
     data = {
       id: object.boardID,
       spotID: object.spotID,
@@ -189,38 +194,11 @@ const showDetail = async (req, res, isEdit) => {
 
     if (isEdit) {
       let spots = await spotService.getAllSpots()
-      // console.log('====================================');
-      // console.log(spots);
-      // console.log('====================================');
       res.render('board-modify', { ...commonData, ...data, spots })
     } else {
       res.render('board-detail', { ...commonData, ...data })
     }
   }
-
-  //   const boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
-  //   const boardsTableData = [...Array(3).keys()].map((i) => {
-  //     return {
-  //       id: `BQC${String(i + 1).padStart(5, '0')}`,
-  //       type: 'Trụ bảng Hiflex',
-  //       size: `2x${i + 1}m`,
-  //       quantity: `${i + 1} trụ/bảng`,
-  //       actions: {
-  //         edit: false,
-  //         remove: false,
-  //         info: true
-  //       }
-  //     }
-  //   })
-
-  res.render(`${category}-detail`, {
-    url: req.originalUrl,
-    title,
-    ...data,
-    boardsTableHeads,
-    boardsTableData,
-    toolbars
-  })
 }
 
 const showAdd = (req, res) => {
