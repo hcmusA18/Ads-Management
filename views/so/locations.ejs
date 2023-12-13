@@ -13,8 +13,8 @@
       <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
       <div class="container-fluid vw-100 pt-1">
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
-          <!-- Profile -->
-          <%- include("../partials/profile_card.ejs"); %>
+            <!-- Profile -->
+            <%- include("../partials/profile_card.ejs"); %>
             <!-- Title -->
             <div class="d-block">
               <h1 class="fw-bolder">
@@ -27,12 +27,12 @@
                 <div class="d-flex flex-row align-items-center gap-2 position-relative">
                   <%- include("../partials/info_card.ejs", {title: 'Tổng số quận' , value: tableData.length,
                     color: '#00b285' }); %>
-                    <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value: totalWard, color: '#e84747'
-                      }); %>
-                      <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value: totalSpot,
-                        color: '#d59633' }); %>
-                        <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' , value: totalBoard,
-                          color: '#ae57ff' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value: totalWard, 
+                    color: '#e84747'}); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value: totalSpot,
+                    color: '#d59633' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' , value: totalBoard,
+                    color: '#ae57ff' }); %>
                 </div>
               </div>
             </div>
@@ -53,7 +53,6 @@
                       </div>
                     </a>
                     <% });%>
-                      <!-- Raw Data -> will be changed when apply DB -->
                 </div>
                 <a href="/so/locations" style="font-size: 14px">Xem chi tiết danh sách QUẬN</a>
               </div>
@@ -124,7 +123,6 @@
                 </table>
               </div>
             </div>
-  
         </div>
       </div>
       <!-- Modal editttttttttttttttttttttttttttttttttttttttttttttttttttt -->

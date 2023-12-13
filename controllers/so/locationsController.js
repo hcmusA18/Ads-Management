@@ -38,31 +38,28 @@ controller.findAllDistricts = async (req, res) => {
     toolbars: toolbars,
     title: 'Sở - Quản lý danh sách Quận'});
 }
-const getLocationDetails = async (req, res) => {
-  const districtID = req.query.quan;
-  const districts = await districtService.getAllDistricts();
-  const wards = await locationService.getDetails(districtID);
-  return res.render('./so/location-detail', { title: 'Sở - Danh sách quảng cáo phường', toolbars, districts, wards });
-}
+
 controller.locationsDetails = async (req, res) => {
   let districtID = req.query.quan;
 
-  const [NoWards, NoBoards, NoSpots, districts, wards] = await Promise.all([
-    wardService.countAll(),
-    boardService.countAll(),
-    spotService.countAll(),
-    districtService.getAllDistricts(),
-    locationService.getDetails(districtID),
-  ]);
+  let districtDetail = await locationService.getDistrictDetail(districtID);
+  districtDetail = districtDetail[0];
+  // console.log(districtDetail);
+
+  const wards = await locationService.getDetails(districtID);
+  // console.log(wards);
+  
+  const districts = await districtService.getAllDistricts();
+  // console.log(districts);
+
+
   res.render('./so/location-detail', {
-    title: 'Sở - Danh sách quảng cáo phường',
-    toolbars,
-    districts,
-    wards,
     districtID,
-    NoWards,
-    NoBoards,
-    NoSpots,
+    districtDetail: districtDetail,
+    wards,
+    districts,
+    title: 'Sở - Quản lý Phường',
+    toolbars: toolbars,
   });
 };
 
@@ -113,6 +110,60 @@ controller.updateDistrict = async (req, res) => {
 		console.log(error.message);
 		req.flash('error', error.message);
 		res.redirect('/so/locations');
+	}
+}
+
+controller.addWard = async (req, res) => {
+  const curDistrict = req.query.quan;
+  const data = {
+    wardID: req.body.wardID,
+    wardName: req.body.wardName,
+    districtID: curDistrict,
+  };
+  // console.log(data);
+
+  try {
+		const message = await wardService.createWard(data);
+		console.log(message);
+		req.flash('success', message);
+		res.redirect(`/so/locations-detail?quan=${curDistrict}`);
+	} catch (error) {
+		console.log(error.message);
+		req.flash('error', error.message);
+		res.redirect(`/so/locations-detail?quan=${curDistrict}`);
+	}
+}
+
+controller.deleteWard = async (req, res) => {
+  const wardID = req.params.wardID;
+  // console.log(districtID);
+  try {
+		if (wardID != null) {
+			const message = await wardService.deleteWardByID(wardID);
+			console.log(message);
+		}
+	} catch (error) {
+		console.log(error.message);
+		req.flash('error', error.message);
+	}
+}
+
+controller.updateWard = async (req, res) => {
+  const curDistrict = req.query.quan;
+  const wardID = req.params.wardID;
+  const data = req.body;
+
+  // console.log(districtID);
+  // console.log(data);
+
+  try {
+		const message = await wardService.updateWardByID(wardID, data);
+		console.log(message);
+		res.redirect(`/so/locations-detail?quan=${curDistrict}`);
+	} catch (error) {
+		console.log(error.message);
+		req.flash('error', error.message);
+		res.redirect(`/so/locations-detail?quan=${curDistrict}`);
 	}
 }
 
