@@ -233,6 +233,7 @@ export const getBoardByID = async (boardID) => {
           width: 1,
           spotTypeName: '$spottype.typeName',
           adsFormName: '$adsform.formName',
+          image: 1,
         }
       }
     ]
