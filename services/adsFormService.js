@@ -1,4 +1,4 @@
-import AdsForm from "../models/adsFormModel.js";
+import AdsForm from '../models/adsFormModel.js';
 
 // Thêm export đầu mỗi hàm
 // Ở file cần dùng thì import * as [abcd]Service from 'path/[abcd]Service.js'
