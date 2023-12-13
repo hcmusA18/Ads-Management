@@ -1,10 +1,9 @@
-import { toolbars } from './utilities.js';
-import * as spotService from '../../services/spotService.js';
-import * as boardService from '../../services/boardService.js';
-import * as districtService from '../../services/districtService.js';
-import * as spotTypeService from '../../services/spotTypeService.js';
-import * as adsFormService from '../../services/adsFormService.js';
-
+import { toolbars } from './utilities.js'
+import * as spotService from '../../services/spotService.js'
+import * as boardService from '../../services/boardService.js'
+import * as districtService from '../../services/districtService.js'
+import * as spotTypeService from '../../services/spotTypeService.js'
+import * as adsFormService from '../../services/adsFormService.js'
 
 const show = async (req, res) => {
   const category = req.query.category || ''
@@ -14,7 +13,7 @@ const show = async (req, res) => {
 
   let checkboxData = await districtService.getAllDistricts()
   checkboxData = checkboxData.map((dist) => `Quận ${dist.districtName}`)
-  let current = 0;
+  let current = 0
   try {
     switch (category) {
       case 'spot':
@@ -31,7 +30,7 @@ const show = async (req, res) => {
           plan: spot.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
           actions: {
             edit: false,
-            remove: false,
+            remove: true,
             info: true
           }
         }))
@@ -52,7 +51,7 @@ const show = async (req, res) => {
           quantity: `${board.quantity} trụ / bảng`,
           actions: {
             edit: false,
-            remove: false,
+            remove: true,
             info: true
           }
         }))
@@ -146,23 +145,28 @@ const showDetail = async (req, res, isEdit) => {
       imgUrls: spotImage
     }
 
-	var boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
-    var boardsTableData = (!isEdit)? await boardService.getBoardsOfSpot(ID) : [];
+    var boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
+    var boardsTableData = !isEdit ? await boardService.getBoardsOfSpot(ID) : []
     const transformedBoardsTableData = boardsTableData.map((board) => ({
       id: board.boardID,
       type: board.boardTypeName,
       size: `${board.height}x${board.width}m`,
       quantity: `${board.quantity} trụ/bảng`,
-      actions: { edit: false, remove: false, info: true },
-    }));
+      actions: { edit: false, remove: false, info: true }
+    }))
 
     if (isEdit) {
       let other = {}
-      other.spottypes = await spotTypeService.getAllSpotTypes() || [];
-      other.adsforms = await adsFormService.getAllAdsForms() || [];
-      res.render('spot-modify', { ...commonData, ...data, other });
+      other.spottypes = (await spotTypeService.getAllSpotTypes()) || []
+      other.adsforms = (await adsFormService.getAllAdsForms()) || []
+      res.render('spot-modify', { ...commonData, ...data, other })
     } else {
-      res.render('spot-detail', { ...commonData, ...data, boardsTableHeads, boardsTableData: transformedBoardsTableData });
+      res.render('spot-detail', {
+        ...commonData,
+        ...data,
+        boardsTableHeads,
+        boardsTableData: transformedBoardsTableData
+      })
     }
   } else {
     data = {
@@ -181,38 +185,33 @@ const showDetail = async (req, res, isEdit) => {
       spotTypeName: object.spotTypeName,
       adsFormName: object.adsFormName,
       imgUrls: object.image
-    };
+    }
 
-	// if (isEdit) {
-	// 	let spots = []
-	// 	if (role === 'quan') {
-	// 	  spots = await spotService.getSpotsByDistrictID(req.user.districtID);
-	// 	} else if (role === 'phuong') {
-	// 	  spots = await spotService.getSpotsByWardID(req.user.wardID);
-	// 	}
-	// 	// console.log('====================================');
-	// 	// console.log(spots);
-	// 	// console.log('====================================');
-	// 	res.render('board-modify', { ...commonData, ...data, spots });
-	//   } else {
-	// 	res.render('board-detail', { ...commonData, ...data });
-	//   }
+    if (isEdit) {
+      let spots = await spotService.getAllSpots()
+      // console.log('====================================');
+      // console.log(spots);
+      // console.log('====================================');
+      res.render('board-modify', { ...commonData, ...data, spots })
+    } else {
+      res.render('board-detail', { ...commonData, ...data })
+    }
   }
 
-//   const boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
-//   const boardsTableData = [...Array(3).keys()].map((i) => {
-//     return {
-//       id: `BQC${String(i + 1).padStart(5, '0')}`,
-//       type: 'Trụ bảng Hiflex',
-//       size: `2x${i + 1}m`,
-//       quantity: `${i + 1} trụ/bảng`,
-//       actions: {
-//         edit: false,
-//         remove: false,
-//         info: true
-//       }
-//     }
-//   })
+  //   const boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng']
+  //   const boardsTableData = [...Array(3).keys()].map((i) => {
+  //     return {
+  //       id: `BQC${String(i + 1).padStart(5, '0')}`,
+  //       type: 'Trụ bảng Hiflex',
+  //       size: `2x${i + 1}m`,
+  //       quantity: `${i + 1} trụ/bảng`,
+  //       actions: {
+  //         edit: false,
+  //         remove: false,
+  //         info: true
+  //       }
+  //     }
+  //   })
 
   res.render(`${category}-detail`, {
     url: req.originalUrl,
