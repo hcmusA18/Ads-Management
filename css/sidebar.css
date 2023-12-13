@@ -1,7 +1,7 @@
 .sidebar-wrap {
 	width: 4rem;
-	/* height: 100vh; */
-	height: 100%;
+	height: 100vh;
+	/* height: 100%; */
 	background-color: var(--Dark);
 	color: var(--Background);
 	/* padding: 1rem; */
@@ -9,7 +9,7 @@
 }
 
 .sidebar-wrap:hover {
-	width: 20rem;
+	width: 12rem;
 }
 
 .sidebar-wrap:hover .logo-wrap span {
@@ -50,7 +50,7 @@
 }
 
 .sidebar-wrap .nav {
-	height: 100%;
+	/* height: 100%; */
 	overflow-x: hidden;
 	overflow-y: auto;
 	flex-wrap: nowrap;
