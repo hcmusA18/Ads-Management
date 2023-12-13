@@ -5,14 +5,14 @@ $(document).ready(function () {
         return $(this).data('name');
     }).get();
 
-    const checkboxHeaderText = document.querySelector('.checkbox-container h1').textContent.trim().split(" ")[0];
+    const checkboxHeaderText = document.querySelector('.checkbox-container h1').textContent.trim().split(' ')[0];
 
     // console.log(checkboxHeaderText);
 
 
     checkboxes.on('change', function () {
         let checkedValues = checkboxes.filter(':checked')
-        if(checkboxHeaderText !== "Quận"){
+        if(checkboxHeaderText !== 'Quận'){
             checkedValues = checkedValues.map(function () {
                 return $(this).val().replace('Quận ', '');
             })
@@ -30,13 +30,13 @@ $(document).ready(function () {
 
         table.bootstrapTable('refresh');
 
-        if(checkboxHeaderText !== "Quận"){
+        if(checkboxHeaderText !== 'Quận'){
             table.bootstrapTable('filterBy', {
                 district: checkedValues,
             })
         } else {
-            if(stateSelected !== ""){
-                if(stateSelected === "Tất cả"){
+            if(stateSelected !== ''){
+                if(stateSelected === 'Tất cả'){
                     table.bootstrapTable('filterBy', {
                         state: dataNames.slice(1),
                         ward: checkedValues,

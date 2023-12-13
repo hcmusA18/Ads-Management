@@ -9,7 +9,7 @@ const controller = {};
 
 controller.show = async (req, res) => {
 	let tableData = [];
-	const tableHeads = ['ID Báo cáo', 'ID Điểm/Bảng QC', 'Loại hình', 'Người gửi', 'Email', 'Ngày gửi', 'Trạng thái'];
+	const tableHeads = ['ID Báo cáo', 'ID Điểm/Bảng QC', 'Quận', 'Loại hình', 'Người gửi', 'Email', 'Ngày gửi', 'Trạng thái'];
 	let {spotMostReported, boardMostReported, districtMostReported} = [0, 0, 0];
 	let spotCnt = {};
 	let boardCnt = {};
@@ -18,10 +18,23 @@ controller.show = async (req, res) => {
 	let boardMaxId;
 	let districtMaxId;
 
+	const role = String(req.originalUrl.split('/')[1]);
+
+	let checkboxData = await districtService.getAllDistricts();
+  	checkboxData = checkboxData.map((dist) => `Quận ${dist.districtName}`);
+	let checkboxHeader = 'Thành phố Hồ Chí Minh'
+	const commonData = {
+		url: req.originalUrl,
+		role: role,
+		checkboxData: checkboxData,
+		checkboxHeader: checkboxHeader
+	  }
+
 	tableData = await reportService.getAllReports();
 	tableData = tableData.map(report => ({
 		id: report.reportID,
 		ads_id: report.objectID,
+		districtID: null,
 		ads_type: report.reportTypeName,
 		sender: report.reporterName,
 		email: report.reporterEmail,
@@ -33,6 +46,22 @@ controller.show = async (req, res) => {
 			info: true
 		}
 	}));
+
+	tableData.forEach(async report => {
+		let objectId = report.ads_id;
+
+		let tmp = await spotService.getSpotByID(objectId);
+
+		if(tmp != undefined) {
+			report.districtID = tmp.districtID;
+		}
+
+		tmp = await boardService.getBoardByID(objectId);
+		if (tmp != undefined) { 
+			tmp = await spotService.getSpotByID(tmp.spotID);
+			report.districtID = tmp.districtID;
+		}
+	});
 
 	let objectIDs = [];
 	tableData.map(entry => {
@@ -118,7 +147,7 @@ controller.show = async (req, res) => {
 	// console.log(objectIDs);
 	// console.log(statisticalData);
 	const title = 'Sở - Thống kê báo cáo';
-	return res.render('./so/reports', {title, tableHeads, tableData, toolbars, statisticalData});
+	return res.render('./so/reports', {title, tableHeads, tableData, toolbars, statisticalData, ...commonData});
 }
 
 controller.showDetail = async (req, res) => {
