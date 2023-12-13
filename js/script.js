@@ -22,7 +22,7 @@ function generateSpotHTML(spot) {
               <p class="card-text">${spot.spotTypeName}</p>
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
-              <div class="btn btn-primary btn-sm" onclick="openSpotDetail('${spot.spotID}')">Xem chi tiết</div>
+              <div class="btn btn-primary btn-sm" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
             </div>
           </div>`;
 }
@@ -78,9 +78,9 @@ function createMap() {
     showAccuracyCircle: true,
     showUserLocation: true,
   });
-  map.addControl(geolocation,'bottom-right');
-  map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
-  map.addControl(new mapboxgl.FullscreenControl(),'bottom-right');
+  map.addControl(geolocation, 'bottom-right');
+  map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+  map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
   map.addControl(new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,

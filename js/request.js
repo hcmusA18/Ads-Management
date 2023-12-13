@@ -5,13 +5,19 @@ const hostname = window.location.hostname;
 let requestHostname = "";
 
 
-const getAllSpots = () => {
-  if (hostname === 'localhost') {
+const getHostname = () => {
+  if (hostname.includes("127.0.0.1") || hostname.includes("localhost")) {
     requestHostname = testHostname;
-  } else {
+  }
+  else {
     requestHostname = deployHostname;
   }
+}
 
+// auto run get hostname
+getHostname();
+
+export const getAllSpots = () => {
   return $.ajax({
     beforesend: function (req) {
       req.setRequestHeader('Allow-Control-Allow-Origin', '*');
@@ -22,6 +28,19 @@ const getAllSpots = () => {
   })
 }
 
+export const getDetailSpot = (spotID) => {
+  return $.ajax({
+    beforesend: function (req) {
+      req.setRequestHeader('Allow-Control-Allow-Origin', '*');
+    },
+    url: `${requestHostname}api/spots/${spotID}`,
+    type: 'GET',
+    crossDomain: true,
+  })
+}
+
+
 export default {
   getAllSpots,
+  getDetailSpot,
 }

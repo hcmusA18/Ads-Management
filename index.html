@@ -74,11 +74,11 @@
       </div>
     </div>
   </div>
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSpotDetail" aria-labelledby="offcanvasSpotDetailLabel">
     <div class="offcanvas-header container-fluid">
-      <img src="assets/san-cau-long-phu-tho-1.webp" class="img-fluid" alt="Nhà thi đấu Phú Thọ" style="margin: 0" />
-      <h4 class="offcanvas-title" id="offcanvasRightLabel">Nhà thi đấu Phú Thọ</h4>
-      <p class="subtitle">cổng Lý Thường Kiệt</p>
+      <img loading="lazy" decoding="async" src="assets/san-cau-long-phu-tho-1.webp" class="img-fluid" alt="Nhà thi đấu Phú Thọ" style="background-size: cover;
+      margin: 0; content-visibility: auto;" />
+      <h4 class="offcanvas-title fw-bold text-uppercase mt-3" id="offcanvasSpotDetailLabel">Nhà thi đấu Phú Thọ</h4>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="btn-close"></button>
     </div>
     <div class="offcanvas-body">
@@ -102,72 +102,10 @@
 
       <div class="tab-content" id="tabContent">
         <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab" tabindex="0">
-          <p>Số 123, đường Lý Thường Kiệt, phường 10, quận 10</p>
-          <p>Đất công/công viên/hành lang an toàn giao thông</p>
-          <p>Hình thức: Quảng cáo thương mại, cổ động chính trị</p>
-          <p id="status">Đã quy hoạch</p>
-          <div class="options">
-            <a href="spot-detail.htmld=123" class="btn btn-icon" role="button">
-              <i class="bi bi-info-circle"></i>
-            </a>
-            <a href="report-detail.htmld=123" class="btn btn-outline-danger">
-              <i class="bi bi-exclamation-octagon"></i>
-              Báo cáo vi phạm
-            </a>
-          </div>
         </div>
         <div class="tab-pane list-group fade p-0 overflow-auto" id="ads-tab-pane" role="tabpanel" aria-labelledby="ads-tab" tabindex="0">
-          <script>
-            document.addEventListener('DOMContentLoaded', () => {
-              const ads_tab = document.getElementById('ads-tab-pane')
-              const data = [...Array(5).keys()].map(i => ({
-                id: i,
-                name: `Cổng chào ${i + 1}`,
-                address: `Số ${i + 1}, đường Lý Thường Kiệt, phường 10, quận 10`,
-                size: `2.5 x 10m`,
-                quantity: `1 cổng`,
-                type: `cổ động chính trị`,
-                options: `<a href="board-detail.htmld=123" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>
-												<a href="report-detail.htmld=123" class="btn btn-outline-danger" role="button"><i class="bi bi-exclamation-octagon"></i>Báo cáo vi phạm</a>`
-              }));
-
-              data.forEach(item => {
-                let newItem = new DOMParser().parseFromString(`<div class="list-group-item list-group-item-action"></div>`, 'text/html').body.firstChild;
-                newItem.innerHTML = `<h5 class="mb-1 fw-semibold">${item.name}</h5>
-							<small>${item.address}</small>
-							<p class="mb-1">Kích thước: ${item.size}</p>
-							<p class="mb-1">Số lượng: ${item.quantity}</p>
-							<p class="mb-1">Hình thức: ${item.type}</p>
-							<div class="options">${item.options}</div>`;
-                ads_tab.appendChild(newItem);
-              });
-            })
-          </script>
-
         </div>
         <div class="tab-pane list-group fade p-0 overflow-auto" id="report-tab-pane" role="tabpanel" aria-labelledby="report-tab" tabindex="0">
-          <script>
-            document.addEventListener('DOMContentLoaded', () => {
-              const report_tab = document.getElementById('report-tab-pane')
-              const data = [...Array(5).keys()].map(i => ({
-                type: 'Tố giác sai phạm',
-                sender: `Nguyễn Văn A`,
-                date: `02/07/2023`,
-                status: `Chưa xử lý`,
-                options: `<a href="report-detail.htmld=123" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>`
-              }));
-
-              data.forEach(item => {
-                let newItem = new DOMParser().parseFromString(`<div class="list-group-item list-group-item-action position-relative"></div>`, 'text/html').body.firstChild;
-                newItem.innerHTML = `<h5 class="mb-1 fw-semibold">${item.type}</h5>
-							<p class="mb-1">${item.sender}</p>
-							<p class="mb-1">Ngày gửi: ${item.date}</p>
-							<p class="mb-1">Tình trạng: <b>${item.status}</b></p>
-							${item.options}`;
-                report_tab.appendChild(newItem);
-              });
-            })
-          </script>
         </div>
       </div>
     </div>
@@ -176,14 +114,131 @@
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-  <script>
-    function openSpotDetail(spotID) {
-      // toggle #offcanvas element
-      console.log(spotID);
-      const offcanvas = document.getElementById('offcanvasRight');
-      const bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-      bsOffcanvas.toggle();
-    }
+  <script defer type="module">
+    import {
+      getDetailSpot
+    } from './js/request.js';
+
+    let setupData = true;
+
+    const formatter = new Intl.DateTimeFormat("vi-VN", { // <- re-use me
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+
+    document.getElementById('offcanvasSpotDetail').addEventListener('show.bs.offcanvas', async (e) => {
+      console.log(e);
+      if (setupData) {
+        setupData = false;
+        return;
+      }
+      e.preventDefault();
+      const spotID = e.relatedTarget.dataset.bsSpotId;
+      let detailSpot = await getDetailSpot(spotID);
+      detailSpot = detailSpot[0];
+      console.log(detailSpot);
+
+      // attach data to offcanvas
+      const offcanvas = document.getElementById('offcanvasSpotDetail');
+      offcanvas.dataset.bsSpotId = spotID;
+
+      // update offcanvas header
+      const offcanvasHeader = offcanvas.querySelector('.offcanvas-header');
+      offcanvasHeader.querySelector('img').src = detailSpot.spotImage[0];
+      offcanvasHeader.querySelector('#offcanvasSpotDetailLabel').textContent = detailSpot.spotName;
+
+      // update info tab pane
+      const infoTabPane = offcanvas.querySelector('#info-tab-pane');
+      const infoHTML = `<p>Địa chỉ: <b>${detailSpot.address}</b></p>
+      <p>Loại hình: <b>${detailSpot.adsFormName}</b></p>
+      <p>Hình thức: <b>${detailSpot.spotTypeName} </b></p>
+      <p class="text-uppercase fw-bold fst-italic">${detailSpot.planned}</p>
+      <div class="options">
+            <a href="spot-detail.html?id=${detailSpot.spotID}" class="btn btn-icon" role="button">
+              <i class="bi bi-info-circle"></i>
+            </a>
+            <a href="report-detail.html?id=${detailSpot.spotID}" class="btn btn-outline-danger">
+              <i class="bi bi-exclamation-octagon"></i>
+              Báo cáo vi phạm
+            </a>
+          </div>`;
+      infoTabPane.innerHTML = infoHTML;
+
+      // update ads tab pane
+      const adsTabPane = offcanvas.querySelector('#ads-tab-pane');
+      const adsHTML = detailSpot.boards.map(ad => `<div class="list-group-item list-group-item-action">
+      <h5 class="mb-1 fw-semibold">${ad.boardType}</h5>
+      <small>${detailSpot.address}</small>
+      <p class="mb-1">Kích thước: <b>${ad.boardSize}m</b></p>
+      <p class="mb-1">Số lượng: <b>${ad.quantity}<b></p>
+      <p class="mb-1">Hình thức: <b>${detailSpot.adsFormName}</b></p>
+      <p class="mb-1">Loại hình: <b>${detailSpot.spotTypeName}</b></p>
+      <div class="options">
+        <a href="board-detail.html?id=${ad.boardID}" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>
+				<a href="report-detail.html?id=${ad.boardID}" class="btn btn-outline-danger" role="button"><i class="bi bi-exclamation-octagon"></i> Báo cáo vi phạm</a>
+      </div>
+      </div>`);
+      // check if adsHTML is empty hide ads tab pane, also hide ads toggle
+      if (adsHTML.length == 0) {
+        console.log('empty')
+        adsTabPane.classList.add('d-none');
+        document.getElementById('ads-tab').parentElement.classList.add('d-none');
+      } else {
+        adsTabPane.innerHTML = '';
+        adsTabPane.classList.remove('d-none');
+        document.getElementById('ads-tab').parentElement.classList.remove('d-none');
+      }
+
+      adsHTML.forEach(html => {
+        let newItem = new DOMParser().parseFromString(html, 'text/html').body.firstChild;
+        adsTabPane.appendChild(newItem);
+      });
+
+      // update report tab pane
+      // combine report of spot and report of boards
+
+      let reports = detailSpot.reports;
+      detailSpot.boards.forEach(board => {
+        reports = reports.concat(board.reports);
+      });
+
+      // sort report by sendTimee
+      reports = reports.sort((a, b) => a.sendTime.localeCompare(b.sendTime));
+      console.log(reports);
+
+      const reportTabPane = offcanvas.querySelector('#report-tab-pane');
+      let reportHTML = reports.map(report => `<div class="list-group-item list-group-item-action position-relative">
+      <h5 class="mb-1 fw-semibold">${report.reportType}</h5>
+      <p class="mb-1">${report.reporterName}</p>
+      <p class="mb-1">Ngày gửi: <b>${formatter.format(new Date(report.sendTime))}</b></p>
+      <p class="mb-1">Tình trạng: <b>${report.status ? 'Đã xử lý' : 'Chưa xử lý'}</b></p>
+      <div class="options">
+        <a href="report-detail.html?id=${report.reportID}" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>
+      </div>
+      </div>`);
+
+      // check if reportHTML is empty hide report tab pane, also hide report toggle
+      if (reportHTML.length == 0) {
+        console.log('empty')
+        reportTabPane.classList.add('d-none');
+        document.getElementById('report-tab').parentElement.classList.add('d-none');
+      } else {
+        reportTabPane.innerHTML = '';
+        reportTabPane.classList.remove('d-none');
+        document.getElementById('report-tab').parentElement.classList.remove('d-none');
+      }
+
+      reportHTML.forEach(html => {
+        let newItem = new DOMParser().parseFromString(html, 'text/html').body.firstChild;
+        reportTabPane.appendChild(newItem);
+      });
+
+
+      setupData = true;
+      $(this).trigger(e.type);
+      console.log('done');
+    });
   </script>
   <!-- End of Script -->
 </body>
