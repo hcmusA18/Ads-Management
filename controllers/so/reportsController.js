@@ -49,7 +49,7 @@ controller.show = async (req, res) => {
     objectIDs.push({
       ads_id: report.objectID,
       isSpot: report.isSpot,
-      districtID: report.districtName,
+      districtName: report.districtName,
     }); 
     return {
       id: report.reportID,
@@ -84,27 +84,25 @@ controller.show = async (req, res) => {
 
     if(isSpot) {
       if(ad.ads_id in spotCnt) {
-        spotCnt[ad.ads_id] = 1;
-      } else {
         spotCnt[ad.ads_id] += 1;
+      } else {
+        spotCnt[ad.ads_id] = 1;
       }
     } else {
       if(ad.ads_id in boardCnt) {
-        boardCnt[ad.ads_id] = 1;
-      } else {
         boardCnt[ad.ads_id] += 1;
+      } else {
+        boardCnt[ad.ads_id] = 1;
       }
     }
 
     if(districtName in districtCnt) {
-      districtCnt[districtName] = 1;
+      districtCnt[districtName] += 1;
     } else {
-      districtCnt[districtCnt] += 1;
+      districtCnt[districtName] = 1;
     }
   })
-  // console.log('Spot');
-  // console.log(spotCnt);
-
+  
   spotMostReported = -1
   for (let key in spotCnt) {
     if (spotCnt[key] > spotMostReported) {
@@ -112,9 +110,6 @@ controller.show = async (req, res) => {
       spotMaxId = key
     }
   }
-
-  // console.log('Board');
-  // console.log(boardCnt);
 
   boardMostReported = -1
   for (let key in boardCnt) {
@@ -124,14 +119,14 @@ controller.show = async (req, res) => {
     }
   }
 
-  // console.log('District');
-  // console.log(districtCnt);
+  console.log('District');
+  console.log(districtCnt);
 
   districtMostReported = -1
   for (let key in districtCnt) {
     if (districtCnt[key] > districtMostReported) {
       districtMostReported = districtCnt[key]
-      districtMaxId = key
+      districtMaxId = key;
     }
   }
 
@@ -143,6 +138,8 @@ controller.show = async (req, res) => {
     boardMaxId: boardMaxId,
     districtMaxId: districtMaxId
   }
+
+  console.log(districtMaxId);
   // console.log(objectIDs);
   // console.log(statisticalData);
   const title = 'Sở - Thống kê báo cáo'
