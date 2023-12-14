@@ -43,12 +43,12 @@ controller.show = async (req, res) => {
     checkboxHeader: checkboxHeader
   }
 
-  tableData = await reportService.getAllReports()
+  tableData = await reportService.getReportsWithDistrictID()
   tableData = tableData.map((report) => ({
     id: report.reportID,
     ads_id: report.objectID,
-    districtID: null,
-    ads_type: report.reportTypeName,
+    district: report.districtName,
+    ads_type: report.reporterName,
     sender: report.reporterName,
     email: report.reporterEmail,
     date: report.sendTime.toLocaleDateString('vi-VN'),
@@ -60,27 +60,7 @@ controller.show = async (req, res) => {
     }
   }))
 
-  tableData = await Promise.all(
-    tableData.map(async (report) => {
-      let objectId = report.ads_id
-
-      let tmp = await spotService.getSpotByID(objectId)
-
-      if (tmp != undefined) {
-        report.districtID = tmp.districtID
-      }
-
-      tmp = await boardService.getBoardByID(objectId)
-      if (tmp != undefined) {
-        tmp = await spotService.getSpotByID(tmp.spotID)
-        report.districtID = tmp.districtID
-      }
-
-      return report // Important to return the modified report
-    })
-  )
-
-  console.log(tableData)
+  console.log('After aggregate:' + tableData);
 
   let objectIDs = []
   tableData.map((entry) => {
@@ -164,6 +144,8 @@ controller.show = async (req, res) => {
   }
   // console.log(objectIDs);
   // console.log(statisticalData);
+
+  console.log(tableData);
   const title = 'Sở - Thống kê báo cáo'
   return res.render('./so/reports', { title, tableHeads, tableData, toolbars, statisticalData, ...commonData })
 }
