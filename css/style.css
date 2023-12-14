@@ -254,7 +254,7 @@ svg {
 .details label {
   color: var(--Blue-1);
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1.125rem;
 }
 
 .details input,

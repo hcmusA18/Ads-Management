@@ -1,17 +1,22 @@
-const firstThreeThumbnails = document.querySelectorAll('.thumbnails-item')[0];
-firstThreeThumbnails.classList.remove('d-none');
+// document.addEventListener('DOMContentLoaded', () => {
+//   const firstThreeThumbnails = document.querySelectorAll('.thumbnails-item')[0];
 
-// active first img
-document.querySelector('.thumbnails-item:not(.d-none)')
-		.children[0].children[0].classList.add('border', 'border-primary');
+//   console.log(firstThreeThumbnails);
+
+//   firstThreeThumbnails.classList.remove('d-none');
+
+//   // active first img
+//   document.querySelector('.thumbnails-item:not(.d-none)')
+//       .children[0].children[0].classList.add('border', 'border-primary');
+// })
 
 const changeMainImg = (img) => {
-	document.getElementById('mainImg').src = img.src;
-	// 	add border to img
-	document.querySelectorAll('img.border').forEach(img => {
-		img.classList.remove('border', 'border-primary');
-	});
-	img.classList.add('border', 'border-primary');
+  document.getElementById('mainImg').src = img.src;
+  // 	add border to img
+  document.querySelectorAll('img.border').forEach(img => {
+    img.classList.remove('border', 'border-primary');
+  });
+  img.classList.add('border', 'border-primary');
 }
 
 const moveSlides = (direction) => {
@@ -42,3 +47,4 @@ const moveSlides = (direction) => {
 		centerImg.classList.add('border', 'border-primary');
 	}
 }
+// moveSlides('right');

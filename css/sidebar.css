@@ -1,7 +1,7 @@
 .sidebar-wrap {
 	width: 4rem;
-	height: 100vh;
-	/* height: 100%; */
+	/* height: 100vh; */
+	height: 100%;
 	background-color: var(--Dark);
 	color: var(--Background);
 	/* padding: 1rem; */
