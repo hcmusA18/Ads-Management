@@ -31,9 +31,23 @@ $(document).ready(function () {
         table.bootstrapTable('refresh');
 
         if(checkboxHeaderText !== 'Quận'){
-            table.bootstrapTable('filterBy', {
-                district: checkedValues,
-            })
+            if(stateSelected !== ''){
+                if(stateSelected === 'Tất cả'){
+                    table.bootstrapTable('filterBy', {
+                        state: dataNames.slice(1),
+                        district: checkedValues,
+                    });
+                } else {
+                    table.bootstrapTable('filterBy', {
+                        state: stateSelected,
+                        district: checkedValues,
+                    });
+                }
+            } else {
+                table.bootstrapTable('filterBy', {
+                    district: checkedValues,
+                });
+            }
         } else {
             if(stateSelected !== ''){
                 if(stateSelected === 'Tất cả'){

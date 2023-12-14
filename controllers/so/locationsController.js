@@ -35,7 +35,7 @@ controller.locationsDetails = async (req, res) => {
 
   let districtDetail = await locationService.getDistrictDetail(districtID);
   districtDetail = districtDetail[0];
-  console.log(districtDetail);
+  // console.log(districtDetail);
 
   const wards = await locationService.getDetails(districtID);
   // console.log(wards);
@@ -79,10 +79,12 @@ controller.deleteDistrict = async (req, res) => {
 		if (districtID != null) {
 			const message = await districtService.deleteDistrictByID(districtID);
 			console.log(message);
+      res.redirect('/so/locations');
 		}
 	} catch (error) {
 		console.log(error.message);
 		req.flash('error', error.message);
+    res.redirect('/so/locations');
 	}
 }
 
@@ -126,16 +128,19 @@ controller.addWard = async (req, res) => {
 }
 
 controller.deleteWard = async (req, res) => {
+  const curDistrict = req.query.quan;
   const wardID = req.params.wardID;
   // console.log(districtID);
   try {
 		if (wardID != null) {
 			const message = await wardService.deleteWardByID(wardID);
 			console.log(message);
+      res.redirect(`/so/locations-detail?quan=${curDistrict}`);
 		}
 	} catch (error) {
 		console.log(error.message);
 		req.flash('error', error.message);
+    res.redirect(`/so/locations-detail?quan=${curDistrict}`);
 	}
 }
 

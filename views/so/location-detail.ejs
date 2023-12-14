@@ -99,8 +99,8 @@
                                             <a href="javascript:" class="mx-3 bg-transparent">
                                             <img src="/images/edit.svg" alt="edit-icon" onclick="showEditModal(JSON.parse('<%= JSON.stringify(ward) %>'))">
                                             </a>
-                                            <a href="" class="mx-3 bg-transparent">
-                                            <img src="/images/remove.svg" onclick="deleteWard('<%= ward.wardID %>')" alt="remove-icon">
+                                            <a href="javascript:" class="mx-3 bg-transparent">
+                                            <img src="/images/remove.svg" onclick="deleteWard(JSON.parse('<%= JSON.stringify(ward) %>'))" alt="remove-icon">
                                             </a>
                                         </div>
                                         </td>
@@ -152,6 +152,7 @@
                 </div>
             </div>
         </div>
+        <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
     </main>
     <!-- Modal add -->
     <script defer type="module">
@@ -192,17 +193,34 @@
     </script>
 
     <script defer>
-        const deleteWard = async (wardID) => {
-            console.log(wardID);
-            try {
-                const response = await fetch(`/so/locations-detail/${wardID}`, {
+        const alertPlaceholder = document.getElementById('alertConfirm')
+        const appendAlert = (message, type) => {
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+            ].join('')
+
+            alertPlaceholder.append(wrapper)
+        }
+        const deleteWard = async (ward) => {
+            if(ward.spotsCount > 0 || ward.boardsCount > 0)
+                appendAlert('KHÔNG THỂ XÓA PHƯỜNG. Vì phường này có tồn tại Điểm đặt / Bảng quảng cáo', 'danger');
+            else{
+                try {
+                    const response = await fetch(`/so/locations-detail/${ward.wardID}`, {
                     method: 'DELETE',
                     headers: {
-                    'Content-Type': 'application/json',
+                        'Content-Type': 'application/json',
                     },
-                });
-            } catch (error) {
-            console.error('Error during DELETE request:', error.message);
+                    });
+                } catch (error) {
+                    console.error('Error during DELETE request:', error.message);
+                } finally {
+                    location.reload();
+                }
             }
         }
         const showEditModal = async (ward) => {

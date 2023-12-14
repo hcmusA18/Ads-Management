@@ -55,6 +55,15 @@
                     </div>
                 </div>
                 <% } %>
+            <!-- Select -->
+            <% const [baseUrl, queryParams]=url.split('?'); %>
+                <div class="container-fluid mt-3 ps-0">
+                    <div class="d-flex flex-row align-items-center gap-2 position-relative">
+                        <%- include("../partials/select.ejs", {current: 0 , options: [ { name: 'Tất cả' , link: baseUrl
+                            + '#' }, { name: 'Đang xử lý' , link: baseUrl
+                            + '#' }, { name: 'Đã xử lý' , link: baseUrl + '#' }] }); %>
+                    </div>
+                </div>
             <!-- Table -->
             <% const [basePath, category] = url.split('?'); %>
             <%- include('../partials/table.ejs', {linkDetails: {basePath: basePath, category: category}}) %>
@@ -62,6 +71,7 @@
     </div>
 </main>
 <script defer src="/js/checkbox.js"></script>
+<script defer src="/js/select.js"></script>
 </body>
 
 </html>

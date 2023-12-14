@@ -49,11 +49,11 @@ controller.show = async (req, res) => {
       id: report.reportID,
       ads_id: report.objectID,
       district: report.districtName,
-      ads_type: report.reporterName,
+      ads_type: report.reportType,
       sender: report.reporterName,
       email: report.reporterEmail,
       date: report.sendTime.toLocaleDateString('vi-VN'),
-      status: report.status === 0 ? 'Đang chờ duyệt' : report.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
+      state: report.status === 0 ? 'Đang xử lý' : 'Đã xử lý',
       actions: {
         edit: false,
         remove: false,
@@ -103,8 +103,8 @@ controller.show = async (req, res) => {
     }
   }
 
-  console.log('District')
-  console.log(districtCnt)
+  // console.log('District')
+  // console.log(districtCnt)
 
   districtMostReported = -1
   for (let key in districtCnt) {

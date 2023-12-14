@@ -111,8 +111,8 @@
                             <a href="javascript:" class="mx-3 bg-transparent">
                               <img src="/images/edit.svg" alt="edit-icon" onclick="showEditModal(JSON.parse('<%= JSON.stringify(district) %>'))">
                             </a>
-                            <a href="" class="mx-3 bg-transparent">
-                              <img src="/images/remove.svg" onclick="deleteDistrict('<%= district.districtID %>')" alt="remove-icon">
+                            <a href="javascript:" class="mx-3 bg-transparent">
+                              <img src="/images/remove.svg" onclick="deleteDistrict(JSON.parse('<%= JSON.stringify(district) %>'))" alt="remove-icon">
                             </a>
                           </div>
                         </td>
@@ -166,6 +166,7 @@
             </div>
         </div>
       </div>
+      <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
     </main>
     <!-- Modal add -->
     <script defer type="module">
@@ -206,17 +207,35 @@
     </script>
 
     <script defer>
-      const deleteDistrict = async (districtID) => {
-        // console.log(districtID);
-        try {
-          const response = await fetch(`/so/locations/${districtID}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-        } catch (error) {
-          console.error('Error during DELETE request:', error.message);
+      const alertPlaceholder = document.getElementById('alertConfirm')
+      const appendAlert = (message, type) => {
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = [
+          `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+          `   <div>${message}</div>`,
+          '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+          '</div>'
+        ].join('')
+
+        alertPlaceholder.append(wrapper)
+      }
+
+      const deleteDistrict = async (district) => {
+        if(district.cntWard > 0 || district.cntSpot > 0 || district.cntBoard > 0)
+          appendAlert('KHÔNG THỂ XÓA QUẬN. Vì quận này có tồn tại Phường / Điểm đặt / Bảng quảng cáo', 'danger');
+        else{
+          try {
+            const response = await fetch(`/so/locations/${district.districtID}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+          } catch (error) {
+            console.error('Error during DELETE request:', error.message);
+          } finally {
+            location.reload();
+          }
         }
       }
 
