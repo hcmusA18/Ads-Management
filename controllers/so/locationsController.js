@@ -24,15 +24,6 @@ controller.findAllDistricts = async (req, res) => {
   const totalSpot = await spotService.countAll();
   const totalBoard = await boardService.countAll();
 
-  // console.log(tableData);
-  // const inputs = {
-  //   title: 'Sở - Quản lý danh sách Quận',
-  //   toolbars: toolbars,
-  //   districts: await locationService.getAll(),
-  //   wardsTotal: await wardService.countAll(),
-  //   spotsTotal: await spotService.countAll(),
-  //   boardsTotal: await boardService.countAll(),
-  // }
   return res.render('./so/locations', {
     tableData, totalBoard, totalSpot, totalWard, 
     toolbars: toolbars,
@@ -44,7 +35,7 @@ controller.locationsDetails = async (req, res) => {
 
   let districtDetail = await locationService.getDistrictDetail(districtID);
   districtDetail = districtDetail[0];
-  // console.log(districtDetail);
+  console.log(districtDetail);
 
   const wards = await locationService.getDetails(districtID);
   // console.log(wards);

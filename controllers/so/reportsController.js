@@ -1,7 +1,5 @@
 import { toolbars } from './utilities.js'
 import * as reportService from '../../services/reportService.js'
-import * as boardService from '../../services/boardService.js'
-import * as spotService from '../../services/spotService.js'
 import * as districtService from '../../services/districtService.js'
 
 const controller = {}
@@ -32,10 +30,6 @@ controller.show = async (req, res) => {
   checkboxData = checkboxData.map((dist) => `Quận ${dist.districtName}`)
   let checkboxHeader = 'Thành phố Hồ Chí Minh'
 
-  // checkboxHeader = await districtService.getDistrictByID(req.user.districtID);
-  // if (checkboxHeader) checkboxHeader = 'Quận ' + checkboxHeader.districtName;
-  // else checkboxHeader = 'Không có thông tin quận';
-
   const commonData = {
     url: req.originalUrl,
     role: role,
@@ -49,8 +43,8 @@ controller.show = async (req, res) => {
     objectIDs.push({
       ads_id: report.objectID,
       isSpot: report.isSpot,
-      districtName: report.districtName,
-    }); 
+      districtName: report.districtName
+    })
     return {
       id: report.reportID,
       ads_id: report.objectID,
@@ -64,45 +58,35 @@ controller.show = async (req, res) => {
         edit: false,
         remove: false,
         info: true
-      },
-      // isSpot: report.isSpot,
-    };
+      }
+    }
   })
-
-  // console.log('After aggregate:' + tableData);
-  console.log(objectIDs);
-
-
-  // tableData.map((entry) => {
-  //   objectIDs.push(entry.ads_id)
-  // })
 
   objectIDs.map((ad) => {
+    let isSpot = ad.isSpot
+    let districtName = ad.districtName
 
-    let isSpot = ad.isSpot;
-    let districtName = ad.districtName;
-
-    if(isSpot) {
-      if(ad.ads_id in spotCnt) {
-        spotCnt[ad.ads_id] += 1;
+    if (isSpot) {
+      if (ad.ads_id in spotCnt) {
+        spotCnt[ad.ads_id] += 1
       } else {
-        spotCnt[ad.ads_id] = 1;
+        spotCnt[ad.ads_id] = 1
       }
     } else {
-      if(ad.ads_id in boardCnt) {
-        boardCnt[ad.ads_id] += 1;
+      if (ad.ads_id in boardCnt) {
+        boardCnt[ad.ads_id] += 1
       } else {
-        boardCnt[ad.ads_id] = 1;
+        boardCnt[ad.ads_id] = 1
       }
     }
 
-    if(districtName in districtCnt) {
-      districtCnt[districtName] += 1;
+    if (districtName in districtCnt) {
+      districtCnt[districtName] += 1
     } else {
-      districtCnt[districtName] = 1;
+      districtCnt[districtName] = 1
     }
   })
-  
+
   spotMostReported = -1
   for (let key in spotCnt) {
     if (spotCnt[key] > spotMostReported) {
@@ -119,19 +103,16 @@ controller.show = async (req, res) => {
     }
   }
 
-  console.log('District');
-  console.log(districtCnt);
+  console.log('District')
+  console.log(districtCnt)
 
   districtMostReported = -1
   for (let key in districtCnt) {
     if (districtCnt[key] > districtMostReported) {
       districtMostReported = districtCnt[key]
-      districtMaxId = key;
+      districtMaxId = key
     }
   }
-
-  // let district = await districtService.getDistrictByID(districtMaxId)
-  // districtMaxId = district.districtName
 
   let statisticalData = {
     spotMaxId: spotMaxId,
@@ -139,9 +120,6 @@ controller.show = async (req, res) => {
     districtMaxId: districtMaxId
   }
 
-  console.log(districtMaxId);
-  // console.log(objectIDs);
-  // console.log(statisticalData);
   const title = 'Sở - Thống kê báo cáo'
   return res.render('./so/reports', { title, tableHeads, tableData, toolbars, statisticalData, ...commonData })
 }
