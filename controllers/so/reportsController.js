@@ -43,64 +43,65 @@ controller.show = async (req, res) => {
     checkboxHeader: checkboxHeader
   }
 
-  tableData = await reportService.getReportsWithDistrictID()
-  tableData = tableData.map((report) => ({
-    id: report.reportID,
-    ads_id: report.objectID,
-    district: report.districtName,
-    ads_type: report.reporterName,
-    sender: report.reporterName,
-    email: report.reporterEmail,
-    date: report.sendTime.toLocaleDateString('vi-VN'),
-    status: report.status === 0 ? 'Đang chờ duyệt' : report.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
-    actions: {
-      edit: false,
-      remove: false,
-      info: true
-    }
-  }))
-
-  console.log('After aggregate:' + tableData);
-
   let objectIDs = []
-  tableData.map((entry) => {
-    objectIDs.push(entry.ads_id)
+  tableData = await reportService.getReportsWithDistrictID()
+  tableData = tableData.map((report) => {
+    objectIDs.push({
+      ads_id: report.objectID,
+      isSpot: report.isSpot,
+      districtID: report.districtName,
+    }); 
+    return {
+      id: report.reportID,
+      ads_id: report.objectID,
+      district: report.districtName,
+      ads_type: report.reporterName,
+      sender: report.reporterName,
+      email: report.reporterEmail,
+      date: report.sendTime.toLocaleDateString('vi-VN'),
+      status: report.status === 0 ? 'Đang chờ duyệt' : report.status === 1 ? 'Đã duyệt' : 'Đã từ chối',
+      actions: {
+        edit: false,
+        remove: false,
+        info: true
+      },
+      // isSpot: report.isSpot,
+    };
   })
 
-  const promises = objectIDs.map(async (ad) => {
-    let board = await boardService.getBoardByID(ad)
-    let spotIdOwnBoard = -1
-    if (board != undefined) {
-      if (board.boardID in boardCnt) {
-        boardCnt[board.boardID] += 1
-      } else {
-        boardCnt[board.boardID] = 1
-      }
-      spotIdOwnBoard = await spotService.getSpotByID(board.spotID)
+  // console.log('After aggregate:' + tableData);
+  console.log(objectIDs);
 
-      if (spotIdOwnBoard.districtID in districtCnt) {
-        districtCnt[spotIdOwnBoard.districtID] += 1
+
+  // tableData.map((entry) => {
+  //   objectIDs.push(entry.ads_id)
+  // })
+
+  objectIDs.map((ad) => {
+
+    let isSpot = ad.isSpot;
+    let districtName = ad.districtName;
+
+    if(isSpot) {
+      if(ad.ads_id in spotCnt) {
+        spotCnt[ad.ads_id] = 1;
       } else {
-        districtCnt[spotIdOwnBoard.districtID] = 1
+        spotCnt[ad.ads_id] += 1;
+      }
+    } else {
+      if(ad.ads_id in boardCnt) {
+        boardCnt[ad.ads_id] = 1;
+      } else {
+        boardCnt[ad.ads_id] += 1;
       }
     }
 
-    let spot = await spotService.getSpotByID(ad)
-    if (spot != undefined) {
-      if (spot.spotID in spotCnt) {
-        spotCnt[spot.spotID] += 1
-      } else {
-        spotCnt[spot.spotID] = 1
-      }
-      if (spot.districtID in districtCnt) {
-        districtCnt[spot.districtID] += 1
-      } else {
-        districtCnt[spot.districtID] = 1
-      }
+    if(districtName in districtCnt) {
+      districtCnt[districtName] = 1;
+    } else {
+      districtCnt[districtCnt] += 1;
     }
   })
-
-  await Promise.all(promises)
   // console.log('Spot');
   // console.log(spotCnt);
 
@@ -134,8 +135,8 @@ controller.show = async (req, res) => {
     }
   }
 
-  let district = await districtService.getDistrictByID(districtMaxId)
-  districtMaxId = district.districtName
+  // let district = await districtService.getDistrictByID(districtMaxId)
+  // districtMaxId = district.districtName
 
   let statisticalData = {
     spotMaxId: spotMaxId,
@@ -144,8 +145,6 @@ controller.show = async (req, res) => {
   }
   // console.log(objectIDs);
   // console.log(statisticalData);
-
-  console.log(tableData);
   const title = 'Sở - Thống kê báo cáo'
   return res.render('./so/reports', { title, tableHeads, tableData, toolbars, statisticalData, ...commonData })
 }

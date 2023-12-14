@@ -345,9 +345,7 @@ export const getReportsWithDistrictID = async () => {
               then: true,
               else: false
             }
-          },
-          spotID: 1,
-          boardID: 1
+          }
         }
       },
       {
@@ -374,8 +372,6 @@ export const getReportsWithDistrictID = async () => {
           sendTime: 1,
           status: 1,
           districtName: '$reportDistrictInfo.districtName',
-          spotID: 1,
-          boardID: 1,
           isSpot: 1
         }
       }
