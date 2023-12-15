@@ -260,3 +260,125 @@ export const getReportByOfficerRole = async (officerRole)  => {
     throw error;
   }
 };
+
+export const getReportsWithDistrictID = async () => {
+  try {
+    const options = [
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'objectID',
+          foreignField: 'spotID',
+          as: 'spotInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$spotInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'boards',
+          localField: 'objectID',
+          foreignField: 'boardID',
+          as: 'boardInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'boardInfo.spotID',
+          foreignField: 'spotID',
+          as: 'boardSpotInfo'
+        }
+      },
+      {
+        $lookup: {
+          from : 'reporttypes',
+          localField: 'reportType',
+          foreignField: 'typeID',
+          as: 'htbc'
+        }
+      },
+      {
+        $unwind: {
+          path: '$htbc',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          reportID: 1,
+          objectID: 1,
+          reportType: '$htbc.typeName',
+          reporterName: 1,
+          reporterEmail: 1,
+          sendTime: 1,
+          status: 1,
+          // test1: {$arrayElemAt: ['$spotInfo.spotID', 0]},
+          // test2: '$objectID',
+          districtID: {
+            $cond: {
+              if: {$eq : ['$objectID', '$spotInfo.spotID']},
+              then: '$spotInfo.districtID',
+              else: {
+                $cond: {
+                  if: {$eq: ['$objectID', '$boardInfo.boardID']},
+                  then: '$boardSpotInfo.districtID',
+                  else: null,
+                }
+              },
+            }
+          },
+          isSpot: {
+            $cond: {
+              if: {$eq : ['$objectID', '$spotInfo.spotID']},
+              then: true,
+              else: false
+            }
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: 'districts',
+          localField: 'districtID',
+          foreignField: 'districtID',
+          as: 'reportDistrictInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$reportDistrictInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          reportID: 1,
+          objectID: 1,
+          reportType: 1,
+          reporterName: 1,
+          reporterEmail: 1,
+          sendTime: 1,
+          status: 1,
+          districtName: '$reportDistrictInfo.districtName',
+          isSpot: 1
+        }
+      }
+    ]
+    const reports = await Report.aggregate(options);
+    return reports;
+  } catch (error) {
+    throw new Error(`Error getting all reports: ${error.message}`);
+  }
+};

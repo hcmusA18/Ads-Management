@@ -13,8 +13,8 @@
       <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
       <div class="container-fluid vw-100 pt-1">
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
-          <!-- Profile -->
-          <%- include("../partials/profile_card.ejs"); %>
+            <!-- Profile -->
+            <%- include("../partials/profile_card.ejs"); %>
             <!-- Title -->
             <div class="d-block">
               <h1 class="fw-bolder">
@@ -27,12 +27,12 @@
                 <div class="d-flex flex-row align-items-center gap-2 position-relative">
                   <%- include("../partials/info_card.ejs", {title: 'Tổng số quận' , value: tableData.length,
                     color: '#00b285' }); %>
-                    <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value: totalWard, color: '#e84747'
-                      }); %>
-                      <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value: totalSpot,
-                        color: '#d59633' }); %>
-                        <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' , value: totalBoard,
-                          color: '#ae57ff' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value: totalWard, 
+                    color: '#e84747'}); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value: totalSpot,
+                    color: '#d59633' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' , value: totalBoard,
+                    color: '#ae57ff' }); %>
                 </div>
               </div>
             </div>
@@ -53,7 +53,6 @@
                       </div>
                     </a>
                     <% });%>
-                      <!-- Raw Data -> will be changed when apply DB -->
                 </div>
                 <a href="/so/locations" style="font-size: 14px">Xem chi tiết danh sách QUẬN</a>
               </div>
@@ -112,8 +111,8 @@
                             <a href="javascript:" class="mx-3 bg-transparent">
                               <img src="/images/edit.svg" alt="edit-icon" onclick="showEditModal(JSON.parse('<%= JSON.stringify(district) %>'))">
                             </a>
-                            <a href="" class="mx-3 bg-transparent">
-                              <img src="/images/remove.svg" onclick="deleteDistrict('<%= district.districtID %>')" alt="remove-icon">
+                            <a href="javascript:" class="mx-3 bg-transparent">
+                              <img src="/images/remove.svg" onclick="deleteDistrict(JSON.parse('<%= JSON.stringify(district) %>'))" alt="remove-icon">
                             </a>
                           </div>
                         </td>
@@ -124,7 +123,6 @@
                 </table>
               </div>
             </div>
-  
         </div>
       </div>
       <!-- Modal editttttttttttttttttttttttttttttttttttttttttttttttttttt -->
@@ -168,6 +166,7 @@
             </div>
         </div>
       </div>
+      <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
     </main>
     <!-- Modal add -->
     <script defer type="module">
@@ -208,17 +207,35 @@
     </script>
 
     <script defer>
-      const deleteDistrict = async (districtID) => {
-        // console.log(districtID);
-        try {
-          const response = await fetch(`/so/locations/${districtID}`, {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-        } catch (error) {
-          console.error('Error during DELETE request:', error.message);
+      const alertPlaceholder = document.getElementById('alertConfirm')
+      const appendAlert = (message, type) => {
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = [
+          `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+          `   <div>${message}</div>`,
+          '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+          '</div>'
+        ].join('')
+
+        alertPlaceholder.append(wrapper)
+      }
+
+      const deleteDistrict = async (district) => {
+        if(district.cntWard > 0 || district.cntSpot > 0 || district.cntBoard > 0)
+          appendAlert('KHÔNG THỂ XÓA QUẬN. Vì quận này có tồn tại Phường / Điểm đặt / Bảng quảng cáo', 'danger');
+        else{
+          try {
+            const response = await fetch(`/so/locations/${district.districtID}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+          } catch (error) {
+            console.error('Error during DELETE request:', error.message);
+          } finally {
+            location.reload();
+          }
         }
       }
 

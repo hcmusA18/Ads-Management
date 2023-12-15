@@ -37,16 +37,17 @@
                     </div>
                     <div class="col-md-4 custom-col">
                         <label for="dropdown-state-list" style="margin-bottom: 6px">Trạng thái</label>
-                        <div class="dropdown d-block p-0" style="flex: 0">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdown-state-list"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Chưa xử lý
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown-state-list">
-                                <li><a class="dropdown-item" href="#">Chờ xử lý</a></li>
-                                <li><a class="dropdown-item" href="#">Đã xử lý</a></li>
-                            </ul>
-                        </div>
+                        <% if(detail.state == 0) { %>
+                            <select class="form-select" aria-label="Default select example" id="state-baocao" disabled>
+                              <option selected value="0">Đang xử lí</option>
+                              <option value="1">Đã xử lí</option>
+                            </select>
+                        <% } else { %>
+                            <select class="form-select" aria-label="Default select example" id="state-baocao" disabled>
+                              <option value="0">Đang xử lí</option>
+                              <option selected value="1">Đã xử lí</option>
+                            </select>
+                        <% } %>
                     </div>
                 </div>
 

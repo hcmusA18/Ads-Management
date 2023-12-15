@@ -1,4 +1,5 @@
 import Spot from '../models/spotModel.js'
+import {getReportByID} from './reportService.js'
 
 const getAllSpots = async () => {
   const options = [
@@ -388,7 +389,9 @@ const getDetailSpot = async (spotID) => {
     throw new Error(`Error getting all spots: ${error.message}`)
   }
 }
+
 export default {
   getAllSpots,
-  getDetailSpot
+  getDetailSpot,
+  getReportByID
 };

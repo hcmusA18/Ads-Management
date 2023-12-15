@@ -61,6 +61,18 @@ router.get('/locations-detail', (req, res) => {
 	controller.locationsController.locationsDetails(req, res);
 });
 
+router.post('/locations-detail', (req, res) => {
+	controller.locationsController.addWard(req, res);
+});
+
+router.delete('/locations-detail/:wardID', (req, res) => {
+	controller.locationsController.deleteWard(req, res);
+});
+
+router.patch('/locations-detail/:wardID', (req, res) => {
+	controller.locationsController.updateWard(req, res);
+})
+
 router.get('/requests', (req, res) => {
 	controller.requestsController.show(req, res);
 });

@@ -25,4 +25,15 @@ router.get('/spots/:spotID', (req, res) => {
     .catch((err) => res.status(500).json({ message: err.message }))
 })
 
+router.get('/reports/:reportID', (req, res) => {
+  // set cross origin request headers
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+  api
+    .getReport(req.params.reportID)
+    .then((report) => res.status(200).json(report))
+    .catch((err) => res.status(500).json({ message: err.message }))
+});
+
 export default router
