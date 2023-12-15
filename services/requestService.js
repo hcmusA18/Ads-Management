@@ -1,5 +1,6 @@
 import LicensingRequest from '../models/licensingRequestModel.js'
 import EditRequest from '../models/editRequestModel.js'
+import { request } from 'http'
 
 class RequestService {
   constructor(model) {
@@ -56,20 +57,20 @@ class RequestService {
 
   buildAggregateOptions() {
     const commonOptions = [
-      {
-        $lookup: {
-          from: 'spots',
-          localField: 'spotID',
-          foreignField: 'spotID',
-          as: 'spot'
-        }
-      },
-      {
-        $unwind: {
-          path: '$spot',
-          preserveNullAndEmptyArrays: true
-        }
-      },
+      // {
+      //   $lookup: {
+      //     from: 'spots',
+      //     localField: 'spotID',
+      //     foreignField: 'spotID',
+      //     as: 'spot'
+      //   }
+      // },
+      // {
+      //   $unwind: {
+      //     path: '$spot',
+      //     preserveNullAndEmptyArrays: true
+      //   }
+      // },
       {
         $lookup: {
           from: 'wards',
@@ -123,7 +124,6 @@ class RequestService {
         ]
       case EditRequest:
         return [
-          ...commonOptions,
           {
             $lookup: {
               from: 'boards',
@@ -140,7 +140,7 @@ class RequestService {
           },
           {
             $addFields: {
-              combinedSpotID: { $ifNull: ['$board.spotID', '$spot.spotID'] }
+              combinedSpotID: { $ifNull: ['$board.spotID', '$objectID'] }
             }
           },
           {
@@ -157,6 +157,7 @@ class RequestService {
               preserveNullAndEmptyArrays: true
             }
           },
+          ...commonOptions,
           {
             $project: this.buildProject()
           }
@@ -190,7 +191,10 @@ class RequestService {
           ...commonProject,
           requestID: 1,
           objectID: 1,
-          reason: 1
+          reason: 1,
+          newInfo: 1,
+          requestTime: 1
+
         }
       default:
         throw new Error('Model is not valid')
@@ -227,89 +231,7 @@ class RequestService {
 
   async getAll() {
     try {
-      let options = [];
-      if (this.model === LicensingRequest) {
-        options = this.buildAggregateOptions();
-      } else {
-        options = [
-          {
-            $lookup: {
-              from: 'boards',
-              localField: 'objectID',
-              foreignField: 'boardID',
-              as: 'board'
-            }
-          },
-          {
-            $unwind: {
-              path: '$board',
-              preserveNullAndEmptyArrays: true
-            }
-          },
-          {
-            $addFields: {
-              combinedSpotID: { $ifNull: ['$board.spotID', '$objectID'] }
-            }
-          },
-          {
-            $lookup: {
-              from: 'spots',
-              localField: 'combinedSpotID',
-              foreignField: 'spotID',
-              as: 'spot'
-            }
-          },
-          {
-            $unwind: {
-              path: '$spot',
-              preserveNullAndEmptyArrays: true
-            }
-          },
-          {
-            $lookup: {
-              from: 'districts',
-              localField: 'spot.districtID',
-              foreignField: 'districtID',
-              as: 'district'
-            }
-          },
-          {
-            $unwind: {
-              path: '$district',
-              preserveNullAndEmptyArrays: true
-            }
-          },
-          {
-            $lookup: {
-              from: 'wards',
-              localField: 'spot.wardID',
-              foreignField: 'wardID',
-              as: 'ward'
-            }
-          },
-          {
-            $unwind: {
-              path: '$ward',
-              preserveNullAndEmptyArrays: true
-            }
-          },
-          {
-            $project: {
-              _id: 0,
-              requestID: 1,
-              objectID: 1,
-              wardID: 1,
-              districtID: 1,
-              wardName: '$ward.wardName',
-              districtName: '$district.districtName',
-              officerUsername: 1,
-              reason: 1,
-              status: 1
-            }
-          }
-        ]
-      }
-      return await this.model.aggregate(options)
+      return await this.model.aggregate(this.buildAggregateOptions())
     } catch (error) {
       throw new Error(`Error getting all ${this.model.modelName}: ${error.message}`)
     }
@@ -327,7 +249,8 @@ class RequestService {
           $match: { reportID: id }
         })
       }
-      return await this.model.aggregate(options)
+      const data = await this.model.aggregate(options)
+      return data[0]
     } catch (error) {
       throw new Error(`Error getting ${this.model.modelName} by ID: ${error.message}`)
     }
@@ -355,6 +278,18 @@ class RequestService {
       return await this.model.aggregate(options);
     } catch (error) {
       throw new Error(`Error getting ${this.model.modelName} by status: ${error.message}`)
+    }
+  }
+
+  updateStatus = async (id, status) => {
+    try {
+      await this.model.findOneAndUpdate(
+        { requestID: id },
+        { status: status },
+      );
+      return { message: 'Request status updated successfully' };
+    } catch (error) {
+      throw new Error(`Error updating request status: ${error.message}`);
     }
   }
 }

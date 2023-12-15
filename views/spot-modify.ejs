@@ -50,43 +50,45 @@
                   <input type="text" class="form-control" id="spotID" value='<%= spotId %>' disabled/>
               </div>
               <div class="container mt-2">
-                  <label for="address" style="margin-bottom: 6px">Địa chỉ</label>
-                  <input type="text" class="form-control" id="address" value='<%= address %>'/>
+                  <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
+                  <input type="text" class="form-control" id="spotAddress" value='<%= spotAddress %>'/>
               </div>
               <div class="container mt-2 d-flex justify-content-between">
                   <div style="width: calc((100% - 2rem) / 2);">
-                      <label for="ward" style="margin-bottom: 6px;">Phường</label>
-                      <input type="text" class="form-control" id="ward" value='<%= ward %>' disabled/>
+                      <label for="wardName" style="margin-bottom: 6px;">Phường</label>
+                      <input type="text" class="form-control" id="wardName" value='<%= wardName %>' disabled/>
+                      <input type="text" id="ward" value="<%= ward %>" hidden>
                   </div>
                   <div style="width: calc((100% - 2rem) / 2);">
-                      <label for="district" style="margin-bottom: 6px">Quận</label>
-                      <input type="text" class="form-control" id="district" value='<%= district %>' disabled/>
+                      <label for="districtName" style="margin-bottom: 6px">Quận</label>
+                      <input type="text" class="form-control" id="districtName" value='<%= districtName %>' disabled/>
+                      <input type="text" id="district" value="<%= district %>" hidden>
                   </div>
               </div>
               <div class="container mt-2">
                   <label for="location-type" style="margin-bottom: 6px">Loại vị trí</label>
-                  <input type="text" class="form-control" id="spottype" list="spottypesList" value='<%= locationType %>'/>
-                  <input type="text" id="spottypeId" value="null" hidden>
-                  <datalist id="spottypesList" style="display: none;">
+                  <input type="text" class="form-control" id="spotTypeName" list="spotTypeList" value='<%= spotTypeName %>'/>
+                  <input type="text" id="spotType" value="<%= spotType %>" hidden>
+                  <datalist id="spotTypeList" style="display: none;">
                     <% other.spottypes.forEach((type)=> { %>
                       <option value="<%= type.typeName; %>"></option>
                       <% }); %>
                   </datalist>
               </div>
               <div class="container mt-2">
-                  <label for="ads-type" style="margin-bottom: 6px">Hình thức quảng cáo</label>
-                  <input type="text" class="form-control" id="adsform" list="adsformsList" value='<%= adsType %>'/>
-                  <input type="text" id="adsformId" value="null" hidden>
-                  <datalist id="adsformsList" style="display: none;">
+                  <label for="adsForm" style="margin-bottom: 6px">Hình thức quảng cáo</label>
+                  <input type="text" class="form-control" id="adsFormName" list="adsFormList" value='<%= adsFormName %>'/>
+                  <input type="text" id="adsForm" value="<%= adsForm %>" hidden>
+                  <datalist id="adsFormList" style="display: none;">
                     <% other.adsforms.forEach((form)=> { %>
                       <option value="<%= form.formName; %>"></option>
                       <% }); %>
                   </datalist>
               </div>
               <div class="container mt-2">
-                  <label for="plan" style="margin-bottom: 6px">Thông tin quy hoạch</label>
-                  <input type="text" class="form-control" id="plan" list="plansList" value='<%= plan %>'/>
-                  <datalist id="plansList" style="display: none;">
+                  <label for="planned" style="margin-bottom: 6px">Thông tin quy hoạch</label>
+                  <input type="text" class="form-control" id="planned" list="planList" value='<%= planned %>'/>
+                  <datalist id="planList" style="display: none;">
                     <option value="Đã quy hoạch"></option>
                     <option value="Chưa quy hoạch"></option>
                   </datalist>
@@ -111,8 +113,8 @@
               <script defer src="/js/uploadImage.js"></script>
             </div>
             <label for="reason" style="margin-bottom: 6px">Lý do chỉnh sửa</label>
-              <textarea class="form-control" id="reason" 
-                style="min-height: 170px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis vitae dolore debitis soluta ipsa, esse molestias nisi inventore voluptatum non ex sint temporibus odit distinctio maiores repudiandae saepe, iste praesentium veritatis magni ipsum iusto facere? Nobis debitis maiores rerum est distinctio velit et obcaecati harum, qui provident voluptates, officiis laudantium quas! Ex labore excepturi velit eveniet incidunt expedita corrupti illum a, ullam nostrum ducimus, tenetur cumque facilis sapiente, iure magni maxime nihil eum voluptate atque assumenda? Enim quibusdam ratione, quisquam magni esse et placeat? Quasi porro fugit, expedita suscipit, nobis, numquam laboriosam ad nam earum quidem excepturi. Adipisci, ab sapiente?</textarea>
+            <textarea class="form-control" id="reason" 
+              style="min-height: 170px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis vitae dolore debitis soluta ipsa, esse molestias nisi inventore voluptatum non ex sint temporibus odit distinctio maiores repudiandae saepe, iste praesentium veritatis magni ipsum iusto facere? Nobis debitis maiores rerum est distinctio velit et obcaecati harum, qui provident voluptates, officiis laudantium quas! Ex labore excepturi velit eveniet incidunt expedita corrupti illum a, ullam nostrum ducimus, tenetur cumque facilis sapiente, iure magni maxime nihil eum voluptate atque assumenda? Enim quibusdam ratione, quisquam magni esse et placeat? Quasi porro fugit, expedita suscipit, nobis, numquam laboriosam ad nam earum quidem excepturi. Adipisci, ab sapiente?</textarea>
           </div>
           <!-- button -->
           <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px;">
@@ -129,9 +131,9 @@
     
     <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
     <script defer>
-      const spotAddressInput = document.getElementById('address');
-      let long = 0;
-      let lat = 0;
+      const spotAddressInput = document.getElementById('spotAddress');
+      let long = parseFloat(`<%= longitude %>`);
+      let lat = parseFloat(`<%= latitude %>`);
 
       spotAddressInput.addEventListener('click', (e) => {
         const width = 900;
@@ -153,17 +155,17 @@
         
         long = parseFloat(event.data.long);
         lat = parseFloat(event.data.lat);
-        document.getElementById('address').value = event.data.number;
-        document.getElementById('ward').value = event.data.ward.replace('Phường ', '');
-        document.getElementById('district').value = event.data.district.replace('Quận ', '').length == 1 ? '0' + event.data.district.replace('Quận ', '') : event.data.district.replace('Quận ', '');
+        document.getElementById('spotAddress').value = event.data.number;
+        document.getElementById('wardName').value = event.data.ward.replace('Phường ', '');
+        document.getElementById('districtName').value = event.data.district.replace('Quận ', '').length == 1 ? '0' + event.data.district.replace('Quận ', '') : event.data.district.replace('Quận ', '');
       });
 
       const spottypes = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
       const adsforms = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
-      const spottypeInput = document.getElementById('spottype');
-      const adsformInput = document.getElementById('adsform');
-      const spottypeIdInput = document.getElementById('spottypeId');
-      const adsformIdInput = document.getElementById('adsformId');
+      const spottypeInput = document.getElementById('spotTypeName');
+      const adsformInput = document.getElementById('adsFormName');
+      const spottypeIdInput = document.getElementById('spotType');
+      const adsformIdInput = document.getElementById('adsForm');
 
       spottypeInput.addEventListener('change', (e) => {
         const spottype = spottypes.find(type => type.typeName == spottypeInput.value);
@@ -229,17 +231,19 @@
         const data = {
           spotID: document.getElementById('spotID').value,
           spotImage: imgUrlsData,
-          address: document.getElementById('address').value,
-          ward: document.getElementById('ward').value,
-          district: document.getElementById('district').value,
-          lattitude: lat,
+          address: document.getElementById('spotAddress').value,
+          wardID: document.getElementById('ward').value,
+          wardName: document.getElementById('wardName').value,
+          districtID: document.getElementById('district').value,
+          districtName: document.getElementById('districtName').value,
+          latitude: lat,
           longtitude: long,
-          spotType: document.getElementById('spottypeId').value,
-          spotTypeName: document.getElementById('spottype').value,
-          adsForm: document.getElementById('adsformId').value,
-          adsFormName: document.getElementById('adsform').value,
+          spotType: document.getElementById('spotType').value,
+          spotTypeName: document.getElementById('spotTypeName').value,
+          adsForm: document.getElementById('adsForm').value,
+          adsFormName: document.getElementById('adsFormName').value,
           spotName: document.getElementById('spotName').innerText,
-          planned: document.getElementById('plan').value == 'Đã quy hoạch' ? 1 : 0,
+          planned: document.getElementById('planned').value == 'Đã quy hoạch' ? 1 : 0,
           reason: document.getElementById('reason').value,
           officerUsername: '<%= user.username %>'
         }

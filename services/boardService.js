@@ -227,13 +227,17 @@ export const getBoardByID = async (boardID) => {
           authCompanyAddress: '$licensereq.companyAddress',
           startDate: '$licensereq.startDate',
           endDate: '$licensereq.endDate',
+          boardType: 1,
           boardTypeName: '$boardtype.typeName',
           quantity: 1,
           height: 1,
           width: 1,
+          spotType: '$spot.typeID',
           spotTypeName: '$spottype.typeName',
+          adsForm: '$adsform.formID',
           adsFormName: '$adsform.formName',
           image: 1,
+          licensingID: 1,
         }
       }
     ]

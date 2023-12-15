@@ -3,9 +3,11 @@ import * as spotService from '../../services/spotService.js';
 import * as boardService from '../../services/boardService.js';
 import * as wardService from '../../services/wardService.js';
 import * as districtService from '../../services/districtService.js';
-import * as editRequestService from '../../services/editRequestService.js';
-import * as adsFromsService from '../../services/adsFormService.js';
+import * as adsFormService from '../../services/adsFormService.js';
 import * as spotTypeService from '../../services/spotTypeService.js';
+import * as boardTypeService from '../../services/boardTypeService.js';
+import { editRequestService } from '../../services/requestService.js';
+import * as IDGenerator from '../../services/IDGenerator.js';
 
 const show = async (req, res) => {
   const role = String(req.originalUrl.split('/')[1])
@@ -129,17 +131,22 @@ const showDetail = async (req, res, isEdit) => {
   };
 
   if (isSpotCategory) {
-    const { spotName, address, wardName, districtName, spotTypeName, adsFormName, planned, spotImage } = detailData;
     const data = {
-      spotTitle: spotName,
-      spotId: ID,
-      address,
-      ward: wardName,
-      district: districtName,
-      locationType: spotTypeName,
-      adsType: adsFormName,
-      plan: planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
-      imgUrls: spotImage,
+      spotTitle: detailData.spotName,
+      spotId: detailData.spotID,
+      spotAddress: detailData.address,
+      ward: detailData.wardID,
+      district: detailData.districtID,
+      wardName: detailData.wardName,
+      districtName: detailData.districtName,
+      spotType: detailData.spotType,
+      spotTypeName: detailData.spotTypeName,
+      adsForm: detailData.adsForm,
+      adsFormName: detailData.adsFormName,
+      planned: detailData.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
+      imgUrls: detailData.spotImage,
+      longitude: detailData.longitude,
+      latitude: detailData.latitude,
     };
 
     const boardsTableHeads = ['ID', 'Loại bảng quảng cáo', 'Kích thước', 'Số lượng'];
@@ -155,7 +162,7 @@ const showDetail = async (req, res, isEdit) => {
     if (isEdit) {
       let other = {}
       other.spottypes = await spotTypeService.getAllSpotTypes() || [];
-      other.adsforms = await adsFromsService.getAllAdsForms() || [];
+      other.adsforms = await adsFormService.getAllAdsForms() || [];
       res.render('spot-modify', { ...commonData, ...data, other });
     } else {
       res.render('spot-detail', { ...commonData, ...data, boardsTableHeads, boardsTableData: transformedBoardsTableData });
@@ -177,19 +184,26 @@ const showDetail = async (req, res, isEdit) => {
       spotTypeName: detailData.spotTypeName,
       adsFormName: detailData.adsFormName,
       imgUrls: detailData.image,
+      boardType: detailData.boardType,
+      adsForm: detailData.adsForm,
+      spotType: detailData.spotType,
+      licensingID: detailData.licensingID,
     };
 
     if (isEdit) {
-      let spots = []
+      let other = {}
       if (role === 'quan') {
-        spots = await spotService.getSpotsByDistrictID(req.user.districtID);
+        other.spots = await spotService.getSpotsByDistrictID(req.user.districtID);
       } else if (role === 'phuong') {
-        spots = await spotService.getSpotsByWardID(req.user.wardID);
+        other.spots = await spotService.getSpotsByWardID(req.user.wardID);
       }
+      other.boardtypes = await boardTypeService.getAllBoardTypes() || [];
+      other.adsforms = await adsFormService.getAllAdsForms() || [];
+      other.spottypes = await spotTypeService.getAllSpotTypes() || [];
       // console.log('====================================');
-      // console.log(spots);
+      // console.log(other.boardtypes);
       // console.log('====================================');
-      res.render('board-modify', { ...commonData, ...data, spots });
+      res.render('board-modify', { ...commonData, ...data, other });
     } else {
       res.render('board-detail', { ...commonData, ...data });
     }
@@ -230,11 +244,12 @@ const showModify = (req, res) => {
 const request = async (req, res) => {
   try {
 		let data = req.body;
+    const type = req.query.category;
     const { reason, officerUsername, ...rest } = data;
     data = {
-      requestID: 'CS1111',
+      requestID: await IDGenerator.getNewID('EditRequest'),
       requestTime: new Date(),
-      objectID: data.spotID,
+      objectID: (type === 'spot') ? rest.spotID : rest.boardID,
       reason: reason,
       newInfo: rest,
       status: 0,

@@ -16,6 +16,7 @@ router.post('/reports/:id', (req, res) => controller.reportsController.updateRep
 router.get('/ads', (req, res) => controller.adsController.show(req, res));
 router.get('/ads/:id', (req, res) => controller.adsController.showDetail(req, res, false));
 router.get('/ads/:id/modify', (req, res) => controller.adsController.showDetail(req, res, true));
+router.post('/ads/:id', (req, res) => controller.adsController.request(req, res));
 router.get('/license', (req, res) => controller.licenseController.show(req, res));
 router.get('/license/create', (req, res) => controller.licenseController.showCreate(req, res));
 router.get('/license/:id', (req, res) => controller.licenseController.showDetail(req, res, true))

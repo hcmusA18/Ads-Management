@@ -198,6 +198,9 @@ export const getSpotByID = async (spotID) => {
           planned: 1,
           adsFormName: '$adsform.formName',
           spotImage: 1,
+          adsForm: 1,
+          longitude: 1,
+          latitude: 1,
         }
       }
     ]

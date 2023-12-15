@@ -69,6 +69,10 @@ router.get('/requests/:id', (req, res) => {
 	controller.requestsController.showDetail(req, res);
 });
 
+router.post('/requests/:id', (req, res) => {
+	controller.requestsController.requestProcessing(req, res);
+})
+
 router.get('/assign', (req, res) => {
 	controller.assignController.show(req, res);
 });

@@ -46,8 +46,8 @@
               </div>
               <div class="container mt-2 d-flex justify-content-between">
                 <div style="width: calc((100% - 2rem) / 2);">
-                  <label for="id-quangcao" style="margin-bottom: 6px;">ID Quảng cáo</label>                  
-                  <input type="text" class="form-control" id="id-quangcao" value="<%= id %>" disabled />
+                  <label for="boardID" style="margin-bottom: 6px;">ID Quảng cáo</label>                  
+                  <input type="text" class="form-control" id="boardID" value="<%= id %>" disabled />
                 </div>
                 <div style="width: calc((100% - 2rem) / 2);">
                   <label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
@@ -59,7 +59,7 @@
                   <label for="spotName" class="mb-1">Điểm đặt</label>
                   <input type="text" list="spotList" class="form-control" id="spotName" autocomplete="on" />
                   <datalist id="spotList" style="display: none;">
-                    <% spots.forEach((spot)=> { %>
+                    <% other.spots.forEach((spot)=> { %>
                       <option value="<%= spot.spotName; %>"></option>
                       <% }); %>
                   </datalist>
@@ -133,11 +133,17 @@
             <div class="container mt-2 d-flex justify-content-between">
               <div style="width: calc((100% - 3rem) / 3);">
                 <label for="adsType" style="margin-bottom: 6px;">Loại quảng cáo</label>                  
-                <input type="text" class="form-control" id="adsForm" value="<%= boardTypeName %>"  />
+                <input type="text" class="form-control" id="boardTypeName" list="boardTypeList" value="<%= boardTypeName %>"  />
+                <input type="text" id="boardType" value="<%= boardType %>" hidden>
+                <datalist id="boardTypeList" style="display: none;">
+                  <% other.boardtypes.forEach((boardtype)=> { %>
+                    <option value="<%= boardtype.typeName; %>"></option>
+                    <% }); %>
+                </datalist>
               </div>
               <div style="width: calc((100% - 3rem) / 3);">
-                <label for="count" style="margin-bottom: 6px">Số lượng</label>
-                <input type="text" class="form-control" id="count" value="<%= quantity %> trụ / bảng"  />
+                <label for="quantity" style="margin-bottom: 6px">Số lượng</label>
+                <input type="text" class="form-control" id="quantity" value="<%= quantity %> trụ / bảng"  />
               </div>
               <div style="width: calc((100% - 3rem) / 3);">
                 <label for="size" style="margin-bottom: 6px">Kích thước</label>
@@ -146,19 +152,21 @@
             </div> 
             <div class="container mt-2 d-flex justify-content-between">
               <div style="width: calc((100% - 2rem) / 2);">
-                <label for="locationType" style="margin-bottom: 6px;">Phân loại</label>                  
-                <input type="text" class="form-control" id="locationType" value="<%= spotTypeName %>"  />
+                <label for="spotTypeName" style="margin-bottom: 6px;">Phân loại</label>                  
+                <input type="text" class="form-control" id="spotTypeName" list="spotTypeList" value="<%= spotTypeName %>" disabled />
+                <input type="text" id="spotType" value="<%= spotType %>" hidden>
               </div>
               <div style="width: calc((100% - 2rem) / 2);">
-                <label for="adsForm" style="margin-bottom: 6px">Hình thức</label>
-                <input type="text" class="form-control" id="adsForm" value="<%= adsFormName %>"  />
+                <label for="adsFormName" style="margin-bottom: 6px">Hình thức</label>
+                <input type="text" class="form-control" id="adsFormName" list="adsFormList" value="<%= adsFormName %>" disabled />
+                <input type="text" id="adsForm" value="<%= adsForm %>" hidden>
               </div>
             </div>
-            <div class="container mt-2 custom-col">
+            <!-- <div class="container mt-2 custom-col">
               <label for="content style="margin-bottom: 6px">Nội dung báo cáo</label>
               <textarea class="form-control" id="content" 
                 style="min-height: 100px">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa quod perspiciatis numquam soluta adipisci aperiam magni? Iure laborum esse aperiam totam, laboriosam voluptatibus neque perferendis quas fugit voluptatem laudantium expedita. Natus veritatis illo harum voluptas deleniti, voluptate possimus hic eveniet itaque sunt dolor adipisci corporis? Quisquam perferendis exercitationem quas. Ab.</textarea>
-            </div>
+            </div> -->
             <div class="container mt-2">
                 <label for="reason" style="margin-bottom: 6px">Lý do chỉnh sửa</label>
                 <textarea class="form-control" id="reason" 
@@ -231,16 +239,26 @@
 
         const data = {
           spotID: document.getElementById('spotID').value,
-          adsImages: imgUrlsData,
-          companyName: document.getElementById('compName').value,
-          companyPhone: document.getElementById('compPhone').value,
-          companyEmail: document.getElementById('compEmail').value,
-          companyAddress: document.getElementById('compAddress').value,
+          image: imgUrlsData,
+          boardID: document.getElementById('boardID').value,
+          boardType: document.getElementById('boardType').value,
+          boardTypeName: document.getElementById('boardTypeName').value,
+          quantity: document.getElementById('quantity').value,
+          height: document.getElementById('size').value.split('x')[0],
+          width: document.getElementById('size').value.split('x')[1].replace('m', ''),
+          reason: document.getElementById('reason').value,
+          officerUsername: '<%= user.username %>',
+          spotName: document.getElementById('spotName').value,
+          spotAddress: document.getElementById('spotAddress').value,
+          compName: document.getElementById('compName').value,
+          compPhone: document.getElementById('compPhone').value,
+          compEmail: document.getElementById('compEmail').value,
+          compAddress: document.getElementById('compAddress').value,
           startDate: document.getElementById('startDate').value,
           endDate: document.getElementById('endDate').value,
-          content: document.getElementById('content').value,
-          reason: document.getElementById('reason').value,
-          officerUsername: '<%= user.username %>'
+          spotTypeName: document.getElementById('spotTypeName').value,
+          adsFormName: document.getElementById('adsFormName').value,
+          licensingID: '<%= licensingID %>',
         }
         const url = '<%= url %>';
         const requestUrl = url.replace('/modify', '');
@@ -333,19 +351,45 @@
         return newImgUrls;
       }
 
-      const spots = JSON.parse('<%- JSON.stringify(spots); %>');
+      const spots = JSON.parse('<%- JSON.stringify(other.spots); %>');
+      const adsforms = JSON.parse('<%- JSON.stringify(other.adsforms); %>');
+      const spottypes = JSON.parse('<%- JSON.stringify(other.spottypes); %>');
       const spotIDInput = document.getElementById('spotID');
       const spotNameInput = document.getElementById('spotName');
       const spotAddressInput = document.getElementById('spotAddress');
-      const adsFormInput = document.getElementById('adsForm');
+      const adsFormInput = document.getElementById('adsFormName');
+      const adsFormIdInput = document.getElementById('adsForm');
+      const spotTypeInput = document.getElementById('spotTypeName');
+      const spotTypeIdInput = document.getElementById('spotType');
       spotNameInput.addEventListener('keyup', (e) => {
         const spotName = e.target.value;
+        spotNameInput.value = spotName;
         const spot = spots.find((spot) => spot.spotName === spotName);
         if (spot) {
           spotIDInput.value = spot.spotID;
           spotAddressInput.value = spot.address;
+
+          const spotType = spottypes.find((spottype) => spottype.typeID === spot.spotType);
+          spotTypeInput.value = spotType.typeName;
+          spotTypeIdInput.value = spotType.typeID;
+
+          const adsForm = adsforms.find((adsform) => adsform.formID === spot.adsForm);
+          adsFormInput.value = adsForm.formName;
+          adsFormIdInput.value = adsForm.formID;
         }
       })
+
+      const boardtypes = JSON.parse('<%- JSON.stringify(other.boardtypes); %>');
+      const boardtypeInput = document.getElementById('boardTypeName');
+      const boardtypeIdInput = document.getElementById('boardType');
+      boardtypeInput.addEventListener('keyup', (e) => {
+        const boardtypeName = e.target.value;
+        const boardtype = boardtypes.find((boardtype) => boardtype.typeName === boardtypeName);
+        if (boardtype) {
+          boardtypeIdInput.value = boardtype.typeID;
+          // console.log(boardtypeIdInput.value);
+        }
+      })      
 
     </script>
   </body>

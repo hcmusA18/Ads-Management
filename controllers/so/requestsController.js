@@ -1,5 +1,7 @@
 import {toolbars} from './utilities.js';
 import {licensingRequestService, editRequestService} from '../../services/requestService.js';
+import * as boardService from '../../services/boardService.js';
+import * as spotService from '../../services/spotService.js';
 
 const controller = {};
 
@@ -89,17 +91,67 @@ controller.showDetail = async (req, res) => {
 		case 'license':
 			console.log('license');
 			data = await licensingRequestService.getByID(id);
-			console.log(data);
+			// console.log(data);
 			break;
 		case 'modify':
 			console.log('modify');
 			data = await editRequestService.getByID(id);
-			console.log(data);
+			// console.log(data);
 			break;
 	}
 
+	const type = data.objectID.startsWith('DD') ? 'spot' : 'board';
+	if (data.requestTime) {
+		data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
+	}
 	
-	return res.render('./so/request-detail', {title, toolbars, id: req.params.id});
+	return res.render('./so/edit-request-detail', {title, toolbars, id: req.params.id, type, ...data});
+}
+
+controller.requestProcessing = async (req, res) => {
+	try {
+		const { requestID, status } = req.body;
+		console.log(requestID, status);
+		let { message } = await editRequestService.updateStatus(requestID, status);
+		console.log(`Message: ${message}`);
+
+		if (status === 1) {
+			const { objectID, newInfo } = await editRequestService.getByID(requestID);
+			if (objectID.startsWith('DD')) {
+				const { spotID, address, latitude, longitude, wardID, districtID, spotType, adsForm, planned, spotName, spotImage } = newInfo;
+				await spotService.updateSpotByID(spotID, {
+					address,
+					latitude,
+					longitude,
+					wardID,
+					districtID,
+					spotType,
+					adsForm,
+					planned,
+					spotName,
+					spotImage
+				})
+			} else {
+				const { boardID, boardType, spotID, height, width, quantity, image, licensingID } = newInfo;
+				await boardService.updateBoardByID(boardID, {
+					boardType,
+					spotID,
+					height,
+					width,
+					quantity,
+					image,
+					licensingID
+				});
+			}
+		}
+
+		req.flash('success', message);
+		return res.redirect(req.originalUrl);
+	} catch (error) {
+		console.log(`Error sending edit request: ${error.message}`);
+		req.flash('error', error.message);
+		return res.redirect(req.originalUrl);
+	}
 }
 
 export default controller;
