@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const ReportSchema = new mongoose.Schema({
     reportID: {
         type: String,
-        required: true,
         unique: true
     },
     objectID: {
@@ -32,7 +31,6 @@ const ReportSchema = new mongoose.Schema({
     },
     sendTime: {
         type: Date,
-        required: true
     },
     reportInfo: {
         type: String,
@@ -40,13 +38,20 @@ const ReportSchema = new mongoose.Schema({
     },
     status: {
         type: Number,
-        required: true
+        default: 0
     },
     solution: {
         type: String
     }
+});
 
-    
+ReportSchema.pre('save', async function  (next) {
+    const report = this;
+    const count = await Report.countDocuments();
+    report.reportID = 'BC' + String(count + 1).padStart(4, '0');
+    const formatter = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    report.sendTime = formatter.format(Date.now());
+    next();
 });
 
 const Report = mongoose.model('reports', ReportSchema);

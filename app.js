@@ -6,7 +6,8 @@ import dotenv from 'dotenv'
 import soRoutes from './routes/soRoutes.js'
 import quanRoutes from './routes/quanRoutes.js'
 import phuongRoutes from './routes/phuongRoutes.js'
-import apiRoutes from "./routes/apiRoutes.js";
+import apiRoutes from './routes/apiRoutes.js';
+import {setHeaders} from './routes/apiRoutes.js';
 import { loginController, ggLoginController } from './controllers/authController.js'
 import imgurController from './controllers/imgurController.js'
 // middleware import
@@ -70,7 +71,7 @@ console.log(`${app.get('views')}`)
 app.get('/mini-map', (req, res) => {
   res.render('mini-map', { title: 'Bản đồ' })
 });
-app.get('/imgur', checkAuth, imgurController.getAccessToken)
+app.get('/imgur', imgurController.getAccessToken)
 app.get('/', (req, res) => {
   res.render('index', {
     title: 'Cán bộ',
@@ -79,7 +80,7 @@ app.get('/', (req, res) => {
   })
 })
 app.post('/', loginController)
-app.get('/logout', (req, res) => {
+app.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) {
       return next(err)
@@ -90,7 +91,7 @@ app.get('/logout', (req, res) => {
 // app.use('/so', soRoutes)
 // app.use('/quan', quanRoutes)
 // app.use('/phuong', phuongRoutes)
-app.use('/api', apiRoutes)
+app.use('/api', setHeaders, apiRoutes)
 app.use('/so', checkAuth, soRoutes)
 app.use('/quan', checkAuth, quanRoutes)
 app.use('/phuong', checkAuth, phuongRoutes)

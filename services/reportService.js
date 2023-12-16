@@ -1,14 +1,14 @@
-import Report from '../models/reportModel.js';
+import Report from '../models/reportModel.js'
 
 export const createReport = async (data) => {
   try {
-    const newReport = new Report(data);
-    await newReport.save();
-    return { message: 'Report created successfully' };
+    const newReport = new Report(data)
+    const res = await newReport.save();
+    return res.reportID;
   } catch (error) {
-    throw new Error(`Error creating report: ${error.message}`);
+    throw new Error(`Error creating report: ${error.message}`)
   }
-};
+}
 
 export const updateReportByID = async (reportID, newData) => {
   try {

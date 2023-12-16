@@ -1,14 +1,14 @@
-import ReportType from '../models/reportTypeModel.js';
+import ReportType from '../models/reportTypeModel.js'
 
 export const create = async (data) => {
   try {
-    const newReportType = new ReportType(data);
-    await newReportType.save();
-    return { message: 'Report type created successfully' };
+    const newReportType = new ReportType(data)
+    await newReportType.save()
+    return { message: 'Report type created successfully' }
   } catch (error) {
-    throw new Error(`Error creating report type: ${error.message}`);
+    throw new Error(`Error creating report type: ${error.message}`)
   }
-};
+}
 
 export const updateReportTypeByID = async (typeID, newData) => {
   try {
@@ -33,12 +33,11 @@ export const remove = async (typeID) => {
 
 export const getAllReportTypes = async () => {
   try {
-    const reportTypes = await ReportType.find();
-    return reportTypes;
+    return await ReportType.find();
   } catch (error) {
-    throw new Error(`Error getting all report types: ${error.message}`);
+    throw new Error(`Error getting all report types: ${error.message}`)
   }
-};
+}
 
 export const getReportTypeByID = async (typeID) => {
   try {

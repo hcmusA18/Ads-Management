@@ -1,5 +1,7 @@
 import Spot from '../models/spotModel.js'
-import {getReportByID} from './reportService.js'
+import {getReportByID, createReport} from './reportService.js'
+import {getAllReportTypes} from './reportTypeService.js';
+import {getBoardByID} from './boardService.js'
 
 const getAllSpots = async () => {
   const options = [
@@ -391,7 +393,10 @@ const getDetailSpot = async (spotID) => {
 }
 
 export default {
+  createReport,
+  getAllReportTypes,
   getAllSpots,
+  getBoardByID,
   getDetailSpot,
   getReportByID
 };
