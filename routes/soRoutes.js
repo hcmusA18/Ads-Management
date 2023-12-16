@@ -98,6 +98,7 @@ router.patch('/assign/:username', (req, res) => {
 })
 
 router.post('/assign', (req, res) => {
+	// console.log(req.body);
 	controller.assignController.addOfficer(req, res);
 })
 

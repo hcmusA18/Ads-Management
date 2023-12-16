@@ -2,6 +2,7 @@ import {toolbars} from './utilities.js';
 import officerService from '../../services/officerService.js';
 import * as districtService from '../../services/districtService.js';
 import * as wardService from '../../services/wardService.js';
+import emailService from '../../services/emailService.js';
 
 const show = async (req, res) => {
 	const officers = await officerService.getAllOfficersByPosition();
@@ -78,9 +79,13 @@ const updateOfficer = async (req, res) => {
 
 const addOfficer = async (req, res)  => {
 	const {username, email} = req.body;
+	const newPassword = generateRandomPassword();
+
+	emailService.sendNewPassword(email, newPassword);
+
 	const newData = {
 		username: username,
-		password: '123456',
+		password: newPassword,
 		email: email,
 		position: 0,
 		districtID: '',

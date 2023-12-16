@@ -213,7 +213,7 @@
       const modal = document.getElementById('editModal');
       // put data into modal
       const modalTitle = modal.querySelector('.modal-title');
-      modalTitle.textContent = `Cấp quyền cho ${account.username}`;
+      modalTitle.textContent = `CẤP QUYỀN CHO ${account.username}`;
 
       const districtSelect = modal.querySelector('#districtSelect');
       // remove all options
@@ -280,7 +280,7 @@
     const updateAccount = async () => {
         const districtSelect = document.getElementById('districtSelect').value;
         const wardSelect = document.getElementById('wardSelect').value;
-        const username = document.getElementById('username-edit').innerHTML;
+        const username = document.getElementById('username-edit').innerText.replace('CẤP QUYỀN CHO ', '');
 
         const position = (wardSelect === "") ? 1 : 2;
 
