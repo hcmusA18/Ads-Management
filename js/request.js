@@ -6,107 +6,118 @@ let requestHostname = "";
 
 
 const getHostname = () => {
-  if (hostname.includes("127.0.0.1") || hostname.includes("localhost")) {
-    requestHostname = testHostname;
-  }
-  else {
+  if (hostname.includes("onrender")) {
     requestHostname = deployHostname;
+  } else {
+    requestHostname = testHostname;
   }
 }
 
 // auto run get hostname
 getHostname();
 
-export const getAllSpots = () => {
-  return $.ajax({
-    beforesend: function (req) {
-      req.setRequestHeader('Allow-Control-Allow-Origin', '*');
-    },
-    url: `${requestHostname}api/spots`,
-    type: 'GET',
-    crossDomain: true,
-  })
+export const getAllSpots = async () => {
+  const headers = new Headers();
+  const res = await fetch(`${requestHostname}api/spots`, {
+    method: 'GET',
+    headers: headers,
+    mode: 'cors',
+  });
+  return await res.json();
 }
 
-export const getDetailSpot = (spotID) => {
-  return $.ajax({
-    beforesend: function (req) {
-      req.setRequestHeader('Allow-Control-Allow-Origin', '*');
-    },
-    url: `${requestHostname}api/spots/${spotID}`,
-    type: 'GET',
-    crossDomain: true,
-  })
+export const getDetailSpot = async (spotID) => {
+  const res = await fetch(`${requestHostname}api/spots/${spotID}`, {
+    method: 'GET',
+    mode: 'cors',
+  });
+  return await res.json();
+}
+
+export const getDetailBoard = async (boardID) => {
+  const res = await fetch(`${requestHostname}api/boards/${boardID}`, {
+    method: 'GET',
+    mode: 'cors',
+  });
+  return await res.json();
+
 }
 
 let accessToken = "";
 
 export const getAccessToken = async () => {
-  return $.ajax({
-    beforesend: function (req) {
-      req.setRequestHeader('Allow-Control-Allow-Origin', '*');
-    },
-    url: `${requestHostname}/imgur`,
-    type: 'GET',
-    crossDomain: true,
-  })
+  const res = await fetch(`${requestHostname}imgur`, {
+    method: 'GET',
+    mode: 'cors',
+  });
+  return await res.json();
 }
 
-export const uploadImage = async (files) => {
-  const links = [];
+const uploadOneImgur = async (file) => {
   if (accessToken === "") {
     accessToken = await getAccessToken();
+    accessToken = accessToken.accessToken;
+    console.log(accessToken);
   }
-  files.forEach(async (file) => {
-    const formData = new FormData();
-    formData.append('image', file);
-    const link = await $.ajax({
-      beforesend: function (req) {
-        req.setRequestHeader('Allow-Control-Allow-Origin', '*');
-      },
-      url: 'https://api.imgur.com/3/image',
-      type: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      data: formData,
-      processData: false,
-      contentType: false,
-    });
-    links.push(link.data.link);
+  const formData = new FormData();
+  formData.append('image', file);
+  const headers = new Headers();
+  headers.append('Authorization', `Bearer ${accessToken}`);
+
+  const res = await fetch('https://api.imgur.com/3/image', {
+    headers: headers,
+    method: 'POST',
+    body: formData,
+    redirect: 'follow',
   });
+  const data = await res.json();
+  return data.data.link;
+}
+
+export const upload2Imgur = async (files) => {
+  const links = [];
+  console.log(files);
+  for (let i = 0; i < files.length; i++) {
+    const link = await uploadOneImgur(files[i]);
+    links.push(link);
+  };
   return links;
 }
 
 export const uploadReport = async (report) => {
-  return $.ajax({
-    beforesend: function (req) {
-      req.setRequestHeader('Allow-Control-Allow-Origin', '*');
-    },
-    url: `${requestHostname}api/reports`,
-    type: 'POST',
-    crossDomain: true,
-    data: report,
-  })
+  const res = await fetch(`${requestHostname}api/reports`, {
+    method: 'POST',
+    headers: [
+      ['Content-Type', 'application/json'],
+    ],
+    mode: 'cors',
+    body: JSON.stringify(report),
+  });
+  return await res.json();
 }
 
 export const getReport = async (reportID) => {
-  return $.ajax({
-    beforesend: function (req) {
-      req.setRequestHeader('Allow-Control-Allow-Origin', '*');
-    },
-    url: `${requestHostname}api/reports/${reportID}`,
-    type: 'GET',
-    crossDomain: true,
-  })
+  const res = await fetch(`${requestHostname}api/reports/${reportID}`, {
+    method: 'GET',
+    mode: 'cors',
+  });
+  return await res.json();
+}
+
+export const getReportTypes = async () => {
+  const res = await fetch(`${requestHostname}api/report-types`, {
+    method: 'GET',
+    mode: 'cors',
+  });
+  return await res.json();
 }
 
 
 export default {
   getAllSpots,
   getDetailSpot,
-  uploadImage,
+  upload2Imgur,
   uploadReport,
   getReport,
-
+  getReportTypes,
 }

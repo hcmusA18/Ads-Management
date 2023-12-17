@@ -1,8 +1,8 @@
 import { getDetailSpot } from "/js/request.js";
 
 const urlParams = new URLSearchParams(window.location.search);
-const reportID = urlParams.get('id');
-let spotDetail = await getDetailSpot(reportID);
+const spotID = urlParams.get('id');
+let spotDetail = await getDetailSpot(spotID);
 spotDetail = spotDetail[0];
 const attachCarousels = async () => {
 
