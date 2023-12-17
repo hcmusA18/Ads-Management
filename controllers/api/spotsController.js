@@ -1,8 +1,8 @@
 import apiService from '../../services/apiService.js'
 
-export const getAllSpots = async () => {
+export const getAllSpots = async (districtID, wardID) => {
   try {
-    return await apiService.getAllSpots();
+    return await apiService.getAllSpots(districtID, wardID);
   } catch (error) {
     console.log(error)
     throw new Error(`Error getting all spots: ${error.message}`)

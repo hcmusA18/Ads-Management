@@ -13,7 +13,7 @@ export const setHeaders = (req, res, next) => {
 
 router.get('/spots', (req, res) => {
   api
-    .getAllSpots()
+    .getAllSpots(req.query.districtID, req.query.wardID)
     .then((spots) => res.status(200).json(spots))
     .catch((err) => res.status(500).json({ message: err.message }))
 })

@@ -3,8 +3,15 @@ import {getReportByID, createReport} from './reportService.js'
 import {getAllReportTypes} from './reportTypeService.js';
 import {getBoardByID} from './boardService.js'
 
-const getAllSpots = async () => {
+const getAllSpots = async (districtID, wardID) => {
+  const matchStage = {
+    $match: {
+      districtID: districtID || { $exists: true },
+      wardID: wardID || { $exists: true }
+    }
+  };
   const options = [
+    matchStage,
     {
       $lookup: {
         as: 'boards',
