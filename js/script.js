@@ -246,6 +246,9 @@ async function addSpotLayer(map, spotsGeojson) {
 mapboxScript.onload = async function () {
   const map = createMap();
   const spotsGeojson = await getSpotsData();
+  const marker = new mapboxgl.Marker({
+		color: '#F84C4C'
+	});
   let filteredSpotsGeojson = spotsGeojson;
   map.on('load', async () => {
     await addSpotLayer(map, filteredSpotsGeojson);
@@ -313,6 +316,39 @@ mapboxScript.onload = async function () {
 
     });
   });
+
+  // Hien thong tin diem bat ki
+  map.on('click', (e) => {
+		if (map.getCanvas().style.cursor === 'pointer') {
+			return;
+		}
+		marker.setLngLat(e.lngLat).addTo(map);
+
+		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+
+		fetch(api)
+		.then(res => res.json())
+		.then(res => {
+			const coordinates = res.features[0].geometry.coordinates.slice();
+			let description = res.features[0].place_name
+			.replace(/,\s*\d+,\s*Vietnam/, '')
+			.replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
+			.replace(/,.*Dist\.|,.*Ward\./, '');
+			
+			description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
+
+			const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+			const divElement = document.createElement('div');
+
+			divElement.innerHTML = innerHtmlContent;
+			
+			new mapboxgl.Popup({ offset: [0, -30] })
+			.setLngLat(coordinates)
+			.setDOMContent(divElement)
+			.addTo(map);
+
+		});
+	})
 
 
 };

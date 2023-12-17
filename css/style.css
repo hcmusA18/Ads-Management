@@ -360,3 +360,11 @@ div.form-control.disabled {
   background-color: var(--bs-secondary-bg) !important;
   border-bottom-color: var(--Neutral-5);
 }
+
+/* Mapox popup */
+.mapboxgl-popup-content {
+	background-color: var(--Background) !important;
+	border-radius: 0.5rem !important;
+	box-shadow: 0 0.25rem 2rem rgba(0, 0, 0, 0.1) !important;
+	border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
