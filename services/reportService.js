@@ -11,6 +11,7 @@ export const createReport = async (data) => {
 }
 
 export const updateReportByID = async (reportID, newData) => {
+  // console.log(newData);
   try {
     await Report.findOneAndUpdate(
       { reportID },
@@ -49,19 +50,89 @@ export const getAllReports = async () => {
         }
       },
       {
+        $lookup: {
+          from: 'spots',
+          localField: 'objectID',
+          foreignField: 'spotID',
+          as: 'spotInfo'
+        }
+      },
+      {
+        $lookup: {
+          from: 'boards',
+          localField: 'objectID',
+          foreignField: 'boardID',
+          as: 'boardInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'boardInfo.spotID',
+          foreignField: 'spotID',
+          as: 'boardSpotInfo'
+        }
+      },
+      {
         $project: {
           _id: 0,
           reportID: 1,
           objectID: 1,
-          reportType: 1,
-          reportTypeName: '$reportType.typeName',
+          reportType: '$reportType.typeName',
           reporterName: 1,
-          reporterEmail: 1,
           sendTime: 1,
-          status: 1
+          status: 1,
+          spotDistrictID: {
+            $cond: {
+              if: { $eq: ['$boardSpotInfo', []] },
+              then: '$spotInfo.districtID',
+              else: '$boardSpotInfo.districtID'
+            }
+          },
+          spotWardID: {
+            $cond: {
+              if: { $eq: ['$boardSpotInfo', []] },
+              then: '$spotInfo.wardID',
+              else: '$boardSpotInfo.wardID'
+            }
+          },
+        }
+      },
+      {
+        $lookup: {
+          from: 'districts',
+          localField: 'spotDistrictID',
+          foreignField: 'districtID',
+          as: 'spotDistrict'
+        }
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'spotWardID',
+          foreignField: 'wardID',
+          as: 'spotWard'
+        }
+      },
+      {
+        $project: {
+          reportID: 1,
+          objectID: 1,
+          reportType: 1,
+          reporterName: 1,
+          sendTime: 1,
+          status: 1,
+          spotDistrictName: '$spotDistrict.districtName',
+          spotWardName: '$spotWard.wardName'
         }
       }
-    ]
+    ];
 
     const reports = await Report.aggregate(options);
     return reports;
@@ -88,6 +159,48 @@ export const getReportByID = async (reportID) => {
         }
       },
       {
+        $lookup: {
+          from: 'officers',
+          localField: 'officerName',
+          foreignField: 'username',
+          as: 'officer'
+        }
+      },
+      {
+        $unwind: {
+          path: '$officer',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'districts',
+          localField: 'officer.districtID',
+          foreignField: 'districtID',
+          as: 'officerDistrict'
+        }
+      },
+      {
+        $unwind: {
+          path: '$officerDistrict',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'officer.wardID',
+          foreignField: 'wardID',
+          as: 'officerWard'
+        }
+      },
+      {
+        $unwind: {
+          path: '$officerWard',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
         $project: {
           _id: 0,
           reportID: 1,
@@ -101,7 +214,10 @@ export const getReportByID = async (reportID) => {
           status: 1,
           reportInfo: 1,
           solution: 1,
-          reportImages: 1
+          reportImages: 1,
+          officerName: 1,
+          officerDistrict: '$officerDistrict.districtName',
+          officerWard: '$officerWard.wardName',
         }
       }
     ]
@@ -112,6 +228,7 @@ export const getReportByID = async (reportID) => {
     return report;
   } catch (error) {
     throw new Error(`Error getting report by ID: ${error.message}`);
+    // console.log(error);
   }
 };
 

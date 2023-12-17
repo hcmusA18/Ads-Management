@@ -96,6 +96,9 @@ const showDetail = async (req, res) => {
 	// console.log(dataFetch);
 	let title = role === 'quan' ? 'Quận - Chi tiết báo cáo vi phạm' : 'Phường - Chi tiết báo cáo vi phạm';
 
+	const officerName = req.user.username;
+	console.log(officerName);
+
 	const data = {
 		id: dataFetch.reportID,
 		phone: dataFetch.reporterPhone,
@@ -108,8 +111,11 @@ const showDetail = async (req, res) => {
 		content: dataFetch.reportInfo,
 		solution: dataFetch.solution,
 		imgUrls: [...dataFetch.reportImages],
+		officer: dataFetch.officerName,
+		district: dataFetch.officerDistrict,
+		ward: dataFetch.officerWard,
 	}
-	res.render('report-detail', {role, title, toolbars: createToolbar(role), ...data});
+	res.render('report-detail', {role, title, officerName, toolbars: createToolbar(role), ...data});
 }
 
 const updateReport = async (req, res) => {

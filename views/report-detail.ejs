@@ -101,6 +101,22 @@
                     <input type="email" class="form-control" id="email" value="<%- email %>" disabled />
                   </div>
                 </div>
+                <% if(state == 1) { %>
+                  <div class="row mt-2">
+                    <div class="col-md-4 custom-col">
+                      <label for="officerName" style="margin-bottom: 6px">Cán bộ xử lý</label>
+                      <input type="text" class="form-control" id="officerName" value="<%- officer %>" disabled />
+                    </div>
+                    <div class="col-md-4 custom-col">
+                      <label for="officerDistrict" style="margin-bottom: 6px">Thuộc Quận</label>
+                      <input type="text" class="form-control" id="officerDistrict" value="<%- district %>" disabled />
+                    </div>
+                    <div class="col-md-4 custom-col">
+                      <label for="officerWard" style="margin-bottom: 6px">Thuộc Phường</label>
+                      <input type="text" class="form-control" id="officerWard" value="<%- ward %>" disabled />
+                    </div>
+                  </div>
+                <% } %>
 
                 <!-- Rows 4, 5, 6: 1 column each -->
                 <div class="row mt-2">
@@ -193,12 +209,14 @@
         // console.log(solution);
         const url = JSON.parse('<%- JSON.stringify(url) %>');
         const role = JSON.parse('<%- JSON.stringify(role) %>');
+        const officerName = JSON.parse('<%- JSON.stringify(officerName) %>');
 
-        // console.log(url);
+        console.log(officerName);
 
         const dataToUpdate = {
           status: status,
-          solution: solution
+          solution: solution,
+          officerName: officerName,
         };
 
         try {
