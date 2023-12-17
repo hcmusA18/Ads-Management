@@ -42,6 +42,9 @@ const ReportSchema = new mongoose.Schema({
     },
     solution: {
         type: String
+    },
+    officerName: {
+        type: String,
     }
 });
 

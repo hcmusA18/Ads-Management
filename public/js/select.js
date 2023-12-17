@@ -26,13 +26,13 @@ $(document).ready(function () {
                         state: dataNames.slice(1)
                     });
                 } else {
-                    // console.log('Initial Data:', table.bootstrapTable('getData'));
+                    console.log('Initial Data:', table.bootstrapTable('getData'));
                     table.bootstrapTable('filterBy', {
                         state: dataNames.slice(1),
                         district: checkedValues,
                     });
                     // table.bootstrapTable('refresh');
-                    // console.log('Table data:', table.bootstrapTable('getData'));
+                    console.log('Table data:', table.bootstrapTable('getData'));
                 }
             } else {
                 if(checkedValues.length === 0){

@@ -38,10 +38,12 @@ $(document).ready(function () {
                         district: checkedValues,
                     });
                 } else {
+                    // console.log('Initial Data:', table.bootstrapTable('getData'));
                     table.bootstrapTable('filterBy', {
                         state: stateSelected,
                         district: checkedValues,
                     });
+                    // console.log('Table Data:', table.bootstrapTable('getData'));
                 }
             } else {
                 table.bootstrapTable('filterBy', {
