@@ -341,6 +341,7 @@ mapboxScript.onload = async function () {
 			const divElement = document.createElement('div');
 
 			divElement.innerHTML = innerHtmlContent;
+      divElement.setAttribute('class', 'p-2');
 			
 			new mapboxgl.Popup({ offset: [0, -30] })
 			.setLngLat(coordinates)
