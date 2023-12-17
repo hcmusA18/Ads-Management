@@ -22,7 +22,8 @@ function generateSpotHTML(spot) {
               <p class="card-text">${spot.spotTypeName}</p>
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
-              <div class="btn btn-primary btn-sm" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
+              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
+              <div class="btn btn-success btn-sm mt-2">Thêm bảng quảng cáo</div>
             </div>
           </div>`
 }
