@@ -8,6 +8,21 @@
     <link rel="stylesheet" href="/css/carousel.css" />
   </head>
 
+  <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Điểm đặt quảng cáo được tạo thành công!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+  
+  <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Có lỗi xảy ra khi tạo điểm đặt quảng cáo!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+  
+  <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Vui lòng nhập đầy đủ các trường thông tin!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+
   <body>
     <header></header>
     <main class="container-fluid d-flex bg-light">
@@ -20,77 +35,99 @@
           <%- include("./partials/back_button.ejs"); %>
           <!-- Title -->
           <div class="d-flex flex-row align-items-center" style="gap: 10px">
-            <h1 class="fw-bolder m-0" id="diemdat-title">TÊN ĐIỂM ĐẶT MỚI</h1>
+            <h1 class="fw-bolder m-0" id="spotTitle">TÊN ĐIỂM ĐẶT MỚI</h1>
           </div>
 
           <!-- Content -->
           <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
-            <!-- Carousel -->
-            <%- include("./partials/carousel.ejs",
-            {imgUrls: [
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
-            'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
-            ]}); %>
+            <!-- Image chooser -->
+            <div class="container-fluid px-0">
+              <div class="row position-relative h-100">
+                <!-- Badge -->
+                <div
+                  class="badge border border-dark top-0 start-0 translate-middle position-absolute rounded-pill bg-white text-center"
+                  style="width: 50px; height:50px;" hidden>
+                  <span class="d-inline-flex align-items-center justify-content-center text-dark fs-5 fw-bold h-100 w-100"
+                    id="badge-text">1</span>
+                </div>
+                <label for="input-image" id="drop-area" class="bg-white rounded-5 p-3">
+                  <input type="file" id="input-image" accept="image/*" hidden multiple />
+                  <div id="img-view" class="d-flex flex-column align-items-center justify-content-center text-center rounded-4"
+                    style="border: 2px dashed #bbb5ff; width: 100%; height: 100%; background: #f7f8ff center; background-size: cover;">
+                    <img src="/images/upload-icon.png" alt="Ảnh xem trước" class="img-fluid" />
+                    <p class="text-black">Kéo và thả hình vào đây <br>để tải ảnh lên</p>
+                    <span class="d-block fw-lighter fs-6 text-body-secondary">Tải ảnh bất kì từ thiết bị</span>
+                  </div>
+                </label>
+              </div>
+              <script defer src="/js/uploadImage.js"></script>
+            </div>
             <div class="container-fluid px-0 nd-chi-tiet">
               <div class="container">
-                <label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
-                <input type="text" class="form-control" id="id-diemdat" value="D0155001" disabled />
-              </div>
-              <div class="container mt-2">
-                <label for="id-diemdat" style="margin-bottom: 6px">Điểm đặt</label>
-                <input type="text" class="form-control" id="id-diemdat" value="TÊN ĐIỂM ĐẶT MỚI" oninput="updateTitle(this)"  />
+                <label for="spotName" style="margin-bottom: 6px">Điểm đặt</label>
+                <input type="text" class="form-control" id="spotName" value="TÊN ĐIỂM ĐẶT MỚI" oninput="updateTitle(this)" />
               </div>
               <div class="container mt-2 d-flex justify-content-between">
                 <div style="width: calc((100% - 2rem) / 2);">
-                  <label for="phuong" style="margin-bottom: 6px;">Kinh độ</label> 
-                  <input type="text" class="form-control" id="lng" value="0"  />
+                  <label for="longitude" style="margin-bottom: 6px;">Kinh độ</label>
+                  <input type="text" class="form-control" id="longitude" value="0" />
                 </div>
                 <div style="width: calc((100% - 2rem) / 2);">
-                  <label for="quan" style="margin-bottom: 6px">Vĩ độ</label>
-                  <input type="text" class="form-control" id="lat" value="0"  />
+                  <label for="latitude" style="margin-bottom: 6px">Vĩ độ</label>
+                  <input type="text" class="form-control" id="latitude" value="0" />
                 </div>
               </div>
               <div class="container mt-2">
-                <label for="diachi" style="margin-bottom: 6px">Địa chỉ</label>
-                <input type="text" class="form-control" id="diachi" value="227 Nguyễn Văn Cừ"  />
+                <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
+                <input type="text" class="form-control" id="spotAddress" value="227 Nguyễn Văn Cừ" />
               </div>
               <div class="container mt-2 d-flex justify-content-between">
                 <div style="width: calc((100% - 2rem) / 2);">
-                  <label for="phuong" style="margin-bottom: 6px;">Phường</label> 
-                  <input type="text" class="form-control" id="phuong" value="Bến Nghé"  />
+                  <label for="wardName" style="margin-bottom: 6px;">Phường</label>
+                  <input type="text" class="form-control" id="wardName" value="Bến Nghé" />
+                  <input type="text" class="form-control" id="ward" hidden />
                 </div>
                 <div style="width: calc((100% - 2rem) / 2);">
-                  <label for="quan" style="margin-bottom: 6px">Quận</label>
-                  <input type="text" class="form-control" id="quan" value="Bình Thạnh"  />
+                  <label for="districtName" style="margin-bottom: 6px">Quận</label>
+                  <input type="text" class="form-control" id="districtName" value="Bình Thạnh" />
+                  <input type="text" class="form-control" id="district" hidden />
                 </div>
               </div>
               <div class="container mt-2">
-                <label for="loaivitri" style="margin-bottom: 6px">Loại vị trí</label>
-                <input type="text" class="form-control" id="loaivitri" value="Đất công/Công viên/Hành lang an toàn giao thông"  />
+                <label for="spotTypeName" style="margin-bottom: 6px">Loại vị trí</label>
+                <input type="text" class="form-control" id="spotTypeName" list="spotTypeList" />
+                <input type="text" class="form-control" id="spotType" hidden />
+                <datalist id="spotTypeList" style="display: none;">
+                  <% other.spottypes.forEach((type)=> { %>
+                    <option value="<%= type.typeName; %>"></option>
+                    <% }); %>
+                </datalist>
               </div>
               <div class="container mt-2">
-                <label for="htqc" style="margin-bottom: 6px">Hình thức quảng cáo</label>
-                <input type="text" class="form-control" id="htqc" value="Quảng cáo thương mại"  />
+                <label for="adsFormName" style="margin-bottom: 6px">Hình thức quảng cáo</label>
+                <input type="text" class="form-control" id="adsFormName" list="adsFormList" />
+                <input type="text" class="form-control" id="adsForm" hidden />
+                <datalist id="adsFormList" style="display: none;">
+                  <% other.adsforms.forEach((form)=> { %>
+                    <option value="<%= form.formName; %>"></option>
+                    <% }); %>
+                </datalist>
+              </div>
+              <div class="container mt-2">
+                <label for="planned" style="margin-bottom: 6px">Thông tin quy hoạch</label>
+                <input type="text" class="form-control" id="planned" value="Chưa quy hoạch" list="planList" />
+                <datalist id="planList" style="display: none;">
+                  <option value="Đã quy hoạch"></option>
+                  <option value="Chưa quy hoạch"></option>
+                </datalist>
               </div>
             </div>
-        </div>
-        <!-- Ly do chinh sua -->
-        <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
-            <label for="ttqh" style="margin-bottom: 6px">Thông tin quy hoạch</label>
-            <input type="text" class="form-control" id="ttqh" value="Đã quy hoạch" />
-        </div>
-        <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
-            <label for="lydo" style="margin-bottom: 6px">Chú thích khác</label>
-              <textarea class="form-control" id="lydo" 
-                style="min-height: 170px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis vitae dolore debitis soluta ipsa, esse molestias nisi inventore voluptatum non ex sint temporibus odit distinctio maiores repudiandae saepe, iste praesentium veritatis magni ipsum iusto facere? Nobis debitis maiores rerum est distinctio velit et obcaecati harum, qui provident voluptates, officiis laudantium quas! Ex labore excepturi velit eveniet incidunt expedita corrupti illum a, ullam nostrum ducimus, tenetur cumque facilis sapiente, iure magni maxime nihil eum voluptate atque assumenda? Enim quibusdam ratione, quisquam magni esse et placeat? Quasi porro fugit, expedita suscipit, nobis, numquam laboriosam ad nam earum quidem excepturi. Adipisci, ab sapiente?</textarea>
           </div>
+          <!-- Duoi anh -->
           <!-- button -->
           <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px;">
-            <a href="/so/spots"><button type="button" class="btn btn-success" style="width: 150px;">Xác nhận</button></a>
+            <button type="button" class="btn btn-danger" style="width: 150px;" onclick="window.history.back()">Hủy</button>
+            <a href="/so/spots"><button type="button" class="btn btn-success" style="width: 150px;" id="submitBtn">Xác nhận</button></a>
           </div>
         </div>
 
@@ -101,6 +138,149 @@
 
     
     <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
-    <script defer type="text/javascript" src="/js/spot-add.js"></script>
+    <script defer type="text/javascript" src="/js/spot-new.js"></script>
+
+    <script defer>
+      const spottypes = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
+      const adsforms = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
+      const spottypeInput = document.getElementById('spotTypeName');
+      const adsformInput = document.getElementById('adsFormName');
+      const spottypeIdInput = document.getElementById('spotType');
+      const adsformIdInput = document.getElementById('adsForm');
+
+      spottypeInput.addEventListener('change', (e) => {
+        const spottype = spottypes.find(type => type.typeName == spottypeInput.value);
+        spottypeIdInput.value = spottype.typeID;
+      });
+      adsformInput.addEventListener('change', (e) => {
+        const adsform = adsforms.find(form => form.formName == adsformInput.value);
+        adsformIdInput.value = adsform.formID;
+      });
+      districtInput.addEventListener('change', (e) => {
+        const district = districts.find(district => district.districtName == districtInput.value);
+        console.log(districtInput.value);
+        console.log(district);
+        districtIdInput.value = (district) ? district.districtID : '';
+      });
+      wardInput.addEventListener('change', (e) => {
+        const ward = wards.find(ward => ward.wardName == wardInput.value);
+        console.log(ward);
+        wardIdInput.value = (ward) ? ward.wardID : '';
+      });
+
+      // trigger district + ward change event
+      document.addEventListener('DOMContentLoaded', (e) => {
+        districtInput.dispatchEvent(new Event('change'));
+        wardInput.dispatchEvent(new Event('change'));
+      });
+
+      // Hide alert on close
+      document.querySelectorAll('.btn-close').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.target.parentElement.hidden = true;
+        });
+      });
+
+    </script>
+
+    <!-- Upload image -->
+    <script defer>
+      let accessToken = null;
+
+      const getAccessToken = async () => {
+        const response = await fetch('/imgur');
+        const data = await response.json();
+        return data.accessToken;
+      }
+
+      const upload2Imgur = async (files) => {
+        const links = []
+        if (!accessToken) {
+          accessToken = await getAccessToken();
+        }
+        for (let i = 0; i < files.length; i++) {
+          const formData = new FormData()
+          formData.append('image', files[i])
+          const headers = new Headers()
+          headers.append('Authorization', 'Bearer ' + accessToken)
+          const response = await fetch('https://api.imgur.com/3/image', {
+            headers: headers,
+            method: 'POST',
+            body: formData,
+            redirect: 'follow'
+          });
+          const data = await response.json()
+          links.push(data.data.link);
+        }
+        return links;
+      }
+      const submitHandler = async (e) => {
+        e.preventDefault();
+
+        // ... get districtID and wardID ....................
+        const districts = JSON.parse('<%- JSON.stringify(other.districts) %>');
+        const wards = JSON.parse('<%- JSON.stringify(other.wards) %>');
+        const districtInput = document.getElementById('districtName');
+        const wardInput = document.getElementById('wardName');
+        const districtIdInput = document.getElementById('district');
+        const wardIdInput = document.getElementById('ward');
+
+        const district = districts.find(district => district.districtName == districtInput.value);
+        districtIdInput.value = (district) ? district.districtID : '';
+
+        const ward = wards.find(ward => ward.wardName == wardInput.value);
+        wardIdInput.value = (ward) ? ward.wardID : '';
+
+        // ................................................
+
+        const inputImage = document.getElementById('input-image');
+        const files = inputImage.files;
+        const imgUrls = await upload2Imgur(files);
+        console.log(imgUrls);
+
+        const data = {
+          spotName: document.getElementById('spotName').value,
+          longitude: document.getElementById('longitude').value,
+          latitude: document.getElementById('latitude').value,
+          address: document.getElementById('spotAddress').value,
+          wardID: document.getElementById('ward').value,
+          districtID: document.getElementById('district').value,
+          spotType: document.getElementById('spotType').value,
+          adsForm: document.getElementById('adsForm').value,
+          planned: (document.getElementById('planned').value == 'Đã quy hoạch') ? 1 : 0,
+          spotImage: imgUrls,
+        }
+
+        if (data.spotName == '' || data.longitude == '' || data.latitude == '' || data.address == '' || data.spotType == '' || data.adsForm == '') {
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const url = '<%= url %>';
+        // const requestUrl = url.replace('/create', '');
+        const result = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        });
+
+        console.log(result);
+        if (result.status == 200) {
+          document.getElementById('alert-success').hidden = false;
+          // clear all input
+          document.querySelectorAll('input').forEach((input) => {
+            input.value = '';
+          });
+        } else {
+          document.getElementById('alert-danger').hidden = false;
+        }
+      }
+
+      document.getElementById('submitBtn').addEventListener('click', submitHandler);
+    </script>
+
   </body>
 </html>

@@ -2,8 +2,10 @@ import { toolbars } from './utilities.js'
 import * as spotService from '../../services/spotService.js'
 import * as boardService from '../../services/boardService.js'
 import * as districtService from '../../services/districtService.js'
+import * as wardService from '../../services/wardService.js'
 import * as spotTypeService from '../../services/spotTypeService.js'
 import * as adsFormService from '../../services/adsFormService.js'
+import * as IDGenerator from '../../services/IDGenerator.js';
 
 const show = async (req, res) => {
   const category = req.query.category || ''
@@ -90,7 +92,7 @@ const showDetail = async (req, res, isEdit) => {
   var data = {
     spotTitle: 'ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO',
     spotId: req.params.id,
-    address: '227 Nguyễn Văn Cừ',
+    spotAddress: '227 Nguyễn Văn Cừ',
     ward: 'Bến Nghé',
     district: 'Quận 1',
     locationType: 'Đất công/Công viên/Hành lang an toàn giao thông',
@@ -139,12 +141,12 @@ const showDetail = async (req, res, isEdit) => {
     data = {
       spotTitle: spotName,
       spotId: ID,
-      address,
-      ward: wardName,
-      district: districtName,
-      locationType: spotTypeName,
-      adsType: adsFormName,
-      plan: planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
+      spotAddress: address,
+      wardName,
+      districtName,
+      spotTypeName,
+      adsFormName,
+      planned: planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
       imgUrls: spotImage
     }
 
@@ -201,14 +203,21 @@ const showDetail = async (req, res, isEdit) => {
   }
 }
 
-const showAdd = (req, res) => {
+const showAdd = async (req, res) => {
   const category = req.query.category || ''
+  let other = {}
+
   switch (category) {
     case 'spot':
-      res.render('spot-new', { url: req.originalUrl, title: 'Sở - Điểm đặt mới', toolbars: toolbars })
+      other.spottypes = (await spotTypeService.getAllSpotTypes()) || []
+      other.adsforms = (await adsFormService.getAllAdsForms()) || []
+      other.districts = (await districtService.getAllDistricts()) || []
+      other.wards = (await wardService.getAllWards()) || []
+      res.render('spot-new', { url: req.originalUrl, title: 'Sở - Điểm đặt mới', toolbars: toolbars, other})
       break
     case 'board':
-      res.render('board-new', { url: req.originalUrl, title: 'Sở - Bảng quảng cáo mới', toolbars: toolbars })
+      other.spots = (await spotService.getAllSpots()) || []
+      res.render('board-new', { url: req.originalUrl, title: 'Sở - Bảng quảng cáo mới', toolbars: toolbars, other })
       break
     default:
       res.status(404)
@@ -231,9 +240,36 @@ const showModify = (req, res) => {
   }
 }
 
+const addNewSpot = async (req, res) => {
+  const { spotName, spotType, address, wardID, districtID, adsForm, planned, spotImage, longitude, latitude } = req.body
+  const spotID = await IDGenerator.getNewID('Spot');
+  const data = {
+    spotID,
+    spotName,
+    spotType,
+    address,
+    wardID,
+    districtID,
+    adsForm,
+    planned,
+    spotImage,
+    longitude,
+    latitude
+  }
+  try {
+    await spotService.createSpot(data)
+    res.status(200).json({ message: 'Điểm đặt mới đã được thêm thành công' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Lỗi server' })
+  }
+}
+
+
 export default {
   show,
   showDetail,
   showAdd,
-  showModify
+  showModify,
+  addNewSpot
 }

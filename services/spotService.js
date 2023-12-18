@@ -116,8 +116,7 @@ export const getAllSpots = async () => {
     return await Spot.aggregate(options);
   } catch (error) {
     throw new Error(`Error getting all spots: ${error.message}`)
-  }
-}
+  }}
 
 export const getSpotByID = async (spotID) => {
   try {
