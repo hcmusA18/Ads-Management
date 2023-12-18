@@ -82,4 +82,45 @@ controller.showDetail = async (req, res) => {
   return res.render('./so/report-detail', { title, detail, toolbars })
 }
 
+controller.showStatistic = async (req, res) => {
+  const title = 'Sở - Thống kê báo cáo vi phạm';
+  const basicCountReports = await reportService.basicCountReports();
+
+  // Số lượng báo cáo theo loại
+  let reportTypeCount = await reportService.getReportTypeCounts();
+  reportTypeCount = reportTypeCount.map((item) => {
+    return {
+      reportTypeName: item._id,
+      amount: item.count,
+    };
+  });
+
+  // Số lượng báo cáo theo quận
+  let reportDistrictCounts = await reportService.getReportCountsDistrict();
+
+  const allDistricts = await districtService.getAllDistricts();
+
+  reportDistrictCounts = allDistricts.map(district => {
+    const reportCount = reportDistrictCounts.find(item => item._id[0] === district.districtID);
+    return {
+      districtName: district.districtName,
+      reportCount: reportCount ? reportCount.count : 0
+    };
+  });
+
+  // Số lượng báo cáo theo đối tượng
+  let reportObjectCounts = await reportService.getReportCountsByObjectType();
+  
+
+  reportObjectCounts = reportObjectCounts.map(report => {
+    return {
+      object: report._id === 'board' ? 'Bảng quảng cáo' : 'Điểm đặt',
+      amount: report.count
+    }
+  });
+  // console.log(reportObjectCounts);
+  
+  res.render('./so/report-statistic', {title, toolbars, ...basicCountReports, reportTypeCount, reportDistrictCounts, reportObjectCounts});
+}
+
 export default controller

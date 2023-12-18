@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><%- title %></title>
+    <%- include("../partials/head.ejs"); %>
+</head>
+<body>
+<main class="container-fluid d-flex bg-light">
+    <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+    <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+            <!-- Profile -->
+            <%- include("../partials/profile_card.ejs"); %>
+            <!-- Title -->
+            <div class="d-block">
+                <h1 class="fw-bolder"><%= title %></h1>
+            </div>
+            <div class="container-fluid mt-3 ps-0">
+              <div class="d-flex flex-row align-items-center gap-2 position: relative">
+                <div class="d-flex flex-row align-items-center gap-2 position-relative">
+                  <%- include("../partials/info_card.ejs", {title: 'Tổng số báo cáo vi phạm' , value: totalReports,
+                      color: '#00b285' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Số báo cáo chưa được xử lý' , value: notHandledReports,
+                      color: '#d59633' }); %>
+                  <%- include("../partials/info_card.ejs", {title: 'Số báo cáo đã được xử lý' , value: handledReports, 
+                      color: '#e84747'}); %>
+                </div>
+              </div>
+            </div>
+            <!-- Statistic -->
+            <div class="container-fluid mt-3 ps-0">
+              <div class="d-flex flex-row align-items-center gap-2 position: relative">
+                <div class="bg-menu-theme p-5 w-50" data-bg-class="bg-menu-theme">
+                  <canvas id="pieChart1" width="400px"></canvas>
+                </div>
+                <div class="bg-menu-theme p-5 w-50" data-bg-class="bg-menu-theme">
+                  <canvas id="pieChart2" width="400px"></canvas>
+                </div>
+              </div>
+              <div class="bg-menu-theme p-5 w-100" data-bg-class="bg-menu-theme">
+                <canvas id="barChart"></canvas>
+              </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script defer>
+  const reportTypeCount = JSON.parse('<%- JSON.stringify(reportTypeCount) %>');
+  const pieData1 = {
+    labels: [],
+    datasets: [{
+      label: 'Số báo cáo',
+      data: [],
+      backgroundColor: [
+        '#2B2E4A',
+        '#E84545',
+        '#903749',
+        '#53354A'
+      ],
+      hoverOffset: 4
+    }]
+  };
+
+  reportTypeCount.forEach(item => {
+    pieData1.labels.push(item.reportTypeName);
+    pieData1.datasets[0].data.push(item.amount);
+  });
+
+  const pieOptions1 = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            family: 'Montserrat',
+            size: 14
+          }
+        }
+      },
+      title: {
+        display: true,
+        text: 'SỐ LƯỢNG BÁO CÁO THEO LOẠI',
+        font: {
+          family: 'Montserrat',
+          size: 20
+        }
+      },
+    },
+    resposive: true,
+  }
+  
+  const pieChar1 = new Chart("pieChart1", {
+    type: 'pie',
+    data: pieData1,
+    options: pieOptions1,
+  })
+
+  const reportObjectCounts = JSON.parse('<%- JSON.stringify(reportObjectCounts) %>');
+  const pieData2 = {
+    labels: [],
+    datasets: [{
+      label: 'Số báo cáo',
+      data: [],
+      backgroundColor: [
+        '#2B2E4A',
+        '#E84545',
+      ],
+      hoverOffset: 4
+    }]
+  };
+
+  reportObjectCounts.forEach(item => {
+    pieData2.labels.push(item.object);
+    pieData2.datasets[0].data.push(item.amount);
+  });
+
+  const pieOptions2 = {
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            family: 'Montserrat',
+            size: 14
+          }
+        }
+      },
+      title: {
+        display: true,
+        text: 'SỐ LƯỢNG BÁO CÁO THEO ĐỐI TƯỢNG',
+        font: {
+          family: 'Montserrat',
+          size: 20
+        }
+      },
+    },
+  }
+  
+  const pieChart2 = new Chart("pieChart2", {
+    type: 'pie',
+    data: pieData2,
+    options: pieOptions2,
+  })
+
+  // const labels = Utils.months({count: 7});
+  const reportDistrictCounts = JSON.parse('<%- JSON.stringify(reportDistrictCounts) %>');
+  const dataBar = {
+    labels: [],
+    datasets: [{
+      label: 'Số báo cáo',
+      data: [],
+      backgroundColor: 'rgba(15,33,103,0.3)',
+      borderColor: 'rgb(15,33,103)',
+      borderWidth: 1
+    }]
+  };
+
+  reportDistrictCounts.forEach(item => {
+    dataBar.labels.push(item.districtName);
+    dataBar.datasets[0].data.push(item.reportCount);
+  });
+
+  // console.log(dataBar);
+
+  const barOptions = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "QUẬN",
+          font: {
+            family: 'Montserrat',
+            size: 14,
+          },
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "SỐ LƯỢNG BÁO CÁO",
+          font: {
+            family: 'Montserrat',
+            size: 14,
+          },
+        },
+        ticks: {
+          beginAtZero: false,
+          max: 10, // Set your desired minimum value
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            family: 'Montserrat',
+            size: 14,
+          },
+        },
+      },
+      title: {
+        display: true,
+        text: "SỐ LƯỢNG BÁO CÁO THEO QUẬN",
+        font: {
+          family: 'Montserrat',
+          size: 20,
+        },
+      },
+    },
+  };
+
+  const barChart = new Chart("barChart", {
+    type: 'bar',
+    data: dataBar,
+    options: barOptions,
+  });
+
+</script>
+</body>
+
+</html>

@@ -499,3 +499,142 @@ export const getReportsWithDistrictID = async () => {
     throw new Error(`Error getting all reports: ${error.message}`);
   }
 };
+
+export const basicCountReports = async () => {
+  const totalReports = await Report.countDocuments();
+  const handledReports = await Report.countDocuments({ status: 1 });
+  const notHandledReports = await Report.countDocuments({ status: 0 });
+
+  return {totalReports, handledReports, notHandledReports};
+}
+
+export const getReportTypeCounts = async () => {
+  try {
+    const reportTypeCounts = await Report.aggregate([
+      {
+        $lookup: {
+          from: 'reporttypes', // Assuming the name of your reporttypes collection
+          localField: 'reportType',
+          foreignField: 'typeID',
+          as: 'reportType'
+        }
+      },
+      {
+        $unwind: {
+          path: '$reportType',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          typeName: '$reportType.typeName',
+        }
+      },
+      {
+        $group: {
+          _id: '$typeName',
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          typeName: 1,
+          count: 1,
+        }
+      },
+    ]);
+
+    return reportTypeCounts;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const getReportCountsDistrict = async () => {
+  try {
+    const reportDistrictCounts = await Report.aggregate([
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'objectID',
+          foreignField: 'spotID',
+          as: 'spotInfo'
+        }
+      },
+      {
+        $lookup: {
+          from: 'boards',
+          localField: 'objectID',
+          foreignField: 'boardID',
+          as: 'boardInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'boardInfo.spotID',
+          foreignField: 'spotID',
+          as: 'boardSpotInfo'
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          spotDistrictID: {
+            $cond: {
+              if: { $eq: ['$boardSpotInfo', []] },
+              then: '$spotInfo.districtID',
+              else: '$boardSpotInfo.districtID'
+            }
+          },
+        }
+      },
+      {
+        $group: {
+          _id: '$spotDistrictID',
+          count: {$sum: 1},
+        }
+      },
+      {
+        $project:{
+          districtID: '$spotDistrictID',
+          count: 1,
+        }
+      }
+    ]);
+
+    return reportDistrictCounts;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export const getReportCountsByObjectType = async () => {
+  try {
+    const reportCounts = await Report.aggregate([
+      {
+        $group: {
+          _id: {
+            $cond: {
+              if: { $regexMatch: { input: '$objectID', regex: /^QC\d{4}$/ } },
+              then: 'board',
+              else: 'spot'
+            }
+          },
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    return reportCounts;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
