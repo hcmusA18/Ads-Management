@@ -9,9 +9,30 @@ export const getReport = async (spotID) => {
   }
 }
 
-export const createReport = async (report) => {
+const verifyCaptcha = async (captcha) => {
+  const secretKey = '6LeREjYpAAAAANtf2r4cBpqHqn9TuTe5yJ4JORtO';
+  if (!captcha) throw new Error('No captcha');
+  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}`;
   try {
-    return await apiService.createReport(report);
+    const response = await fetch(verifyUrl);
+    const body = await response.json();
+    if (!body.success || body.score < 0.4) throw new Error('Captcha failed');
+  } catch (error) {
+    throw new Error(`Error verifying captcha: ${error.message}`);
+  }
+}
+
+export const createReport = async (data) => {
+  try {
+    const secretKey = '6LeREjYpAAAAANtf2r4cBpqHqn9TuTe5yJ4JORtO';
+    if (!data.captcha) throw new Error('No captcha');
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${data.captcha}`;
+    const response = await fetch(verifyUrl);
+    const body = await response.json();
+    if (!body.success || body.score < 0.4) throw new Error('Captcha failed');
+
+
+    return await apiService.createReport(data.report);
   } catch (error) {
     console.log(error);
     throw new Error(`Error creating report: ${error.message}`);
