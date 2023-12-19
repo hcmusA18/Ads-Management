@@ -20,46 +20,81 @@ reportTypes.forEach((type) => {
   reportTypeSelect.appendChild(option);
 })
 
-
 const submitHandler = async (e) => {
   e.preventDefault();
-  const inputImage = document.getElementById('input-image');
-  const files = inputImage.files;
-  let imgUrls = [];
-  console.log(files);
-  if (files.length > 0){
-    imgUrls = await upload2Imgur(files);
-    console.log(imgUrls);
-  }
 
-  const data = {
-    objectID: objectID,
-    reportImages: imgUrls,
-    reportType: reportTypeSelect.value,
-    reporterName: document.getElementById('sender-name').value,
-    reporterPhone: document.getElementById('phone').value,
-    reporterEmail: document.getElementById('email').value,
-    reportInfo: tinymce.activeEditor.getContent(),
-  }
-  console.log('Will send data', data);
+  grecaptcha.execute('6LeREjYpAAAAAH-tkHajkvrxYM4iMaoxYhJTo9Np', { action: 'submit' }).then(async (token) => {
+    if (!document.getElementById('sender-name').value || !document.getElementById('phone').value || !document.getElementById('email').value) {
+      alert('Bạn phải nhập đầy đủ thông tin người báo cáo');
+      return;
+    }
 
-  const reportID = await uploadReport(data);
+    if (!reportTypeSelect.value) {
+      alert('Bạn phải chọn loại hình báo cáo');
+      return;
+    }
 
-  // append the reportID to the local storage
-  const reportIDs = localStorage.getItem('reportIDs');
-  if (reportIDs) {
-    localStorage.setItem('reportIDs', `${reportIDs},${reportID}`);
-  } else {
-    localStorage.setItem('reportIDs', `${reportID}`);
-  }
+    const inputImage = document.getElementById('input-image');
+    const files = inputImage.files;
+    if (files.length > 2){
+      alert('Chỉ được chọn tối đa 2 ảnh');
+      return;
+    }
 
-  console.log(reportID);
-  if (reportID) {
-    alert('Báo cáo thành công');
-    window.location.href = '/index.html';
-  } else {
-    alert('Báo cáo thất bại');
-  }
+    if (files.length > 0 && !tinymce.activeEditor.getContent()) {
+      alert('Bạn phải nhập thông tin báo cáo');
+      return;
+    }
+
+
+
+
+
+    let imgUrls = [];
+    console.log(files);
+    if (files.length > 0) {
+      imgUrls = await upload2Imgur(files);
+      console.log(imgUrls);
+    }
+
+    const data = {
+      objectID: objectID,
+      reportImages: imgUrls,
+      reportType: reportTypeSelect.value,
+      reporterName: document.getElementById('sender-name').value,
+      reporterPhone: document.getElementById('phone').value,
+      reporterEmail: document.getElementById('email').value,
+      reportInfo: tinymce.activeEditor.getContent(),
+    }
+    console.log('Will send data', data);
+
+    let reportID = null;
+    try {
+      reportID = await uploadReport(data, token);
+      // append the reportID to the local storage
+      const reportIDs = localStorage.getItem('reportIDs');
+      if (reportIDs) {
+        localStorage.setItem('reportIDs', `${reportIDs},${reportID}`);
+      } else {
+        localStorage.setItem('reportIDs', `${reportID}`);
+      }
+      console.log(reportID);
+    } catch (err) {
+      console.log(err);
+      alert('Báo cáo thất bại' + err);
+    }
+
+
+
+
+    // if (reportID) {
+    //   alert('Báo cáo thành công');
+    //   window.location.href = '/index.html';
+    // } else {
+    //   alert('Báo cáo thất bại');
+    // }
+  });
+
 }
 const cancelHandler = (e) => {
   console.log('cancel');

@@ -84,16 +84,23 @@ export const upload2Imgur = async (files) => {
   return links;
 }
 
-export const uploadReport = async (report) => {
-  const res = await fetch(`${requestHostname}api/reports`, {
-    method: 'POST',
-    headers: [
-      ['Content-Type', 'application/json'],
-    ],
-    mode: 'cors',
-    body: JSON.stringify(report),
-  });
-  return await res.json();
+export const uploadReport = async (report, captcha) => {
+  try {
+    const res = await fetch(`${requestHostname}api/reports`, {
+      method: 'POST',
+      headers: [
+        ['Content-Type', 'application/json'],
+      ],
+      mode: 'cors',
+      body: JSON.stringify({report, captcha}),
+    });
+    if (res.status !== 200) throw new Error();
+    return await res.json();
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+
 }
 
 export const getReport = async (reportID) => {
