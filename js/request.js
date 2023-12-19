@@ -112,6 +112,14 @@ export const getReportTypes = async () => {
   return await res.json();
 }
 
+export const getReportList = async (reportIDs) => {
+  const res = await fetch(`${requestHostname}api/reports?reportIDs=${reportIDs}`, {
+    method: 'GET',
+    mode: 'cors',
+  });
+  return await res.json();
+}
+
 
 export default {
   getAllSpots,
@@ -120,4 +128,5 @@ export default {
   uploadReport,
   getReport,
   getReportTypes,
+  getReportList,
 }

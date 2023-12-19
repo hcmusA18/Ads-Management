@@ -20,6 +20,6 @@ else document.getElementById("content").innerText = report.reportInfo;
 const img_section = document.getElementById("report-img");
 img_section.innerHTML = "";
 report.reportImages.forEach((img) => {
-  const imgHTML = `<img src="${img}" class="img-fluid" alt="...">`;
+  const imgHTML = `<img src="${img}" class="img-fluid" alt="..." style="height: 16rem; object-fit: cover; object-position: center">`;
   img_section.appendChild(new DOMParser().parseFromString(imgHTML, "text/html").body.firstChild);
 });

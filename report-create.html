@@ -59,8 +59,8 @@
 
 <body>
   <header></header>
-  <main class="container-fluid d-flex bg-light">
-    <div class="row">
+  <main class="container-fluid d-flex bg-light vh-100">
+    <aside class="row">
       <!-- Sidebar -->
       <div class="d-flex flex-column p-0 flex-shrink-0 sidebar-wrap">
         <a href="/" class="d-block p-3 link-body-emphasis text-decoration-none logo-wrap" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon only">
@@ -71,15 +71,22 @@
         <!-- <hr /> -->
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
           <li class="nav-item">
-            <a href="/" class="nav-link rounded-0 py-3 border-bottom border-dark  " aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Trang chủ" data-bs-original-title="Trang chủ">
+            <a href="/" class="nav-link rounded-0 py-3 border-bottom border-dark" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Trang chủ" data-bs-original-title="Trang chủ">
               <i class="fa-regular fa-house"></i>
               <span>Trang chủ</span>
             </a>
           </li>
-
+          <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li class="nav-item">
+              <a href="/reports.html" class="nav-link rounded-0 py-3" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Trang chủ" data-bs-original-title="Trang chủ">
+                <i class="fa-regular fa-pen-nib"></i>
+                <span>Danh sách báo cáo</span>
+              </a>
+            </li>
+          </ul>
         </ul>
       </div>
-    </div>
+    </aside>
     <div class="container-fluid vw-100 pt-1">
       <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
         <!-- Back button -->
@@ -164,70 +171,7 @@
     </div>
   </main>
 
-  <script defer type="module">
-    import {
-      upload2Imgur, uploadReport, getReportTypes
-    } from '/js/request.js';
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const objectID = urlParams.get('id');
-    console.log(objectID)
-    $('#object-id').val(objectID);
-
-    const reportTypes = await getReportTypes();
-    console.log(reportTypes);
-    const reportTypeSelect = document.getElementById('report-type');
-    // remove all options
-    reportTypeSelect.innerHTML = '';
-    reportTypeSelect.innerHTML = '<option selected>Chọn 1 loại hình báo cáo</option>';
-    reportTypes.forEach((type) => {
-      const option = document.createElement('option');
-      option.value = type.typeID;
-      option.innerText = type.typeName;
-      reportTypeSelect.appendChild(option);
-    })
-
-
-    const submitHandler = async (e) => {
-      e.preventDefault();
-      const inputImage = document.getElementById('input-image');
-      const files = inputImage.files;
-      let imgUrls = [];
-      console.log(files);
-      if (files.length > 0){
-        imgUrls = await upload2Imgur(files);
-        console.log(imgUrls);
-      }
-
-      const data = {
-        objectID: objectID,
-        reportImages: imgUrls,
-        reportType: reportTypeSelect.value,
-        reporterName: document.getElementById('sender-name').value,
-        reporterPhone: document.getElementById('phone').value,
-        reporterEmail: document.getElementById('email').value,
-        reportInfo: tinymce.activeEditor.getContent(),
-      }
-      console.log('Will send data', data);
-
-      const res = await uploadReport(data);
-
-      console.log(res);
-    }
-    const cancelHandler = (e) => {
-      console.log('cancel');
-      e.preventDefault();
-
-      // ask the user to confirm
-      const isConfirmed = confirm('Bạn có chắc chắn muốn huỷ?');
-      if (!isConfirmed) return;
-
-      window.history.back();
-    }
-
-    document.getElementById('submitBtn').addEventListener('click', await submitHandler);
-    document.getElementById('cancelBtn').addEventListener('click', cancelHandler);
-  </script>
+  <script defer type="module" src="js/reportCreate.js"></script>
 </body>
 
 </html>

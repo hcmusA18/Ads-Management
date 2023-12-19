@@ -2,6 +2,11 @@ import { getDetailSpot } from "/js/request.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const spotID = urlParams.get('id');
+$("#report-btn").click(() => {
+  // change to report page
+  window.location.href = `./report-create.html?id=${spotID}`;
+});
+
 let spotDetail = await getDetailSpot(spotID);
 spotDetail = spotDetail[0];
 const attachCarousels = async () => {

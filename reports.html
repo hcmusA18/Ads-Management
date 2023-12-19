@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chi tiết điểm đặt</title>
+  <title>Danh sách báo cáo</title>
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,6 +28,7 @@
   <script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
   <script defer src="https://unpkg.com/bootstrap-table@1.22.1/dist/locale/bootstrap-table-vi-VN.min.js"></script>
   <script defer src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <!-- <script defer src="js/table.js"></script> -->
 
   <!-- CSS stylesheets -->
   <link rel="stylesheet" href="css/style.css" />
@@ -81,74 +82,26 @@
         </div>
         <!-- Title -->
         <div class="d-flex flex-row align-items-center" style="gap: 10px">
-          <h1 class="fw-bolder m-0 text-uppercase" id="spot-name">ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO</h1>
+          <h1 class="fw-bolder m-0 text-uppercase">Danh sách báo cáo</h1>
         </div>
 
-        <!-- Content -->
-        <div class="container-fluid details px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
-          <!-- Carousel -->
-          <div class="container-fluid px-0" id="carousel">
-          </div>
-          <div class="container-fluid px-0 details">
-            <div class="container d-flex justify-content-between">
-              <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
-              <button class="btn btn-outline-danger" id="report-btn">
-                <i class="bi bi-exclamation-octagon"></i>
-                Báo cáo vi phạm
-              </button>
-            </div>
-            <div class="container mt-4">
-              <label for="spot-id" style="margin-bottom: 6px">ID Điểm đặt</label>
-              <input type="text" class="form-control" id="spot-id" value="D0155001" disabled />
-            </div>
-            <div class="container mt-2">
-              <label for="address" style="margin-bottom: 6px">Địa chỉ</label>
-              <input type="text" class="form-control" id="address" value="227 Nguyễn Văn Cừ" disabled />
-            </div>
-            <div class="container mt-2 d-flex justify-content-between">
-              <div style="width: calc((100% - 2rem) / 2);">
-                <label for="ward" style="margin-bottom: 6px;">Phường</label>
-                <input type="text" class="form-control" id="ward" value="Bến Nghé" disabled />
-              </div>
-              <div style="width: calc((100% - 2rem) / 2);">
-                <label for="district" style="margin-bottom: 6px">Quận</label>
-                <input type="text" class="form-control" id="district" value="Bình Thạnh" disabled />
-              </div>
-            </div>
-            <div class="container mt-2">
-              <label for="spot-type" style="margin-bottom: 6px">Loại vị trí</label>
-              <input type="text" class="form-control" id="spot-type" value="Đất công/Công viên/Hành lang an toàn giao thông" disabled />
-            </div>
-            <div class="container mt-2">
-              <label for="ads-type" style="margin-bottom: 6px">Hình thức quảng cáo</label>
-              <input type="text" class="form-control" id="ads-type" value="Quảng cáo thương mại" disabled />
-            </div>
-            <div class="container mt-2">
-              <label for="status" style="margin-bottom: 6px">Thông tin quy hoạch</label>
-              <input type="text" class="form-control" id="status" value="Đã quy hoạch" disabled />
-            </div>
-          </div>
-        </div>
-        <!-- Ads list -->
-        <div class="mt-5 mb-2" style="font-size: 20px; font-weight: bold;">Danh sách bảng quảng cáo</div>
-        <table id="table" data-toggle="table">
+        <table id="table" data-toggle="table" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, ALL]" data-locale="vi-VN" data-buttons-class="primary" data-show-button-text="true" data-icons-prefix="fa-solid" class="table table-striped table-bordered table-hover table-responsive-md rounded" smart-display>
           <thead>
             <tr>
-              <th data-sortable="true" data-align="center" data-field="id">ID</th>
-              <th data-sortable="true" data-align="center" data-field="type">Loại bảng quảng cáo</th>
-              <th data-sortable="true" data-align="center" data-field="size">Kích thước</th>
-              <th data-sortable="true" data-align="center" data-field="quantity">Số lượng</th>
-              <th data-align="center" data-field="detail">Chi tiết</th>
+              <th data-field="id" data-sortable="true" data-align="center">ID Báo cáo</th>
+              <th data-field="object_id" data-sortable="true" data-align="center">ID Điểm đặt/ Bảng quảng cáo</th>
+              <th data-field="district" data-sortable="true" data-align="center">Quận</th>
+              <th data-field="ward" data-sortable="true" data-align="center">Phường</th>
+              <th data-field="send_time" data-sortable="true" data-align="center">Thời gian gửi</th>
+              <th data-field="status" data-sortable="true" data-align="center">Trạng thái</th>
+              <th data-field="detail" data-align="center">Xem chi tiết</th>
             </tr>
           </thead>
-        </table>
       </div>
     </div>
   </main>
-
-
-  <script type="module" src="js/spotDetail.js"></script>
-  <script defer src="js/carousel.js"></script>
+  <script type="module" src="js/reports.js"></script>
 </body>
+
 
 </html>

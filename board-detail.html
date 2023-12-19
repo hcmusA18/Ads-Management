@@ -45,7 +45,7 @@
 <body>
   <header></header>
   <main class="container-fluid d-flex bg-light">
-    <div class="row">
+    <aside class="row">
       <!-- Sidebar -->
       <div class="d-flex flex-column p-0 flex-shrink-0 sidebar-wrap">
         <a href="/" class="d-block p-3 link-body-emphasis text-decoration-none logo-wrap" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon only">
@@ -56,15 +56,22 @@
         <!-- <hr /> -->
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
           <li class="nav-item">
-            <a href="/" class="nav-link rounded-0 py-3" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Trang chủ" data-bs-original-title="Trang chủ">
+            <a href="/" class="nav-link rounded-0 py-3 border-bottom border-dark" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Trang chủ" data-bs-original-title="Trang chủ">
               <i class="fa-regular fa-house"></i>
               <span>Trang chủ</span>
             </a>
           </li>
-
+          <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            <li class="nav-item">
+              <a href="/reports.html" class="nav-link rounded-0 py-3" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Trang chủ" data-bs-original-title="Trang chủ">
+                <i class="fa-regular fa-pen-nib"></i>
+                <span>Danh sách báo cáo</span>
+              </a>
+            </li>
+          </ul>
         </ul>
       </div>
-    </div>
+    </aside>
     <div class="container-fluid vw-100 pt-1">
       <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
         <!-- Back button -->

@@ -13,16 +13,14 @@ const uploadImage = () => {
     // create object URL to use as src for img element
     imgLinks.push(URL.createObjectURL(files[i]))
   }
-
-  // upload2Imgur(files).then((data) => {
-  //   console.log(data)
-  // })
+  console.log(`url(${imgLinks[0]})`)
 
   badgeText.textContent = files.length.toString()
   // remove hidden attribute from badgeText's parent element when files.length > 0
   if (files.length > 0) {
     badgeText.parentElement.removeAttribute('hidden')
     imgView.style.backgroundImage = `url(${imgLinks[0]})`
+    imgView.style.minHeight = '16rem'
     imgView.textContent = ''
     imgView.style.border = 'none'
   } else {
