@@ -133,7 +133,6 @@ export const getAllReports = async () => {
         }
       }
     ];
-
     const reports = await Report.aggregate(options);
     return reports;
   } catch (error) {

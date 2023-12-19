@@ -1,4 +1,5 @@
 import Spot from '../models/spotModel.js'
+import Report from '../models/reportModel.js';
 import {getReportByID, createReport} from './reportService.js'
 import {getAllReportTypes} from './reportTypeService.js';
 import {getBoardByID} from './boardService.js'
@@ -399,11 +400,139 @@ const getDetailSpot = async (spotID) => {
   }
 }
 
+const getListReport = async (reportIDs) => {
+  try {
+    reportIDs = reportIDs.split(',');
+    const options = [
+      {
+        $match: {
+          reportID: { $in: reportIDs }
+        }
+      },
+      {
+        $lookup: {
+          from: 'reportTypes',
+          localField: 'reportType',
+          foreignField: 'typeID',
+          as: 'reportType'
+        }
+      },
+      {
+        $unwind: {
+          path: '$reportType',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'objectID',
+          foreignField: 'spotID',
+          as: 'spotInfo'
+        }
+      },
+      {
+        $lookup: {
+          from: 'boards',
+          localField: 'objectID',
+          foreignField: 'boardID',
+          as: 'boardInfo'
+        }
+      },
+      {
+        $unwind: {
+          path: '$boardInfo',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'spots',
+          localField: 'boardInfo.spotID',
+          foreignField: 'spotID',
+          as: 'boardSpotInfo'
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          reportID: 1,
+          objectID: 1,
+          reportType: '$reportType.typeName',
+          reporterName: 1,
+          sendTime: 1,
+          status: 1,
+          spotDistrictID: {
+            $cond: {
+              if: { $eq: ['$boardSpotInfo', []] },
+              then: '$spotInfo.districtID',
+              else: '$boardSpotInfo.districtID'
+            }
+          },
+          spotWardID: {
+            $cond: {
+              if: { $eq: ['$boardSpotInfo', []] },
+              then: '$spotInfo.wardID',
+              else: '$boardSpotInfo.wardID'
+            }
+          },
+        }
+      },
+      {
+        $lookup: {
+          from: 'districts',
+          localField: 'spotDistrictID',
+          foreignField: 'districtID',
+          as: 'spotDistrict'
+        }
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'spotWardID',
+          foreignField: 'wardID',
+          as: 'spotWard'
+        }
+      },
+      {
+        $unwind: {
+          path: '$spotDistrict',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $unwind: {
+          path: '$spotWard',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          reportID: 1,
+          objectID: 1,
+          reportType: 1,
+          reporterName: 1,
+          sendTime: 1,
+          status: 1,
+          spotDistrictName: '$spotDistrict.districtName',
+          spotWardName: '$spotWard.wardName'
+        }
+      }
+    ];
+    return await Report.aggregate(options);
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Error getting list report: ${error.message}`);
+  }
+
+}
+
 export default {
   createReport,
   getAllReportTypes,
   getAllSpots,
   getBoardByID,
   getDetailSpot,
-  getReportByID
+  getReportByID,
+  getListReport
 };

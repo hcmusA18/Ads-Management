@@ -26,3 +26,12 @@ export const getAllReportTypes = async () => {
     throw new Error(`Error getting all report type: ${error.message}`);
   }
 }
+
+export const getListReport = async (reportIDs) => {
+  try {
+    return await apiService.getListReport(reportIDs);
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Error getting list report: ${error.message}`);
+  }
+}

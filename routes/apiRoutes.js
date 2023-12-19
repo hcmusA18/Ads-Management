@@ -40,6 +40,13 @@ router.get('/reports/:reportID', (req, res) => {
     .catch((err) => res.status(500).json({ message: err.message }))
 });
 
+router.get('/reports' , (req, res) => {
+  api
+    .getListReport(req.query.reportIDs)
+    .then((reports) => res.status(200).json(reports))
+    .catch((err) => res.status(500).json({ message: err.message }))
+});
+
 router.get('/boards/:boardID', (req, res) => {
   api
     .getBoard(req.params.boardID)
@@ -48,13 +55,6 @@ router.get('/boards/:boardID', (req, res) => {
 });
 
 router.post('/reports', (req, res) => {
-  if (Object.keys(req.body).length === 0) {
-    console.log('Missing report data');
-    console.log(res.headers);
-    return res.status(400).json({ message: 'Missing report data' })
-  } else {
-    console.log(req.body);
-  }
   api
     .createReport(req.body)
     .then((report) => res.status(200).json(report))

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const ReportSchema = new mongoose.Schema({
     reportID: {
         type: String,
-        unique: true
+        unique: true,
     },
     objectID: {
         type: String,
@@ -50,7 +50,14 @@ const ReportSchema = new mongoose.Schema({
 
 ReportSchema.pre('save', async function  (next) {
     const report = this;
-    const count = await Report.countDocuments();
+    // get the last report
+    const lastReport = await Report.findOne({}, {}, { sort: { 'reportID': -1 } });
+    let count = 0;
+    if (lastReport) {
+        count = parseInt(lastReport.reportID.slice(2));
+    }
+    // console.log(count);
+
     report.reportID = 'BC' + String(count + 1).padStart(4, '0');
     const formatter = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
     report.sendTime = formatter.format(Date.now());
