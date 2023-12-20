@@ -5,6 +5,7 @@ import * as districtService from '../../services/districtService.js'
 import * as wardService from '../../services/wardService.js'
 import * as spotTypeService from '../../services/spotTypeService.js'
 import * as adsFormService from '../../services/adsFormService.js'
+import * as boardTypeService from '../../services/boardTypeService.js'
 import * as IDGenerator from '../../services/IDGenerator.js';
 
 const show = async (req, res) => {
@@ -216,8 +217,19 @@ const showAdd = async (req, res) => {
       res.render('spot-new', { url: req.originalUrl, title: 'Sở - Điểm đặt mới', toolbars: toolbars, other})
       break
     case 'board':
-      other.spots = (await spotService.getAllSpots()) || []
-      res.render('board-new', { url: req.originalUrl, title: 'Sở - Bảng quảng cáo mới', toolbars: toolbars, other })
+      const spotID = req.query.spotID || '';
+      const spot = (await spotService.getSpotByID(spotID)) || {};
+
+      other.spotID = spot.spotID;
+      other.spotAddress = spot.address;
+      other.spotDistrict = spot.districtName;
+      other.spotWard = spot.wardName;
+
+      other.boardtypes = (await boardTypeService.getAllBoardTypes()) || [];
+      // console.log(other.boardtypes);
+
+      console.log(req.originalUrl);
+      res.render('board-add', { url: req.originalUrl, title: 'Sở - Bảng quảng cáo mới', toolbars: toolbars, other })
       break
     default:
       res.status(404)
@@ -265,11 +277,48 @@ const addNewSpot = async (req, res) => {
   }
 }
 
+const addNewBoard = async (req, res) => {
+  const {boardType, quantity, height, width, spotImage} = req.body;
+  const boardID = await IDGenerator.getNewID('Board');
+  const spotID = req.query.spotID;
+  const data = {
+    boardID: boardID,
+    boardType: boardType,
+    quantity: quantity,
+    height: height,
+    width: width,
+    image: spotImage,
+    spotID: spotID,
+    licensingID: "",
+  }
+
+  // console.log(data);
+  try {
+    await boardService.createBoard(data);
+    res.status(200).json({ message: 'Bảng quảng cáo đã được thêm thành công' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Lỗi server' })
+  }
+}
+
+const addNew = async (req, res) => {
+  const category = req.query.category || '';
+
+  if(category == "spot"){
+    addNewSpot(req, res);
+    return
+  }
+
+  addNewBoard(req, res);
+  return;
+}
+
 
 export default {
   show,
   showDetail,
   showAdd,
   showModify,
-  addNewSpot
+  addNew,
 }

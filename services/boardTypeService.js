@@ -33,7 +33,7 @@ export const deleteBoardTypeByID = async (typeID) => {
 
 export const getAllBoardTypes = async () => {
   try {
-    const boardTypes = await BoardType.find();
+    const boardTypes = await BoardType.find().sort({typeID: 1});
     return boardTypes;
   } catch (error) {
     throw new Error(`Error getting all board types: ${error.message}`);

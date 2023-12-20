@@ -15,6 +15,7 @@ const COLORS = {
 const userData = document.getElementById('user-data').innerText;
 
 function generateSpotHTML(spot) {
+  // console.log(spot.spotID);
   return `<div class="card">
             <img src="${spot.spotImage[0]}" class="card-img-top img-fluid" alt="...">
             <div class="card-body">
@@ -23,7 +24,7 @@ function generateSpotHTML(spot) {
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
               <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
-              <div class="btn btn-success btn-sm mt-2">Thêm bảng quảng cáo</div>
+              <a href="/so/ads/new?category=board&spotID=${spot.spotID}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm bảng quảng cáo</button></a>
             </div>
           </div>`
 }
