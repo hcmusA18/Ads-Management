@@ -17,8 +17,8 @@ router.get('*', (req, res, next) => {
 	res.locals.user = req.user;
 	next();
 });
-router.get('/', (req, res) => {
-	res.render('./so/index', {title: 'Sở - Trang chủ', toolbars: toolbars});
+router.get('/', async (req, res) => {
+	res.render('so/index', { title: 'Sở - Trang chủ', toolbars: toolbars});
 });
 
 router.get('/types', async (req, res) => {

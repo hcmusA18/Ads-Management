@@ -1,16 +1,16 @@
 /* eslint-disable no-undef */
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg'
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg';
 
-const mapboxVersion = 'v2.9.1'
-const mapboxScript = document.createElement('script')
-mapboxScript.setAttribute('src', `https://api.mapbox.com/mapbox-gl-js/${mapboxVersion}/mapbox-gl.js`)
-document.head.appendChild(mapboxScript)
+const mapboxVersion = 'v2.9.1';
+const mapboxScript = document.createElement('script');
+mapboxScript.setAttribute('src', `https://api.mapbox.com/mapbox-gl-js/${mapboxVersion}/mapbox-gl.js`);
+document.head.appendChild(mapboxScript);
 
 const COLORS = {
   yellow: '#C7BA30',
   red: '#FF3C3C',
   blue: '#3C77FF'
-}
+};
 
 const userData = document.getElementById('user-data').innerText;
 
@@ -26,32 +26,32 @@ function generateSpotHTML(spot) {
               <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
               <a href="/so/ads/new?category=board&spotID=${spot.spotID}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm bảng quảng cáo</button></a>
             </div>
-          </div>`
+          </div>`;
 }
 
 async function getSpotsData() {
-  let hostName = ''
+  let hostName = '';
   if (window.location.hostname.includes('localhost')) {
-    hostName = 'http://localhost:8080/'
+    hostName = 'http://localhost:8080/';
   } else {
-    hostName = 'https://ads-manager-1aai.onrender.com/'
+    hostName = 'https://ads-manager-1aai.onrender.com/';
   }
 
   try {
-	const districtID = userData.split(',')[0];
-	const wardID = userData.split(',')[1];
+    const districtID = userData.split(',')[0];
+    const wardID = userData.split(',')[1];
 
-	console.log(districtID, wardID);
+    console.log(districtID, wardID);
 
     const spots = await fetch(`${hostName}api/spots?districtID=${districtID}&wardID=${wardID}`, {
       method: 'GET',
       headers: new Headers(),
       mode: 'cors'
-    }).then((res) => res.json())
+    }).then((res) => res.json());
     const spotsGeojson = {
       type: 'FeatureCollection',
       features: []
-    }
+    };
 
     Object.values(spots).forEach((spot) => {
       spotsGeojson.features.push({
@@ -64,18 +64,18 @@ async function getSpotsData() {
           ...spot,
           description: generateSpotHTML(spot)
         }
-      })
-    })
+      });
+    });
 
-    return spotsGeojson
+    return spotsGeojson;
   } catch (error) {
-    console.log(error)
-    throw new Error('Failed to get spots data')
+    console.log(error);
+    throw new Error('Failed to get spots data');
   }
 }
 
 function createMap() {
-  mapboxgl.accessToken = MAPBOX_TOKEN
+  mapboxgl.accessToken = MAPBOX_TOKEN;
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v12', // stylesheet location
@@ -84,9 +84,9 @@ function createMap() {
     hash: true,
     locale: 'vi-VN',
     language: 'vi-VN'
-  })
-  map.dragRotate.disable()
-  map.touchZoomRotate.disableRotation()
+  });
+  map.dragRotate.disable();
+  map.touchZoomRotate.disableRotation();
 
   const geolocation = new mapboxgl.GeolocateControl({
     positionOptions: {
@@ -95,10 +95,10 @@ function createMap() {
     trackUserLocation: true,
     showAccuracyCircle: true,
     showUserLocation: true
-  })
-  map.addControl(geolocation, 'bottom-right')
-  map.addControl(new mapboxgl.NavigationControl(), 'bottom-right')
-  map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right')
+  });
+  map.addControl(geolocation, 'bottom-right');
+  map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+  map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
   map.addControl(
     new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
@@ -109,9 +109,9 @@ function createMap() {
       countries: 'vn'
     }),
     'top-left'
-  )
+  );
 
-  return map
+  return map;
 }
 
 async function addSpotLayer(map, spotsGeojson) {
@@ -125,7 +125,7 @@ async function addSpotLayer(map, spotsGeojson) {
       hasReport: ['any', ['get', 'hasReport']],
       planned: ['any', ['==', ['get', 'planned'], 'Đã quy hoạch']]
     }
-  })
+  });
 
   // convert circleColor to rgb
   // const rgbColor = hexToRgb(circleColor);
@@ -146,7 +146,7 @@ async function addSpotLayer(map, spotsGeojson) {
       ],
       'circle-radius': ['step', ['get', 'point_count'], 20, 5, 30, 7, 40]
     }
-  })
+  });
 
   map.addLayer({
     id: 'cluster-count-spots',
@@ -158,7 +158,7 @@ async function addSpotLayer(map, spotsGeojson) {
       'text-font': ['Montserrat SemiBold', 'Arial Unicode MS Bold'],
       'text-size': 12
     }
-  })
+  });
 
   map.addLayer({
     id: 'unclustered-point-spots',
@@ -180,7 +180,7 @@ async function addSpotLayer(map, spotsGeojson) {
       'circle-stroke-width': 1,
       'circle-stroke-color': '#fff'
     }
-  })
+  });
 
   map.addLayer({
     id: 'unclustered-point-label-spots',
@@ -195,168 +195,168 @@ async function addSpotLayer(map, spotsGeojson) {
     paint: {
       'text-color': 'white'
     }
-  })
+  });
 
-  map.on('click', 'cluster-spots', function (e) {
+  map.on('click', 'cluster-spots', function(e) {
     const features = map.queryRenderedFeatures(e.point, {
       layers: ['cluster-spots']
-    })
-    const clusterId = features[0].properties.cluster_id
-    map.getSource('spots').getClusterExpansionZoom(clusterId, function (err, zoom) {
-      if (err) return
+    });
+    const clusterId = features[0].properties.cluster_id;
+    map.getSource('spots').getClusterExpansionZoom(clusterId, function(err, zoom) {
+      if (err) return;
 
       map.easeTo({
         center: features[0].geometry.coordinates,
         zoom: zoom
-      })
-    })
-  })
+      });
+    });
+  });
 
-  map.on('click', 'unclustered-point-spots', function (e) {
-    const coordinates = e.features[0].geometry.coordinates.slice()
-    const description = e.features[0].properties.description
+  map.on('click', 'unclustered-point-spots', function(e) {
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const description = e.features[0].properties.description;
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
     // over the copy being pointed to.
-    new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map)
+    new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
 
     map.flyTo({
       center: e.features[0].geometry.coordinates,
       essential: true, // this animation is considered essential with respect to prefers-reduced-motion
       zoom: 16
-    })
-  })
+    });
+  });
 
-  map.on('mouseenter', 'unclustered-point-spots', function () {
-    map.getCanvas().style.cursor = 'pointer'
-  })
-  map.on('mouseleave', 'unclustered-point-spots', function () {
-    map.getCanvas().style.cursor = ''
-  })
+  map.on('mouseenter', 'unclustered-point-spots', function() {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+  map.on('mouseleave', 'unclustered-point-spots', function() {
+    map.getCanvas().style.cursor = '';
+  });
 
-  map.on('mouseenter', 'cluster-spots', function () {
-    map.getCanvas().style.cursor = 'pointer'
-  })
-  map.on('mouseleave', 'cluster-spots', function () {
-    map.getCanvas().style.cursor = ''
-  })
+  map.on('mouseenter', 'cluster-spots', function() {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+  map.on('mouseleave', 'cluster-spots', function() {
+    map.getCanvas().style.cursor = '';
+  });
 }
 
-mapboxScript.onload = async function () {
-  const map = createMap()
-  const spotsGeojson = await getSpotsData()
+mapboxScript.onload = async function() {
+  const map = createMap();
+  const spotsGeojson = await getSpotsData();
   const marker = new mapboxgl.Marker({
     color: '#F84C4C'
-  })
-  let filteredSpotsGeojson = spotsGeojson
+  });
+  let filteredSpotsGeojson = spotsGeojson;
   map.on('load', async () => {
-    await addSpotLayer(map, filteredSpotsGeojson)
-    applyFilter()
-  })
+    await addSpotLayer(map, filteredSpotsGeojson);
+    applyFilter();
+  });
 
-  const toggles = document.querySelectorAll('#toggle-container input[type="checkbox"]')
+  const toggles = document.querySelectorAll('#toggle-container input[type="checkbox"]');
   const filterOptions = {
     report: false,
     planned: false,
     ads: false,
     all: true
-  }
+  };
 
   const applyFilter = () => {
     filteredSpotsGeojson = {
       type: 'FeatureCollection',
       features: spotsGeojson.features.filter((spot) => {
         if (filterOptions['all']) {
-          return true
+          return true;
         }
         if (!filterOptions['report'] && spot.properties.hasReport) {
-          return false
+          return false;
         }
         if (!filterOptions['planned'] && spot.properties.planned === 'Đã quy hoạch') {
-          return false
+          return false;
         } else if (filterOptions['planned'] && spot.properties.planned === 'Chưa quy hoạch') {
-          return false
+          return false;
         }
         if (!filterOptions['ads'] && spot.properties.hasAds) {
-          return false
+          return false;
         }
-        return true
+        return true;
       })
-    }
-    console.log('filtered')
-    map.getSource('spots').setData(filteredSpotsGeojson)
-  }
+    };
+    console.log('filtered');
+    map.getSource('spots').setData(filteredSpotsGeojson);
+  };
 
   toggles.forEach((toggle) => {
     // set default value
-    toggle.checked = filterOptions[toggle.id.split('-')[0]]
+    toggle.checked = filterOptions[toggle.id.split('-')[0]];
 
     toggle.addEventListener('change', async (e) => {
-      console.log(e.target.id)
-      const key = e.target.id.split('-')[0]
+      console.log(e.target.id);
+      const key = e.target.id.split('-')[0];
 
       if (key === 'all' && e.target.checked) {
         toggles.forEach((toggle) => {
-          toggle.checked = false
-          filterOptions[toggle.id.split('-')[0]] = false
-        })
-        toggle.checked = true
+          toggle.checked = false;
+          filterOptions[toggle.id.split('-')[0]] = false;
+        });
+        toggle.checked = true;
       } else if (key !== 'all') {
         // uncheck the all toggle
-        toggles[toggles.length - 1].checked = false
-        filterOptions['all'] = false
+        toggles[toggles.length - 1].checked = false;
+        filterOptions['all'] = false;
       }
 
-      filterOptions[key] = e.target.checked
-      console.log(filterOptions)
+      filterOptions[key] = e.target.checked;
+      console.log(filterOptions);
 
-      applyFilter()
-    })
-  })
+      applyFilter();
+    });
+  });
 
   // Hien thong tin diem bat ki
   map.on('click', (e) => {
     if (map.getCanvas().style.cursor === 'pointer') {
-      return
+      return;
     }
-    marker.setLngLat(e.lngLat).addTo(map)
+    marker.setLngLat(e.lngLat).addTo(map);
 
-    const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`
+    const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
 
     fetch(api)
       .then((res) => res.json())
       .then((res) => {
-        const coordinates = res.features[0].geometry.coordinates.slice()
+        const coordinates = res.features[0].geometry.coordinates.slice();
         let description = res.features[0].place_name
           .replace(/,\s*\d+,\s*Vietnam/, '')
           .replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
-          .replace(/,.*Dist\.|,.*Ward\./, '')
+          .replace(/,.*Dist\.|,.*Ward\./, '');
 
-        description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '')
+        description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
 
-        const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`
-        const divElement = document.createElement('div')
+        const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+        const divElement = document.createElement('div');
 
-        divElement.innerHTML = innerHtmlContent
+        divElement.innerHTML = innerHtmlContent;
 
         if (window.location.pathname.startsWith('/so')) {
-          const assignBtn = document.createElement('div')
+          const assignBtn = document.createElement('div');
 
-          assignBtn.innerHTML = `<a href="/so/ads/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`
-          divElement.appendChild(assignBtn)
-		divElement.setAttribute('class', 'p-2');
+          assignBtn.innerHTML = `<a href="/so/ads/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
+          divElement.appendChild(assignBtn);
+          divElement.setAttribute('class', 'p-2');
         }
 
-        new mapboxgl.Popup({ offset: [0, -30] }).setLngLat(coordinates).setDOMContent(divElement).addTo(map)
-      })
-  })
+        new mapboxgl.Popup({ offset: [0, -30] }).setLngLat(coordinates).setDOMContent(divElement).addTo(map);
+      });
+  });
 
   // Change the cursor to grab when user drag the map
   map.on('dragstart', () => {
-    map.getCanvas().style.cursor = 'move'
-  })
+    map.getCanvas().style.cursor = 'move';
+  });
   map.on('dragend', () => {
-    map.getCanvas().style.cursor = ''
-  })
-}
+    map.getCanvas().style.cursor = '';
+  });
+};

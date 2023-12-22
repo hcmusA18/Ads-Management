@@ -95,69 +95,68 @@
 
 
 <script defer type="module">
-    let setupData = false;
+  let setupData = false;
 
-    const formatter = new Intl.DateTimeFormat("vi-VN", { // <- re-use me
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    })
+  const formatter = new Intl.DateTimeFormat('vi-VN', { // <- re-use me
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
 
-    document.getElementById('offcanvasSpotDetail').addEventListener('show.bs.offcanvas', async (e) => {
-        console.log(e);
-        console.log(setupData)
-        if (setupData) {
-            setupData = false;
-            return;
-        }
-        e.preventDefault();
-        const spotID = e.relatedTarget.dataset.bsSpotId;
+  document.getElementById('offcanvasSpotDetail').addEventListener('show.bs.offcanvas', async (e) => {
+    console.log(e);
+    console.log(setupData)
+    if (setupData) {
+      setupData = false;
+      return;
+    }
+    e.preventDefault();
+    const spotID = e.relatedTarget.dataset.bsSpotId;
 
-        // get detail spot
-        let hostName = ''
-        if (window.location.hostname.includes('localhost')) {
-            hostName = 'http://localhost:8080/'
-        } else {
-            hostName = 'https://ads-manager-1aai.onrender.com/'
-        }
-        let detailSpot = await fetch(`${hostName}api/spots/${spotID}`, {
-            method: 'GET',
-            mode: 'cors',
-        }).then(res => res.json());
+    // get detail spot
+    let hostName = ''
+    if (window.location.hostname.includes('localhost')) {
+      hostName = 'http://localhost:8080/'
+    } else {
+      hostName = 'https://ads-manager-1aai.onrender.com/'
+    }
+    let detailSpot = await fetch(`${hostName}api/spots/${spotID}`, {
+      method: 'GET',
+      mode: 'cors',
+    }).then(res => res.json());
 
-        
-        detailSpot = detailSpot[0];
-        console.log(detailSpot);
 
-        // attach data to offcanvas
-        const offcanvas = document.getElementById('offcanvasSpotDetail');
-        offcanvas.dataset.bsSpotId = spotID;
+    detailSpot = detailSpot[0];
+    console.log(detailSpot);
 
-        // update offcanvas header
-        const offcanvasHeader = offcanvas.querySelector('.offcanvas-header');
-        offcanvasHeader.querySelector('img').src = detailSpot.spotImage[0];
-        offcanvasHeader.querySelector('#offcanvasSpotDetailLabel').textContent = detailSpot.spotName;
+    // attach data to offcanvas
+    const offcanvas = document.getElementById('offcanvasSpotDetail');
+    offcanvas.dataset.bsSpotId = spotID;
 
-        // update info tab pane
-        const infoTabPane = offcanvas.querySelector('#info-tab-pane');
-        const infoHTML = `<p>Địa chỉ: <b>${detailSpot.address}</b></p>
+    // update offcanvas header
+    const offcanvasHeader = offcanvas.querySelector('.offcanvas-header');
+    offcanvasHeader.querySelector('img').src = detailSpot.spotImage[0];
+    offcanvasHeader.querySelector('#offcanvasSpotDetailLabel').textContent = detailSpot.spotName;
+
+    const pathname = window.location.pathname;
+    console.log(pathname);
+
+    // update info tab pane
+    const infoTabPane = offcanvas.querySelector('#info-tab-pane');
+    const infoHTML = `<p>Địa chỉ: <b>${detailSpot.address}</b></p>
       <p>Loại hình: <b>${detailSpot.adsFormName}</b></p>
       <p>Hình thức: <b>${detailSpot.spotTypeName} </b></p>
       <p class="text-uppercase fw-bold fst-italic">${detailSpot.planned}</p>
       <div class="options">
-            <a href="spot-detail.html?id=${detailSpot.spotID}" class="btn btn-icon" role="button">
+            <a href="${pathname}/ads/${detailSpot.spotID}?category=spot" class="btn btn-icon" role="button">
               <i class="bi bi-info-circle"></i>
             </a>
-            <a href="report-create.html?id=${detailSpot.spotID}" class="btn btn-outline-danger">
-              <i class="bi bi-exclamation-octagon"></i>
-              Báo cáo vi phạm
-            </a>
           </div>`;
-        infoTabPane.innerHTML = infoHTML;
+    infoTabPane.innerHTML = infoHTML;
 
-        // update ads tab pane
-        const adsTabPane = offcanvas.querySelector('#ads-tab-pane');
-        const adsHTML = detailSpot.boards.map(ad => `<div class="list-group-item list-group-item-action">
+    // update ads tab pane
+    const adsTabPane = offcanvas.querySelector('#ads-tab-pane');
+    const adsHTML = detailSpot.boards.map(ad => `<div class="list-group-item list-group-item-action">
       <h5 class="mb-1 fw-semibold">${ad.boardType}</h5>
       <small>${detailSpot.address}</small>
       <p class="mb-1">Kích thước: <b>${ad.boardSize}m</b></p>
@@ -165,72 +164,71 @@
       <p class="mb-1">Hình thức: <b>${detailSpot.adsFormName}</b></p>
       <p class="mb-1">Loại hình: <b>${detailSpot.spotTypeName}</b></p>
       <div class="options">
-        <a href="board-detail.html?id=${ad.boardID}" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>
-				<a href="report-detail.html?id=${ad.boardID}" class="btn btn-outline-danger" role="button"><i class="bi bi-exclamation-octagon"></i> Báo cáo vi phạm</a>
+        <a href="${pathname}/ads/${ad.boardID}?category=board" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>
       </div>
       </div>`);
-        // check if adsHTML is empty hide ads tab pane, also hide ads toggle
-        if (adsHTML.length == 0) {
-            console.log('empty')
-            adsTabPane.classList.add('d-none');
-            document.getElementById('ads-tab').parentElement.classList.add('d-none');
-        } else {
-            adsTabPane.innerHTML = '';
-            adsTabPane.classList.remove('d-none');
-            document.getElementById('ads-tab').parentElement.classList.remove('d-none');
-        }
+    // check if adsHTML is empty hide ads tab pane, also hide ads toggle
+    if (adsHTML.length === 0) {
+      console.log('empty')
+      adsTabPane.classList.add('d-none');
+      document.getElementById('ads-tab').parentElement.classList.add('d-none');
+    } else {
+      adsTabPane.innerHTML = '';
+      adsTabPane.classList.remove('d-none');
+      document.getElementById('ads-tab').parentElement.classList.remove('d-none');
+    }
 
-        adsHTML.forEach(html => {
-            let newItem = new DOMParser().parseFromString(html, 'text/html').body.firstChild;
-            adsTabPane.appendChild(newItem);
-        });
+    adsHTML.forEach(html => {
+      let newItem = new DOMParser().parseFromString(html, 'text/html').body.firstChild;
+      adsTabPane.appendChild(newItem);
+    });
 
-        // update report tab pane
-        // combine report of spot and report of boards
+    // update report tab pane
+    // combine report of spot and report of boards
 
-        let reports = detailSpot.reports;
-        detailSpot.boards.forEach(board => {
-            reports = reports.concat(board.reports);
-        });
+    let reports = detailSpot.reports;
+    detailSpot.boards.forEach(board => {
+      reports = reports.concat(board.reports);
+    });
 
-        // sort report by sendTimee
-        reports = reports.sort((a, b) => a.sendTime.localeCompare(b.sendTime));
-        console.log(reports);
+    // sort report by sendTime
+    reports = reports.sort((a, b) => a.sendTime.localeCompare(b.sendTime));
+    console.log(reports);
 
-        const reportTabPane = offcanvas.querySelector('#report-tab-pane');
-        let reportHTML = reports.map(report => `<div class="list-group-item list-group-item-action position-relative">
+    const reportTabPane = offcanvas.querySelector('#report-tab-pane');
+    let reportHTML = reports.map(report => `<div class="list-group-item list-group-item-action position-relative">
       <h5 class="mb-1 fw-semibold">${report.reportType}</h5>
       <p class="mb-1">${report.reporterName}</p>
       <p class="mb-1">Ngày gửi: <b>${formatter.format(new Date(report.sendTime))}</b></p>
       <p class="mb-1">Tình trạng: <b>${report.status ? 'Đã xử lý' : 'Chưa xử lý'}</b></p>
       <div class="options">
-        <a href="report-detail.html?id=${report.reportID}" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>
+        <a href="${pathname}/reports/${report.reportID}" class="btn btn-icon position-absolute top-0 end-0 me-3" role="button"><i class="bi bi-info-circle"></i></a>
       </div>
       </div>`);
 
-        // check if reportHTML is empty hide report tab pane, also hide report toggle
-        if (reportHTML.length == 0) {
-            console.log('empty')
-            reportTabPane.classList.add('d-none');
-            document.getElementById('report-tab').parentElement.classList.add('d-none');
-        } else {
-            reportTabPane.innerHTML = '';
-            reportTabPane.classList.remove('d-none');
-            document.getElementById('report-tab').parentElement.classList.remove('d-none');
-        }
+    // check if reportHTML is empty hide report tab pane, also hide report toggle
+    if (reportHTML.length === 0) {
+      console.log('empty')
+      reportTabPane.classList.add('d-none');
+      document.getElementById('report-tab').parentElement.classList.add('d-none');
+    } else {
+      reportTabPane.innerHTML = '';
+      reportTabPane.classList.remove('d-none');
+      document.getElementById('report-tab').parentElement.classList.remove('d-none');
+    }
 
-        reportHTML.forEach(html => {
-            let newItem = new DOMParser().parseFromString(html, 'text/html').body.firstChild;
-            reportTabPane.appendChild(newItem);
-        });
-
-
-        setupData = true;
-        // trigger this canvas again
-        const offcanvasBS = new bootstrap.Offcanvas(offcanvas);
-        offcanvasBS.show();
-        console.log('done');
+    reportHTML.forEach(html => {
+      let newItem = new DOMParser().parseFromString(html, 'text/html').body.firstChild;
+      reportTabPane.appendChild(newItem);
     });
+
+
+    setupData = true;
+    // trigger this canvas again
+    const offcanvasBS = new bootstrap.Offcanvas(offcanvas);
+    offcanvasBS.show();
+    console.log('done');
+  });
 </script>
 
 </body>
