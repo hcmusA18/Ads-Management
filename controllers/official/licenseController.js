@@ -4,6 +4,7 @@ import { create, getByUsername, getByID } from '../../services/licensingRequestS
 
 const getDataByRole = async (role, username) => {
 	let data = await getByUsername(username);
+	console.log(JSON.stringify(data, null, 2));
 	data = data.map((item) => {
 		const {requestID, spotID, wardName, companyName, startDate, endDate, status} = item.toObject();
 		const commonData = {
@@ -17,7 +18,7 @@ const getDataByRole = async (role, username) => {
 		return role === 'quan' ? { ...commonData, ward: wardName } : { ...commonData }
 	});
 
-	return {tableData: data, checkboxHeader: role === 'quan'? data[0].ward : null};
+	return {tableData: data, checkboxHeader: role === 'quan'? data.length ? data[0].ward : null : null};
 }
 
 const getTableHeadsByRole = (role) => role === 'quan' ?
