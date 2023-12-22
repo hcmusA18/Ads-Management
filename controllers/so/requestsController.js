@@ -60,15 +60,15 @@ controller.show = async (req, res) => {
 	};
 
 	tableData.forEach(entry => {
-		if(entry.status == 'Đang chờ duyệt') {
+		if(entry.status === 'Đang chờ duyệt') {
 			statusCnt['waiting']++;
 		}
 
-		if(entry.status == 'Đã duyệt') {
+		if(entry.status === 'Đã duyệt') {
 			statusCnt['done']++;
 		}
 
-		if(entry.status == 'Đã từ chối') {
+		if(entry.status === 'Đã từ chối') {
 			statusCnt['decline']++;
 		}
 	});
@@ -91,21 +91,30 @@ controller.showDetail = async (req, res) => {
 		case 'license':
 			console.log('license');
 			data = await licensingRequestService.getByID(id);
-			// console.log(data);
-			break;
+			return res.render('./so/request-detail', {title, toolbars, id: req.params.id, ...data});
 		case 'modify':
 			console.log('modify');
 			data = await editRequestService.getByID(id);
-			// console.log(data);
-			break;
+			const type = data.objectID.startsWith('DD') ? 'spot' : 'board';
+			if (data.requestTime !== undefined) {
+				data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
+			}
+			return res.render('./so/edit-request-detail', {title, toolbars, id: req.params.id, type, ...data});
 	}
 
-	const type = data.objectID.startsWith('DD') ? 'spot' : 'board';
-	if (data.requestTime) {
-		data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
-	}
-	
-	return res.render('./so/edit-request-detail', {title, toolbars, id: req.params.id, type, ...data});
+	// console.log(data);
+	// let type = '';
+	// if (category === 'license') {
+	// 	type = 'spot';
+	// }
+	// else {
+	// 	type = data.objectID.startsWith('DD') ? 'spot' : 'board';
+	// }
+	// if (data.requestTime !== undefined) {
+	// 	data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
+	// }
+	//
+	// return res.render('./so/edit-request-detail', {title, toolbars, id: req.params.id, type, ...data});
 }
 
 controller.requestProcessing = async (req, res) => {
