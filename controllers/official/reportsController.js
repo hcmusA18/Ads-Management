@@ -97,7 +97,7 @@ const showDetail = async (req, res) => {
 	let title = role === 'quan' ? 'Quận - Chi tiết báo cáo vi phạm' : 'Phường - Chi tiết báo cáo vi phạm';
 
 	const officerName = req.user.username;
-	console.log(officerName);
+	// console.log(officerName);
 
 	const data = {
 		id: dataFetch.reportID,

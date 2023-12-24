@@ -52,7 +52,7 @@
                     
 
                     <% if(state == 0) { %>
-                      <select class="form-select" aria-label="Default select example" id="state-baocao" >
+                      <select class="form-select" aria-label="Default select example" id="state-baocao" disabled>
                         <option selected value="0">Đang xử lí</option>
                         <option value="1">Đã xử lí</option>
                       </select>
@@ -141,9 +141,19 @@
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col hinhanh-mhoa">
                     <label for="nd-baocao1" style="margin-bottom: 6px">Hình ảnh minh họa</label>
-                    <div class="d-flex flex-row" style="gap: 20px">
-                      <img src="<%- imgUrls[0] %>" alt="">
-                      <img src="<%- imgUrls[1] %>" alt="">
+                    <div class="d-flex flex-row row" style="">
+                      <% if(imgUrls[1]) { %>
+                        <div class="col-md-6 custom-col">
+                          <img src="<%- imgUrls[0] %>" alt=""  style="height: 350px; width: 100%">
+                        </div>
+                        <div class="col-md-6 custom-col">
+                          <img src="<%- imgUrls[1] %>" alt=""  style="height: 350px; width: 100%">
+                        </div>
+                      <% } else { %>  
+                        <div class="col-md-12 custom-col">
+                          <img src="<%- imgUrls[0] %>" alt=""  style="height: 350px; width: 50%">
+                        </div>
+                      <% } %>   
                     </div>
                   </div>
                 </div>
@@ -165,18 +175,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="/js/ChitietBC.js"></script>
     <script>
-      // function confirmChange() {
-      //   const status = document.getElementById("state-baocao").value;
-      //   const solution = document.getElementById("sol-baocao1").value;
-      //   console.log(status);
-      //   if (status === '0' || solution.trim() === '') {
-      //       // Show the alert
-      //       $('#errorAlert').removeClass("fade").addClass("show");
-      //   } else {
-      //       // Perform other actions if the condition is not met
-      //       console.log("Change confirmed successfully");
-      //   }
-      // }
+      const solutionField = document.getElementById('sol-baocao1')
+      const statusField = document.getElementById("state-baocao")
+      solutionField.addEventListener('change', () => {
+        if(solutionField.value.trim() == ''){
+          statusField.value = 0;
+        }
+        else {
+          statusField.value = 1;
+        }
+      })
+
       const alertPlaceholder = document.getElementById('alertConfirm')
       const appendAlert = (message, type) => {
         const wrapper = document.createElement('div')
@@ -197,7 +206,7 @@
           const solution = document.getElementById("sol-baocao1").value;
           // console.log(status);
           if (status === '0' || solution.trim() === '') {
-            appendAlert('VUI LÒNG XỬ LÝ BÁO CÁO VI PHẠM! (Trạng thái và Cách thức xử lí)', 'danger')
+            appendAlert('Vui lòng nêu cách thức xử lí trước khi xác nhận!', 'danger')
           } else {
             updateReport(status, solution);
           }
@@ -211,7 +220,7 @@
         const role = JSON.parse('<%- JSON.stringify(role) %>');
         const officerName = JSON.parse('<%- JSON.stringify(officerName) %>');
 
-        console.log(officerName);
+        // console.log(officerName);
 
         const dataToUpdate = {
           status: status,
