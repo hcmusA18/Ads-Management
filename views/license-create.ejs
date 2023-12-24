@@ -209,6 +209,19 @@
       endDate: document.getElementById('endDate').value,
       officerUsername: '<%= user.username %>'
     }
+
+    if(data.spotID == '' || data.boardType == '' || data.quantity == '' 
+            || data.height == '' || data.width == '' 
+            || data.adsImages == '' || parseInt(data.quantity) > 10
+            || parseFloat(data.height) > 100 || parseFloat(data.width) > 100
+            || data.content == '' || data.companyName == '' || data.companyPhone == ''
+            || data.companyEmail == '' || data.companyAddress == '' || data.startDate == ''
+            || data.endDate == '')
+    {
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
     const url = '<%= url %>';
     const requestUrl = url.replace('/create', '');
 
@@ -256,6 +269,13 @@
       spotAddressInput.value = spot.address;
     }
   })
+
+  document.querySelectorAll('.btn-close').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.target.parentElement.hidden = true;
+        });
+    });
 </script>
 </body>
 </html>

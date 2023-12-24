@@ -316,6 +316,14 @@ export const getSpotsByWardID = async (wardID) => {
       },
       {
         $lookup: {
+          from: 'districts',
+          localField: 'districtID',
+          foreignField: 'districtID',
+          as: 'district',
+        },
+      },
+      {
+        $lookup: {
           from: 'spottypes',
           localField: 'spotType',
           foreignField: 'typeID',
@@ -333,6 +341,12 @@ export const getSpotsByWardID = async (wardID) => {
       {
         $unwind: {
           path: '$ward',
+          preserveNullAndEmptyArrays: true,
+        }
+      },
+      {
+        $unwind: {
+          path: '$district',
           preserveNullAndEmptyArrays: true,
         }
       },
@@ -357,6 +371,7 @@ export const getSpotsByWardID = async (wardID) => {
           adsForm: 1,
           address: 1,
           districtID: 1,
+          districtName: '$district.districtName',
           wardID: 1,
           wardName: '$ward.wardName',
           adsFormName: '$adsforms.formName',
