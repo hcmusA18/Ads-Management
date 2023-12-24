@@ -121,37 +121,45 @@
                 <!-- Rows 4, 5, 6: 1 column each -->
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col">
-                    <label for="nd-baocao" style="margin-bottom: 6px">Nội dung báo cáo</label>
-                    <textarea class="form-control" id="nd-baocao" disabled
+                    <label for="content" style="margin-bottom: 6px">Nội dung báo cáo</label>
+                    <textarea class="form-control" id="content" disabled
                       style="min-height: 100px"><%- content %></textarea>
                   </div>
+                  <script>
+                    let content = document.getElementById('content');
+                    content = content.value.replace(/\\n/g, "<br />");
+                    const reportInfoHTML = new DOMParser().parseFromString(content, "text/html").body.firstElementChild;
+                    if (reportInfoHTML && reportInfoHTML.innerHTML)
+                      document.getElementById("content").innerHTML = reportInfoHTML.innerHTML;
+                    else document.getElementById("content").innerText = content;
+                  </script>
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col">
                     <div class="col-md-12 custom-col">
-                      <label for="nd-baocao1" style="margin-bottom: 6px">Cách thức xử lí</label>
+                      <label for="solution" style="margin-bottom: 6px">Cách thức xử lí</label>
                       <% if(state == 0) { %>
-                        <textarea class="form-control" id="sol-baocao1"><%- solution %></textarea>
+                        <textarea class="form-control" id="solution"><%- solution %></textarea>
                       <% } else { %>
-                        <textarea class="form-control" id="sol-baocao1" disabled><%- solution %></textarea>
+                        <textarea class="form-control" id="solution" disabled><%- solution %></textarea>
                       <% } %>
                     </div>
                   </div>
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col hinhanh-mhoa">
-                    <label for="nd-baocao1" style="margin-bottom: 6px">Hình ảnh minh họa</label>
+                    <label for="illustrate" style="margin-bottom: 6px">Hình ảnh minh họa</label>
                     <div class="d-flex flex-row row" style="">
                       <% if(imgUrls[1]) { %>
                         <div class="col-md-6 custom-col">
-                          <img src="<%- imgUrls[0] %>" alt=""  style="height: 350px; width: 100%">
+                          <img src="<%- imgUrls[0] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">>
                         </div>
                         <div class="col-md-6 custom-col">
-                          <img src="<%- imgUrls[1] %>" alt=""  style="height: 350px; width: 100%">
+                          <img src="<%- imgUrls[1] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">>
                         </div>
                       <% } else { %>  
                         <div class="col-md-12 custom-col">
-                          <img src="<%- imgUrls[0] %>" alt=""  style="height: 350px; width: 50%">
+                          <img src="<%- imgUrls[0] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">>
                         </div>
                       <% } %>   
                     </div>
