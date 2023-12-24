@@ -10,7 +10,7 @@
 
 <body>
 <header></header>
-<main class="container-fluid d-flex bg-light">
+<main class="container-fluid d-flex bg-light" style="min-height: 100vh">
     <div class="row"><%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %></div>
     <div class="container-fluid vw-100 pt-1">
         <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
@@ -25,18 +25,6 @@
 
             <!-- Content -->
             <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4 gap-1">
-                <!-- Carousel -->
-                <!--
-                const imgUrls = [
-                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201',
-                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202',
-                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203',
-                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204',
-                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
-                    'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
-                ]
-                -->
-                <!-- include("./partials/carousel.ejs", {imgUrls: imgUrls}); -->
                 <!-- Image chooser -->
                 <div class="container-fluid px-0">
                     <div class="row position-relative h-100">
