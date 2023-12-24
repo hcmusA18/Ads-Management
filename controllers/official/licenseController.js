@@ -1,10 +1,13 @@
 import {createToolbar} from './utilities.js';
-import { getAllSpots, getSpotByID } from '../../services/spotService.js'
+import { getSpotsByDistrictID, getSpotsByWardID, getSpotByID } from '../../services/spotService.js'
 import { create, getByUsername, getByID } from '../../services/licensingRequestService.js'
+import { getRoleByUsername } from '../../services/officerService.js';
+import { getAllBoardTypes } from '../../services/boardTypeService.js';
+import * as IDGenerator from '../../services/IDGenerator.js';
 
 const getDataByRole = async (role, username) => {
 	let data = await getByUsername(username);
-	console.log(JSON.stringify(data, null, 2));
+	// console.log(JSON.stringify(data, null, 2));
 	data = data.map((item) => {
 		const {requestID, spotID, wardName, companyName, startDate, endDate, status} = item.toObject();
 		const commonData = {
@@ -45,31 +48,9 @@ const showDetail = async (req, res, detail = false) => {
 	let title = ` - ${detail ? 'Chi tiết' : 'Tạo'} yêu cầu cấp phép quảng cáo`;
 	title = (role === 'quan' ? 'Quận' : 'Phường') + title;
 
-	// const data = {
-	// 	spotId: 'DD' + String(Math.floor(Math.random() * 100000)).padStart(5, '0'),
-	// 	spotAddr: '227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP.HCM',
-	// 	company: 'Công ty cổ phần CivicAds',
-	// 	phone: '0123456789',
-	// 	email: 'civicads@gmail.com',
-	// 	compAddr: '229 Nguyễn Văn Trỗi, Phường 4, Quận 1, TP.HCM',
-	// 	startTime: '01/01/2021',
-	// 	endTime: '01/01/2023',
-	// 	content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam eaque ipsa ut, possimus repellat, sint iure dolor libero, voluptatibus non incidunt atque. Quae neque nostrum fugit ad quia incidunt doloribus!',
-	// 	other: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa quod perspiciatis numquam soluta adipisci aperiam magni? Iure laborum esse aperiam totam, laboriosam voluptatibus neque perferendis quas fugit voluptatem laudantium expedita. Natus veritatis illo harum voluptas deleniti, voluptate possimus hic eveniet itaque sunt dolor adipisci corporis? Quisquam perferendis exercitationem quas. Ab.',
-	// 	state: 'Chờ xử lý',
-	// 	imgUrls: [
-	// 		'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201',
-	// 		'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202',
-	// 		'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203',
-	// 		'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204',
-	// 		'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
-	// 		'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
-	// 	],
-	// }
-
 	let data = await getByID(req.params.id);
 	let spotDetail = await getSpotByID(data.spotID);
-	console.log(JSON.stringify(spotDetail, null, 2));
+	// console.log(JSON.stringify(spotDetail, null, 2));
 	data = {
 		spotId: data.spotID,
 		spotAddr: `${spotDetail[0].address}, Phường ${spotDetail[0].wardName}, Quận ${spotDetail[0].districtName}`,
@@ -99,38 +80,41 @@ const showCreate = async (req, res) => {
 	let title = ' - Tạo yêu cầu cấp phép quảng cáo';
 	title = (role === 'quan' ? 'Quận' : 'Phường') + title;
 
-	//get spots
-	let spots = await getAllSpots();
+	const officerRole = await getRoleByUsername(req.user.username);
+	// console.log(officerRole);
+	let spots = {};
+	if(role === 'quan'){
+		spots = await getSpotsByDistrictID(officerRole);
+	} else {
+		spots = await getSpotsByWardID(officerRole);
+	}
+
+	// console.log(spots);
+
 	spots = spots.map(spot => {
 		const {spotID, spotName, spotType, address, districtID, wardID, districtName, wardName, planned} = spot;
 		return {
 			id: spotID,
 			name: spotName,
-			type: spotType,
 			address: `${address}, Phường ${wardName}, Quận ${districtName}`,
-			districtId: districtID,
-			wardId: wardID,
-			districtName: districtName,
-			wardName: wardName,
-			planned: planned,
 		}
 	});
-	// console.log(JSON.stringify(spots, null, 2));
+	
+	let boardtypes = await getAllBoardTypes();
 
-	res.render('license-create', {url: req.originalUrl, title, spots, toolbars: createToolbar(role)});
+	res.render('license-create', {url: req.originalUrl, title, boardtypes, spots, toolbars: createToolbar(role)});
 }
 
 const add = async (req, res) => {
 	try {
 		const data = req.body;
-		let { message } = await create(data);
-		console.log(`Message: ${message}`);
-		req.flash('success', message);
-		return res.redirect(req.originalUrl);
+		data.requestID = await IDGenerator.getNewID('LicensingRequest');
+		data.status = 0;
+		await create(data);
+		res.status(200).json({ message: 'Bảng quảng cáo đã được thêm thành công' })
 	} catch (error) {
-		console.log(`Error adding new request: ${error.message}`);
-		req.flash('error', error.message);
-		return res.redirect(req.originalUrl);
+		console.error(error)
+    	res.status(500).json({ message: 'Lỗi server' })
 	}
 }
 

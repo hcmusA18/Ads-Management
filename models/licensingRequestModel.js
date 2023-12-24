@@ -13,6 +13,22 @@ const LicensingRequestSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
+    boardType: {
+        type: String,
+        require: true,
+    },
+    height: {
+        type: Number,
+        required: true
+    },
+    width: {
+        type: Number,
+        required: true
+    },
+    quantity: {
+        type: Number,
+        require: true,
+    },
     companyName: {
         type: String,
         required: true
@@ -47,18 +63,6 @@ const LicensingRequestSchema = new mongoose.Schema({
     content: {
         type: String,
     },
-    reason: {
-        type: String,
-    },
-});
-
-LicensingRequestSchema.pre('save', function (next) {
-    const request = this;
-    // generate requestID based on spotID
-    request.requestID = 'CP' + (request.spotID.slice(2) + Math.floor(Math.random() * 100000)).toString().padStart(5, '0');
-    request.status = 0;
-    request.updatedAt = Date.now();
-    next();
 });
 
 const LicensingRequest = mongoose.model('licensingRequests', LicensingRequestSchema);
