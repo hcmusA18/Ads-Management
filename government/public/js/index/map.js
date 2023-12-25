@@ -1,319 +1,362 @@
 /* eslint-disable no-undef */
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg'
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg';
 
-
-var mapboxScript = document.createElement('script');
-mapboxScript.setAttribute('src', 'https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js');
+const mapboxVersion = 'v2.9.1';
+const mapboxScript = document.createElement('script');
+mapboxScript.setAttribute('src', `https://api.mapbox.com/mapbox-gl-js/${mapboxVersion}/mapbox-gl.js`);
 document.head.appendChild(mapboxScript);
 
-function addAdvertisementSource(map) {
-	map.loadImage(
-			'/images/blue_elip.png',
-			(error, image) => {
-				if (error) throw error;
-				map.addImage('quang-cao', image);
-				// Add a GeoJSON source with 2 points
-				map.addSource('diem-dat', {
-					'type': 'geojson',
-					'data': {
-						'type': 'FeatureCollection',
-						'features': [
-							{
-								// feature for Mapbox DC
-								'type': 'Feature',
-								'geometry': {
-									'type': 'Point',
-									'coordinates': [106.694444, 10.782402]
-								},
-								'properties': {
-									'title': 'Đại học Kiến trúc TP.HCM'
-								}
-							},
-							{
-								'type': 'Feature',
-								'properties': {
-									'title': 'Dinh Độc Lập',
-									'description': 'Là Dinh Độc Lập'
-								},
-								'geometry': {
-									'coordinates': [106.695316, 10.776984],
-									'type': 'Point'
-								}
-							},
-							{
-								'type': 'Feature',
-								'properties': {
-									'title': 'Hồ Con rùa',
-									'description': 'Hồ Con rùa'
-								},
-								'geometry': {
-									'coordinates': [106.695917, 10.782689],
-									'type': 'Point'
-								}
-							},
-							{
-								'type': 'Feature',
-								'properties': {
-									'title': 'Công viên Tao Đàn',
-									'description': 'Công viên Tao Đàn'
-								},
-								'geometry': {
-									'coordinates': [106.691357, 10.772957],
-									'type': 'Point'
-								}
-							},
-							{
-								'type': 'Feature',
-								'properties': {
-									'title': 'Nhà Văn hoá Thanh niên',
-									'description': 'Nhà Văn hoá Thanh niên'
-								},
-								'geometry': {
-									'coordinates': [106.697551, 10.78163],
-									'type': 'Point'
-								}
-							}
-						]
-					}
-				});
+const COLORS = {
+  yellow: '#C7BA30',
+  red: '#FF3C3C',
+  blue: '#3C77FF'
+};
 
-				// Add a symbol layer
-				map.addLayer({
-					'id': 'quang-cao',
-					'type': 'symbol',
-					'source': 'diem-dat',
-					'layout': {
-						'icon-image': 'quang-cao',
-						'icon-size': 0.5,
-						// get the title name from the source's "title" property
-						'text-field': ['get', 'title'],
-						'text-font': [
-							'Montserrat SemiBold',
-							'Arial Unicode MS Bold'
-						],
-						// 'text-offset': [0, 1.25],
-						'text-anchor': 'top',
-						'icon-anchor': 'bottom'
-					},
-					'visibility': 'visible'
-				});
-			}
-	);
-	map.on('click', 'quang-cao', function (e) {
-		map.flyTo({
-			center: e.features[0].geometry.coordinates,
-			essential: true // this animation is considered essential with respect to prefers-reduced-motion
-		});
+const userData = document.getElementById('user-data').innerText;
 
-		// toggle #offcanvas element
-		var offcanvas = document.getElementById('offcanvasRight');
-		var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-		bsOffcanvas.toggle();
-	});
-
-	map.on('mouseenter', 'quang-cao', function () {
-		map.getCanvas().style.cursor = 'pointer';
-	});
-
-	map.on('mouseleave', 'quang-cao', function () {
-		map.getCanvas().style.cursor = '';
-	});
+function generateSpotHTML(spot) {
+  // console.log(spot.spotID);
+  return `<div class="card">
+            <img src="${spot.spotImage[0]}" class="card-img-top img-fluid" alt="...">
+            <div class="card-body">
+              <h6 class="card-title fw-bold">${spot.spotName}</h6>
+              <p class="card-text">${spot.spotTypeName}</p>
+              <p class="card-text">${spot.address}</p>
+              <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
+              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
+              <a href="/so/ads/new?category=board&spotID=${spot.spotID}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm bảng quảng cáo</button></a>
+            </div>
+          </div>`;
 }
 
-function addReportSource(map) {
-	map.loadImage(
-			'/images/red_elip.png',
-			(error, image) => {
-				if (error) throw error;
-				map.addImage('bao-cao', image);
-				map.addSource('diem-bao-cao', {
-					type: 'geojson',
-					data: {
-						'type': 'FeatureCollection',
-						'features': [
-							{
-								// feature for Mapbox SF
-								'type': 'Feature',
-								'geometry': {
-									'type': 'Point',
-									'coordinates': [106.694863, 10.783003]
-								},
-								'properties': {
-									'title': 'Đại học Kinh tế TP.HCM'
-								}
-							},
-						]
-					}
-				});
+async function getSpotsData() {
+  let hostName = '';
+  if (window.location.hostname.includes('localhost')) {
+    hostName = 'http://localhost:8080/';
+  } else {
+    hostName = 'https://ads-manager-1aai.onrender.com/';
+  }
 
-				// Add a symbol layer
-				map.addLayer({
-					'id': 'bao-cao',
-					'type': 'symbol',
-					'source': 'diem-bao-cao',
-					'layout': {
-						'icon-image': 'bao-cao',
-						'icon-size': 0.5,
-						// get the title name from the source's "title" property
-						'text-field': ['get', 'title'],
-						'text-font': [
-							'Montserrat SemiBold',
-							'Arial Unicode MS Bold'
-						],
-						// 'text-offset': [0, 1.25],
-						'text-anchor': 'top',
-						'icon-anchor': 'bottom'
-					},
-					'visibility': 'visible'
-				});
-			}
-	);
+  try {
+    const districtID = userData.split(',')[0];
+    const wardID = userData.split(',')[1];
 
-	map.on('click', 'bao-cao', function (e) {
-		map.flyTo({
-			center: e.features[0].geometry.coordinates,
-			essential: true // this animation is considered essential with respect to prefers-reduced-motion
-		});
+    console.log(districtID, wardID);
 
-		// toggle #offcanvas element
-		var offcanvas = document.getElementById('offcanvasRight');
-		var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-		bsOffcanvas.toggle();
-	});
+    const spots = await fetch(`${hostName}api/spots?districtID=${districtID}&wardID=${wardID}`, {
+      method: 'GET',
+      headers: new Headers(),
+      mode: 'cors'
+    }).then((res) => res.json());
+    const spotsGeojson = {
+      type: 'FeatureCollection',
+      features: []
+    };
 
-	map.on('mouseenter', 'bao-cao', function () {
-		map.getCanvas().style.cursor = 'pointer';
-	});
+    Object.values(spots).forEach((spot) => {
+      spotsGeojson.features.push({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [spot.longitude, spot.latitude]
+        },
+        properties: {
+          ...spot,
+          description: generateSpotHTML(spot)
+        }
+      });
+    });
 
-	map.on('mouseleave', 'bao-cao', function () {
-		map.getCanvas().style.cursor = '';
-	});
+    return spotsGeojson;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to get spots data');
+  }
 }
 
-function addSource(map) {
-	addAdvertisementSource(map);
-	addReportSource(map);
+function createMap() {
+  mapboxgl.accessToken = MAPBOX_TOKEN;
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12', // stylesheet location
+    center: [106.695249, 10.777009],
+    zoom: 12,
+    hash: true,
+    locale: 'vi-VN',
+    language: 'vi-VN'
+  });
+  map.dragRotate.disable();
+  map.touchZoomRotate.disableRotation();
+
+  const geolocation = new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true
+    },
+    trackUserLocation: true,
+    showAccuracyCircle: true,
+    showUserLocation: true
+  });
+  map.addControl(geolocation, 'bottom-right');
+  map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+  map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+  map.addControl(
+    new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+      marker: false,
+      placeholder: 'Tìm kiếm địa điểm',
+      language: 'vi-VN',
+      countries: 'vn'
+    }),
+    'top-left'
+  );
+
+  return map;
 }
 
-function attachToggle(toggleId, layerId, map) {
-	if (!map.getLayer(layerId)) {
-		throw new Error(`Layer ${layerId} does not exist on map.`);
-	}
-	const toggle = document.getElementById(toggleId);
+async function addSpotLayer(map, spotsGeojson) {
+  map.addSource('spots', {
+    type: 'geojson',
+    data: spotsGeojson,
+    cluster: true,
+    clusterMaxZoom: 14, // Max zoom to cluster points on
+    clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+    clusterProperties: {
+      hasReport: ['any', ['get', 'hasReport']],
+      planned: ['any', ['==', ['get', 'planned'], 'Đã quy hoạch']]
+    }
+  });
 
-	if (toggle == null) {
-		throw new Error(`Toggle ${toggleId} does not exist.`);
-	}
+  // convert circleColor to rgb
+  // const rgbColor = hexToRgb(circleColor);
 
-	toggle.addEventListener('click', () => {
-		const clickedLayer = layerId;
-		if (toggle.checked == true) {
-			console.log(`Hiện ${clickedLayer}`);
-			map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-		} else {
-			console.log(`Ẩn ${clickedLayer}`);
-			map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-		}
-	});
+  map.addLayer({
+    id: 'cluster-spots',
+    type: 'circle',
+    source: 'spots',
+    filter: ['has', 'point_count'],
+    paint: {
+      'circle-color': [
+        'case',
+        ['==', ['get', 'hasReport'], true],
+        COLORS.red,
+        ['==', ['get', 'planned'], false],
+        COLORS.yellow,
+        COLORS.blue
+      ],
+      'circle-radius': ['step', ['get', 'point_count'], 20, 5, 30, 7, 40]
+    }
+  });
+
+  map.addLayer({
+    id: 'cluster-count-spots',
+    type: 'symbol',
+    source: 'spots',
+    filter: ['has', 'point_count'],
+    layout: {
+      'text-field': ['get', 'point_count_abbreviated'],
+      'text-font': ['Montserrat SemiBold', 'Arial Unicode MS Bold'],
+      'text-size': 12
+    }
+  });
+
+  map.addLayer({
+    id: 'unclustered-point-spots',
+    type: 'circle',
+    source: 'spots',
+    filter: ['!', ['has', 'point_count']],
+    paint: {
+      'circle-color': [
+        'case',
+        ['==', ['get', 'hasReport'], true],
+        COLORS.red,
+        ['==', ['get', 'hasAds'], true],
+        COLORS.blue,
+        ['==', ['get', 'planned'], 'Chưa quy hoạch'],
+        COLORS.yellow,
+        COLORS.blue
+      ],
+      'circle-radius': 12,
+      'circle-stroke-width': 1,
+      'circle-stroke-color': '#fff'
+    }
+  });
+
+  map.addLayer({
+    id: 'unclustered-point-label-spots',
+    type: 'symbol',
+    source: 'spots',
+    filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'hasAds'], true]],
+    layout: {
+      'text-field': 'QC',
+      'text-font': ['Montserrat SemiBold', 'Arial Unicode MS Bold'],
+      'text-size': 8
+    },
+    paint: {
+      'text-color': 'white'
+    }
+  });
+
+  map.on('click', 'cluster-spots', function(e) {
+    const features = map.queryRenderedFeatures(e.point, {
+      layers: ['cluster-spots']
+    });
+    const clusterId = features[0].properties.cluster_id;
+    map.getSource('spots').getClusterExpansionZoom(clusterId, function(err, zoom) {
+      if (err) return;
+
+      map.easeTo({
+        center: features[0].geometry.coordinates,
+        zoom: zoom
+      });
+    });
+  });
+
+  map.on('click', 'unclustered-point-spots', function(e) {
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const description = e.features[0].properties.description;
+
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to.
+    new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
+
+    map.flyTo({
+      center: e.features[0].geometry.coordinates,
+      essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+      zoom: 16
+    });
+  });
+
+  map.on('mouseenter', 'unclustered-point-spots', function() {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+  map.on('mouseleave', 'unclustered-point-spots', function() {
+    map.getCanvas().style.cursor = '';
+  });
+
+  map.on('mouseenter', 'cluster-spots', function() {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+  map.on('mouseleave', 'cluster-spots', function() {
+    map.getCanvas().style.cursor = '';
+  });
 }
 
-mapboxScript.onload = function () {
-	mapboxgl.accessToken = MAPBOX_TOKEN;
+mapboxScript.onload = async function() {
+  const map = createMap();
+  const spotsGeojson = await getSpotsData();
+  const marker = new mapboxgl.Marker({
+    color: '#F84C4C'
+  });
+  let filteredSpotsGeojson = spotsGeojson;
+  map.on('load', async () => {
+    await addSpotLayer(map, filteredSpotsGeojson);
+    applyFilter();
+  });
 
-	const marker = new mapboxgl.Marker({
-		color: '#F84C4C'
-	});
+  const toggles = document.querySelectorAll('#toggle-container input[type="checkbox"]');
+  const filterOptions = {
+    report: false,
+    planned: false,
+    ads: false,
+    all: true
+  };
 
-	const map = new mapboxgl.Map({
-		container: 'map',
-		style: 'mapbox://styles/mapbox/streets-v12',
-		center: [106.695249, 10.777009],
-		zoom: 12,
-		hash: true,
-		locale: 'vi-VN',
-		language: 'vi-VN',
-		cooperativeGestures: true,
-	});
-	map.dragRotate.disable();
-	map.touchZoomRotate.disableRotation();
+  const applyFilter = () => {
+    filteredSpotsGeojson = {
+      type: 'FeatureCollection',
+      features: spotsGeojson.features.filter((spot) => {
+        if (filterOptions['all']) {
+          return true;
+        }
+        if (!filterOptions['report'] && spot.properties.hasReport) {
+          return false;
+        }
+        if (!filterOptions['planned'] && spot.properties.planned === 'Đã quy hoạch') {
+          return false;
+        } else if (filterOptions['planned'] && spot.properties.planned === 'Chưa quy hoạch') {
+          return false;
+        }
+        if (!filterOptions['ads'] && spot.properties.hasAds) {
+          return false;
+        }
+        return true;
+      })
+    };
+    console.log('filtered');
+    map.getSource('spots').setData(filteredSpotsGeojson);
+  };
 
-	const geolocation = new mapboxgl.GeolocateControl({
-		positionOptions: {
-			enableHighAccuracy: true
-		},
-		trackUserLocation: true,
-		showAccuracyCircle: true,
-		showUserLocation: true
-	});
-	map.addControl(geolocation, 'bottom-right');
-	map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
-	map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
+  toggles.forEach((toggle) => {
+    // set default value
+    toggle.checked = filterOptions[toggle.id.split('-')[0]];
 
+    toggle.addEventListener('change', async (e) => {
+      console.log(e.target.id);
+      const key = e.target.id.split('-')[0];
 
-	const geocoder = new MapboxGeocoder({
-		accessToken: mapboxgl.accessToken,
-		mapboxgl: mapboxgl,
-		countries: 'vn',
-		language: 'vi-VN',
-		localIdeographFontFamily: '\'Montserrat\', \'sans-serif\'',
-	});
-	map.addControl(
-			geocoder,
-			'top-left'
-	);
+      if (key === 'all' && e.target.checked) {
+        toggles.forEach((toggle) => {
+          toggle.checked = false;
+          filterOptions[toggle.id.split('-')[0]] = false;
+        });
+        toggle.checked = true;
+      } else if (key !== 'all') {
+        // uncheck the all toggle
+        toggles[toggles.length - 1].checked = false;
+        filterOptions['all'] = false;
+      }
 
-	// Wait until the map has finished loading.
-	map.on('load', () => {
-		addSource(map);
-		// showPopup(map);
-	});
-	// After the last frame rendered before the map enters an "idle" state.
-	map.on('idle', () => {
-		// If these two layers were not added to the map, abort
-		if (!map.getLayer('bao-cao') || !map.getLayer('quang-cao')) {
-			return;
-		}
+      filterOptions[key] = e.target.checked;
+      console.log(filterOptions);
 
-		attachToggle('bao-cao', 'bao-cao', map);
-		attachToggle('quang-cao', 'quang-cao', map);
-	});
+      applyFilter();
+    });
+  });
 
-	map.on('click', (e) => {
-		if (map.getCanvas().style.cursor === 'pointer') {
-			return;
-		}
-		marker.setLngLat(e.lngLat).addTo(map);
+  // Hien thong tin diem bat ki
+  map.on('click', (e) => {
+    if (map.getCanvas().style.cursor === 'pointer') {
+      return;
+    }
+    marker.setLngLat(e.lngLat).addTo(map);
 
-		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+    const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
 
-		fetch(api)
-		.then(res => res.json())
-		.then(res => {
-			const coordinates = res.features[0].geometry.coordinates.slice();
-			let description = res.features[0].place_name.replace(/,\s*\d+,\s*Vietnam/, '').replace(', Ho Chi Minh City', '');
-			description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
+    fetch(api)
+      .then((res) => res.json())
+      .then((res) => {
+        const coordinates = res.features[0].geometry.coordinates.slice();
+        let description = res.features[0].place_name
+          .replace(/,\s*\d+,\s*Vietnam/, '')
+          .replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
+          .replace(/,.*Dist\.|,.*Ward\./, '');
 
-			const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+        description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
 
-			const divElement = document.createElement('div');
-			const assignBtn = document.createElement('div');
-			assignBtn.innerHTML = `<a href="/so/diemdat/new?lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
-			divElement.innerHTML = innerHtmlContent;
-			divElement.appendChild(assignBtn);
+        const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+        const divElement = document.createElement('div');
 
-			new mapboxgl.Popup({ offset: [0, -30] })
-			.setLngLat(coordinates)
-			.setDOMContent(divElement)
-			.addTo(map);
+        divElement.innerHTML = innerHtmlContent;
 
-		});
-	})
+        if (window.location.pathname.startsWith('/so')) {
+          const assignBtn = document.createElement('div');
 
-	// Change the cursor to grab when user drag the map
-	map.on('dragstart', () => {
-		map.getCanvas().style.cursor = 'move';
-	});
-	map.on('dragend', () => {
-		map.getCanvas().style.cursor = '';
-	});
-}
+          assignBtn.innerHTML = `<a href="/so/ads/new?category=spot&lng=${e.lngLat.lng}&lat=${e.lngLat.lat}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm điểm đặt mới</button></a>`;
+          divElement.appendChild(assignBtn);
+          divElement.setAttribute('class', 'p-2');
+        }
+
+        new mapboxgl.Popup({ offset: [0, -30] }).setLngLat(coordinates).setDOMContent(divElement).addTo(map);
+      });
+  });
+
+  // Change the cursor to grab when user drag the map
+  map.on('dragstart', () => {
+    map.getCanvas().style.cursor = 'move';
+  });
+  map.on('dragend', () => {
+    map.getCanvas().style.cursor = '';
+  });
+};
