@@ -14,7 +14,7 @@ export const create = async (data) => {
 export const updateByID = async (id, newData) => {
   try {
     await LicensingRequest.findOneAndUpdate(
-      { id },
+      { requestID:  id },
       { $set: newData },
     );
     return { message: 'Licensing request updated successfully' };

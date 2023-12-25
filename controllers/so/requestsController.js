@@ -1,9 +1,21 @@
 import {toolbars} from './utilities.js';
 import {licensingRequestService, editRequestService} from '../../services/requestService.js';
+import { getByID, updateByID } from '../../services/licensingRequestService.js';
+import { getBoardTypeByID } from '../../services/boardTypeService.js';
 import * as boardService from '../../services/boardService.js';
 import * as spotService from '../../services/spotService.js';
+import * as IDGenerator from '../../services/IDGenerator.js';
 
 const controller = {};
+const convertDate = (date) => {
+	const dateObject = new Date(date);
+
+	const day = dateObject.getDate().toString().padStart(2, '0');
+	const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+	const year = dateObject.getFullYear();
+
+	return `${day}/${month}/${year}`;
+}
 
 controller.show = async (req, res) => {
 	const category = req.query.category || '';
@@ -89,9 +101,36 @@ controller.showDetail = async (req, res) => {
 	// console.log(req.params);
 	switch (category){
 		case 'license':
-			console.log('license');
-			data = await licensingRequestService.getByID(id);
-			return res.render('./so/request-detail', {title, toolbars, id: req.params.id, ...data});
+			// console.log('license');
+			data = await getByID(id);
+			let spotDetail = await spotService.getSpotByID(data.spotID);
+			const boardType = await getBoardTypeByID(data.boardType);
+			// console.log(data);
+			// console.log(spotDetail);
+			data = {
+				requestID: data.requestID,
+				spotID: data.spotID,
+				name: spotDetail.spotName,
+				address: `${spotDetail.address}, Phường ${spotDetail.wardName}, Quận ${spotDetail.districtName}`,
+				company: data.companyName,
+				phone: data.companyPhone,
+				email: data.companyEmail,
+				compAddr: data.companyAddress,
+				startTime: convertDate(data.startDate),
+				endTime: convertDate(data.endDate),
+				content: data.content,
+				boardTypeID: data.boardType,
+				boardType: boardType.typeName, 
+				height: data.height,
+				width: data.width,
+				quantity: data.quantity,
+				state: data.status,
+				imgUrls: data.adsImages,
+				officerUsername: data.officerUsername,
+				ward: spotDetail.wardName,
+				district: spotDetail.districtName,
+			}
+			return res.render('./so/license-request-detail', {title, toolbars, ...data});
 		case 'modify':
 			console.log('modify');
 			data = await editRequestService.getByID(id);
@@ -101,20 +140,6 @@ controller.showDetail = async (req, res) => {
 			}
 			return res.render('./so/edit-request-detail', {title, toolbars, id: req.params.id, type, ...data});
 	}
-
-	// console.log(data);
-	// let type = '';
-	// if (category === 'license') {
-	// 	type = 'spot';
-	// }
-	// else {
-	// 	type = data.objectID.startsWith('DD') ? 'spot' : 'board';
-	// }
-	// if (data.requestTime !== undefined) {
-	// 	data.requestTime = data.requestTime.toLocaleDateString('vi-VN');
-	// }
-	//
-	// return res.render('./so/edit-request-detail', {title, toolbars, id: req.params.id, type, ...data});
 }
 
 controller.requestProcessing = async (req, res) => {
@@ -161,6 +186,26 @@ controller.requestProcessing = async (req, res) => {
 		req.flash('error', error.message);
 		return res.redirect(req.originalUrl);
 	}
+}
+
+controller.acceptLicense = async (req, res) => {
+	const data = req.body;
+	data.boardID = await IDGenerator.getNewID('Board'); 
+	// console.log(data);
+
+	try {
+		const response = await boardService.createBoard(data);
+		if(response.message.trim() == 'Board created successfully'){
+			const response1 = await updateByID(data.licensingID, {status: 1});
+			// console.log(response1);
+		}
+		res.redirect('/so/requests?category=license');
+	} catch (error) {
+		console.log(`Error sending edit request: ${error.message}`);
+		req.flash('error', error.message);
+		res.redirect('/so/requests?category=license');
+	}
+
 }
 
 export default controller;
