@@ -87,6 +87,7 @@ router.post('/requests/:id', (req, res) => {
 })
 
 router.post('/acceptlicense', (req, res) => controller.requestsController.acceptLicense(req, res));
+router.post('/rejectlicense/:id', (req, res) => controller.requestsController.rejectLicense(req, res));
 
 router.get('/assign', (req, res) => {
 	controller.assignController.show(req, res);

@@ -205,7 +205,18 @@ controller.acceptLicense = async (req, res) => {
 		req.flash('error', error.message);
 		res.redirect('/so/requests?category=license');
 	}
+}
 
+controller.rejectLicense = async (req, res) => {
+	const requestID = req.params.id;
+	try {
+		const response = await updateByID(requestID, {status: -1});
+		res.redirect('/so/requests?category=license');
+	} catch (error) {
+		console.log(`Error sending edit request: ${error.message}`);
+		req.flash('error', error.message);
+		res.redirect('/so/requests?category=license');
+	}
 }
 
 export default controller;
