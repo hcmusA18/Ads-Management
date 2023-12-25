@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title %></title>
+    <%- include("./partials/head.ejs"); %>
+    <link rel="stylesheet" href="/css/carousel.css" />
+  </head>
+
+  <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Bảng quảng cáo được tạo thành công!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+  
+  <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Có lỗi xảy ra khi tạo bảng quảng cáo!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+  
+  <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
+    <button type="button" class="btn-close"></button>
+  </div>
+
+  <body>
+    <header></header>
+    <main class="container-fluid d-flex bg-light">
+      <div class="row"><%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <%- include("./partials/profile_card.ejs"); %>
+          <!-- Back button -->
+          <%- include("./partials/back_button.ejs"); %>
+          <!-- Title -->
+          <div class="d-flex flex-row align-items-center" style="gap: 10px">
+            <h1 class="fw-bolder m-0">THÊM BẢNG QUẢNG CÁO</h1>
+          </div>
+
+          <!-- Content -->
+          <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
+            <!-- Image chooser -->
+            <div class="container-fluid px-0">
+              <div class="row position-relative h-100">
+                <!-- Badge -->
+                <div
+                  class="badge border border-dark top-0 start-0 translate-middle position-absolute rounded-pill bg-white text-center"
+                  style="width: 50px; height:50px;" hidden>
+                  <span class="d-inline-flex align-items-center justify-content-center text-dark fs-5 fw-bold h-100 w-100"
+                    id="badge-text">1</span>
+                </div>
+                <label for="input-image" id="drop-area" class="bg-white rounded-5 p-3">
+                  <input type="file" id="input-image" accept="image/*" hidden multiple />
+                  <div id="img-view" class="d-flex flex-column align-items-center justify-content-center text-center rounded-4"
+                    style="border: 2px dashed #bbb5ff; width: 100%; height: 100%; background: #f7f8ff center; background-size: cover;">
+                    <img src="/images/upload-icon.png" alt="Ảnh xem trước" class="img-fluid" />
+                    <p class="text-black">Kéo và thả hình vào đây <br>để tải ảnh lên</p>
+                    <span class="d-block fw-lighter fs-6 text-body-secondary">Tải ảnh bất kì từ thiết bị</span>
+                  </div>
+                </label>
+              </div>
+              <script defer src="/js/uploadImage.js"></script>
+            </div>
+            <div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
+              <div class="container mt-2">
+                <label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
+                  <input type="text" class="form-control" id="id-diemdat" value="<%= other.spotID %>" disabled />
+              </div>
+              <div class="container mt-2">
+                <label for="diachi" style="margin-bottom: 6px">Địa chỉ điểm đặt</label>
+                <input type="text" class="form-control" id="diachi" value="<%= other.spotAddress %>" disabled />
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="spot-ward" style="margin-bottom: 6px;">Phường</label>                  
+                  <input type="text" class="form-control" id="spot-ward" value="<%= other.spotWard %>" disabled />
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="spot-district" style="margin-bottom: 6px">Quận</label>
+                  <input type="text" class="form-control" id="spot-district" value="<%= other.spotDistrict %>" disabled />
+                </div>
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="boardTypeName" style="margin-bottom: 6px">Loại bảng</label>
+                  <input type="text" class="form-control" id="boardTypeName" list="boardTypeList" />
+                  <input type="text" class="form-control" id="boardType" hidden />
+                  <datalist id="boardTypeList" style="display: none;">
+                    <% other.boardtypes.forEach((type)=> { %>
+                      <option value="<%= type.typeName; %>"></option>
+                      <% }); %>
+                  </datalist>
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="board-quantity" style="margin-bottom: 6px">Số lượng (trụ/bảng)</label>
+                  <input type="number" class="form-control" id="board-quantity" value="" min="0" max="10" />
+                </div>
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="board-height" style="margin-bottom: 6px;">Chiều cao (m)</label>                  
+                  <input type="number" class="form-control" id="board-height" value="" min="0" max="100" step="0.01" />
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="board-width" style="margin-bottom: 6px">Chiều rộng (m)</label>
+                  <input type="number" class="form-control" id="board-width" value="" min="0" max="100" step="0.01"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Dưới ảnh -->
+          <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px;">
+            <button type="button" class="btn btn-danger" style="width: 150px;" onclick="window.history.back()">Hủy</button>
+            <a href="/so/spots"><button type="button" class="btn btn-success" style="width: 150px;" id="submitBtn">Xác nhận</button></a>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Ads list -->
+
+    
+    <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
+    <script defer>
+      const boardTypes = JSON.parse('<%- JSON.stringify(other.boardtypes) %>');
+      const boardTypeInput = document.getElementById("boardTypeName");
+      const boardTypeID = document.getElementById("boardType");
+
+      boardTypeInput.addEventListener('change', (e) => {
+        const boardType = boardTypes.find(type => type.typeName === boardTypeInput.value);
+        boardTypeID.value = boardType.typeID;
+      })
+
+      // Hide alert on close
+      document.querySelectorAll('.btn-close').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.target.parentElement.hidden = true;
+        });
+      });
+    </script>
+
+    <script defer>
+      // Upload Image.......
+      let accessToken = null;
+
+      const getAccessToken = async () => {
+        const response = await fetch('/imgur');
+        const data = await response.json();
+        return data.accessToken;
+      }
+
+      const upload2Imgur = async (files) => {
+        const links = []
+        if (!accessToken) {
+          accessToken = await getAccessToken();
+        }
+        for (let i = 0; i < files.length; i++) {
+          const formData = new FormData()
+          formData.append('image', files[i])
+          const headers = new Headers()
+          headers.append('Authorization', 'Bearer ' + accessToken)
+          const response = await fetch('https://api.imgur.com/3/image', {
+            headers: headers,
+            method: 'POST',
+            body: formData,
+            redirect: 'follow'
+          });
+          const data = await response.json()
+          links.push(data.data.link);
+        }
+        return links;
+      };
+      // Sumbit 
+      const submitHandler = async (e) => {
+        e.preventDefault();
+
+        const inputImage = document.getElementById('input-image');
+        const files = inputImage.files;
+        const imgUrls = await upload2Imgur(files);
+        const spotID = document.getElementById('id-diemdat').value
+        // console.log(imgUrls);
+
+        const data = {
+          boardType: document.getElementById('boardType').value,
+          quantity: document.getElementById('board-quantity').value,
+          height: document.getElementById('board-height').value,
+          width: document.getElementById('board-width').value,
+          spotImage: imgUrls,
+        }
+
+        console.log(data);
+
+        if (data.boardType == '' || data.quantity == '' 
+            || data.height == '' || data.width == '' 
+            || data.spotImage == '' || parseInt(data.quantity) > 10
+            || parseFloat(data.height) > 100 || parseFloat(data.width) > 100) {
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const url = `/so/ads/new?category=board&spotID=${spotID}`;
+        // console.log(url);
+        // // const requestUrl = url.replace('/create', '');
+        const result = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        });
+
+        console.log(result);
+        if (result.status == 200) {
+          document.getElementById('alert-success').hidden = false;
+          // clear all input
+          document.querySelectorAll('input').forEach((input) => {
+            input.value = '';
+          });
+        } else {
+          document.getElementById('alert-danger').hidden = false;
+        }
+      }
+
+      document.getElementById('submitBtn').addEventListener('click', submitHandler);
+
+    </script>
+  </body>
+</html>

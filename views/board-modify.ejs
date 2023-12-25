@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title %></title>
+    <%- include("./partials/head.ejs"); %>
+    <link rel="stylesheet" href="/css/carousel.css" />
+  </head>
+
+  <body>
+    <header></header>
+    
+    <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Yêu cầu chỉnh sửa được gửi đi thành công!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Có lỗi xảy ra khi gửi yêu cầu chỉnh sửa!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <main class="container-fluid d-flex bg-light">
+      <div class="row"><%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <%- include("./partials/profile_card.ejs"); %>
+          <!-- Back button -->
+          <%- include("./partials/back_button.ejs"); %>
+          <!-- Title -->
+          <div class="d-flex flex-row align-items-center" style="gap: 10px">
+            <h1 class="fw-bolder m-0">CHỈNH SỬA BẢNG QUẢNG CÁO</h1>
+          </div>
+
+          <!-- Content -->
+          <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
+            <!-- Carousel -->
+            <%- include("./partials/carousel.ejs",
+            {imgUrls: imgUrls}); %>
+            <div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
+              <div class="container d-flex justify-content-between">
+                <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chỉnh sửa bảng quảng cáo</h4>
+                <a href="#"><img src="/images/cancel.svg" alt="edit-icon"></a>  
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="boardID" style="margin-bottom: 6px;">ID Quảng cáo</label>                  
+                  <input type="text" class="form-control" id="boardID" value="<%= id %>" disabled />
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="id-diemdat" style="margin-bottom: 6px">ID Điểm đặt</label>
+                  <input type="text" class="form-control" id="spotID" value="<%= spotID %>" disabled />
+                </div>
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="spotName" class="mb-1">Điểm đặt</label>
+                  <input type="text" list="spotList" class="form-control" id="spotName" autocomplete="on" />
+                  <datalist id="spotList" style="display: none;">
+                    <% other.spots.forEach((spot)=> { %>
+                      <option value="<%= spot.spotName; %>"></option>
+                      <% }); %>
+                  </datalist>
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="diachi" style="margin-bottom: 6px">Địa chỉ điểm đặt</label>
+                  <input type="text" class="form-control" id="spotAddress" value="<%= spotAddress %>" disabled />
+                </div>
+              </div>
+              <div class="container mt-2">
+                <label for="compName" style="margin-bottom: 6px">Công ty yêu cầu cấp phép</label>
+                <input type="text" class="form-control" id="compName" value="<%= authCompany %>" disabled />
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="compPhone" style="margin-bottom: 6px;">Số điện thoại</label>                  
+                  <input type="text" class="form-control" id="compPhone" value="<%= authCompanyPhone %>" disabled />
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="compEmail" style="margin-bottom: 6px">Email</label>
+                  <input type="text" class="form-control" id="compEmail" value="<%= authCompanyEmail %>" disabled />
+                </div>
+              </div>
+              <div class="container mt-2">
+                <label for="compAdress" style="margin-bottom: 6px">Địa chỉ công ty</label>
+                <input type="text" class="form-control" id="compAddress" value="<%= authCompanyAddress %>" disabled />
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="startDate" style="margin-bottom: 6px;">Thời gian bắt đầu hợp đồng</label>                  
+                  <div class="input-group date" id="datepicker">
+                    <input type="text" class="form-control" id="startDate" value="<%= startDate %>" disabled />
+                    <span class="input-group-append">
+                      <span class="input-group-text h-100">
+                        <i class="fa fa-calendar" style="background-color: transparent;"></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div style="width: calc((100% - 2rem) / 2);">
+                  <label for="endDate" style="margin-bottom: 6px">Thời gian kết thúc hợp đồng</label>
+                  <div class="input-group date" id="datepicker">
+                    <input type="text" class="form-control" id="endDate" value="<%= endDate %>" disabled />
+                    <span class="input-group-append">
+                      <span class="input-group-text h-100">
+                        <i class="fa fa-calendar" style="background-color: transparent;"></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Dưới ảnh -->
+          <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
+            <div class="container px-0 d-flex justify-content-evenly ms-0 position-relative" style="max-width: 50%;">
+              <div class="badge border border-dark top-50 start-10 translate-middle position-absolute rounded-pill bg-white text-center" style="width: 50px; height:50px;" hidden>
+                <span class="d-inline-flex align-items-center justify-content-center text-dark fs-5 fw-bold h-100 w-100" id="badge-text">1</span>
+              </div>
+              <input type="file" id="input-image" accept="image/*" hidden multiple>
+              <button id="add-button" type="button" class="btn btn-success" style="min-width: 7rem;">Thêm ảnh</button>
+              <button id="remove-button" type="button" class="btn btn-danger" style="min-width: 7rem;" onclick="removeCurrentImage()">Xóa ảnh</button>
+
+              <!-- ... Them de khong loi js ... -->
+              <div id="drop-area" hidden></div>
+              <div id="img-view" hidden></div>
+              <!-- ............................ -->
+
+              <script defer src="/js/uploadImage.js"></script>
+            </div>
+            <div class="container mt-2 d-flex justify-content-between">
+              <div style="width: calc((100% - 3rem) / 3);">
+                <label for="adsType" style="margin-bottom: 6px;">Loại quảng cáo</label>                  
+                <input type="text" class="form-control" id="boardTypeName" list="boardTypeList" value="<%= boardTypeName %>"  />
+                <input type="text" id="boardType" value="<%= boardType %>" hidden>
+                <datalist id="boardTypeList" style="display: none;">
+                  <% other.boardtypes.forEach((boardtype)=> { %>
+                    <option value="<%= boardtype.typeName; %>"></option>
+                    <% }); %>
+                </datalist>
+              </div>
+              <div style="width: calc((100% - 3rem) / 3);">
+                <label for="quantity" style="margin-bottom: 6px">Số lượng</label>
+                <input type="text" class="form-control" id="quantity" value="<%= quantity %> trụ / bảng"  />
+              </div>
+              <div style="width: calc((100% - 3rem) / 3);">
+                <label for="size" style="margin-bottom: 6px">Kích thước</label>
+                <input type="text" class="form-control" id="size" value="<%= size %>"  />
+              </div>
+            </div> 
+            <div class="container mt-2 d-flex justify-content-between">
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="spotTypeName" style="margin-bottom: 6px;">Phân loại</label>                  
+                <input type="text" class="form-control" id="spotTypeName" list="spotTypeList" value="<%= spotTypeName %>" disabled />
+                <input type="text" id="spotType" value="<%= spotType %>" hidden>
+              </div>
+              <div style="width: calc((100% - 2rem) / 2);">
+                <label for="adsFormName" style="margin-bottom: 6px">Hình thức</label>
+                <input type="text" class="form-control" id="adsFormName" list="adsFormList" value="<%= adsFormName %>" disabled />
+                <input type="text" id="adsForm" value="<%= adsForm %>" hidden>
+              </div>
+            </div>
+            <!-- <div class="container mt-2 custom-col">
+              <label for="content style="margin-bottom: 6px">Nội dung báo cáo</label>
+              <textarea class="form-control" id="content" 
+                style="min-height: 100px">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa quod perspiciatis numquam soluta adipisci aperiam magni? Iure laborum esse aperiam totam, laboriosam voluptatibus neque perferendis quas fugit voluptatem laudantium expedita. Natus veritatis illo harum voluptas deleniti, voluptate possimus hic eveniet itaque sunt dolor adipisci corporis? Quisquam perferendis exercitationem quas. Ab.</textarea>
+            </div> -->
+            <div class="container mt-2">
+                <label for="reason" style="margin-bottom: 6px">Lý do chỉnh sửa</label>
+                <textarea class="form-control" id="reason" 
+                    style="min-height: 170px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis vitae dolore debitis soluta ipsa, esse molestias nisi inventore voluptatum non ex sint temporibus odit distinctio maiores repudiandae saepe, iste praesentium veritatis magni ipsum iusto facere? Nobis debitis maiores rerum est distinctio velit et obcaecati harum, qui provident voluptates, officiis laudantium quas! Ex labore excepturi velit eveniet incidunt expedita corrupti illum a, ullam nostrum ducimus, tenetur cumque facilis sapiente, iure magni maxime nihil eum voluptate atque assumenda? Enim quibusdam ratione, quisquam magni esse et placeat? Quasi porro fugit, expedita suscipit, nobis, numquam laboriosam ad nam earum quidem excepturi. Adipisci, ab sapiente?</textarea>
+            </div>
+          </div>
+          <!-- button -->
+          <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px; padding: 0 12px;">
+            <a href="/so/boards"><button type="button" class="btn btn-danger" style="width: 130px;">Hủy</button></a>
+            <a href="/so/boards"><button type="button" class="btn btn-success" style="width: 150px;" id="submitBtn">Gửi yêu cầu</button></a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Ads list -->
+
+    
+    <!-- <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script> -->
+    <script defer>
+      const addBtn = document.getElementById('add-button');
+      const removeBtn = document.getElementById('remove-button');
+      const imgUrls = Array.from(document.querySelectorAll('.thumbnails-item img')).map(img => img.src);
+
+
+      // Add new image
+
+      addBtn.addEventListener('click', () => {
+        inputImage.click();
+      });
+
+      let accessToken = null;
+
+      const getAccessToken = async () => {
+        const response = await fetch('/imgur');
+        const data = await response.json();
+        return data.accessToken;
+      }
+
+      const upload2Imgur = async (files) => {
+        const links = []
+        if (!accessToken) {
+          accessToken = await getAccessToken();
+        }
+        for (let i = 0; i < files.length; i++) {
+          const formData = new FormData()
+          formData.append('image', files[i])
+          console.log('Uploading: ', files[i].name);
+          const headers = new Headers()
+          headers.append('Authorization', 'Bearer ' + accessToken)
+          const response = await fetch('https://api.imgur.com/3/image', {
+            headers: headers,
+            method: 'POST',
+            body: formData,
+            redirect: 'follow'
+          });
+          const data = await response.json()
+          links.push(data.data.link);
+        }
+        console.log(links);
+        return links;
+      }
+      const submitHandler = async (e) => {
+        e.preventDefault();
+        const inputImage = document.getElementById('input-image');
+        const files = inputImage.files;
+        let imgUrlsData = await upload2Imgur(files);
+        imgUrlsData = imgUrlsData.concat(getUpdatedImgUrls());
+        // console.log(imgUrlsData);
+
+        const data = {
+          spotID: document.getElementById('spotID').value,
+          image: imgUrlsData,
+          boardID: document.getElementById('boardID').value,
+          boardType: document.getElementById('boardType').value,
+          boardTypeName: document.getElementById('boardTypeName').value,
+          quantity: document.getElementById('quantity').value,
+          height: document.getElementById('size').value.split('x')[0],
+          width: document.getElementById('size').value.split('x')[1].replace('m', ''),
+          reason: document.getElementById('reason').value,
+          officerUsername: '<%= user.username %>',
+          spotName: document.getElementById('spotName').value,
+          spotAddress: document.getElementById('spotAddress').value,
+          compName: document.getElementById('compName').value,
+          compPhone: document.getElementById('compPhone').value,
+          compEmail: document.getElementById('compEmail').value,
+          compAddress: document.getElementById('compAddress').value,
+          startDate: document.getElementById('startDate').value,
+          endDate: document.getElementById('endDate').value,
+          spotTypeName: document.getElementById('spotTypeName').value,
+          adsFormName: document.getElementById('adsFormName').value,
+          licensingID: '<%= licensingID %>',
+        }
+        const url = '<%= url %>';
+        const requestUrl = url.replace('/modify', '');
+        console.log('Request URL: ', requestUrl);
+        const result = await fetch(requestUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        });
+
+        console.log(result);
+        // ......... Xu ly ket qua va hien thong bao ............
+
+        if (result.status == 200) {
+          document.getElementById('alert-success').removeAttribute('hidden');
+          // clear all inputs
+          document.querySelectorAll('.form-control').forEach(input => {
+            input.value = '';
+          });
+          // when the alert is closed, redirect
+          document.getElementById('alert-success').addEventListener('closed.bs.alert', () => {
+            window.location.href = result.url;
+          });
+        } else {
+          document.getElementById('alert-danger').removeAttribute('hidden');
+        }
+
+        // .......................................................
+      }
+
+      document.getElementById('submitBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        // console.log('====================================');
+        // console.log('submit');
+        // console.log('====================================');
+        submitHandler(e);
+      });
+
+
+
+      // Remove image
+
+      const removeCurrentImage = () => {
+        // console.log(imgUrls);
+        const currentIndex = Array.from(document.querySelectorAll('.thumbnails-item')).findIndex(thumbnail => !thumbnail.classList.contains('d-none'));
+
+        if (currentIndex !== -1) {
+          imgUrls.splice(currentIndex * 3, 3);
+          updateThumbnails();
+        }
+      }
+
+      const updateThumbnails = () => {
+        const thumbnails = document.querySelectorAll('.thumbnails-item');
+
+        thumbnails.forEach((thumbnail, index) => {
+            const start = index * 3;
+            const end = start + 3;
+            
+            thumbnail.querySelectorAll('img').forEach((img, imgIndex) => {
+                img.src = imgUrls[(start + imgIndex) % imgUrls.length];
+            });
+        });
+
+        document.querySelectorAll('.thumbnails-item').forEach((thumbnail, index) => {
+            thumbnail.classList.toggle('d-none', index !== 0);
+        });
+
+        document.getElementById('mainImg').src = imgUrls[0];
+
+        document.querySelectorAll('img.border').forEach(img => {
+            img.classList.remove('border', 'border-primary');
+        });
+        document.querySelector('.thumbnails-item:not(.d-none) img').classList.add('border', 'border-primary');
+      }
+
+      const getUpdatedImgUrls = () => {
+        let newImgUrls = [];
+        const n = imgUrls.length/3;
+
+        for (let i=0; i<n; ++i) {
+          newImgUrls.push(imgUrls[i*3+1]);
+        }
+
+        // remove the last element and add it to the top
+        newImgUrls.unshift(newImgUrls.pop());
+
+        return newImgUrls;
+      }
+
+      const spots = JSON.parse('<%- JSON.stringify(other.spots); %>');
+      const adsforms = JSON.parse('<%- JSON.stringify(other.adsforms); %>');
+      const spottypes = JSON.parse('<%- JSON.stringify(other.spottypes); %>');
+      const spotIDInput = document.getElementById('spotID');
+      const spotNameInput = document.getElementById('spotName');
+      const spotAddressInput = document.getElementById('spotAddress');
+      const adsFormInput = document.getElementById('adsFormName');
+      const adsFormIdInput = document.getElementById('adsForm');
+      const spotTypeInput = document.getElementById('spotTypeName');
+      const spotTypeIdInput = document.getElementById('spotType');
+      spotNameInput.addEventListener('keyup', (e) => {
+        const spotName = e.target.value;
+        spotNameInput.value = spotName;
+        const spot = spots.find((spot) => spot.spotName === spotName);
+        if (spot) {
+          spotIDInput.value = spot.spotID;
+          spotAddressInput.value = spot.address;
+
+          const spotType = spottypes.find((spottype) => spottype.typeID === spot.spotType);
+          spotTypeInput.value = spotType.typeName;
+          spotTypeIdInput.value = spotType.typeID;
+
+          const adsForm = adsforms.find((adsform) => adsform.formID === spot.adsForm);
+          adsFormInput.value = adsForm.formName;
+          adsFormIdInput.value = adsForm.formID;
+        }
+      })
+
+      const boardtypes = JSON.parse('<%- JSON.stringify(other.boardtypes); %>');
+      const boardtypeInput = document.getElementById('boardTypeName');
+      const boardtypeIdInput = document.getElementById('boardType');
+      boardtypeInput.addEventListener('keyup', (e) => {
+        const boardtypeName = e.target.value;
+        const boardtype = boardtypes.find((boardtype) => boardtype.typeName === boardtypeName);
+        if (boardtype) {
+          boardtypeIdInput.value = boardtype.typeID;
+          // console.log(boardtypeIdInput.value);
+        }
+      })      
+
+    </script>
+  </body>
+</html>

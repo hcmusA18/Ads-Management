@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title %></title>
+    <%- include("./partials/head.ejs"); %>
+    <link rel="stylesheet" href="/css/carousel.css" />
+  </head>
+
+  <body>
+    <header></header>
+
+    <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Yêu cầu chỉnh sửa được gửi đi thành công!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+    <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong>Có lỗi xảy ra khi gửi yêu cầu chỉnh sửa!</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+      <div class="row"><%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %></div>
+      <div class="container-fluid vw-100 pt-1">
+        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+          <!-- Profile -->
+          <%- include("./partials/profile_card.ejs"); %>
+          <!-- Back button -->
+          <%- include("./partials/back_button.ejs"); %>
+          <!-- Title -->
+          <div class="d-flex flex-row align-items-center" style="gap: 10px">
+            <h1 class="fw-bolder m-0 text-uppercase" contenteditable="true" id="spotName"><%= spotTitle %></h1>
+          </div>
+
+          <!-- Content -->
+          <div class="container-fluid nd-chi-tiet px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
+            <!-- Carousel -->
+            <%- include("./partials/carousel.ejs",
+            {imgUrls: imgUrls}); %>
+            <div class="container-fluid px-0 nd-chi-tiet">
+              <div class="container d-flex justify-content-between">
+                  <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chỉnh sửa điểm
+                      đặt</h4>
+                  <a href="#"><img src="/images/cancel.svg" alt="edit-icon"></a>  
+              </div>
+              <div class="container mt-2">
+                  <label for="spotID" style="margin-bottom: 6px">ID Điểm đặt</label>
+                  <input type="text" class="form-control" id="spotID" value='<%= spotId %>' disabled/>
+              </div>
+              <div class="container mt-2">
+                  <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
+                  <input type="text" class="form-control" id="spotAddress" value='<%= spotAddress %>'/>
+              </div>
+              <div class="container mt-2 d-flex justify-content-between">
+                  <div style="width: calc((100% - 2rem) / 2);">
+                      <label for="wardName" style="margin-bottom: 6px;">Phường</label>
+                      <input type="text" class="form-control" id="wardName" value='<%= wardName %>' disabled/>
+                      <input type="text" id="ward" value="<%= ward %>" hidden>
+                  </div>
+                  <div style="width: calc((100% - 2rem) / 2);">
+                      <label for="districtName" style="margin-bottom: 6px">Quận</label>
+                      <input type="text" class="form-control" id="districtName" value='<%= districtName %>' disabled/>
+                      <input type="text" id="district" value="<%= district %>" hidden>
+                  </div>
+              </div>
+              <div class="container mt-2">
+                  <label for="location-type" style="margin-bottom: 6px">Loại vị trí</label>
+                  <input type="text" class="form-control" id="spotTypeName" list="spotTypeList" value='<%= spotTypeName %>'/>
+                  <input type="text" id="spotType" value="<%= spotType %>" hidden>
+                  <datalist id="spotTypeList" style="display: none;">
+                    <% other.spottypes.forEach((type)=> { %>
+                      <option value="<%= type.typeName; %>"></option>
+                      <% }); %>
+                  </datalist>
+              </div>
+              <div class="container mt-2">
+                  <label for="adsForm" style="margin-bottom: 6px">Hình thức quảng cáo</label>
+                  <input type="text" class="form-control" id="adsFormName" list="adsFormList" value='<%= adsFormName %>'/>
+                  <input type="text" id="adsForm" value="<%= adsForm %>" hidden>
+                  <datalist id="adsFormList" style="display: none;">
+                    <% other.adsforms.forEach((form)=> { %>
+                      <option value="<%= form.formName; %>"></option>
+                      <% }); %>
+                  </datalist>
+              </div>
+              <div class="container mt-2">
+                  <label for="planned" style="margin-bottom: 6px">Thông tin quy hoạch</label>
+                  <input type="text" class="form-control" id="planned" list="planList" value='<%= planned %>'/>
+                  <datalist id="planList" style="display: none;">
+                    <option value="Đã quy hoạch"></option>
+                    <option value="Chưa quy hoạch"></option>
+                  </datalist>
+              </div>
+            </div>
+          </div>
+          <!-- Ly do chinh sua -->
+          <div class="container-fluid px-0 mt-4 mb-2 nd-chi-tiet">
+            <div class="container px-0 d-flex justify-content-evenly ms-0 position-relative mb-3" style="max-width: 50%;">
+              <div class="badge border border-dark top-50 start-10 translate-middle position-absolute rounded-pill bg-white text-center" style="width: 50px; height:50px;" hidden>
+                <span class="d-inline-flex align-items-center justify-content-center text-dark fs-5 fw-bold h-100 w-100" id="badge-text">1</span>
+              </div>
+              <input type="file" id="input-image" accept="image/*" hidden multiple>
+              <button id="add-button" type="button" class="btn btn-success" style="min-width: 7rem;">Thêm ảnh</button>
+              <button id="remove-button" type="button" class="btn btn-danger" style="min-width: 7rem;" onclick="removeCurrentImage()">Xóa ảnh</button>
+
+              <!-- ... Them de khong loi js ... -->
+              <div id="drop-area" hidden></div>
+              <div id="img-view" hidden></div>
+              <!-- ............................ -->
+
+              <script defer src="/js/uploadImage.js"></script>
+            </div>
+            <label for="reason" style="margin-bottom: 6px">Lý do chỉnh sửa</label>
+            <textarea class="form-control" id="reason" 
+              style="min-height: 170px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis vitae dolore debitis soluta ipsa, esse molestias nisi inventore voluptatum non ex sint temporibus odit distinctio maiores repudiandae saepe, iste praesentium veritatis magni ipsum iusto facere? Nobis debitis maiores rerum est distinctio velit et obcaecati harum, qui provident voluptates, officiis laudantium quas! Ex labore excepturi velit eveniet incidunt expedita corrupti illum a, ullam nostrum ducimus, tenetur cumque facilis sapiente, iure magni maxime nihil eum voluptate atque assumenda? Enim quibusdam ratione, quisquam magni esse et placeat? Quasi porro fugit, expedita suscipit, nobis, numquam laboriosam ad nam earum quidem excepturi. Adipisci, ab sapiente?</textarea>
+          </div>
+          <!-- button -->
+          <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px;">
+            <a href="/so/spots"><button type="button" class="btn btn-danger" style="width: 130px;">Hủy</button></a>
+            <a href="/so/spots"><button type="button" class="btn btn-success" style="width: 150px;" id="submitBtn">Gửi yêu cầu</button></a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Ads list -->
+
+    
+    <script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
+    <script defer>
+      const spotAddressInput = document.getElementById('spotAddress');
+      let long = parseFloat(`<%= longitude %>`);
+      let lat = parseFloat(`<%= latitude %>`);
+
+      spotAddressInput.addEventListener('click', (e) => {
+        const width = 900;
+        const height = 700;
+
+        const left = (window.innerWidth - width) / 2;
+        const top = (window.innerHeight - height) / 2;
+
+        const miniMapWindow = window.open('/mini-map', 'Mini Map', `width=${width},height=${height},left=${left},top=${top}`);
+      })
+
+      window.addEventListener('message', (event) => {
+        // Check the origin to ensure it's from the correct window
+        if (event.origin !== window.location.origin) {
+            return;
+        }
+
+        console.log('Received coordinates:', event.data);
+        
+        long = parseFloat(event.data.long);
+        lat = parseFloat(event.data.lat);
+        document.getElementById('spotAddress').value = event.data.number;
+        document.getElementById('wardName').value = event.data.ward.replace('Phường ', '');
+        document.getElementById('districtName').value = event.data.district.replace('Quận ', '').length == 1 ? '0' + event.data.district.replace('Quận ', '') : event.data.district.replace('Quận ', '');
+      });
+
+      const spottypes = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
+      const adsforms = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
+      const spottypeInput = document.getElementById('spotTypeName');
+      const adsformInput = document.getElementById('adsFormName');
+      const spottypeIdInput = document.getElementById('spotType');
+      const adsformIdInput = document.getElementById('adsForm');
+
+      spottypeInput.addEventListener('change', (e) => {
+        const spottype = spottypes.find(type => type.typeName == spottypeInput.value);
+        spottypeIdInput.value = spottype.typeID;
+      });
+      adsformInput.addEventListener('change', (e) => {
+        const adsform = adsforms.find(form => form.formName == adsformInput.value);
+        adsformIdInput.value = adsform.formID;
+      });
+
+    </script>
+
+    <script defer>
+      const addBtn = document.getElementById('add-button');
+      const imgUrls = Array.from(document.querySelectorAll('.thumbnails-item img')).map(img => img.src);
+
+
+      // Add new image
+
+      addBtn.addEventListener('click', () => {
+        inputImage.click();
+      });
+
+      let accessToken = null;
+
+      const getAccessToken = async () => {
+        const response = await fetch('/imgur');
+        const data = await response.json();
+        return data.accessToken;
+      }
+
+      const upload2Imgur = async (files) => {
+        const links = []
+        if (!accessToken) {
+          accessToken = await getAccessToken();
+        }
+        for (let i = 0; i < files.length; i++) {
+          const formData = new FormData()
+          formData.append('image', files[i])
+          console.log('Uploading: ', files[i].name);
+          const headers = new Headers()
+          headers.append('Authorization', 'Bearer ' + accessToken)
+          const response = await fetch('https://api.imgur.com/3/image', {
+            headers: headers,
+            method: 'POST',
+            body: formData,
+            redirect: 'follow'
+          });
+          const data = await response.json()
+          links.push(data.data.link);
+        }
+        console.log(links);
+        return links;
+      }
+      const submitHandler = async (e) => {
+        e.preventDefault();
+        const inputImage = document.getElementById('input-image');
+        const files = inputImage.files;
+        let imgUrlsData = await upload2Imgur(files);
+        imgUrlsData = imgUrlsData.concat(getUpdatedImgUrls());
+        // console.log(imgUrlsData);
+
+        const data = {
+          spotID: document.getElementById('spotID').value,
+          spotImage: imgUrlsData,
+          address: document.getElementById('spotAddress').value,
+          wardID: document.getElementById('ward').value,
+          wardName: document.getElementById('wardName').value,
+          districtID: document.getElementById('district').value,
+          districtName: document.getElementById('districtName').value,
+          latitude: lat,
+          longtitude: long,
+          spotType: document.getElementById('spotType').value,
+          spotTypeName: document.getElementById('spotTypeName').value,
+          adsForm: document.getElementById('adsForm').value,
+          adsFormName: document.getElementById('adsFormName').value,
+          spotName: document.getElementById('spotName').innerText,
+          planned: document.getElementById('planned').value == 'Đã quy hoạch' ? 1 : 0,
+          reason: document.getElementById('reason').value,
+          officerUsername: '<%= user.username %>'
+        }
+        const url = '<%= url %>';
+        const requestUrl = url.replace('/modify', '');
+        console.log('Request URL: ', requestUrl);
+        const result = await fetch(requestUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data),
+        });
+
+        console.log(result);
+
+        // ......... Xu ly ket qua va hien thong bao ............
+
+        if (result.status == 200) {
+          document.getElementById('alert-success').removeAttribute('hidden');
+          // clear all inputs
+          document.querySelectorAll('.form-control').forEach(input => {
+            input.value = '';
+          });
+          // when the alert is closed, redirect
+          document.getElementById('alert-success').addEventListener('closed.bs.alert', () => {
+            window.location.href = result.url;
+          });
+        } else {
+          document.getElementById('alert-danger').removeAttribute('hidden');
+        }
+
+        // .......................................................
+      }
+
+      document.getElementById('submitBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        // console.log('====================================');
+        // console.log('submit');
+        // console.log('====================================');
+        submitHandler(e);
+      });
+
+
+
+      // Remove image
+
+      const removeCurrentImage = () => {
+        // console.log(imgUrls);
+        const currentIndex = Array.from(document.querySelectorAll('.thumbnails-item')).findIndex(thumbnail => !thumbnail.classList.contains('d-none'));
+
+        if (currentIndex !== -1) {
+          imgUrls.splice(currentIndex * 3, 3);
+          updateThumbnails();
+        }
+      }
+
+      const updateThumbnails = () => {
+        const thumbnails = document.querySelectorAll('.thumbnails-item');
+
+        thumbnails.forEach((thumbnail, index) => {
+            const start = index * 3;
+            const end = start + 3;
+            
+            thumbnail.querySelectorAll('img').forEach((img, imgIndex) => {
+                img.src = imgUrls[(start + imgIndex) % imgUrls.length];
+            });
+        });
+
+        document.querySelectorAll('.thumbnails-item').forEach((thumbnail, index) => {
+            thumbnail.classList.toggle('d-none', index !== 0);
+        });
+
+        document.getElementById('mainImg').src = imgUrls[0];
+
+        document.querySelectorAll('img.border').forEach(img => {
+            img.classList.remove('border', 'border-primary');
+        });
+        document.querySelector('.thumbnails-item:not(.d-none) img').classList.add('border', 'border-primary');
+      }
+
+      const getUpdatedImgUrls = () => {
+        let newImgUrls = [];
+        const n = imgUrls.length/3;
+
+        for (let i=0; i<n; ++i) {
+          newImgUrls.push(imgUrls[i*3+1]);
+        }
+
+        // remove the last element and add it to the top
+        newImgUrls.unshift(newImgUrls.pop());
+
+        return newImgUrls;
+      }
+
+    </script>
+  </body>
+</html>
