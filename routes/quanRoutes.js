@@ -20,5 +20,6 @@ router.post('/ads/:id', (req, res) => controller.adsController.request(req, res)
 router.get('/license', (req, res) => controller.licenseController.show(req, res));
 router.get('/license/create', (req, res) => controller.licenseController.showCreate(req, res));
 router.get('/license/:id', (req, res) => controller.licenseController.showDetail(req, res, true))
+router.delete('/license/:id', (req, res) => controller.licenseController.deleteRequest(req, res));
 router.post('/license', (req, res) => controller.licenseController.add(req, res));
 export default router;

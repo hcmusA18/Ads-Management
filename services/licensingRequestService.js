@@ -24,8 +24,9 @@ export const updateByID = async (id, newData) => {
 };
 
 export const remove = async (id) => {
+  // console.log(id);
   try {
-    await LicensingRequest.findOneAndDelete({ id });
+    await LicensingRequest.findOneAndDelete({ requestID: id });
     return { message: 'Licensing request deleted successfully' };
   } catch (error) {
     throw new Error(`Error deleting licensing request by ID: ${error.message}`);

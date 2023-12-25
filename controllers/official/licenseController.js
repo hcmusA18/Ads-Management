@@ -1,9 +1,10 @@
 import {createToolbar} from './utilities.js';
 import { getSpotsByDistrictID, getSpotsByWardID, getSpotByID } from '../../services/spotService.js'
-import { create, getByUsername, getByID } from '../../services/licensingRequestService.js'
+import { create, getByUsername, getByID, remove } from '../../services/licensingRequestService.js'
 import { getRoleByUsername } from '../../services/officerService.js';
 import { getAllBoardTypes } from '../../services/boardTypeService.js';
 import { getWardsOfDistrict } from '../../services/wardService.js';
+import { getDistrictByID } from '../../services/districtService.js';
 import * as IDGenerator from '../../services/IDGenerator.js';
 
 const convertDate = (date) => {
@@ -123,7 +124,8 @@ const showDetail = async (req, res) => {
 		title,
 		toolbars: createToolbar(role),
 		...data,
-		url: req.originalUrl
+		url: req.originalUrl,
+		role
 	});
 }
 
@@ -170,9 +172,23 @@ const add = async (req, res) => {
 	}
 }
 
+const deleteRequest = async (req, res) => {
+	const requestID = req.params.id;
+	const role = String(req.originalUrl.split('/')[1]);
+
+	try{
+		const response = await remove(requestID);
+		console.log(response);
+		res.redirect(`/${role}/license`);
+	} catch (error) {
+		console.error('Error during DELETE request:', error.message);
+	}
+}
+
 export default {
 	add,
 	show,
 	showDetail,
-	showCreate
+	showCreate,
+	deleteRequest
 };

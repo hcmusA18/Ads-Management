@@ -169,4 +169,33 @@
     </main>
 </body>
 
+<script>
+  const deleteButton = document.getElementById('deleteButton');
+  const role = JSON.parse('<%- JSON.stringify(role) %>');
+  if(deleteButton){
+    deleteButton.addEventListener('click', async () => {
+      const isConfirmed =  window.confirm("Bạn có chắc chắn muốn xóa yêu cầu cấp phép này không?");
+
+      if(isConfirmed){
+        const requestID = JSON.parse('<%- JSON.stringify(requestID) %>');
+        console.log(`/${role}/license/${requestID}`);
+        try {
+          const response = await fetch(`/${role}/license/${requestID}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              // Add any additional headers as needed
+            },
+          });
+        } catch (error) {
+          console.error('Error during DELETE request:', error.message);
+        } finally {
+          window.location.assign(`/${role}/license`);
+        }
+
+      }
+    })
+  }
+</script>
+
 </html>

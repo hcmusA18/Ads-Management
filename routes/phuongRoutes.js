@@ -21,6 +21,7 @@ router.get('/license', async (req, res) => await controller.licenseController.sh
 router.get('/license/create', (req, res) => controller.licenseController.showCreate(req, res, false));
 
 router.get('/license/:id', (req, res) => controller.licenseController.showDetail(req, res, true));
+router.delete('/license/:id', (req, res) => controller.licenseController.deleteRequest(req, res));
 
 router.post('/license', (req, res) => controller.licenseController.add(req, res));
 export default router;
