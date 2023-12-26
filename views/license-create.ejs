@@ -6,6 +6,18 @@
     <title><%- title; %></title>
     <%- include("./partials/head.ejs"); %>
     <link rel="stylesheet" href="/css/carousel.css" />
+    <!-- TinyMCE -->
+    <script type="text/javascript" src='https://cdn.tiny.cloud/1/r48esfw27w6eey301xxsgf1pbt45hv51mbq5s97zr4ycrf02/tinymce/6/tinymce.min.js' referrerpolicy="origin"></script>
+    <script type="text/javascript">
+      tinymce.init({
+        selector: '#content',
+        height: 300,
+        plugins: ['searchreplace', 'wordcount', 'visualblocks', 'visualchars', 'code', 'fullscreen', 'insertdatetime', 'table', 'emoticons'],
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        menubar: 'favs file edit view insert format tools table help',
+        language: 'vi',
+      });
+    </script>
 </head>
 <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert"
     style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
@@ -200,7 +212,7 @@
       height: document.getElementById('board-height').value,
       width: document.getElementById('board-width').value,
       adsImages: imgUrls,
-      content: document.getElementById('content').value,
+      content: tinymce.activeEditor.getContent(),
       companyName: document.getElementById('compName').value,
       companyPhone: document.getElementById('compPhone').value,
       companyEmail: document.getElementById('compEmail').value,
