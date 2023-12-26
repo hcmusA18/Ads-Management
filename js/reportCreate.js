@@ -47,9 +47,6 @@ const submitHandler = async (e) => {
     }
 
 
-
-
-
     let imgUrls = [];
     console.log(files);
     if (files.length > 0) {
