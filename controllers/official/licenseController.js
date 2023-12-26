@@ -2,7 +2,7 @@ import {createToolbar} from './utilities.js';
 import { getSpotsByDistrictID, getSpotsByWardID, getSpotByID } from '../../services/spotService.js'
 import { create, getByUsername, getByID, remove } from '../../services/licensingRequestService.js'
 import { getRoleByUsername } from '../../services/officerService.js';
-import { getAllBoardTypes } from '../../services/boardTypeService.js';
+import { getAllBoardTypes, getBoardTypeByID } from '../../services/boardTypeService.js';
 import { getWardsOfDistrict } from '../../services/wardService.js';
 import { getDistrictByID } from '../../services/districtService.js';
 import * as IDGenerator from '../../services/IDGenerator.js';
@@ -98,6 +98,7 @@ const showDetail = async (req, res) => {
 	let data = await getByID(req.params.id);
 	// console.log(data);
 	let spotDetail = await getSpotByID(data.spotID);
+	const boardType = await getBoardTypeByID(data.boardType);
 	// console.log(spotDetail);
 	data = {
 		requestID: data.requestID,
@@ -111,7 +112,7 @@ const showDetail = async (req, res) => {
 		startTime: convertDate(data.startDate),
 		endTime: convertDate(data.endDate),
 		content: data.content,
-		boardType: data.boardType,
+		boardType: boardType.typeName,
 		height: data.height,
 		width: data.width,
 		quantity: data.quantity,

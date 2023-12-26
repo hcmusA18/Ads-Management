@@ -125,16 +125,21 @@
                 <!-- Rows 4, 5, 6: 1 column each -->
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col">
-                    <label for="content" style="margin-bottom: 6px">Nội dung báo cáo</label>
-                    <textarea class="form-control" id="content" disabled
-                      style="min-height: 100px"><%- content %></textarea>
+                    <label for="content" style="margin-bottom: 6px">Nội dung quảng cáo</label>
+                    <div id="content" class="form-control"
+                      style="min-height: 6.25rem; border-radius: 0; background-color: var(--bs-secondary-bg) !important; border-bottom-color: var(--Neutral-5);">
+                      <%- content %>
+                    </div>
                   </div>
                   <script>
-                    let content = document.getElementById('content');
+                    let content = document.getElementById("content");
+                    console.log(`content: ${content.value}`);
                     content = content.value.replace(/\\n/g, "<br />");
-                    const reportInfoHTML = new DOMParser().parseFromString(content, "text/html").body.firstElementChild;
-                    if (reportInfoHTML && reportInfoHTML.innerHTML)
-                      document.getElementById("content").innerHTML = reportInfoHTML.innerHTML;
+                    console.log(`after replace: ${content}`);
+                    const adsContent = new DOMParser().parseFromString(content, "text/html").body.firstElementChild;
+                    console.log(`adsContent: ${adsContent}`);
+                    if (adsContent && adsContent.innerHTML)
+                      document.getElementById("content").innerHTML = adsContent.innerHTML;
                     else document.getElementById("content").innerText = content;
                   </script>
                 </div>

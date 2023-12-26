@@ -238,6 +238,7 @@ export const getBoardByID = async (boardID) => {
           adsFormName: '$adsform.formName',
           image: 1,
           licensingID: 1,
+          content: '$licensereq.content'
         }
       }
     ]
