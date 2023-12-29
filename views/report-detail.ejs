@@ -179,11 +179,8 @@
     </main>
 
     <!-- Include Bootstrap Datepicker -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript" src="/js/ChitietBC.js"></script>
     <script>
-      const solutionField = document.getElementById('sol-baocao1')
+      const solutionField = document.getElementById('solution')
       const statusField = document.getElementById("state-baocao")
       solutionField.addEventListener('change', () => {
         if(solutionField.value.trim() == ''){
@@ -211,7 +208,7 @@
       if (alertTrigger) {
         alertTrigger.addEventListener('click', () => {
           const status = document.getElementById("state-baocao").value;
-          const solution = document.getElementById("sol-baocao1").value;
+          const solution = document.getElementById("solution").value;
           // console.log(status);
           if (status === '0' || solution.trim() === '') {
             appendAlert('Vui lòng nêu cách thức xử lí trước khi xác nhận!', 'danger')
