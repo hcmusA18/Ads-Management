@@ -37,6 +37,10 @@
 	bottom: 0;
 }
 
+.mapboxgl-canvas-container {
+  cursor: default !important;
+}
+
 /* Styling search bar or mapbox control topleft */
 .mapboxgl-ctrl-top-left .mapboxgl-ctrl {
 	margin: 16px 0 0 32px !important;

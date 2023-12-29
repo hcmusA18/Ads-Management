@@ -242,6 +242,12 @@ async function addSpotLayer(map, spotsGeojson) {
   map.on('mouseleave', 'cluster-spots', function () {
     map.getCanvas().style.cursor = '';
   });
+  map.on('dragstart', () => {
+    map.getCanvas().style.cursor = 'move';
+  });
+  map.on('dragend', () => {
+    map.getCanvas().style.cursor = '';
+  });
 }
 
 mapboxScript.onload = async function () {
