@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import request from './request.js';
+import { formatMapFeature } from './formatMapFeature.js';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg';
 
@@ -324,29 +325,25 @@ mapboxScript.onload = async function () {
 		}
 		marker.setLngLat(e.lngLat).addTo(map);
 
-		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}&language=vi`;
 
 		fetch(api)
 		.then(res => res.json())
 		.then(res => {
-			const coordinates = res.features[0].geometry.coordinates.slice();
-			let description = res.features[0].place_name
-			.replace(/,\s*\d+,\s*Vietnam/, '')
-			.replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
-			.replace(/,.*Dist\.|,.*Ward\./, '');
-			
-			description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
+      const {text, address, coordinates} = formatMapFeature(res.features[0]);
 
-			const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+			const innerHtmlContent = `<h6 class="fw-bolder"><i class="fa-regular fa-map-marker-alt"></i> Thông tin địa điểm</h6>
+                                <p class="fw-bold">${text}</p>
+                                <p class="fw-light">${address}</p>`;
 			const divElement = document.createElement('div');
 
-			divElement.innerHTML = innerHtmlContent;
-      divElement.setAttribute('class', 'p-2');
-			
-			new mapboxgl.Popup({ offset: [0, -30] })
-			.setLngLat(coordinates)
-			.setDOMContent(divElement)
-			.addTo(map);
+      divElement.innerHTML = innerHtmlContent;
+      divElement.setAttribute('class', 'px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25');
+
+      new mapboxgl.Popup({ offset: [0, -30] })
+      .setLngLat({lng: e.lngLat.lng, lat: e.lngLat.lat})
+      .setDOMContent(divElement)
+      .addTo(map);
 
 		});
 	})
