@@ -199,7 +199,7 @@ export const getSpotByID = async (spotID) => {
           spotImage: 1,
           adsForm: 1,
           longitude: 1,
-          latitude: 1,
+          latitude: 1
         }
       }
     ]

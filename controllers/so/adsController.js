@@ -192,7 +192,8 @@ const showDetail = async (req, res, isEdit) => {
       size: `${object.height}x${object.width}m`,
       spotTypeName: object.spotTypeName,
       adsFormName: object.adsFormName,
-      imgUrls: object.image
+      imgUrls: object.image,
+      content: object.content
     }
 
     if (isEdit) {
