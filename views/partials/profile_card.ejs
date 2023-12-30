@@ -1,7 +1,10 @@
-<div class="position-absolute top-0 start-100 translate-middle p-2 bg-light" style="width: fit-content">
+<div class="position-absolute top-0 start-100 translate-middle p-2 bg-light z-3" style="width: fit-content" id="profile-card">
   <div
-    class="card d-flex flex-sm-row align-items-center p-2 shadow profile-card text-nowrap"
-    style="border-radius: 0.5rem">
+    class="card d-flex flex-sm-row align-items-center p-2 shadow profile-card text-nowrap dropdown-toggle"
+    style="border-radius: 0.5rem"
+    role="button"
+    data-bs-toggle="dropdown"
+  >
     <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i>
     <div class="ps-2 d-flex flex-sm-column">
       <p class="h6 mb-0">
@@ -18,4 +21,23 @@
       </p>
     </div>
   </div>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Chỉnh sửa thông tin</a></li>
+    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+    <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+  </ul>
 </div>
+
+<style>
+  #profile-card .dropdown-toggle:hover {
+    background-color: #e9ecef;
+    color: var(--Dark);
+  }
+
+  #profile-card .dropdown-menu {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.15);
+    width: auto!important;
+  }
+</style>
