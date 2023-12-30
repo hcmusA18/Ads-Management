@@ -14,22 +14,23 @@
         <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
         <div class="container-fluid vw-100 pt-1">
             <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
-                    <!-- Profile -->
-                    <%- include("../partials/profile_card.ejs"); %>
+                <!-- Profile -->
+                <%- include("../partials/profile_card.ejs"); %>
                     <!-- Title -->
                     <div class="d-block">
-                        <h2 class="fw-bolder">Sở - Quản lý danh sách Phường - Quận <%= districtDetail.districtName %></h2>
+                        <h2 class="fw-bolder">Sở - QUẢN LÝ DANH SÁCH PHƯỜNG - QUẬN <%= districtDetail.districtName %>
+                        </h2>
                     </div>
                     <!-- Select -->
                     <div class="container-fluid mt-3 ps-0">
                         <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
                             <div class="d-flex flex-row align-items-center gap-2" style="position: relative">
-                                <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value: districtDetail.wardsCount ,
-                                    color: '#ae57ff' }); %>
-                                <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value: districtDetail.spotsCount , 
-                                    color: '#00B285' }); %>
-                                <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' , value: districtDetail.boardsCount , 
-                                    color: '#D59633' }); %>
+                                <%- include("../partials/info_card.ejs", {title: 'Tổng số phường' , value:
+                                    districtDetail.wardsCount , color: '#ae57ff' }); %>
+                                    <%- include("../partials/info_card.ejs", {title: 'Tổng số điểm quảng cáo' , value:
+                                        districtDetail.spotsCount , color: '#00B285' }); %>
+                                        <%- include("../partials/info_card.ejs", {title: 'Tổng số bảng quảng cáo' ,
+                                            value: districtDetail.boardsCount , color: '#D59633' }); %>
                             </div>
                         </div>
                     </div>
@@ -41,123 +42,136 @@
                             <!-- List District -->
                             <div class="list-district scroll">
                                 <% districts.forEach(district=> { %>
-                                    <a href="/so/locations-detail?quan=<%=district.districtID%>" style="text-decoration: none">
-                                        <div class="district-box d-flex <% if (district.districtID === districtID) {%>active<% } %>">
+                                    <a href="/so/locations-detail?quan=<%=district.districtID%>"
+                                        style="text-decoration: none">
+                                        <div
+                                            class="district-box d-flex <% if (district.districtID === districtID) {%>active<% } %>">
                                             <span style="margin: 0 auto; background-color: rgba(255, 255, 255, 0)">Quận
                                                 <%=district.districtName%>
                                             </span>
                                             <i class="fa-solid fa-chevron-right fa-2xs"></i>
                                         </div>
                                     </a>
-                                <% });%>
+                                    <% });%>
                             </div>
                             <a href="/so/locations" style="font-size: 14px">Xem chi tiết danh sách QUẬN</a>
                         </div>
                         <!-- Table -->
                         <div class="container-fluid d-inline-block ps-0" style="width: 80%; padding: 0; margin: 0">
-                            <table data-toggle="table" data-search="true" data-pagination="true"
+                            <table id="tableData" data-toggle="table" data-search="true" data-pagination="true"
                                 data-page-list="[10, 25, 50, 100, all]" data-locale="vi-VN" data-buttons-class="primary"
                                 data-buttons="buttons" data-show-button-text="true" data-icon-prefix="bi"
-                                class="table table-bordered table-hover table-striped table-responsive-md rounded" smart-display>
+                                class="table table-bordered table-hover table-striped table-responsive-md rounded"
+                                smart-display>
                                 <thead>
                                     <tr>
-                                    <th data-align="center" data-field="index" data-sortable="true" data-width-unit="%" data-width="25">
-                                        Mã Phường
-                                    </th>
-                                    <th data-align="center" data-field="username" data-sortable="true" data-width-unit="%" data-width="25">
-                                        Tên Phường
-                                    </th>
-                                    <th data-align="center" data-field="district" data-sortable="true" data-width-unit="%"  data-width="20">
-                                        Số điểm đặt
-                                    </th>
-                                    <th data-align="center" data-field="ward" data-sortable="true" data-width-unit="%" data-width="20">
-                                        Số bảng quảng cáo
-                                    </th>
-                                    <th data-align="center" data-field="actions">
-                                        Hành động
-                                    </th>
+                                        <th data-align="center" data-field="index" data-sortable="true"
+                                            data-width-unit="%" data-width="25">
+                                            Mã Phường
+                                        </th>
+                                        <th data-align="center" data-field="username" data-sortable="true"
+                                            data-width-unit="%" data-width="25">
+                                            Tên Phường
+                                        </th>
+                                        <th data-align="center" data-field="district" data-sortable="true"
+                                            data-width-unit="%" data-width="20">
+                                            Số điểm đặt
+                                        </th>
+                                        <th data-align="center" data-field="ward" data-sortable="true"
+                                            data-width-unit="%" data-width="20">
+                                            Số bảng quảng cáo
+                                        </th>
+                                        <th data-align="center" data-field="actions">
+                                            Hành động
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% wards.forEach(ward => { %>
-                                    <tr>
-                                        <td>
-                                        <%= ward.wardID %>
-                                        </td>
-                                        <td>
-                                        <%= ward.wardName %>
-                                        </td>
-                                        <td>
-                                        <%= ward.spotsCount %>
-                                        </td>
-                                        <td>
-                                        <%= ward.boardsCount %>
-                                        </td>
-                                        <td>
-                                        <div
-                                            class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
-                                            <a href="javascript:" class="mx-3 bg-transparent">
-                                            <img src="/images/edit.svg" alt="edit-icon" onclick="showEditModal(JSON.parse('<%= JSON.stringify(ward) %>'))">
-                                            </a>
-                                            <a href="javascript:" class="mx-3 bg-transparent">
-                                            <img src="/images/remove.svg" onclick="deleteWard(JSON.parse('<%= JSON.stringify(ward) %>'))" alt="remove-icon">
-                                            </a>
-                                        </div>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
+                                    <% wards.forEach(ward=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= ward.wardID %>
+                                            </td>
+                                            <td>
+                                                <%= ward.wardName %>
+                                            </td>
+                                            <td>
+                                                <%= ward.spotsCount %>
+                                            </td>
+                                            <td>
+                                                <%= ward.boardsCount %>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="d-flex flex-row align-items-center justify-content-center action-icons bg-transparent">
+                                                    <a href="javascript:" class="mx-3 bg-transparent">
+                                                        <img src="/images/edit.svg" alt="edit-icon" class="editBtn"
+                                                            data-bs-ward="<%=JSON.stringify(ward) %>">
+                                                    </a>
+                                                    <a href="javascript:" class="mx-3 bg-transparent">
+                                                        <img src="/images/remove.svg" class="deleteBtn"
+                                                            data-bs-ward="<%=JSON.stringify(ward) %>" alt="remove-icon">
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
                                 </tbody>
                             </table>
                         </div>
-                    </div>  
-        </div>
-        <!-- Modal editttttttttttttttttttttttttttttttttttttttttttttttttttt -->
-        <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header pb-0 border-0 position-relative text-center justify-content-center">
-                        <button type="button"
-                            class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
-                            data-bs-dismiss="modal" aria-label="Close"></button>
-                        <h5 class="modal-title pb-2 fs-4 fw-semibold text-center text-uppercase">Sửa Tên Phường</h5>
                     </div>
-                    <div class="modal-body pt-1 pb-2 border-0">
-                        <form>
-                            <div class="mb-3">
-                                <label for="wardID" class="col-form-label mb-1">
-                                    Mã Phường (<span class="text-danger">*</span>)
-                                </label>
-                                <input type="text" class="form-control" id="wardID" name="wardID" placeholder="Mã phường"
-                                    required="required">
-                            </div>
-                            <div class="mb-3">
-                                <label for="wardName" class="col-form-label mb-1">
-                                    Tên Phường (<span class="text-danger">*</span>)
-                                </label>
-                                <input type="text" class="form-control" id="wardName" name="wardName"
-                                    placeholder="Tên phường" required="required">
-                            </div>
-                            <div class="d-flex justify-content-around">
-                                <button class="btn" style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc;"
-                                    data-bs-dismiss="modal" type="button">
-                                    Hủy
-                                </button>
-                                <button type="button" class="btn" onclick="updateWard()"
-                                    style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
-                                    Xác nhận
-                                </button>
-                            </div>
-                        </form>
+            </div>
+            <!-- Modal editttttttttttttttttttttttttttttttttttttttttttttttttttt -->
+            <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header pb-0 border-0 position-relative text-center justify-content-center">
+                            <button type="button"
+                                class="btn-close position-absolute top-0 end-0 mt-2 me-2 bg-light shadow-sm border rounded-pill"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title pb-2 fs-4 fw-semibold text-center text-uppercase">Sửa Tên Phường</h5>
+                        </div>
+                        <div class="modal-body pt-1 pb-2 border-0">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="wardID" class="col-form-label mb-1">
+                                        Mã Phường (<span class="text-danger">*</span>)
+                                    </label>
+                                    <input type="text" class="form-control" id="wardID" name="wardID"
+                                        placeholder="Mã phường" required="required">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="wardName" class="col-form-label mb-1">
+                                        Tên Phường (<span class="text-danger">*</span>)
+                                    </label>
+                                    <input type="text" class="form-control" id="wardName" name="wardName"
+                                        placeholder="Tên phường" required="required">
+                                </div>
+                                <div class="d-flex justify-content-around">
+                                    <button class="btn"
+                                        style="min-width: 6.5rem; background-color: #e84747; color: #f7fafc;"
+                                        data-bs-dismiss="modal" type="button">
+                                        Hủy
+                                    </button>
+                                    <button id="updateWardBtn" type="button" class="btn"
+                                        style="min-width: 6.5rem; background-color: #3c77ff; color: #f7fafc">
+                                        Xác nhận
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
+
+            <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x"
+                style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
     </main>
+
     <!-- Modal add -->
     <script defer type="module">
-        import createModal from '/js/modal.js';
 
+        import createModal from '/js/modal.js';
         const options = {
             id: 'addModal-qlphuong',
             title: 'Tạo Phường mới',
@@ -192,38 +206,48 @@
         createModal(options);
     </script>
 
-    <script defer>
+    <script defer type="module">
+        import {
+            ezBSAlert
+        } from '/js/customizedModal.js';
+
         const alertPlaceholder = document.getElementById('alertConfirm')
         const appendAlert = (message, type) => {
             const wrapper = document.createElement('div')
             wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            '</div>'
+                `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
             ].join('')
 
             alertPlaceholder.append(wrapper)
         }
+
         const deleteWard = async (ward) => {
-            if(ward.spotsCount > 0 || ward.boardsCount > 0)
+            if (ward.spotsCount > 0 || ward.boardsCount > 0)
                 appendAlert('KHÔNG THỂ XÓA PHƯỜNG. Vì phường này có tồn tại Điểm đặt / Bảng quảng cáo', 'danger');
-            else{
+            else {
                 try {
                     const response = await fetch(`/so/locations-detail/${ward.wardID}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
                     });
                 } catch (error) {
                     console.error('Error during DELETE request:', error.message);
+                    appendAlert('XÓA PHƯỜNG THẤT BẠI', 'danger');
                 } finally {
+                    appendAlert('XÓA PHƯỜNG THÀNH CÔNG', 'success');
                     location.reload();
                 }
             }
         }
-        const showEditModal = async (ward) => {
+
+        const showEditModal = async (e) => {
+            const ward = JSON.parse(e.target.dataset.bsWard);
+
             const modal = document.getElementById('editModal');
             const wardIDInput = document.getElementById('wardID');
             const wardNameInput = document.getElementById('wardName');
@@ -235,8 +259,10 @@
 
             const modalInstance = new bootstrap.Modal(modal);
             modalInstance.show($('main'));
-        }   
-        const updateWard = async () => {
+        }
+
+        const updateWard = async (e) => {
+            e.preventDefault();
             const wardID = document.getElementById('wardID').value;
             const wardName = document.getElementById('wardName').value;
 
@@ -256,17 +282,34 @@
                 if (!response.ok) {
                     throw new Error(`Failed to update user: ${response.status}`);
                 }
-
-                
                 // Handle success, if needed
+                appendAlert('Cập nhật thành công', 'success');
             } catch (error) {
                 console.error(`Error updating user: ${error.message}`);
+                appendAlert('Cập nhật thất bại', 'danger');
             } finally {
                 location.reload();
             }
         }
+
+        const confirmDelete = async (e) => {
+            const ward = JSON.parse(e.target.dataset.bsWard);
+            console.log(ward)
+            ezBSAlert({
+                type: "confirm",
+                messageText: "Bạn có chắc muốn xóa quận này?",
+                alertType: 'danger',
+            }).done(function (e) {
+                if (e) {
+                    deleteWard(ward);
+                }
+            });
+        }
+
+        $('#tableData').on('click', '.editBtn', showEditModal);
+        $('#tableData').on('click', '.deleteBtn', confirmDelete);
+        $('#updateWardBtn').on('click', updateWard);
     </script>
 </body>
-
 
 </html>
