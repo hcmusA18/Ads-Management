@@ -1,7 +1,7 @@
 <div class="container-fluid px-0">
     <!--Main image-->
     <div class="row position-relative">
-        <img id="mainImg" src="<%= imgUrls[0] %>>" class="img-fluid" alt="Current image" style="min-height: 28rem; object-fit: cover;">
+		<img id="mainImg" src="<%= imgUrls.length > 0 ? imgUrls[0] : '/images/placeholder.jpg' %>" class="img-fluid" alt="Current image" style="min-height: 28rem; object-fit: cover;">
 
         <!--Thumbnails button-->
         <div class="col-12 position-absolute my-auto d-flex justify-content-between h-100">
@@ -16,15 +16,28 @@
     </div>
     <!--Thumbnails-->
     <!--Show 3 thumbnails each time-->
-    <% for (let i = 0; i < imgUrls.length; i++) { %>
-        <div class="row thumbnails-item d-none mt-2">
-            <% for (let j = i; j < i + 3; j++) { %>
-                <div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
-                    <img src="<%= imgUrls[j % imgUrls.length] %>" class="img-fluid" alt="Thumbnail <%= j %>" style="object-fit: cover; height: 10rem; width: 100%">
-                </div>
-            <% } %>
-        </div>
-    <% } %>
+	<div id="sub-images">
+		<% if (imgUrls.length == 0) { %>
+			<% for (let i = 0; i < 1; i++) { %>
+				<div class="row thumbnails-item d-none mt-2">
+					<% for (let j = i; j < i + 3; j++) { %>
+						<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
+							<img src="/images/placeholder.jpg" class="img-fluid" alt="Thumbnail <%= j %>" style="object-fit: cover; height: 10rem; width: 100%">
+						</div>
+					<% } %>
+				</div>
+			<% } %>
+		<% } else { %>
+		<% for (let i = 0; i < imgUrls.length; i++) { %>
+			<div class="row thumbnails-item d-none mt-2">
+				<% for (let j = i; j < i + 3; j++) { %>
+					<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
+						<img src="<%= imgUrls[j % imgUrls.length] %>" class="img-fluid" alt="Thumbnail <%= j %>" style="object-fit: cover; height: 10rem; width: 100%">
+					</div>
+				<% } %>
+			</div>
+		<% } } %>
+	</div>
 </div>
 
 <script>
