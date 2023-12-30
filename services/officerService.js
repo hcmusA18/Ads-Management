@@ -41,6 +41,14 @@ export const getOfficerByUsername = async (username) => {
 	}
 };
 
+export const getOfficerByEmail = async (email) => {
+	try {
+		return Officer.findOne({email});
+	}	catch (error) {
+		throw new Error(`Error getting officer ${email}: ${error.message}`);
+	}
+};
+
 // 1:  for district officer
 // 2:  for ward officer
 // 0 is not assigned

@@ -9,7 +9,7 @@ const passportConfig = (passport) => {
       try {
         const officer = await getOfficerByUsername(username);
         if (!officer || !await comparePassword(password, officer.password)) {
-          return done(null, false, { message: 'Incorrect password or username.' })
+          return done(null, false, { message: 'Tên đăng nhập hoặc mật khẩu không đúng' })
         }
         return done(null, officer)
       } catch (error) {

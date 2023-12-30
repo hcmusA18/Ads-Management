@@ -8,7 +8,7 @@ import quanRoutes from './routes/quanRoutes.js'
 import phuongRoutes from './routes/phuongRoutes.js'
 import apiRoutes from './routes/apiRoutes.js';
 import {setHeaders} from './routes/apiRoutes.js';
-import { loginController, ggLoginController } from './controllers/authController.js'
+import { loginController, ggLoginController, forgotPassController, verifyOTPController, resetPasswordController } from './controllers/authController.js'
 import imgurController from './controllers/imgurController.js'
 // middleware import
 import morgan from 'morgan'
@@ -80,6 +80,9 @@ app.get('/', (req, res) => {
   })
 })
 app.post('/', loginController)
+app.post('/forgot-password', forgotPassController)
+app.post('/verify-code', verifyOTPController)
+app.post('/reset-password', resetPasswordController)
 app.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) {

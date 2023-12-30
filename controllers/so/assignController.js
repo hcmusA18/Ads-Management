@@ -3,6 +3,7 @@ import officerService from '../../services/officerService.js';
 import * as districtService from '../../services/districtService.js';
 import * as wardService from '../../services/wardService.js';
 import emailService from '../../services/emailService.js';
+import { hashPassword, comparePassword } from '../../services/passwordService.js';
 
 const show = async (req, res) => {
 	const officers = await officerService.getAllOfficersByPosition();
@@ -79,9 +80,11 @@ const updateOfficer = async (req, res) => {
 
 const addOfficer = async (req, res)  => {
 	const {username, email} = req.body;
-	const newPassword = generateRandomPassword();
+	let newPassword = generateRandomPassword();
 
 	emailService.sendNewPassword(email, newPassword);
+
+	newPassword = await hashPassword(newPassword);
 
 	const newData = {
 		username: username,

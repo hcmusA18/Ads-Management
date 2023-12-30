@@ -30,6 +30,24 @@ class EmailService {
       }
     })
   }
+
+  sendOTP(userEmail, otp) {
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: userEmail,
+      subject: 'Mã OTP để thay đổi mật khẩu',
+      text: `Chào bạn,\n\nMã OTP của bạn là: ${otp}. Vui lòng sử dụng mã OTP này để thay đổi mật khẩu.\n\nTrân trọng,\nCivic Ads`,
+      html: `<p>Chào bạn,</p><p>Mã OTP của bạn là: <strong>${otp}</strong>. Vui lòng sử dụng mã OTP này để thay đổi mật khẩu.</p><p>Trân trọng,<br>Civic Ads</p>`
+    }
+
+    this.transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error)
+      } else {
+        console.log('Email sent: ' + info.response)
+      }
+    })
+  }
 }
 
 export default new EmailService();
