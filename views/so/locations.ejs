@@ -9,10 +9,25 @@
 </head>
 
 <body>
+  <%- include("../partials/loader.ejs"); %>
   <header></header>
   <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
     <div class="row"><%- include("../partials/sidebar.ejs", {toolbars: toolbars}); %></div>
     <div class="container-fluid vw-100 pt-1">
+      <% if (typeof message !== undefined) {%>
+      <% if (message.success) {%>
+      <div class="alert alert-success alert-dismissible position-absolute top-0 start-50" role="alert">
+        <strong>Thành công!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+      </div>
+      <% } else if (message.error) {%>
+      <div class="alert alert-danger alert-dismissible position-absolute top-0 start-50" role="alert">
+        <strong>Thất bại!</strong> <%= message.error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+      <% } %>
       <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
         <!-- Profile -->
         <%- include("../partials/profile_card.ejs"); %>
@@ -211,7 +226,9 @@
   </script>
 
   <script defer type="module">
-    import {ezBSAlert} from '/js/customizedModal.js';
+    import {
+      ezBSAlert
+    } from '/js/customizedModal.js';
     const alertPlaceholder = document.getElementById('alertConfirm')
     const appendAlert = (message, type) => {
       const wrapper = document.createElement('div')
@@ -242,11 +259,10 @@
           }
 
           console.log('District deleted!');
-
+          appendAlert('Cập nhật thành công', 'success');
         } catch (error) {
           console.error('Error during DELETE request:', error.message);
-        } finally {
-          location.reload();
+          appendAlert('Cập nhật thất bại', 'danger');
         }
       }
     }
@@ -290,8 +306,10 @@
         districtName: districtName,
       };
 
+      const success = false;
+
       try {
-        const response = await fetch(`/so/locations/${districtID}`, {
+        const response = fetch(`/so/locations/${districtID}`, {
           method: 'PATCH',
           mode: 'same-origin',
           body: JSON.stringify(dataToUpdate)
@@ -309,14 +327,6 @@
       } catch (error) {
         console.error(`Error updating user: ${error.message}`);
         appendAlert('Cập nhật thất bại', 'danger');
-      } finally {
-        // wait 3 seconds and hide
-        setTimeout(function() {
-          const bsAlert = bootstrap.Alert.getOrCreateInstance(document.getElementById('alertConfirm'));
-          bsAlert.close();
-          console.log('close');
-        }, 5000);
-        location.reload();
       }
     }
 
