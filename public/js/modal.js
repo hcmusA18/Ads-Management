@@ -56,7 +56,7 @@ const createComponent = (component) => {
 
 const createButton = (button, formID) => {
 	const buttonElement = $(`
-		<button 
+		<button
 			class="btn"
 			style="min-width: 6.5rem; background-color: ${button.color}; color: #f7fafc;">
 		${button.label}
@@ -80,7 +80,17 @@ const createButton = (button, formID) => {
 	}
 	return buttonElement;
 }
+const appendAlert = (message, type) => {
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = [
+    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+    `   <div>${message}</div>`,
+    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+    '</div>'
+  ].join('')
 
+  $('#alertConfirm').append(wrapper)
+}
 const createModal = (options) => {
 	console.log('create modal');
 	// console.log(options);
@@ -137,6 +147,39 @@ const createModal = (options) => {
 	else {
 		$('main').append(modal);
 	}
+
+  if ($('#alertConfirm').length === 0){
+    console.log('create alert confirm');
+    $('main').append('<div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>');
+  }else console.log('alert confirm existed')
+
+  // check post request success
+  if (options.form && options.form.method === 'post') {
+    $(`#${options.form.id}`).submit(async function (e) {
+      e.preventDefault();
+      const form = $(this);
+      const url = form.attr('action');
+      const data = form.serialize();
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: data,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        console.log('Request success');
+        appendAlert('Thành công', 'success');
+      } catch (error) {
+        console.log(error.message);
+        appendAlert('Thất bại', 'danger');
+      }
+    });
+  }
+
 	return modal;
 }
 
