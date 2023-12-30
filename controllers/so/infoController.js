@@ -48,7 +48,6 @@ const updateInfo = async (req, res) => {
   const { username } = req.params;
   const { name, email, phone, dob } = req.body;
   try {
-    console.log(username, { name, email, phone, dob });
     await officerService.updateOfficer(username, { name, email, phone, dob });
     res.status(200).json({ message: 'Cập nhật thông tin thành công' });
   } catch {

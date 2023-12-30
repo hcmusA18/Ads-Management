@@ -37,12 +37,6 @@ const OfficerSchema = new mongoose.Schema({
   }
 });
 
-// presave
-OfficerSchema.pre('save', async function (next) {
-  const officer = this;
-  console.log(officer);
-  next();
-});
 
 const Officer = mongoose.model('officers', OfficerSchema);
 export default Officer;

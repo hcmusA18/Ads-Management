@@ -30,7 +30,6 @@ const getOfficierRoleInfor = async (info) => {
 const getInfo = async (req, res) => {
   const { username } = req.params;
   const role = String(req.originalUrl.split('/')[1]);
-  res.locals.role = role;
   try {
     const info = await officerService.getOfficerByUsername(username, true);
     const { wardName, districtName, roleName } = await getOfficierRoleInfor(info);
@@ -48,7 +47,6 @@ const updateInfo = async (req, res) => {
   const { username } = req.params;
   const { name, email, phone, dob } = req.body;
   try {
-    console.log(username, { name, email, phone, dob });
     await officerService.updateOfficer(username, { name, email, phone, dob });
     res.status(200).json({ message: 'Cập nhật thông tin thành công' });
   } catch {

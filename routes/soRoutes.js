@@ -14,6 +14,7 @@ const toolbars = [
 
 router.get('*', (req, res, next) => {
   res.locals.user = req.user;
+  res.locals.role = 'so';
   next();
 });
 router.get('/officier/:username', (req, res) => controller.infoController.getInfo(req, res));

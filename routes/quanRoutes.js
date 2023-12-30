@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.get('*', (req, res, next) => {
   res.locals.user = req.user || null;
+  res.locals.role = 'quan';
   next();
 });
 router.get('/officier/:username', (req, res) => controller.infoController.getInfo(req, res));
