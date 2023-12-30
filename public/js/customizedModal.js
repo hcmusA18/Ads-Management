@@ -4,10 +4,10 @@ export function ezBSAlert(options) {
       type: 'alert', //alert, prompt,confirm
       modalSize: 'modal-sm', //modal-sm, modal-lg
       okButtonText: 'Ok',
-      cancelButtonText: 'Cancel',
-      yesButtonText: 'Yes',
-      noButtonText: 'No',
-      headerText: 'Attention',
+      cancelButtonText: 'Huỷ',
+      yesButtonText: 'Đồng ý',
+      noButtonText: 'Không',
+      headerText: 'Xác nhận',
       messageText: 'Message',
       alertType: 'default', //default, primary, success, info, warning, danger
       inputFieldType: 'text', //could ask for number,email,etc
@@ -38,8 +38,8 @@ export function ezBSAlert(options) {
           '<div class="modal-dialog" class="' + defaults.modalSize + '">' +
           '<div class="modal-content">' +
           '<div id="ezAlerts-header" class="modal-header ' + headClass + '">' +
-          '<button id="close-button" type="button" class="close" data-dismiss="modal"><i class="fa fa-times-circle" aria-hidden="true"></i></span><span class="sr-only">Close</span></button>' +
           '<h4 id="ezAlerts-title" class="modal-title">Modal title</h4>' +
+          '<button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>' +
           '</div>' +
           '<div id="ezAlerts-body" class="modal-body">' +
           '<div id="ezAlerts-message" ></div>' +
@@ -64,8 +64,13 @@ export function ezBSAlert(options) {
       $('#ezAlerts-title').text(defaults.headerText);
       $('#ezAlerts-message').html(defaults.messageText);
 
+
       var keyb = 'false',
-          backd = 'static';
+      backd = 'static';
+      const ezModal = new bootstrap.Modal(document.getElementById('ezAlerts'), {
+        keyboard: false,
+        backdrop: 'static',
+      });
       var calbackParam = '';
       switch (defaults.type) {
           case 'alert':
@@ -73,21 +78,21 @@ export function ezBSAlert(options) {
               backd = 'true';
               $('#ezAlerts-footer').html('<button class="btn btn-' + defaults.alertType + '">' + defaults.okButtonText + '</button>').on('click', '.btn', function() {
                   calbackParam = true;
-                  $('#ezAlerts').modal('hide');
+                  ezModal.hide();
               });
               break;
           case 'confirm':
               var btnhtml = '<button id="ezok-btn" class="btn btn-primary">' + defaults.yesButtonText + '</button>';
               if (defaults.noButtonText && defaults.noButtonText.length > 0) {
-                  btnhtml += '<button id="ezclose-btn" class="btn btn-default">' + defaults.noButtonText + '</button>';
+                  btnhtml += '<button id="ezclose-btn" class="btn btn-danger">' + defaults.noButtonText + '</button>';
               }
               $('#ezAlerts-footer').html(btnhtml).on('click', 'button', function(e) {
                   if (e.target.id === 'ezok-btn') {
                       calbackParam = true;
-                      $('#ezAlerts').modal('hide');
+                      ezModal.hide();
                   } else if (e.target.id === 'ezclose-btn') {
                       calbackParam = false;
-                      $('#ezAlerts').modal('hide');
+                      ezModal.hide();
                   }
               });
               break;
@@ -95,23 +100,33 @@ export function ezBSAlert(options) {
               $('#ezAlerts-message').html(defaults.messageText + '<br /><br /><div class="form-group"><input type="' + defaults.inputFieldType + '" class="form-control" id="prompt" /></div>');
               $('#ezAlerts-footer').html('<button class="btn btn-primary">' + defaults.okButtonText + '</button>').on('click', '.btn', function() {
                   calbackParam = $('#prompt').val();
-                  $('#ezAlerts').modal('hide');
+                  ezModal.hide();
               });
               break;
       }
 
-      $('#ezAlerts').modal({
-          show: false,
-          backdrop: backd,
-          keyboard: keyb
-      }).on('hidden.bs.modal', function(e) {
-          $('#ezAlerts').remove();
-          deferredObject.resolve(calbackParam);
-      }).on('shown.bs.modal', function(e) {
-          if ($('#prompt').length > 0) {
-              $('#prompt').focus();
-          }
-      }).modal('show');
+      // $('#ezAlerts').on('hidden.bs.modal', function(e) {
+      //     $('#ezAlerts').remove();
+      //     deferredObject.resolve(calbackParam);
+      // }).on('shown.bs.modal', function(e) {
+      //     if ($('#prompt').length > 0) {
+      //         $('#prompt').focus();
+      //     }
+      // });
+
+      $('#ezAlerts').on('hidden.bs.modal', function(e) {
+        $('#ezAlerts').remove();
+        deferredObject.resolve(calbackParam);
+      });
+
+      $('#ezAlerts').on('shown.bs.modal', function(e) {
+        if ($('#prompt').length > 0) {
+          $('#prompt').focus();
+        }
+      });
+
+      ezModal.show();
+
   }
 
   _show();

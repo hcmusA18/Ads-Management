@@ -25,7 +25,7 @@ controller.findAllDistricts = async (req, res) => {
   const totalBoard = await boardService.countAll();
 
   return res.render('./so/locations', {
-    tableData, totalBoard, totalSpot, totalWard, 
+    tableData, totalBoard, totalSpot, totalWard,
     toolbars: toolbars,
     title: 'Sở - Quản lý danh sách Quận'});
 }
@@ -39,7 +39,7 @@ controller.locationsDetails = async (req, res) => {
 
   const wards = await locationService.getDetails(districtID);
   // console.log(wards);
-  
+
   const districts = await districtService.getAllDistricts();
   // console.log(districts);
 
@@ -79,12 +79,12 @@ controller.deleteDistrict = async (req, res) => {
 		if (districtID != null) {
 			const message = await districtService.deleteDistrictByID(districtID);
 			console.log(message);
-      res.redirect('/so/locations');
+      res.status(200).json({message: message});
 		}
 	} catch (error) {
 		console.log(error.message);
 		req.flash('error', error.message);
-    res.redirect('/so/locations');
+    res.status(500).json({message: error.message});
 	}
 }
 
@@ -98,11 +98,11 @@ controller.updateDistrict = async (req, res) => {
   try {
 		const message = await districtService.updateDistrictByID(districtID, data);
 		console.log(message);
-		res.redirect('/so/locations');
+    res.status(200).json({message: message});
 	} catch (error) {
 		console.log(error.message);
 		req.flash('error', error.message);
-		res.redirect('/so/locations');
+    res.status(500).json({message: error.message});
 	}
 }
 
