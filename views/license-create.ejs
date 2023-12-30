@@ -33,7 +33,7 @@
 
 <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert"
     style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
-    <strong>Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
+    <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
     <button type="button" class="btn-close"></button>
 </div>
 <body>
@@ -145,11 +145,11 @@
                     </div>
                     <div style="width: calc((100% - 2rem) / 4);">
                         <label for="board-height" style="margin-bottom: 6px;">Chiều cao (m)</label>                  
-                        <input type="number" class="form-control" id="board-height" value="" min="0" max="100" step="0.01" />
+                        <input type="number" class="form-control" id="board-height" value="" min="0" max="50" step="0.01" />
                     </div>
                     <div style="width: calc((100% - 2rem) / 4);">
                         <label for="board-width" style="margin-bottom: 6px">Chiều rộng (m)</label>
-                        <input type="number" class="form-control" id="board-width" value="" min="0" max="100" step="0.01"/>
+                        <input type="number" class="form-control" id="board-width" value="" min="0" max="50" step="0.01"/>
                     </div>
                 </div>
                 <div class="container mt-2  custom-col">
@@ -222,17 +222,95 @@
       officerUsername: '<%= user.username %>'
     }
 
-    // if(data.spotID == '' || data.boardType == '' || data.quantity == '' 
-    //         || data.height == '' || data.width == '' 
-    //         || data.adsImages == '' || parseInt(data.quantity) > 10
-    //         || parseFloat(data.height) > 100 || parseFloat(data.width) > 100
-    //         || data.content == '' || data.companyName == '' || data.companyPhone == ''
-    //         || data.companyEmail == '' || data.companyAddress == '' || data.startDate == ''
-    //         || data.endDate == '')
-    // {
-    //     document.getElementById('alert-warning').hidden = false;
-    //     return;
-    // }
+    // console.log(data.adsImages);
+
+    // Check spot name.
+    const spotNameInput = document.getElementById('spotName').value.trim();
+    const spotList = JSON.parse('<%- JSON.stringify(spots); %>');
+    if(spotNameInput == '' || !(spotList.some(spot => spot.name === spotNameInput))){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập đúng TÊN ĐIỂM ĐẶT.";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check company name
+    if(data.companyName == ''){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập TÊN CÔNG TY";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check phone number is digit ?
+    if(data.companyPhone == '' || !(/^\d+$/).test(data.companyPhone)){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập đúng SỐ ĐIỆN THOẠI (tất cả đồ là chữ số)";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check email format
+    if(data.companyEmail == '' || !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(data.companyEmail)){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập đúng số ĐỊA CHỈ EMAIL (example@abc.xyz)";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check company address
+    if(data.companyAddress == ''){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập ĐỊA CHỈ công ty";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check startDate & EndDate
+    if(data.startDate == '' || data.endDate == '' || data.startDate >= data.endDate){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập đúng NGÀY BẮT ĐẦU và NGÀY KẾT THÚC";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check board type.
+    const boardTypeInput = document.getElementById('boardTypeName').value.trim();
+    const boardTypeList = JSON.parse('<%- JSON.stringify(boardtypes); %>');
+    if(boardTypeInput == '' || !(boardTypeList.some(type => type.typeName === boardTypeInput))){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập đúng LOẠI BẢNG QUẢNG CÁO.";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check quantity
+    if(data.quantity == '' || !(/^\d+$/).test(data.quantity) || Number.parseInt(data.quantity) > 10 || Number.parseInt(data.quantity) < 0){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập đúng SỐ LƯỢNG BẢNG / TRỤ (số nguyên từ 0 tới 10).";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check height
+    if(data.height == '' || Number.parseFloat(data.height) > 50.0 || Number.parseFloat(data.height) < 0.0){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập đúng CHIỀU CAO (từ 0 tới 50).";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check width
+    if(data.width == '' || Number.parseFloat(data.width) > 50.0 || Number.parseFloat(data.width) < 0.0){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập đúng CHIỀU RỘNG (từ 0 tới 50).";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check content
+    if(data.content == ''){
+        document.getElementById('warning-text').textContent = "Vui lòng nhập NỘI DUNG QUẢNG CÁO.";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
+
+    // Check image
+    if(data.adsImages.length == 0){
+        document.getElementById('warning-text').textContent = "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về bảng quảng cáo.";
+        document.getElementById('alert-warning').hidden = false;
+        return;
+    }
 
     const url = '<%= url %>';
     const requestUrl = url.replace('/create', '');
