@@ -154,7 +154,7 @@ const showCreate = async (req, res) => {
 			address: `${address}, Phường ${wardName}, Quận ${districtName}`,
 		}
 	});
-	
+
 	let boardtypes = await getAllBoardTypes();
 
 	res.render('license-create', {url: req.originalUrl, title, boardtypes, spots, toolbars: createToolbar(role)});
@@ -169,7 +169,7 @@ const add = async (req, res) => {
 		res.status(200).json({ message: 'Bảng quảng cáo đã được thêm thành công' })
 	} catch (error) {
 		console.error(error)
-    	res.status(500).json({ message: 'Lỗi server' })
+    res.status(500).json({ message: 'Lỗi server' })
 	}
 }
 
