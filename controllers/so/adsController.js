@@ -6,7 +6,7 @@ import * as wardService from '../../services/wardService.js'
 import * as spotTypeService from '../../services/spotTypeService.js'
 import * as adsFormService from '../../services/adsFormService.js'
 import * as boardTypeService from '../../services/boardTypeService.js'
-import * as IDGenerator from '../../services/IDGenerator.js';
+import * as IDGenerator from '../../services/IDGenerator.js'
 
 const show = async (req, res) => {
   const category = req.query.category || ''
@@ -90,25 +90,6 @@ const showDetail = async (req, res, isEdit) => {
   const ID = req.params.id || ''
   const isSpotCategory = category === 'spot' ? 1 : 0
 
-  var data = {
-    spotTitle: 'ĐỒNG KHỞI - NGUYỄN DU, SỞ VĂN HÓA VÀ THỂ THAO',
-    spotId: req.params.id,
-    spotAddress: '227 Nguyễn Văn Cừ',
-    ward: 'Bến Nghé',
-    district: 'Quận 1',
-    locationType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-    adsType: 'Quảng cáo thương mại',
-    plan: 'Đã quy hoạch',
-    imgUrls: [
-      'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%201',
-      'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%202',
-      'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%203',
-      'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%204',
-      'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%205',
-      'https://placeholder.pics/svg/600x400/DEDEDE/555555/Image%206'
-    ]
-  }
-
   const getDataObject = category == 'spot' ? spotService.getSpotByID : boardService.getBoardByID
   const object = await getDataObject(ID)
 
@@ -118,28 +99,10 @@ const showDetail = async (req, res, isEdit) => {
     toolbars: toolbars,
     role: role
   }
-  // {
-  // 	spotID: 'DD0001',
-  // 	address: '887 Trần Hưng Đạo',
-  // 	districtID: 'Q0005',
-  // 	wardID: 'P00501',
-  // 	spotType: 'VT004',
-  // 	planned: 0,
-  // 	spotName: 'Nhà hàng Sài Gòn 2',
-  // 	spotImage: [
-  // 	  'https://drive.google.com/uc?export=view&id=18-945o400Cg8VZ-gNP3NKCurRbCpaga0',
-  // 	  'https://drive.google.com/uc?export=view&id=1aqXkU6onBekkS4PNtJqil4R7SUTaZfVP'
-  // 	],
-  // 	spotTypeName: 'Chợ',
-  // 	districtName: '05',
-  // 	wardName: '01',
-  // 	adsFormName: 'Cổ động chính trị'
-  //   }
+
   if (isSpotCategory) {
-    // console.log('Spot');
-    // console.log(object)
     const { spotName, address, wardName, districtName, spotTypeName, adsFormName, planned, spotImage } = object
-    data = {
+    const data = {
       spotTitle: spotName,
       spotId: ID,
       spotAddress: address,
@@ -175,9 +138,7 @@ const showDetail = async (req, res, isEdit) => {
       })
     }
   } else {
-    // console.log('Board');
-    // console.log(object)
-    data = {
+    const data = {
       id: object.boardID,
       spotID: object.spotID,
       spotAddress: object.spotAddress,
@@ -188,17 +149,23 @@ const showDetail = async (req, res, isEdit) => {
       startDate: object.startDate.toLocaleDateString('vi-VN'),
       endDate: object.endDate.toLocaleDateString('vi-VN'),
       boardTypeName: object.boardTypeName,
+      boardType: object.boardType,
       quantity: object.quantity,
       size: `${object.height}x${object.width}m`,
       spotTypeName: object.spotTypeName,
+      spotType: object.spotType,
       adsFormName: object.adsFormName,
+      adsForm: object.adsForm,
       imgUrls: object.image,
-      content: object.content
+      content: object.content,
+      licensingID : object.licensingID,
     }
 
     if (isEdit) {
-      let spots = await spotService.getAllSpots()
-      res.render('board-modify', { ...commonData, ...data, spots })
+      let other = {};
+      other.spots = (await spotService.getAllSpots()) || [];
+      other.boardtypes = (await boardTypeService.getAllBoardTypes()) || [];
+      res.render('board-modify', { ...commonData, ...data, other })
     } else {
       res.render('board-detail', { ...commonData, ...data })
     }
@@ -215,21 +182,21 @@ const showAdd = async (req, res) => {
       other.adsforms = (await adsFormService.getAllAdsForms()) || []
       other.districts = (await districtService.getAllDistricts()) || []
       other.wards = (await wardService.getAllWards()) || []
-      res.render('spot-new', { url: req.originalUrl, title: 'Sở - Điểm đặt mới', toolbars: toolbars, other})
+      res.render('spot-new', { url: req.originalUrl, title: 'Sở - Điểm đặt mới', toolbars: toolbars, other })
       break
     case 'board':
       const spotID = req.query.spotID || '';
       const spot = (await spotService.getSpotByID(spotID)) || {};
 
-      other.spotID = spot.spotID;
-      other.spotAddress = spot.address;
-      other.spotDistrict = spot.districtName;
-      other.spotWard = spot.wardName;
+      other.spotID = spot.spotID
+      other.spotAddress = spot.address
+      other.spotDistrict = spot.districtName
+      other.spotWard = spot.wardName
 
-      other.boardtypes = (await boardTypeService.getAllBoardTypes()) || [];
+      other.boardtypes = (await boardTypeService.getAllBoardTypes()) || []
       // console.log(other.boardtypes);
 
-      console.log(req.originalUrl);
+      console.log(req.originalUrl)
       res.render('board-add', { url: req.originalUrl, title: 'Sở - Bảng quảng cáo mới', toolbars: toolbars, other })
       break
     default:
@@ -255,7 +222,7 @@ const showModify = (req, res) => {
 
 const addNewSpot = async (req, res) => {
   const { spotName, spotType, address, wardID, districtID, adsForm, planned, spotImage, longitude, latitude } = req.body
-  const spotID = await IDGenerator.getNewID('Spot');
+  const spotID = await IDGenerator.getNewID('Spot')
   const data = {
     spotID,
     spotName,
@@ -279,9 +246,9 @@ const addNewSpot = async (req, res) => {
 }
 
 const addNewBoard = async (req, res) => {
-  const {boardType, quantity, height, width, spotImage} = req.body;
-  const boardID = await IDGenerator.getNewID('Board');
-  const spotID = req.query.spotID;
+  const { boardType, quantity, height, width, spotImage } = req.body
+  const boardID = await IDGenerator.getNewID('Board')
+  const spotID = req.query.spotID
   const data = {
     boardID: boardID,
     boardType: boardType,
@@ -290,12 +257,12 @@ const addNewBoard = async (req, res) => {
     width: width,
     image: spotImage,
     spotID: spotID,
-    licensingID: "",
+    licensingID: ''
   }
 
   // console.log(data);
   try {
-    await boardService.createBoard(data);
+    await boardService.createBoard(data)
     res.status(200).json({ message: 'Bảng quảng cáo đã được thêm thành công' })
   } catch (error) {
     console.error(error)
@@ -304,22 +271,21 @@ const addNewBoard = async (req, res) => {
 }
 
 const addNew = async (req, res) => {
-  const category = req.query.category || '';
+  const category = req.query.category || ''
 
-  if(category == "spot"){
-    addNewSpot(req, res);
+  if (category == 'spot') {
+    addNewSpot(req, res)
     return
   }
 
-  addNewBoard(req, res);
-  return;
+  addNewBoard(req, res)
+  return
 }
-
 
 export default {
   show,
   showDetail,
   showAdd,
   showModify,
-  addNew,
+  addNew
 }
