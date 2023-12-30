@@ -23,28 +23,6 @@
                 <a href="<%= `/${url.split('/')[1]}/license/create` %>" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true"
                    style="height: fit-content;">Tạo yêu cầu</a>
             </div>
-            <!-- Check box -->
-            <% if (url.includes('quan')) { %>
-            <div class="container-fluid checkbox-container">
-                <div class="d-inline-block pb-2" style="padding-left: 15px">
-                    <h1 style="color: #1f274a; font-size: 22px; font-weight: 500"><%= checkboxHeader%></h1>
-                </div>
-                <div class="container-fluid d-flex flex-wrap">
-                    <% checkboxData.forEach((item, i) => {%>
-                        <div class="form-check me-4 mb-3" style="min-width: 9rem;">
-                            <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="check<%= i %>"
-                                    name="option<%= i %>"
-                                    value="<%= item %>"
-                                    checked/>
-                            <label class="form-check-label" for="check<%= i %>"><%=item%></label>
-                        </div>
-                    <%})%>
-                </div>
-            </div>
-            <% } %>
             <!-- Select -->
             <% const [baseUrl, queryParams] = url.split('?'); %>
             <div class="container-fluid mt-3 ps-0">
@@ -66,5 +44,5 @@
     </div>
 </main>
 </body>
-
+<script defer src="/js/checkbox-select.js"></script>
 </html>
