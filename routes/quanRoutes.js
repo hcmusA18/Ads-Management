@@ -1,12 +1,12 @@
 import express from 'express';
 import controller from '../controllers/official/index.js';
-
 const router = express.Router();
 
 router.get('*', (req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
+router.get('/officier/:username', (req, res) => controller.infoController.getInfo(req, res));
 router.get('/', (req, res) => controller.indexController.show(req, res));
 router.get('/reports', (req, res) => controller.reportsController.show(req, res));
 
@@ -22,4 +22,4 @@ router.get('/license/create', (req, res) => controller.licenseController.showCre
 router.get('/license/:id', (req, res) => controller.licenseController.showDetail(req, res, true))
 router.delete('/license/:id', (req, res) => controller.licenseController.deleteRequest(req, res));
 router.post('/license', (req, res) => controller.licenseController.add(req, res));
-export default router;
+export const quanRoutes = router;

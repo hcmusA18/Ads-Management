@@ -1,6 +1,7 @@
 import adsController from './adsController.js';
 import licenseController from './licenseController.js';
 import reportsController from './reportsController.js';
+import infoController from './infoController.js';
 import {createToolbar} from './utilities.js';
 
 const indexController = {
@@ -15,5 +16,6 @@ export default {
 	adsController,
 	indexController,
 	licenseController,
-	reportsController
+	reportsController,
+  infoController
 }

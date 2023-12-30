@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include("./partials/head.ejs"); %>
+</head>
+
+<body>
+  <header></header>
+  <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+    <aside class="row">
+      <%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %>
+    </aside>
+    <div class="container-fluid vw-100 pt-1">
+      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative">
+        <!-- Profile -->
+        <%- include("./partials/profile_card.ejs"); %>
+        <!-- Back button -->
+        <%- include("./partials/back_button.ejs"); %>
+        <!-- Title -->
+        <div class="d-flex flex-row align-items-center" style="gap: 10px">
+          <h1 class="fw-bolder m-0"><%- title %></h1>
+        </div>
+
+        <!-- Content -->
+        <div class="container-fluid nd-chi-tiet px-0">
+          <form method="POST" action="<%= `/${role}/officier/${info.username}` %>" >
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="username" id="username" value="<%= info.username %>" disabled />
+              <label for="username" class="form-label"">Username</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="name" id="name" placeholder="abc@mail.com" value="<%= info.name || null %>" />
+              <label for="name" class="form-label"">Họ và tên</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="role" id="role" placeholder="abc@mail.com" value="<%= info.roleName || null %>" disabled />
+              <label for="role" class="form-label"">Chức vụ</label>
+            </div>
+
+            <% if (info.position > 1) { %>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="manage" id="manage" placeholder="abc@mail.com" value="<%= info.managePlace || null %>" disabled />
+              <label for="manage" class="form-label"">Quản lý</label>
+            </div>
+            <% } %>
+
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" name="email" id="email" placeholder="abc@mail.com" value="<%= info.email || null %>" />
+              <label for="email" class="form-label">Email</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="tel" class="form-control" name="phone" id="phone" placeholder="012345678" value="<%= info.phone || null %>" />
+              <label for="phone" class="form-label">SĐT</label>
+            </div>
+            <div class="form-floating mb-3 ">
+              <input type="date" class="form-control" id="birthday" name="dob" value="<%= info.dob || null %>" />
+              <label for="birthday" class="form-label">Ngày sinh</label>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Submit
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</body>
+
+</html>

@@ -4,6 +4,7 @@ import requestsController from './requestsController.js';
 import assignController from './assignController.js';
 import adsController from './adsController.js';
 import locationsController from './locationsController.js';
+import infoController from './infoController.js';
 
 export default {
 	reportsController,
@@ -12,4 +13,5 @@ export default {
 	assignController,
 	adsController,
 	locationsController,
+  infoController
 }

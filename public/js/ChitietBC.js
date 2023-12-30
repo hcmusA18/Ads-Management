@@ -5,4 +5,4 @@ var options={
     autoclose: true,
     orientation: 'bottom'
 };
-$j("#datepicker").datepicker(options);
+$j('#datepicker').datepicker(options);

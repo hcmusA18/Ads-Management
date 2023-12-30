@@ -7,6 +7,8 @@ router.get('*', (req, res, next) => {
   res.locals.user = req.user || null;
   next();
 })
+router.get('/officier/:username', (req, res) => controller.infoController.getInfo(req, res));
+router.post('/officier/:username', (req, res) => controller.infoController.updateInfo(req, res));
 router.get('/', (req, res) => controller.indexController.show(req, res));
 router.get('/ads', (req, res) => controller.adsController.show(req, res));
 router.get('/ads/:id', (req, res) => controller.adsController.showDetail(req, res, false));
@@ -24,4 +26,4 @@ router.get('/license/:id', (req, res) => controller.licenseController.showDetail
 router.delete('/license/:id', (req, res) => controller.licenseController.deleteRequest(req, res));
 
 router.post('/license', (req, res) => controller.licenseController.add(req, res));
-export default router;
+export const phuongRoutes = router;

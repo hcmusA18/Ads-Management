@@ -67,4 +67,5 @@ router.get('/report-types', (req, res) => {
     .then((reportTypes) => res.status(200).json(reportTypes))
     .catch((err) => res.status(500).json({ message: err.message }))
 });
-export default router
+
+export const apiRoutes = router;
