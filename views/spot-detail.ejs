@@ -30,13 +30,14 @@
                 <%- include("./partials/carousel.ejs",
                 {imgUrls: imgUrls}); %>
                 <div class="container-fluid px-0 nd-chi-tiet">
-                    <div class="container d-flex justify-content-between">
-                        <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm
-                            đặt</h4>
-                        <% const [baseUrl, queryParams] = url.split('?'); %>
+                  <div class="container d-flex justify-content-between">
+                    <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
+                    <% const [baseUrl, queryParams] = url.split('?'); %>
+                        <% if (role !== 'so') { %>
                         <a href="<%= baseUrl + '/modify?' + queryParams %>" class="btn btn-primary" tabindex="-1"
                            role="button"
                            aria-disabled="true">Yêu cầu chỉnh sửa</a>
+                        <% } %>
                     </div>
                     <div class="container mt-2">
                         <label for="spotId" style="margin-bottom: 6px">ID Điểm đặt</label>
