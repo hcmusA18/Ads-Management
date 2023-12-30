@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/css/carousel.css" />
   </head>
 
+  <%- include("./partials/loader.ejs") %>
+
   <body>
     <header></header>
     
@@ -195,6 +197,7 @@
       const addBtn = document.getElementById('add-button');
       const removeBtn = document.getElementById('remove-button');
       let imgUrls = Array.from(document.querySelectorAll('.thumbnails-item img')).map(img => img.src);
+      const loader = document.getElementById('loaderContainer');
 
 
       // Add new image
@@ -238,6 +241,9 @@
         e.preventDefault();
         const inputImage = document.getElementById('input-image');
         const files = inputImage.files;
+
+        // show loader
+        loader.style.display = 'block';
         
         let imgUrlsData = [];
         if (files.length > 0) {
@@ -253,10 +259,10 @@
           boardID: document.getElementById('boardID').value,
           boardType: document.getElementById('boardType').value,
           boardTypeName: document.getElementById('boardTypeName').value,
-          quantity: document.getElementById('quantity').value + ' trụ/bảng',
-          height: document.getElementById('size').value.split('x')[0],
-          width: document.getElementById('size').value.split('x')[1].replace('m', ''),
-          reason: document.getElementById('reason').value,
+          quantity: parseInt(document.getElementById('quantity').value, 10),
+          height: parseFloat(document.getElementById('size').value.split('x')[0].trim()),
+          width: parseFloat(document.getElementById('size').value.split('x')[1].replace('m', '').replace('(', '').replace(')', '').trim()),
+          reason: document.getElementById('reason').value || 'Không có lý do chỉnh sửa',
           officerUsername: '<%= user.username %>',
           spotName: document.getElementById('spotName').value,
           spotAddress: document.getElementById('spotAddress').value,
@@ -272,7 +278,7 @@
         }
         const url = '<%= url %>';
         const requestUrl = url.replace('/modify', '');
-        console.log('Request URL: ', requestUrl);
+        // console.log('Request URL: ', requestUrl);
         const result = await fetch(requestUrl, {
           method: 'POST',
           headers: {
@@ -281,7 +287,7 @@
           body: JSON.stringify(data),
         });
 
-        console.log(result);
+        // console.log(result);
         // ......... Xu ly ket qua va hien thong bao ............
 
         if (result.status == 200) {
@@ -297,6 +303,8 @@
         } else {
           document.getElementById('alert-danger').removeAttribute('hidden');
         }
+        // hide loader
+        loader.style.display = 'none';
 
         // .......................................................
       }

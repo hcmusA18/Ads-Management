@@ -258,7 +258,7 @@ const request = async (req, res) => {
       status: 0,
       officerUsername: officerUsername,
     }
-    // console.log(data);
+    // console.log('Ads controller: ', data);
 		let { message } = await editRequestService.create(data);
 		console.log(`Message: ${message}`);
 		req.flash('success', message);

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/css/carousel.css" />
   </head>
 
+  <%- include("./partials/loader.ejs") %>
+
   <body>
     <header></header>
 
@@ -183,7 +185,7 @@
     <script defer>
       const addBtn = document.getElementById('add-button');
       let imgUrls = Array.from(document.querySelectorAll('.thumbnails-item img')).map(img => img.src);
-
+      const loader = document.getElementById('loaderContainer');
 
       // Add new image
 
@@ -226,6 +228,9 @@
         e.preventDefault();
         const inputImage = document.getElementById('input-image');
         const files = inputImage.files;
+
+        // show loader
+        loader.style.display = 'block';
         
         let imgUrlsData = [];
         if (files.length > 0) {
@@ -233,7 +238,7 @@
         }
         getUpdatedImgUrls();
         imgUrlsData = imgUrlsData.concat(imgUrls);
-        console.log("Image URLs: ", imgUrlsData);
+        // console.log("Image URLs: ", imgUrlsData);
 
         const data = {
           spotID: document.getElementById('spotID').value,
@@ -251,12 +256,12 @@
           adsFormName: document.getElementById('adsFormName').value,
           spotName: document.getElementById('spotName').innerText,
           planned: document.getElementById('planned').value == 'Đã quy hoạch' ? 1 : 0,
-          reason: document.getElementById('reason').value,
+          reason: document.getElementById('reason').value || 'Không có lý do chỉnh sửa',
           officerUsername: '<%= user.username %>'
         }
         const url = '<%= url %>';
         const requestUrl = url.replace('/modify', '');
-        console.log('Request URL: ', requestUrl);
+        // console.log('Request URL: ', requestUrl);
         const result = await fetch(requestUrl, {
           method: 'POST',
           headers: {
@@ -265,10 +270,10 @@
           body: JSON.stringify(data),
         });
 
-        console.log(result);
+        // console.log(result);
 
         // ......... Xu ly ket qua va hien thong bao ............
-
+        
         if (result.status == 200) {
           document.getElementById('alert-success').removeAttribute('hidden');
           // clear all inputs
@@ -282,6 +287,8 @@
         } else {
           document.getElementById('alert-danger').removeAttribute('hidden');
         }
+        // hide loader
+        loader.style.display = 'none';
 
         // .......................................................
       }

@@ -200,7 +200,7 @@
                     </div>
                     <div style="width: calc((100% - 3rem) / 3);">
                         <label for="count" style="margin-bottom: 6px">Số lượng</label>
-                        <input type="text" class="form-control" id="count" value="<%= newInfo.quantity %> trụ/bảng" disabled/>
+                        <input type="text" class="form-control" id="count" value="<%= newInfo.quantity %>" disabled/>
                     </div>
                     <div style="width: calc((100% - 3rem) / 3);">
                         <label for="size" style="margin-bottom: 6px">Kích thước</label>
@@ -255,7 +255,7 @@
 
         // ......... Xu ly ket qua va hien thong bao ............
 
-        if (result.status == 200) {
+        if (response.status == 200) {
           document.getElementById('alert-success').removeAttribute('hidden');
           // clear all inputs
           document.querySelectorAll('.form-control').forEach(input => {
