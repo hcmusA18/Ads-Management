@@ -1,8 +1,9 @@
 import {createToolbar} from './utilities.js';
-import {getRoleByUsername} from '../../services/officerService.js';
+import {getRoleByUsername, getOfficerByUsername} from '../../services/officerService.js';
 import {getReportByOfficerRole, getReportByID, updateReportByID} from '../../services/reportService.js';
 import {getDistrictByID} from '../../services/districtService.js';
-import {getWardsOfDistrict} from '../../services/wardService.js';
+import {getWardByID, getWardsOfDistrict} from '../../services/wardService.js';
+import emailService from '../../services/emailService.js';
 
 const convertDate = (date) => {
 	const dateObject = new Date(date);
@@ -135,6 +136,33 @@ const updateReport = async (req, res) => {
 	
 	// console.log(reportID);
 	// console.log(dataToUpdate);
+
+	const reportInfo = await getReportByID(reportID);
+	let officer = await getRoleByUsername(dataToUpdate.officerName);
+
+	if(role == 'quan'){
+		officer = await getDistrictByID(officer);
+		officer = {
+			ward: "",
+			district: officer.districtName
+		}
+	} else {
+		officer = await getWardByID(officer);
+		const district = await getDistrictByID(officer.districtID);
+		officer = {
+			ward: officer.wardName,
+			district: district.districtName,
+		}
+	}
+
+	const emailData = {
+		reporterName: reportInfo.reporterName.toUpperCase(),
+		reporterEmail: reportInfo.reporterEmail,
+		officer: officer,
+		solution: dataToUpdate.solution
+	}
+
+	emailService.sendReportSolution(emailData);
 
 	try {
 		const message = await updateReportByID(reportID, dataToUpdate);
