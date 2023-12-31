@@ -7,6 +7,9 @@ import { soRoutes, quanRoutes, phuongRoutes, apiRoutes } from './routes/index.js
 import {setHeaders} from './routes/apiRoutes.js';
 import { loginController, ggLoginController, forgotPassController, verifyOTPController, resetPasswordController } from './controllers/authController.js'
 import imgurController from './controllers/imgurController.js'
+
+import OTP from './models/otpModel.js'
+
 // middleware import
 import morgan from 'morgan'
 import cors from 'cors'
@@ -151,3 +154,15 @@ mongoose
   .catch((error) => {
     console.log(error)
   })
+
+
+const cleanupExpiredOtps = async () => {
+    try {
+        const result = await OTP.deleteMany({expirationTime: {$lt: new Date()}});
+        console.log(`${result.deletedCount} expired OTP(s) removed.`);
+    } catch (error) {
+        console.log(`Error cleaning up expired OTPs: ${error.message}`);
+    }
+}
+
+cleanupExpiredOtps();
