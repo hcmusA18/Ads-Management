@@ -141,6 +141,29 @@ export const resetPasswordController = async (req, res) => {
   }
 }
 
+export const changePasswordController = async (req, res) => {
+  const { username, oldPassword, newPassword } = req.body;
+  const officer = await officerService.getOfficerByUsername(username);
+  if (!officer) {
+    req.flash('error', 'Tên đăng nhập không đúng');
+    return res.status(400).json({ message: 'Tên đăng nhập không đúng' });
+  }
+  const isMatch = await comparePassword(oldPassword, officer.password);
+  if (!isMatch) {
+    req.flash('error', 'Mật khẩu cũ không đúng');
+    return res.status(400).json({ message: 'Mật khẩu cũ không đúng' });
+  }
+  const password = await hashPassword(newPassword);
+  try {
+    const message = await officerService.updatePasswordByUsername(officer.username, password);
+    // req.flash('success', message);
+    return res.status(200).json({ message: 'Cập nhật mật khẩu thành công' });
+  } catch (error) {
+    // req.flash('error', error.message);
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 
 export const ggLoginController = (req, res, next) => {
     passport.authenticate('google', { failureRedirect: '/' }, (err, officer, info) => {

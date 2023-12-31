@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 import dotenv from 'dotenv'
 import { soRoutes, quanRoutes, phuongRoutes, apiRoutes } from './routes/index.js'
 import {setHeaders} from './routes/apiRoutes.js';
-import { loginController, ggLoginController, forgotPassController, verifyOTPController, resetPasswordController } from './controllers/authController.js'
+import { loginController, ggLoginController, forgotPassController, verifyOTPController, resetPasswordController, changePasswordController } from './controllers/authController.js'
 import imgurController from './controllers/imgurController.js'
 
 import OTP from './models/otpModel.js'
@@ -83,6 +83,7 @@ app.post('/', loginController)
 app.post('/forgot-password', forgotPassController)
 app.post('/verify-code', verifyOTPController)
 app.post('/reset-password', resetPasswordController)
+app.post('/change-password', changePasswordController)
 app.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) {
