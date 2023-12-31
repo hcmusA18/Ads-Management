@@ -24,6 +24,11 @@ const authController = (strategy) => (req, res, next) => {
         return res.redirect('/');
       }
 
+      if (officer.position === 0) {
+        req.flash('error', 'Tài khoản của bạn chưa được cấp quyền');
+        return res.redirect('/');
+      }
+
       if (req.body.rememberPass) {
         res.cookie('username', req.body.username, {
           maxAge: 60 * 60 * 1000,
