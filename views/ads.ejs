@@ -36,12 +36,11 @@
                                     class="form-check-input"
                                     id="check<%= i %>"
                                     name="option<%= i %>"
-                                    value="<%= item %>"
-                                    checked/>
-                            <label class="form-check-label" for="check<%= i %>"><%=item%></label>
+                                    value="<%= item.name %>"
+                                    <% if (item.status) { %> checked <% } else { %> disabled <% } %>/>
+                            <label class="form-check-label" for="check<%= i %>"><%=item.name%></label>
                         </div>
                     <%})%>
-
                 </div>
             </div>
             <% } %>

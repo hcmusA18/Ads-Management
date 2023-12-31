@@ -33,13 +33,16 @@
                         </h1>
                     </div>
                     <div class="container-fluid d-flex flex-wrap">
-                        <% checkboxData.forEach((item, i)=> {%>
+                        <% checkboxData.forEach((item, i) => {%>
                             <div class="form-check me-4 mb-3" style="min-width: 11rem;">
-                                <input type="checkbox" class="form-check-input" id="check<%= i %>" name="option<%= i %>"
-                                    value="<%= item %>" checked />
-                                <label class="form-check-label" for="check<%= i %>">
-                                    <%=item%>
-                                </label>
+                                <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        id="check<%= i %>"
+                                        name="option<%= i %>"
+                                        value="<%= item.name %>"
+                                        <% if (item.status) { %> checked <% } else { %> disabled <% } %>/>
+                                <label class="form-check-label" for="check<%= i %>"><%=item.name%></label>
                             </div>
                         <%})%>
                     </div>

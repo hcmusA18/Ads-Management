@@ -95,7 +95,12 @@ const show = async (req, res) => {
   let checkboxData = []
   if (role === 'quan') {
     checkboxData = await wardService.getWardsOfDistrict(req.user.districtID)
-    checkboxData = checkboxData.map((ward) => `Phường ${ward.wardName}`);
+    checkboxData = checkboxData.map((ward) =>{
+      return {
+        name: `Phường ${ward.wardName}`,
+        status: tableData.some(item => item.ward === ward.wardName)
+      }
+    });
   }
 
   res.render('ads', {

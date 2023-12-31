@@ -23,16 +23,8 @@ controller.show = async (req, res) => {
 
   const role = String(req.originalUrl.split('/')[1])
 
-  let checkboxData = await districtService.getAllDistricts()
-  checkboxData = checkboxData.map((dist) => `Quận ${dist.districtName}`)
+  
   let checkboxHeader = 'Thành phố Hồ Chí Minh'
-
-  const commonData = {
-    url: req.originalUrl,
-    role: role,
-    checkboxData: checkboxData,
-    checkboxHeader: checkboxHeader
-  }
   
   const data = await reportService.getAllReports();
   // console.log(data);
@@ -54,6 +46,21 @@ controller.show = async (req, res) => {
     }
   })
   // console.log(tableData);
+
+  let checkboxData = await districtService.getAllDistricts()
+  checkboxData = checkboxData.map((dist) => {
+    return {
+      name: `Quận ${dist.districtName}`,
+      status: tableData.some(item => item.district === dist.districtName)
+    }
+  });
+
+  const commonData = {
+    url: req.originalUrl,
+    role: role,
+    checkboxData: checkboxData,
+    checkboxHeader: checkboxHeader
+  }
 
   const title = 'Sở - Quản lý danh sách các báo cáo vi phạm'
   return res.render('./so/reports', { title, tableHeads, tableData, toolbars, ...commonData })

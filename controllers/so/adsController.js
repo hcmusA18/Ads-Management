@@ -14,8 +14,6 @@ const show = async (req, res) => {
   let tableData = []
   let title = 'Sở - '
 
-  let checkboxData = await districtService.getAllDistricts()
-  checkboxData = checkboxData.map((dist) => `Quận ${dist.districtName}`)
   let current = 0
   try {
     switch (category) {
@@ -64,6 +62,16 @@ const show = async (req, res) => {
         res.status(404)
         return res.render('error', { error: { status: 404, message: 'Không tìm thấy trang' } })
     }
+
+    let checkboxData = await districtService.getAllDistricts()
+    checkboxData = checkboxData.map((district) => {
+      return {
+        name: `Quận ${district.districtName}`,
+        status: tableData.some(item => item.district === district.districtName)
+      }
+    });
+   
+    console.log(title);
 
     res.render('ads', {
       url: req.originalUrl,

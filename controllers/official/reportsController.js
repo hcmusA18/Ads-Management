@@ -24,12 +24,6 @@ const show = async (req, res) => {
 		officerRoleName = await getDistrictByID(officerRole);
 		officerRoleName = officerRoleName.districtName;
 	}
-	
-	let wardsOfDistrict = []
-	if (role === 'quan') {
-		wardsOfDistrict = await getWardsOfDistrict(officerRole)
-		wardsOfDistrict = wardsOfDistrict.map((ward) => `Phường ${ward.wardName}`);
-	}
 
 	// console.log(wardsOfDistrict);
 
@@ -56,7 +50,6 @@ const show = async (req, res) => {
 					}
 				}
 			}),
-			checkboxData: [...wardsOfDistrict],
 			checkboxHeader: "Quận " + officerRoleName,
 		},
 		phuong: {
@@ -86,6 +79,23 @@ const show = async (req, res) => {
 		res.status(404);
 		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 	}
+
+	// console.log(roleInfo);
+	let wardsOfDistrict = []
+	if (role === 'quan') {
+		wardsOfDistrict = await getWardsOfDistrict(officerRole)
+		wardsOfDistrict = wardsOfDistrict.map((ward) =>{
+			return {
+			  name: `Phường ${ward.wardName}`,
+			  status: roleInfo.tableData.some(item => item.ward === ward.wardName)
+			}
+		});
+
+		roleInfo.checkboxData = wardsOfDistrict
+	}
+
+	// console.log(wardsOfDistrict);
+
 	res.render('reports', {url: req.originalUrl, title: title, ...roleInfo, toolbars: createToolbar(role)});
 }
 
