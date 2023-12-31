@@ -7,7 +7,7 @@ import {createToolbar} from './utilities.js';
 const indexController = {
 	show: (req, res) => {
 		const role = String(req.originalUrl.split('/')[1]);
-		res.render('official/index', {title: `${role === 'quan' ? 'Quận' : 'Phường'} - Trang chủ`, toolbars: createToolbar(role)});
+		res.render('official/index', {title: `${role === 'quan' ? 'Quận' : 'Phường'} - Trang chủ`, toolbars: createToolbar(role), role});
 	}
 
 }

@@ -360,6 +360,13 @@
     }
   })
 
+  const curSpot = JSON.parse('<%- JSON.stringify(curSpot); %>');
+  if(Object.keys(curSpot).length > 0){
+    spotIDInput.value = curSpot.spotID;
+    spotAddressInput.value = `${curSpot.address}, Phường ${curSpot.wardName}, Quận ${curSpot.districtName}`;
+    spotNameInput.value = curSpot.spotName;
+  }
+
   document.querySelectorAll('.btn-close').forEach((btn) => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();

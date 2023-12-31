@@ -136,7 +136,7 @@ const showCreate = async (req, res) => {
 	title = (role === 'quan' ? 'Quận' : 'Phường') + title;
 
 	const officerRole = await getRoleByUsername(req.user.username);
-	// console.log(officerRole);
+	
 	let spots = {};
 	if(role === 'quan'){
 		spots = await getSpotsByDistrictID(officerRole);
@@ -155,9 +155,16 @@ const showCreate = async (req, res) => {
 		}
 	});
 
+	let curSpot = {};
+	if(req.query.spotID != null){
+		curSpot = await getSpotByID(req.query.spotID);
+	}
+	// console.log(curSpot);
+	// if(Object.keys(curSpot).length === 0) console.log(1);
+
 	let boardtypes = await getAllBoardTypes();
 
-	res.render('license-create', {url: req.originalUrl, title, boardtypes, spots, toolbars: createToolbar(role)});
+	res.render('license-create', {url: req.originalUrl, title, boardtypes, spots, toolbars: createToolbar(role), curSpot});
 }
 
 const add = async (req, res) => {

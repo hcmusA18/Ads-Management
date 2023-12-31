@@ -20,7 +20,7 @@ router.get('*', (req, res, next) => {
 router.get('/officier/:username', (req, res) => controller.infoController.getInfo(req, res));
 router.post('/officier/:username', (req, res) => controller.infoController.updateInfo(req, res));
 router.get('/', async (req, res) => {
-  res.render('so/index', { title: 'Sở - Trang chủ', toolbars: toolbars });
+  res.render('so/index', { title: 'Sở - Trang chủ', toolbars: toolbars, role:'so' });
 });
 
 router.get('/types', async (req, res) => {
