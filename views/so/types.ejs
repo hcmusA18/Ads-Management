@@ -96,11 +96,15 @@
               ];
               const len = JSON.parse('<%- JSON.stringify(tableData.length) %>');
               const dataID = JSON.parse('<%- JSON.stringify(tableData.map(item => item.id)) %>');
+              const dataName = JSON.parse('<%- JSON.stringify(tableData.map(item => item.name)) %>');
+              const dataDescription = JSON.parse('<%- JSON.stringify(tableData.map(item => item.description)) %>');
               const url = JSON.parse('<%- JSON.stringify(url) %>');
               const [basePath, category] = url.split('?');
 
               for (let i = 0; i < len; i++) {
                 components[0].value = dataID[i];
+                components[1].value = dataName[i];
+                components[2].placeholder = dataDescription[i];
                 const editModal = {
                   id: `editModal-${i}`,
                   title: 'CHỈNH SỬA',
@@ -113,7 +117,8 @@
                   }
                 }
                 createModal(editModal);
-              }</script>
+              }
+            </script>
 
         </div>
     </div>

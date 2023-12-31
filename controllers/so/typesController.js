@@ -57,7 +57,7 @@ const show = async (req, res) => {
 			return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
 		}
 
-		console.log('You are getting something');
+		// console.log('You are getting something');
 		return res.render('./so/types', {title, category, tableHeads, tableData, toolbars});
 	} catch (error) {
 		console.error(`Error getting ${category} data: ${error.message}`);

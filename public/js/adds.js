@@ -11,6 +11,4 @@ function updatPageCheckBox(){
 
         checkBoxData.append(data);
     }
-
-    
 }
