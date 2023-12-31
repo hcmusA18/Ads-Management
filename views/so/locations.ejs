@@ -229,6 +229,11 @@
     import {
       ezBSAlert
     } from '/js/customizedModal.js';
+
+    document.addEventListener('fetchEnd', () => {
+      location.reload();
+    });
+
     const alertPlaceholder = document.getElementById('alertConfirm')
     const appendAlert = (message, type) => {
       const wrapper = document.createElement('div')

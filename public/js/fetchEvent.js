@@ -44,5 +44,5 @@ document.addEventListener('fetchEnd', function () {
   const bsAlert = bootstrap.Alert.getOrCreateInstance(document.getElementById('alertConfirm'));
   bsAlert.close();
   $('#loaderContainer').hide();
-  location.reload();
+  // location.reload();
 });
