@@ -62,7 +62,7 @@ controller.show = async (req, res) => {
     checkboxHeader: checkboxHeader
   }
 
-  const title = 'Sở - Quản lý danh sách các báo cáo vi phạm'
+  const title = 'Sở - Quản lý danh sách các báo cáo vi phạm'.toUpperCase();
   return res.render('./so/reports', { title, tableHeads, tableData, toolbars, ...commonData })
 }
 
