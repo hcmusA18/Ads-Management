@@ -156,17 +156,17 @@
         const adsform = adsforms.find(form => form.formName == adsformInput.value);
         adsformIdInput.value = adsform.formID;
       });
-      districtInput.addEventListener('change', (e) => {
-        const district = districts.find(district => district.districtName == districtInput.value);
-        console.log(districtInput.value);
-        console.log(district);
-        districtIdInput.value = (district) ? district.districtID : '';
-      });
-      wardInput.addEventListener('change', (e) => {
-        const ward = wards.find(ward => ward.wardName == wardInput.value);
-        console.log(ward);
-        wardIdInput.value = (ward) ? ward.wardID : '';
-      });
+      // districtInput.addEventListener('change', (e) => {
+      //   const district = districts.find(district => district.districtName == districtInput.value);
+      //   console.log(districtInput.value);
+      //   console.log(district);
+      //   districtIdInput.value = (district) ? district.districtID : '';
+      // });
+      // wardInput.addEventListener('change', (e) => {
+      //   const ward = wards.find(ward => ward.wardName == wardInput.value);
+      //   console.log(ward);
+      //   wardIdInput.value = (ward) ? ward.wardID : '';
+      // });
 
       // trigger district + ward change event
       document.addEventListener('DOMContentLoaded', (e) => {
@@ -179,6 +179,9 @@
         btn.addEventListener('click', (e) => {
           e.preventDefault();
           e.target.parentElement.hidden = true;
+          if (e.target.parentElement.id == 'alert-success') {
+            window.location.href = '/so';
+          }
         });
       });
 
@@ -229,7 +232,7 @@
         const district = districts.find(district => district.districtName == districtInput.value);
         districtIdInput.value = (district) ? district.districtID : '';
 
-        const ward = wards.find(ward => ward.wardName == wardInput.value);
+        const ward = wards.find(ward => (ward.wardName == wardInput.value.trim() && ward.districtID == districtIdInput.value));
         wardIdInput.value = (ward) ? ward.wardID : '';
 
         // ................................................
