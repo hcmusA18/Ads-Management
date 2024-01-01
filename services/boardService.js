@@ -1,4 +1,5 @@
 import Board from '../models/boardModel.js';
+import mongoose from 'mongoose';
 
 // Thêm export đầu mỗi hàm
 // Ở file cần dùng thì import * as [abcd]Service from 'path/[abcd]Service.js'
@@ -27,10 +28,25 @@ export const updateBoardByID = async (boardID, newData) => {
 
 export const deleteBoardByID = async (boardID) => {
   try {
+    const isReferenced = await Promise.all([
+      Object.values(mongoose.models)
+      .filter((model) => model.modelName !== 'boards')
+      .map(async (model) => {
+        if (model.schema.paths.boardID) {
+          return await model.exists({ boardID });
+        }
+        return null;
+      })
+    ])
+
+    if (isReferenced.some(Boolean)) {
+      return { message: 'Không thể xóa bảng vì còn dữ liệu phụ thuộc' };
+    }
+
     await Board.findOneAndDelete({ boardID });
-    return { message: 'Board deleted successfully' };
+    return { message: 'Xóa bảng thành công' };
   } catch (error) {
-    throw new Error(`Error deleting board by ID: ${error.message}`);
+    throw new Error(`Xóa bảng thất bại: ${error.message}`);
   }
 };
 

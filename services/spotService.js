@@ -1,4 +1,5 @@
 import Spot from '../models/spotModel.js'
+import mongoose from 'mongoose'
 
 export const createSpot = async (data) => {
   try {
@@ -24,10 +25,28 @@ export const updateSpotByID = async (spotID, newData) => {
 
 export const deleteSpotByID = async (spotID) => {
   try {
+    const isReferenced = await Promise.all(
+      Object.values(mongoose.models)
+        .filter((model) => model.modelName !== 'spots')
+        .map(async (model) => {
+          if (model.schema.paths.spotID) {
+            return await model.exists({ spotID });
+          }
+          return null;
+        })
+    );
+    
+    if (isReferenced.some(Boolean)) {
+      // console.log(isReferenced)
+      // console.log('Không thể xóa điểm đặt vì còn dữ liệu phụ thuộc')
+      return { message: 'Không thể xóa điểm đặt vì còn dữ liệu phụ thuộc' };
+    }
     await Spot.findOneAndDelete({ spotID });
-    return { message: 'Spot deleted successfully' };
+    // console.log('Xóa điểm đặt thành công')
+    return { message: 'Xóa điểm đặt thành công' };
   } catch (error) {
-    throw new Error(`Error deleting spot by ID: ${error.message}`);
+    // console.log(`Xóa điểm đặt thất bại: ${error.message}`)
+    throw new Error(`Xóa điểm đặt thất bại: ${error.message}`);
   }
 };
 

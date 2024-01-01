@@ -7,6 +7,7 @@ import * as spotTypeService from '../../services/spotTypeService.js'
 import * as adsFormService from '../../services/adsFormService.js'
 import * as boardTypeService from '../../services/boardTypeService.js'
 import * as IDGenerator from '../../services/IDGenerator.js'
+import e from 'express'
 
 const show = async (req, res) => {
   const category = req.query.category || ''
@@ -290,10 +291,36 @@ const addNew = async (req, res) => {
   return
 }
 
+const remove = async (req, res) => {
+  const category = req.query.category || ''
+  const objectID = req.params.id || ''
+
+  if (category == 'spot') {
+    try {
+      await spotService.deleteSpotByID(objectID)
+      res.status(200).json({ message: 'Điểm đặt đã được xóa thành công' })
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ message: error.message })
+    }
+    return
+  } else {
+    try {
+      await boardService.deleteBoardByID(objectID)
+      res.status(200).json({ message: 'Bảng quảng cáo đã được xóa thành công' })
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ message: error.message })
+    }
+    return
+  }
+}
+
 export default {
   show,
   showDetail,
   showAdd,
   showModify,
-  addNew
+  addNew,
+  remove
 }

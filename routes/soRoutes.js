@@ -126,6 +126,7 @@ router.get('/ads', (req, res) => controller.adsController.show(req, res));
 router.get('/ads/new', (req, res) => controller.adsController.showAdd(req, res));
 router.post('/ads/new', (req, res) => controller.adsController.addNew(req, res));
 router.get('/ads/:id', (req, res) => controller.adsController.showDetail(req, res, false));
+router.delete('/ads/:id', (req, res) => controller.adsController.remove(req, res));
 router.get('/ads/:id/modify', (req, res) => controller.adsController.showDetail(req, res, true));
 router.post('/ads', (req, res) => controller.adsController.show(req, res));
 
