@@ -252,7 +252,7 @@
           ></button>
         </div>
         <div class="offcanvas-body">
-          <ul class="nav nav-tabs">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
               <button
                 class="nav-link active"
@@ -350,7 +350,6 @@
       document
         .getElementById("offcanvasSpotDetail")
         .addEventListener("show.bs.offcanvas", async (e) => {
-          console.log(e);
           if (setupData) {
             setupData = false;
             return;
@@ -388,6 +387,7 @@
             </a>
           </div>`;
           infoTabPane.innerHTML = infoHTML;
+
 
           // update ads tab pane
           const adsTabPane = offcanvas.querySelector("#ads-tab-pane");
@@ -477,6 +477,11 @@
           });
 
           setupData = true;
+
+          // show first tab
+          const triggerFirstTabEl = document.querySelector('#myTab li:first-child button')
+          bootstrap.Tab.getInstance(triggerFirstTabEl).show() // Select first tab
+
           $(this).trigger(e.type);
           console.log("done");
         });
