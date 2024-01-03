@@ -14,6 +14,24 @@ const COLORS = {
 
 const userData = document.getElementById('user-data').innerText;
 
+const formatMapFeature = (feature) => {
+  const { properties, text } = feature
+  let address = properties.address ? properties.address.split(',')[0] : feature.place_name.split(',')[0]
+  const coordinates = feature.geometry.coordinates.slice()
+
+  address = address.replace(/"/g, '')
+  address += `, ${feature.context[0].text || ''}, ${feature.context[2].text || ''}, ${feature.context[3].text || ''}`
+  if (address.includes(text)) {
+    address = address.replace(`${text}, `, '')
+  }
+
+  return {
+    text,
+    address,
+    coordinates
+  }
+}
+
 function generateSpotHTML(spot) {
 
   let href = ``
@@ -35,7 +53,7 @@ function generateSpotHTML(spot) {
               <p class="card-text">${spot.address}</p>
               <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
               <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
-              <a href="${href}"><button class="p-2 btn btn-success btn-simple text-white mt-2" style="font-size: 13px">Thêm bảng quảng cáo</button></a>
+              <button class="btn btn-success btn-sm text-white mt-2"><a href="${href}" style="text-decoration: none; color: #FFFFFF;">Thêm bảng quảng cáo</a></button>
             </div>
           </div>`;
 }
@@ -333,24 +351,21 @@ mapboxScript.onload = async function() {
     }
     marker.setLngLat(e.lngLat).addTo(map);
 
-    const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+    const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}&language=vi`;
 
     fetch(api)
       .then((res) => res.json())
       .then((res) => {
-        const coordinates = res.features[0].geometry.coordinates.slice();
-        let description = res.features[0].place_name
-          .replace(/,\s*\d+,\s*Vietnam/, '')
-          .replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
-          .replace(/,.*Dist\.|,.*Ward\./, '');
+        const {text, address, coordinates} = formatMapFeature(res.features[0]);
 
-        description += (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
-
-        const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${description}</div>`;
+        const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+                                  <p class="fw-bold">${text}</p>
+                                  <p class="fw-light">${address}</p>`;
         const divElement = document.createElement('div');
-
+        
         divElement.innerHTML = innerHtmlContent;
-
+        divElement.setAttribute('class', 'px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25');
+        
         if (window.location.pathname.startsWith('/so')) {
           const assignBtn = document.createElement('div');
 
@@ -358,8 +373,10 @@ mapboxScript.onload = async function() {
           divElement.appendChild(assignBtn);
           divElement.setAttribute('class', 'p-2');
         }
-
-        new mapboxgl.Popup({ offset: [0, -30] }).setLngLat(coordinates).setDOMContent(divElement).addTo(map);
+        new mapboxgl.Popup({ offset: [0, -30] })
+        .setLngLat({lng: e.lngLat.lng, lat: e.lngLat.lat})
+        .setDOMContent(divElement)
+        .addTo(map);
       });
   });
 

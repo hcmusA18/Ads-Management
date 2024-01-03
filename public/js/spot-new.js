@@ -4,6 +4,24 @@ function updateTitle(el) {
   title.textContent = el.value
 }
 
+const formatMapFeature = (feature) => {
+  const { properties, text } = feature
+  let address = properties.address ? properties.address.split(',')[0] : feature.place_name.split(',')[0]
+  const coordinates = feature.geometry.coordinates.slice()
+
+  address = address.replace(/"/g, '')
+  address += `, ${feature.context[0].text || ''}, ${feature.context[2].text || ''}, ${feature.context[3].text || ''}`
+  if (address.includes(text)) {
+    address = address.replace(`${text}, `, '')
+  }
+
+  return {
+    text,
+    address,
+    coordinates
+  }
+}
+
 const addr = document.querySelector('#spotAddress')
 const dist = document.querySelector('#districtName')
 const ward = document.querySelector('#wardName')
@@ -23,16 +41,16 @@ if (queryParams.get('lng') !== undefined && queryParams.get('lat') !== undefined
   fetch(api)
     .then((res) => res.json())
     .then((res) => {
-      let description = res.features[0].place_name
-			.replace(/,\s*\d+,\s*Vietnam/, '')
-			.replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P|, District|, Ward.*/g, '')
-			.replace(/,.*Dist\.|,.*Ward\./, '');
+      const {text, address, coordinates} = formatMapFeature(res.features[0]);
 
-      addr.value = description || ' '
+      addr.value = address || ' '
       dist.value = res.features[0].context[2].text.replace('Quận ', '').trim() || ' '
-      ward.value = res.features[0].context[0].text.replace('Phường ', '').trim() || ' '
       if (dist.value.length === 1) {
         dist.value = '0' + dist.value
+      }
+      ward.value = res.features[0].context[0].text.replace('Phường ', '').trim() || ' '
+      if (ward.value.length === 1) {
+        ward.value = '0' + ward.value
       }
     })
 }

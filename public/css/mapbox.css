@@ -257,6 +257,7 @@ svg {
   box-shadow: 0 0.25rem 2rem rgba(0, 0, 0, 0.1) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   padding: 0!important;
+  min-width: 20rem;
 }
 
 .mapboxgl-popup-content p:not(:last-child) {
