@@ -19,7 +19,7 @@
   </div>
   
   <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert" style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
-    <strong>Vui lòng nhập đầy đủ các trường thông tin!</strong>
+    <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
     <button type="button" class="btn-close"></button>
   </div>
 
@@ -35,7 +35,7 @@
           <%- include("./partials/back_button.ejs"); %>
           <!-- Title -->
           <div class="d-flex flex-row align-items-center" style="gap: 10px">
-            <h1 class="fw-bolder m-0" id="spotTitle">TÊN ĐIỂM ĐẶT MỚI</h1>
+            <h1 class="fw-bolder m-0" id="spotTitle"><%= title.toUpperCase() %></h1>
           </div>
 
           <!-- Content -->
@@ -65,31 +65,31 @@
             <div class="container-fluid px-0 nd-chi-tiet">
               <div class="container">
                 <label for="spotName" style="margin-bottom: 6px">Điểm đặt</label>
-                <input type="text" class="form-control" id="spotName" value="TÊN ĐIỂM ĐẶT MỚI" oninput="updateTitle(this)" />
+                <input type="text" class="form-control" id="spotName" value="" placeholder="Tên điểm đặt mới"/>
               </div>
               <div class="container mt-2 d-flex justify-content-between">
                 <div style="width: calc((100% - 2rem) / 2);">
                   <label for="longitude" style="margin-bottom: 6px;">Kinh độ</label>
-                  <input type="text" class="form-control" id="longitude" value="0" />
+                  <input type="text" class="form-control" id="longitude" value="0" disabled/>
                 </div>
                 <div style="width: calc((100% - 2rem) / 2);">
                   <label for="latitude" style="margin-bottom: 6px">Vĩ độ</label>
-                  <input type="text" class="form-control" id="latitude" value="0" />
+                  <input type="text" class="form-control" id="latitude" value="0" disabled/>
                 </div>
               </div>
               <div class="container mt-2">
                 <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
-                <input type="text" class="form-control" id="spotAddress" value="227 Nguyễn Văn Cừ" />
+                <input type="text" class="form-control" id="spotAddress" value="227 Nguyễn Văn Cừ" disabled/>
               </div>
               <div class="container mt-2 d-flex justify-content-between">
                 <div style="width: calc((100% - 2rem) / 2);">
                   <label for="wardName" style="margin-bottom: 6px;">Phường</label>
-                  <input type="text" class="form-control" id="wardName" value="Bến Nghé" />
+                  <input type="text" class="form-control" id="wardName" value="Bến Nghé" disabled/>
                   <input type="text" class="form-control" id="ward" hidden />
                 </div>
                 <div style="width: calc((100% - 2rem) / 2);">
                   <label for="districtName" style="margin-bottom: 6px">Quận</label>
-                  <input type="text" class="form-control" id="districtName" value="Bình Thạnh" />
+                  <input type="text" class="form-control" id="districtName" value="Bình Thạnh" disabled/>
                   <input type="text" class="form-control" id="district" hidden />
                 </div>
               </div>
@@ -156,18 +156,7 @@
         const adsform = adsforms.find(form => form.formName == adsformInput.value);
         adsformIdInput.value = adsform.formID;
       });
-      // districtInput.addEventListener('change', (e) => {
-      //   const district = districts.find(district => district.districtName == districtInput.value);
-      //   console.log(districtInput.value);
-      //   console.log(district);
-      //   districtIdInput.value = (district) ? district.districtID : '';
-      // });
-      // wardInput.addEventListener('change', (e) => {
-      //   const ward = wards.find(ward => ward.wardName == wardInput.value);
-      //   console.log(ward);
-      //   wardIdInput.value = (ward) ? ward.wardID : '';
-      // });
-
+      
       // trigger district + ward change event
       document.addEventListener('DOMContentLoaded', (e) => {
         districtInput.dispatchEvent(new Event('change'));
@@ -234,30 +223,82 @@
 
         const ward = wards.find(ward => (ward.wardName == wardInput.value.trim() && ward.districtID == districtIdInput.value));
         wardIdInput.value = (ward) ? ward.wardID : '';
+        // ................................................
+        // ... Check valid of fields BEFORE updating images.................
+        const spotName = document.getElementById('spotName').value;
+        const longitude = document.getElementById('longitude').value;
+        const latitude = document.getElementById('latitude').value;
+        const address = document.getElementById('spotAddress').value;
+        const wardID = document.getElementById('ward').value;
+        const districtID = document.getElementById('district').value;
+        const spotType = document.getElementById('spotType').value;
+        const adsForm = document.getElementById('adsForm').value;
+        const planned = document.getElementById('planned').value;
+
+        if(spotName == ''){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập TÊN ĐIỂM ĐẶT mới.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(longitude == '' || latitude == '' || address == ''){
+          document.getElementById('warning-text').textContent = "Vui lòng chọn TỌA ĐỘ ĐIỂM ĐẶT trên bản đồ ở TRANG CHỦ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(districtID == '' || wardID == ''){
+          document.getElementById('warning-text').textContent = "Khu vực (Quận / Phường) bạn chọn không nằm trong quyền quản lý của chúng tôi, vui lòng trờ về TRANG CHỦ chọn điểm mới.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const spottypeList = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
+        const adsformList = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
+
+        const spotTypeName = document.getElementById('spotTypeName').value.trim();
+        if(spotTypeName == '' || !(spottypeList.some(type => type.typeName === spotTypeName))){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng LOẠI VỊ TRÍ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const adsFormName = document.getElementById('adsFormName').value.trim();
+        if(adsFormName == '' || !(adsformList.some(form => form.formName === adsFormName))){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng HÌNH THỨC QUẢNG CÁO.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(planned != 'Đã quy hoạch' && planned != 'Chưa quy hoạch'){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng THÔNG TIN QUY HOẠCH.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
 
         // ................................................
-
         const inputImage = document.getElementById('input-image');
         const files = inputImage.files;
         const imgUrls = await upload2Imgur(files);
-        console.log(imgUrls);
+        // console.log(imgUrls);
 
+        // if(imgUrls.length == 0){
+        //   document.getElementById('warning-text').textContent = "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về điểm đặt quảng cáo.";
+        //   document.getElementById('alert-warning').hidden = false;
+        //   return;
+        // }
+        // ................................................
         const data = {
-          spotName: document.getElementById('spotName').value,
-          longitude: document.getElementById('longitude').value,
-          latitude: document.getElementById('latitude').value,
-          address: document.getElementById('spotAddress').value,
-          wardID: document.getElementById('ward').value,
-          districtID: document.getElementById('district').value,
-          spotType: document.getElementById('spotType').value,
-          adsForm: document.getElementById('adsForm').value,
-          planned: (document.getElementById('planned').value == 'Đã quy hoạch') ? 1 : 0,
+          spotName: spotName,
+          longitude: longitude,
+          latitude: latitude,
+          address: address,
+          wardID: wardID,
+          districtID: districtID,
+          spotType: spotType,
+          adsForm: adsForm,
+          planned: (planned == 'Đã quy hoạch') ? 1 : 0,
           spotImage: imgUrls,
-        }
-
-        if (data.spotName == '' || data.longitude == '' || data.latitude == '' || data.address == '' || data.spotType == '' || data.adsForm == '') {
-          document.getElementById('alert-warning').hidden = false;
-          return;
         }
 
         const url = '<%= url %>';
