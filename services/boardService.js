@@ -39,14 +39,15 @@ export const deleteBoardByID = async (boardID) => {
       })
     ])
 
-    if (isReferenced.some(Boolean)) {
-      return { message: 'Không thể xóa bảng vì còn dữ liệu phụ thuộc' };
+    if (isReferenced.some((value) => value)) {
+      // return { message: 'Bảng quảng cáo này đang được sử dụng' };
+      throw new Error('Bảng quảng cáo này đang được sử dụng');
     }
 
     await Board.findOneAndDelete({ boardID });
     return { message: 'Xóa bảng thành công' };
   } catch (error) {
-    throw new Error(`Xóa bảng thất bại: ${error.message}`);
+    throw new Error(`${error.message}`);
   }
 };
 

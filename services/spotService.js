@@ -36,17 +36,17 @@ export const deleteSpotByID = async (spotID) => {
         })
     );
     
-    if (isReferenced.some(Boolean)) {
-      // console.log(isReferenced)
-      // console.log('Không thể xóa điểm đặt vì còn dữ liệu phụ thuộc')
-      return { message: 'Không thể xóa điểm đặt vì còn dữ liệu phụ thuộc' };
+    if (isReferenced.some((value) => value)) {
+      console.log('Điểm đặt này đang được sử dụng')
+      throw new Error('Điểm đặt này đang được sử dụng');
+      // return { message: 'Điểm đặt này đang được sử dụng' };
     }
+
+
     await Spot.findOneAndDelete({ spotID });
-    // console.log('Xóa điểm đặt thành công')
     return { message: 'Xóa điểm đặt thành công' };
   } catch (error) {
-    // console.log(`Xóa điểm đặt thất bại: ${error.message}`)
-    throw new Error(`Xóa điểm đặt thất bại: ${error.message}`);
+    throw new Error(`${error.message}`);
   }
 };
 
