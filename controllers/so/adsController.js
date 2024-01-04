@@ -71,7 +71,7 @@ const show = async (req, res) => {
         status: tableData.some(item => item.district === district.districtName)
       }
     });
-   
+
     console.log(title);
 
     res.render('ads', {
@@ -300,7 +300,7 @@ const remove = async (req, res) => {
       await spotService.deleteSpotByID(objectID)
       res.status(200).json({ message: 'Điểm đặt đã được xóa thành công' })
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       res.status(500).json({ message: error.message })
     }
     return

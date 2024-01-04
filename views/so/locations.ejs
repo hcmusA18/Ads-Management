@@ -332,14 +332,12 @@
         });
 
         if (!response.ok) {
-          throw new Error(`Failed to update user: ${response.status}`);
+          throw new Error(response.message);
         }
         console.log('User updated!')
-        // Handle success, if needed
         appendAlert('Cập nhật thành công', 'success');
-        console.log('Appended user updated alert!')
       } catch (error) {
-        console.error(`Error updating user: ${error.message}`);
+        console.error('Error during PATCH request:', error.message);
         appendAlert('Cập nhật thất bại', 'danger');
       } finally {
         // Handle success/error

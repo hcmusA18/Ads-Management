@@ -41,11 +41,11 @@ export const updateDistrictByID = async (districtID, newData) => {
     );
     // console.log(res);
     if (res.districtID === districtID && res.districtName === newData.districtName)
-      return { message: 'District updated successfully' };
+      return { message: 'Cập nhật Quận thành công' };
     else
-      throw new Error('Error updating district');
+      throw new Error('Cập nhật Quận thất bại');
   } catch (error) {
-    throw new Error(`Error updating district by ID: ${error.message}`);
+    throw new Error(error.message);
   }
 }
 

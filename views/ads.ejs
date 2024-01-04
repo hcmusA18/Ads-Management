@@ -2,145 +2,126 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title><%- title %></title>
-    <%- include('./partials/head.ejs') %>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%- title %></title>
+  <%- include('./partials/head.ejs') %>
 </head>
 
 <body>
-<header></header>
-<main class="container-fluid d-flex bg-light" style="min-height: 100vh">
+  <header></header>
+  <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
     <div class="row"><%- include('./partials/sidebar.ejs', { toolbars: toolbars }) %></div>
     <div class="container-fluid vw-100 pt-1">
-    <!--        inner-container-->
-        <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative ">
-            <!-- Profile -->
-            <%- include("./partials/profile_card.ejs"); %>
+      <!--        inner-container-->
+      <div class="container border border-dark rounded py-4 px-5 my-5 mx-auto shadow position-relative ">
+        <!-- Profile -->
+        <%- include("./partials/profile_card.ejs"); %>
 
-            <!-- Title -->
-            <div class="d-block mb-3">
-                <h2 class="fw-bolder text-uppercase"><%= title%></h2>
+        <!-- Title -->
+        <div class="d-block mb-3">
+          <h2 class="fw-bolder text-uppercase"><%= title%></h2>
+        </div>
+        <!-- Check box -->
+        <% if (url.includes('so') || url.includes('quan')) { %>
+        <div class="container-fluid checkbox-container">
+          <div class="d-inline-block pb-2" style="padding-left: 15px">
+            <h1 style="color: #1f274a; font-size: 22px; font-weight: 500"><%= checkboxHeader%>
+          </div>
+          <div class="container-fluid d-flex flex-wrap">
+            <% checkboxData.forEach((item, i) => {%>
+            <div class="form-check me-4 mb-3" style="min-width: 11rem;">
+              <input type="checkbox" class="form-check-input" id="check<%= i %>" name="option<%= i %>" value="<%= item.name %>" <% if (item.status) { %> checked <% } else { %> disabled <% } %> />
+              <label class="form-check-label" for="check<%= i %>"><%=item.name%></label>
             </div>
-            <!-- Check box -->
-            <% if (url.includes('so') || url.includes('quan')) { %>
-            <div class="container-fluid checkbox-container">
-                <div class="d-inline-block pb-2" style="padding-left: 15px">
-                    <h1 style="color: #1f274a; font-size: 22px; font-weight: 500"><%= checkboxHeader%>
-                </div>
-                <div class="container-fluid d-flex flex-wrap">
-                    <% checkboxData.forEach((item, i) => {%>
-                        <div class="form-check me-4 mb-3" style="min-width: 11rem;">
-                            <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="check<%= i %>"
-                                    name="option<%= i %>"
-                                    value="<%= item.name %>"
-                                    <% if (item.status) { %> checked <% } else { %> disabled <% } %>/>
-                            <label class="form-check-label" for="check<%= i %>"><%=item.name%></label>
-                        </div>
-                    <%})%>
-                </div>
-            </div>
-            <% } %>
-            <!-- Select -->
-            <% if (url.includes('so')) { %>
-            <% const [baseUrl, queryParams] = url.split('?'); %>
-            <div class="container-fluid mt-3 ps-0">
-                <div class="d-flex flex-row align-items-center gap-2 position-relative">
-                    <%- include("./partials/select.ejs",
+            <%})%>
+          </div>
+        </div>
+        <% } %>
+        <!-- Select -->
+        <% if (url.includes('so')) { %>
+        <% const [baseUrl, queryParams] = url.split('?'); %>
+        <div class="container-fluid mt-3 ps-0">
+          <div class="d-flex flex-row align-items-center gap-2 position-relative">
+            <%- include("./partials/select.ejs",
                     {current: current ,
                     options: [
                     { name: 'Điểm đặt quảng cáo' , link: baseUrl + '?category=spot'},
                     { name: 'Bảng quảng cáo' , link: baseUrl + '?category=board'}]
                     }); %>
-                </div>
-            </div>
-            <% } %>
-            <!-- Table -->
-            <% const [basePath, category] = url.split('?'); %>
-            <% const linkDetails = {basePath: basePath, category: category.split('=')[1]} %>
-            <% const keys = (tableData && tableData.length > 0) ? Object.keys(tableData[0]) : [] %>
-            <table id="table"
-                data-toggle="table"
-                data-search="true"
-                data-pagination="true"
-                data-page-list="[10, 25, 50, 100, ALL]"
-                data-locale="vi-VN"
-                data-buttons-class="primary"
-                data-buttons=<%= (locals.add_button) ? "buttons" : "" %>
-                data-show-button-text="true"
-                data-icons-prefix="fa"
-                class="table table-striped table-bordered table-hover table-responsive-md rounded"
-                smart-display>
-                <thead>
-                <tr>
-                    <% for (let i = 0; i < tableHeads.length; i++) { %>
-                        <th data-field="<%= keys[i] %>" data-align="center" data-sortable="true">
-                            <%= tableHeads[i] %>
-                        </th>
-                    <% } %>
-                    <th data-align="center" data-field="actions">
-                        Hành động
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="table-content">
-                <% tableData.forEach((tableRow, i) => { %>
-                    <tr>
-                        <% keys.forEach((key) => { %>
-                            <% if (key === 'actions') { %>
-                                <td>
-                                    <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
-                                    <% const removeUrl = (tableRow.actions.remove) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
-                                    <a role="button"
-                                    class="text-decoration-none mx-3 remove-button"
-                                    href="<%= removeUrl %>">
-                                        <img src="/images/remove.svg" alt="Edit" class="bg-transparent">
-                                    </a>
-                                    <% if (tableRow.actions.info) { %>
-                                        <%- include('./partials/info_button.ejs', {url: infoUrl}) %>
-                                    <% } %>
-                                </td>
-                            <% }else if (tableRow[key] !== undefined) { %>
-                                <td><%= tableRow[key] %></td>
-                            <% } %>
-                        <% }) %>
-                    </tr>
-                <% }) %>
-                
-                </tbody>
-            </table>
+          </div>
         </div>
+        <% } %>
+        <!-- Table -->
+        <% const [basePath, category] = url.split('?'); %>
+        <% const linkDetails = {basePath: basePath, category: category.split('=')[1]} %>
+        <% const keys = (tableData && tableData.length > 0) ? Object.keys(tableData[0]) : [] %>
+        <table id="table" data-toggle="table" data-search="true" data-pagination="true" data-page-list="[10, 25, 50, 100, ALL]" data-locale="vi-VN" data-buttons-class="primary" data-buttons=<%= (locals.add_button) ? "buttons" : "" %> data-show-button-text="true" data-icons-prefix="fa" class="table table-striped table-bordered table-hover table-responsive-md rounded" smart-display>
+          <thead>
+            <tr>
+              <% for (let i = 0; i < tableHeads.length; i++) { %>
+              <th data-field="<%= keys[i] %>" data-align="center" data-sortable="true">
+                <%= tableHeads[i] %>
+              </th>
+              <% } %>
+              <th data-align="center" data-field="actions">
+                Hành động
+              </th>
+            </tr>
+          </thead>
+          <tbody id="table-content">
+            <% tableData.forEach((tableRow, i) => { %>
+            <tr>
+              <% keys.forEach((key) => { %>
+              <% if (key === 'actions') { %>
+              <td>
+                <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
+                <% const removeUrl = (tableRow.actions.remove) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
+                <a role="button" class="text-decoration-none mx-3 remove-button" href="<%= removeUrl %>">
+                  <img src="/images/remove.svg" alt="Edit" class="bg-transparent">
+                </a>
+                <% if (tableRow.actions.info) { %>
+                <%- include('./partials/info_button.ejs', {url: infoUrl}) %>
+                <% } %>
+              </td>
+              <% }else if (tableRow[key] !== undefined) { %>
+              <td><%= tableRow[key] %></td>
+              <% } %>
+              <% }) %>
+            </tr>
+            <% }) %>
+
+          </tbody>
+        </table>
+      </div>
     </div>
     <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
-</main>
-<script defer type="text/javascript" src="/js/adds.js"></script>
+  </main>
+  <script defer type="text/javascript" src="/js/adds.js"></script>
 
-<script defer src="/js/checkbox-select.js"></script>
+  <script defer src="/js/checkbox-select.js"></script>
 
-<script defer type="module">
+  <script defer type="module">
     import {
       ezBSAlert
     } from '/js/customizedModal.js';
 
     const confirmDelete = async (e, url) => {
-        e.preventDefault();
-        console.log(url);
-        const objectID = url.match(/ads\/([^?]+)/)[1];
-        const category = url.match(/category=([^&]+)/)[1];
-        // console.log(objectID, category);
+      e.preventDefault();
+      console.log(url);
+      const objectID = url.match(/ads\/([^?]+)/)[1];
+      const category = url.match(/category=([^&]+)/)[1];
+      // console.log(objectID, category);
 
-        ezBSAlert({
-            type: "confirm",
-            messageText: "Bạn có chắc muốn xóa " + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo') + " này không?",
-            alertType: 'danger',
-        }).done(async function (e) {
-            if (e) {
-                await deleteObject(objectID, category, url);
-            }
-        });
+      ezBSAlert({
+        type: "confirm",
+        messageText: "Bạn có chắc muốn xóa " + (category === 'spot' ? 'điểm đặt' : 'bảng quảng cáo') + " này không?",
+        alertType: 'danger',
+      }).done(async function(e) {
+        if (e) {
+          await deleteObject(objectID, category, url);
+        }
+      });
     }
 
     const alertPlaceholder = document.getElementById('alertConfirm')
@@ -157,36 +138,37 @@
     }
 
     const deleteObject = async (objectID, category, href) => {
-        // appendAlert('Đang xóa ' + objectID + ", " + category, 'info');
+      // appendAlert('Đang xóa ' + objectID + ", " + category, 'info');
 
+      try {
         const response = await fetch(href, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
 
-        const msg = await response.json();
+        const {
+          message
+        } = await response.json();
 
-        if (response.status === 200) {
-            console.log(msg);
-            appendAlert(msg, 'success');
-            // setTimeout(() => {
-            //     window.location.reload();
-            // }, 1000);
-        } else {
-            console.log(msg);
-            appendAlert(msg, 'danger');
-        }
+        if (!response.ok) throw new Error(message);
+
+        console.log(message);
+        appendAlert(message, 'success');
+      } catch (error) {
+        console.log(error);
+        appendAlert(error.message, 'danger');
+      };
     }
 
-    $("#table").on('click', '.remove-button', function (e) {
-        e.preventDefault();
-        const url = $(this).attr('href');
-        confirmDelete(e, url);
+    $("#table").on('click', '.remove-button', function(e) {
+      e.preventDefault();
+      const url = $(this).attr('href');
+      confirmDelete(e, url);
     });
-
-</script>
+  </script>
 
 </body>
+
 </html>

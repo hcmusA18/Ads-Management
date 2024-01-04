@@ -35,18 +35,16 @@ export const deleteSpotByID = async (spotID) => {
           return null;
         })
     );
-    
+
     if (isReferenced.some((value) => value)) {
       console.log('Điểm đặt này đang được sử dụng')
       throw new Error('Điểm đặt này đang được sử dụng');
       // return { message: 'Điểm đặt này đang được sử dụng' };
     }
-
-
     await Spot.findOneAndDelete({ spotID });
     return { message: 'Xóa điểm đặt thành công' };
   } catch (error) {
-    throw new Error(`${error.message}`);
+    throw new Error(error.message);
   }
 };
 
