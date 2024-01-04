@@ -103,8 +103,6 @@ const show = async (req, res) => {
     });
   }
 
-  console.log(tableData)
-
   res.render('ads', {
     url: req.originalUrl,
     title,
