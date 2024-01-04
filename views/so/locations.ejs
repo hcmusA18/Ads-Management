@@ -171,12 +171,6 @@
     </div>
     <div id="alertConfirm" class="position-fixed top-0 start-50 translate-middle-x" style="width: fit-content; transform: translateX(-50%); z-index: 1050;"></div>
 
-    <script>
-      var alertList = document.querySelectorAll(".alert");
-      alertList.forEach(function(alert) {
-        new bootstrap.Alert(alert);
-      });
-    </script>
 
   </main>
   <!-- Modal add -->
@@ -225,26 +219,40 @@
     createModal(options);
   </script>
 
+  <script defer>
+
+  </script>
+
   <script defer type="module">
     import {
       ezBSAlert
     } from '/js/customizedModal.js';
 
+    const alertList = document.querySelectorAll('.alert')
+    alertList.forEach((alert) => {
+      new bootstrap.Alert(alert)
+    })
+
     document.addEventListener('fetchEnd', () => {
-      location.reload();
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
     });
 
     const alertPlaceholder = document.getElementById('alertConfirm')
     const appendAlert = (message, type) => {
       const wrapper = document.createElement('div')
-      wrapper.innerHTML = [
-        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-        `   <div>${message}</div>`,
-        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-        '</div>'
-      ].join('')
+      wrapper.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+      <strong>${message}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`
 
-      alertPlaceholder.append(wrapper)
+
+      alertPlaceholder.innerHTML = wrapper.innerHTML
+      if (alertPlaceholder) console.log("alertPlaceholder exists", alertPlaceholder)
+      else console.log("alertPlaceholder doesn't exist")
+
+      console.log('Appended alert!')
     }
 
     const deleteDistrict = async (district) => {
@@ -262,7 +270,6 @@
           if (!response.ok) {
             throw new Error(`Failed to delete district: ${response.status}`);
           }
-
           console.log('District deleted!');
           appendAlert('Cập nhật thành công', 'success');
         } catch (error) {
@@ -307,16 +314,20 @@
       const districtID = document.getElementById('districtID').value;
       const districtName = document.getElementById('districtName').value;
 
+
       const dataToUpdate = {
         districtName: districtName,
       };
 
+      console.log(JSON.stringify(dataToUpdate));
       const success = false;
 
       try {
-        const response = fetch(`/so/locations/${districtID}`, {
+        const response = await fetch(`/so/locations/${districtID}`, {
           method: 'PATCH',
-          mode: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify(dataToUpdate)
         });
 
@@ -325,17 +336,18 @@
         }
         console.log('User updated!')
         // Handle success, if needed
-        const modal = document.getElementById('editModal');
-        const modalInstance = bootstrap.Modal.getInstance(modal);
-        modalInstance.hide();
         appendAlert('Cập nhật thành công', 'success');
+        console.log('Appended user updated alert!')
       } catch (error) {
         console.error(`Error updating user: ${error.message}`);
         appendAlert('Cập nhật thất bại', 'danger');
+      } finally {
+        // Handle success/error
+        const modal = document.getElementById('editModal');
+        const modalInstance = bootstrap.Modal.getInstance(modal);
+        modalInstance.hide();
       }
     }
-
-
     $('#table').on('click', '.editBtn', showEditModal);
     $('#table').on('click', '.deleteBtn', confirmDelete);
     $('#updateDistrictBtn').on('click', updateDistrict);
