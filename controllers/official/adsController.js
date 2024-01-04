@@ -56,7 +56,7 @@ const show = async (req, res) => {
       plan: spot.planned === 1 ? 'Đã quy hoạch' : 'Chưa quy hoạch',
       actions: {
         edit: false,
-        remove: false,
+        remove: true,
         info: true
       }
     }))
@@ -72,7 +72,7 @@ const show = async (req, res) => {
       quantity: `${board.quantity} trụ/bảng`,
       actions: {
         edit: false,
-        remove: false,
+        remove: true,
         info: true
       }
     }))
@@ -103,6 +103,8 @@ const show = async (req, res) => {
     });
   }
 
+  console.log(tableData)
+
   res.render('ads', {
     url: req.originalUrl,
     title,
@@ -121,9 +123,9 @@ const showDetail = async (req, res, isEdit) => {
   const category = req.query.category || '';
   const isSpotCategory = category === 'spot';
   let title = '';
-  if (isEdit) 
+  if (isEdit)
     title = `${role === 'quan' ? 'Quận ' : role === 'phuong' ? 'Phường ' : '-'} Chỉnh sửa ${isSpotCategory ? 'điểm đặt' : 'bảng quảng cáo'}`;
-  else 
+  else
     title = `${role === 'quan' ? 'Quận ' : role === 'phuong' ? 'Phường ' : '-'} Chi tiết ${isSpotCategory ? 'điểm đặt' : 'bảng quảng cáo'}`;
 
   const getData = isSpotCategory ? spotService.getSpotByID : boardService.getBoardByID;

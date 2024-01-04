@@ -7,7 +7,6 @@ import * as spotTypeService from '../../services/spotTypeService.js'
 import * as adsFormService from '../../services/adsFormService.js'
 import * as boardTypeService from '../../services/boardTypeService.js'
 import * as IDGenerator from '../../services/IDGenerator.js'
-import e from 'express'
 
 const show = async (req, res) => {
   const category = req.query.category || ''
@@ -185,24 +184,38 @@ const showAdd = async (req, res) => {
   const category = req.query.category || ''
   let other = {}
 
+  const [districts, wards, spotTypes, adsForms, boardTypes, spot] = await Promise.all([
+    districtService.getAllDistricts(),
+    wardService.getAllWards(),
+    spotTypeService.getAllSpotTypes(),
+    adsFormService.getAllAdsForms(),
+    boardTypeService.getAllBoardTypes(),
+    spotService.getSpotByID(req.query.spotID || ''),
+  ])
+
   switch (category) {
     case 'spot':
-      other.spottypes = (await spotTypeService.getAllSpotTypes()) || []
-      other.adsforms = (await adsFormService.getAllAdsForms()) || []
-      other.districts = (await districtService.getAllDistricts()) || []
-      other.wards = (await wardService.getAllWards()) || []
+      // other.spottypes = (await spotTypeService.getAllSpotTypes()) || []
+      // other.adsforms = (await adsFormService.getAllAdsForms()) || []
+      // other.districts = (await districtService.getAllDistricts()) || []
+      // other.wards = (await wardService.getAllWards()) || []
+      other.spottypes = spotTypes
+      other.adsforms = adsForms
+      other.districts = districts
+      other.wards = wards
+
       res.render('spot-new', { url: req.originalUrl, title: 'Sở - Điểm đặt mới', toolbars: toolbars, other })
       break
     case 'board':
-      const spotID = req.query.spotID || '';
-      const spot = (await spotService.getSpotByID(spotID)) || {};
+      // const spotID = req.query.spotID || '';
+      // const spot = (await spotService.getSpotByID(spotID)) || {};
 
       other.spotID = spot.spotID
       other.spotAddress = spot.address
       other.spotDistrict = spot.districtName
       other.spotWard = spot.wardName
 
-      other.boardtypes = (await boardTypeService.getAllBoardTypes()) || []
+      other.boardtypes = boardTypes
       // console.log(other.boardtypes);
 
       console.log(req.originalUrl)
