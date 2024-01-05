@@ -170,6 +170,8 @@ const showDetail = async (req, res, isEdit) => {
       let other = {}
       other.spottypes = await spotTypeService.getAllSpotTypes() || [];
       other.adsforms = await adsFormService.getAllAdsForms() || [];
+      other.districts = await districtService.getAllDistricts() || [];
+      other.wards = await wardService.getAllWards() || [];
       res.render('spot-modify', { ...commonData, ...data, other });
     } else {
       res.render('spot-detail', { ...commonData, ...data, boardsTableHeads, boardsTableData: transformedBoardsTableData });

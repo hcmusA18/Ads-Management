@@ -23,6 +23,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
+    <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert"
+      style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
+      <button type="button" class="btn-close"></button>
+    </div>
+
     <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
       <div class="row"><%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %></div>
       <div class="container-fluid vw-100 pt-1">
@@ -53,7 +59,7 @@
               </div>
               <div class="container mt-2">
                   <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
-                  <input type="text" class="form-control" id="spotAddress" value='<%= spotAddress %>'/>
+                  <input type="text" class="form-control" id="spotAddress" value='<%= spotAddress %>' disabled/>
               </div>
               <div class="container mt-2 d-flex justify-content-between">
                   <div style="width: calc((100% - 2rem) / 2);">
@@ -224,8 +230,89 @@
         console.log(links);
         return links;
       }
+
+      document.querySelectorAll('.btn-close').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.target.parentElement.hidden = true;
+          });
+      });
+
+      document.getElementById('warning-text').textContent = "BẠN CÓ THỂ CHỈNH SỬA TÊN ĐIỂM ĐẶT Ở PHÍA TRÊN KHUNG ẢNH VÀ ĐỊA CHỈ BẰNG VIỆC DOUBLE-CLICK";
+      document.getElementById('alert-warning').hidden = false;
+
       const submitHandler = async (e) => {
         e.preventDefault();
+        // ... get districtID and wardID ....................
+        const districts = JSON.parse('<%- JSON.stringify(other.districts) %>');
+        const wards = JSON.parse('<%- JSON.stringify(other.wards) %>');
+        const districtInput = document.getElementById('districtName');
+        const wardInput = document.getElementById('wardName');
+        const districtIdInput = document.getElementById('district');
+        const wardIdInput = document.getElementById('ward');
+
+        const district = districts.find(district => district.districtName == districtInput.value);
+        districtIdInput.value = (district) ? district.districtID : '';
+
+        const ward = wards.find(ward => (ward.wardName == wardInput.value.trim() && ward.districtID == districtIdInput.value));
+        wardIdInput.value = (ward) ? ward.wardID : '';
+        // ... Check valid of fields BEFORE updating images.................
+        const spotID = document.getElementById('spotID').value;
+        const address = document.getElementById('spotAddress').value;
+        const wardID = document.getElementById('ward').value;
+        const wardName = document.getElementById('wardName').value;
+        const districtID = document.getElementById('district').value;
+        const districtName = document.getElementById('districtName').value;
+        const latitude = lat;
+        const longtitude = long;
+        const spotType = document.getElementById('spotType').value;
+        const spotTypeName = document.getElementById('spotTypeName').value.trim();
+        const adsForm = document.getElementById('adsForm').value;
+        const adsFormName = document.getElementById('adsFormName').value.trim();
+        const spotName = document.getElementById('spotName').innerText;
+        const planned = document.getElementById('planned').value;
+        const reason = document.getElementById('reason').value || 'Không có lý do chỉnh sửa';
+
+        if(spotID == '' || address == '' || latitude == '' || longtitude == ''){
+          document.getElementById('warning-text').textContent = "Vui lòng chọn TỌA ĐỘ ĐIỂM ĐẶT bằng cách double-click vào ĐỊA CHỈ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(districtID == '' || wardID == ''){
+          document.getElementById('warning-text').textContent = "Khu vực (Quận / Phường) bạn chọn không nằm trong quyền quản lý của chúng tôi, vui lòng chọn lại bằng cách double-click vào ĐỊA CHỈ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const spottypeList = JSON.parse('<%- JSON.stringify(other.spottypes) %>');
+        const adsformList = JSON.parse('<%- JSON.stringify(other.adsforms) %>');
+
+        if(spotTypeName == '' || !(spottypeList.some(type => type.typeName === spotTypeName))){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng LOẠI VỊ TRÍ.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(adsFormName == '' || !(adsformList.some(form => form.formName === adsFormName))){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng HÌNH THỨC QUẢNG CÁO.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(planned != 'Đã quy hoạch' && planned != 'Chưa quy hoạch'){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập đúng THÔNG TIN QUY HOẠCH.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        if(spotName == ''){
+          document.getElementById('warning-text').textContent = "Vui lòng nhập TÊN ĐIỂM ĐẶT.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        // ................................................
         const inputImage = document.getElementById('input-image');
         const files = inputImage.files;
 
@@ -239,24 +326,30 @@
         getUpdatedImgUrls();
         imgUrlsData = imgUrlsData.concat(imgUrls);
         // console.log("Image URLs: ", imgUrlsData);
+        if(imgUrlsData.length == 0){
+          document.getElementById('warning-text').textContent = "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về điểm đặt quảng cáo.";
+          document.getElementById('alert-warning').hidden = false;
+          loader.style.display = 'none';
+          return;
+        }
 
         const data = {
-          spotID: document.getElementById('spotID').value,
+          spotID: spotID,
           spotImage: imgUrlsData,
-          address: document.getElementById('spotAddress').value,
-          wardID: document.getElementById('ward').value,
-          wardName: document.getElementById('wardName').value,
-          districtID: document.getElementById('district').value,
-          districtName: document.getElementById('districtName').value,
-          latitude: lat,
-          longtitude: long,
-          spotType: document.getElementById('spotType').value,
-          spotTypeName: document.getElementById('spotTypeName').value,
-          adsForm: document.getElementById('adsForm').value,
-          adsFormName: document.getElementById('adsFormName').value,
-          spotName: document.getElementById('spotName').innerText,
-          planned: document.getElementById('planned').value == 'Đã quy hoạch' ? 1 : 0,
-          reason: document.getElementById('reason').value || 'Không có lý do chỉnh sửa',
+          address: address,
+          wardID: wardID,
+          wardName: wardName,
+          districtID: districtID,
+          districtName: districtName,
+          latitude: latitude,
+          longtitude: longtitude,
+          spotType: spotType,
+          spotTypeName: spotTypeName,
+          adsForm: adsForm,
+          adsFormName: adsFormName,
+          spotName: spotName,
+          planned: (planned == 'Đã quy hoạch') ? 1 : 0,
+          reason: reason,
           officerUsername: '<%= user.username %>'
         }
         const url = '<%= url %>';

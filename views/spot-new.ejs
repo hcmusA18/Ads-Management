@@ -282,11 +282,11 @@
         const imgUrls = await upload2Imgur(files);
         // console.log(imgUrls);
 
-        // if(imgUrls.length == 0){
-        //   document.getElementById('warning-text').textContent = "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về điểm đặt quảng cáo.";
-        //   document.getElementById('alert-warning').hidden = false;
-        //   return;
-        // }
+        if(imgUrls.length == 0){
+          document.getElementById('warning-text').textContent = "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về điểm đặt quảng cáo.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
         // ................................................
         const data = {
           spotName: spotName,
