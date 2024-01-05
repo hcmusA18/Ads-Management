@@ -37,7 +37,7 @@ export const getAllReports = async () => {
     const options = [
       {
         $lookup: {
-          from: 'reportTypes',
+          from: 'reporttypes',
           localField: 'reportType',
           foreignField: 'typeID',
           as: 'reportType'
@@ -552,7 +552,16 @@ export const getReportTypeCounts = async () => {
 
 export const getReportCountsDistrict = async () => {
   try {
+    let currentDate = new Date();
+    currentDate = currentDate.setMonth(currentDate.getMonth() - 3)
+    const startDate = new Date(currentDate);
+    console.log(startDate);
     const reportDistrictCounts = await Report.aggregate([
+      {
+        $match: {
+          sendTime: { $gte: startDate } // Filter reports within the last 3 months
+        }
+      },
       {
         $lookup: {
           from: 'spots',

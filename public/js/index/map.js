@@ -38,7 +38,19 @@ function generateSpotHTML(spot) {
 
   // console.log(position);
   // Check role and update href accordingly
-  if(position == -1) href = `/so/ads/new?category=board&spotID=${spot.spotID}`
+  if(position == -1){
+    return `<div class="card">
+            <img src="${spot.spotImage[0]}" class="card-img-top img-fluid" alt="...">
+            <div class="card-body">
+              <h6 class="card-title fw-bold">${spot.spotName}</h6>
+              <p class="card-text">${spot.spotTypeName}</p>
+              <p class="card-text">${spot.address}</p>
+              <p class="card-text fw-bold fst-italic text-uppercase">${spot.planned}</p>
+              <div class="btn btn-primary btn-sm mt-2" data-bs-spot-id ="${spot.spotID}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSpotDetail" aria-controls="offcanvasSpotDetail">Xem chi tiết</div>
+              
+            </div>
+          </div>`;
+  } 
   if(position == 1) href = `/quan/license/create?spotID=${spot.spotID}`
   if(position == 2) href = `/phuong/license/create?spotID=${spot.spotID}`
 

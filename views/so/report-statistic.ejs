@@ -50,18 +50,40 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script defer>
+  const colorList = [
+    '#DCF2F1', // Light Blue
+    '#7FC7D9', // Green
+    '#365486', // Orange
+    '#0F1035', // Yellow
+    '#52D3D8', // Purple
+    '#2D9596', // Red
+    '#1640D6', // Teal
+    '#3D30A2', // Pink
+    '#F1B4BB', // Dark Gray
+    '#FDF0F0'  // Light Gray
+  ];
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  function generateColors(length) {
+    const shuffledColors = [...colorList];
+    shuffleArray(shuffledColors);
+
+    const selectedColors = shuffledColors.slice(0, length);
+    return selectedColors;
+  }
+
   const reportTypeCount = JSON.parse('<%- JSON.stringify(reportTypeCount) %>');
   const pieData1 = {
     labels: [],
     datasets: [{
       label: 'Số báo cáo',
       data: [],
-      backgroundColor: [
-        '#2B2E4A',
-        '#E84545',
-        '#903749',
-        '#53354A'
-      ],
+      backgroundColor: generateColors(reportTypeCount.length),
       hoverOffset: 4
     }]
   };
@@ -105,10 +127,7 @@
     datasets: [{
       label: 'Số báo cáo',
       data: [],
-      backgroundColor: [
-        '#2B2E4A',
-        '#E84545',
-      ],
+      backgroundColor: generateColors(reportTypeCount.length),
       hoverOffset: 4
     }]
   };
@@ -204,7 +223,7 @@
       },
       title: {
         display: true,
-        text: "SỐ LƯỢNG BÁO CÁO THEO QUẬN",
+        text: "SỐ LƯỢNG BÁO CÁO THEO QUẬN TRONG 3 THÁNG GẦN NHẤT",
         font: {
           family: 'Montserrat',
           size: 20,
