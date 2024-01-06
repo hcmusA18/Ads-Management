@@ -32,15 +32,15 @@ const getInfo = async (req, res) => {
   const role = String(req.originalUrl.split('/')[1]);
   res.locals.role = role;
   try {
-    const info = await officerService.getOfficerByUsername(username, true);
+    let info = await officerService.getOfficerByUsername(username, true);
     const { wardName, districtName, roleName } = await getOfficierRoleInfor(info);
     if (wardName) info.managePlace = `Phường ${wardName}, Quận ${districtName}`;
     else if (districtName) info.managePlace = `Quận ${districtName}`;
     else info.managePlace = 'Sở Văn hóa Thể thao và Du lịch';
     info.roleName = roleName;
     res.render('info', { title: 'Thông tin', info: info, toolbars: toolbars });
-  } catch {
-    res.render('error', { message: 'Không tìm thấy thông tin' })
+  } catch (error) {
+    res.render('error', { title: 'Lỗi', error});
   }
 }
 
@@ -49,9 +49,11 @@ const updateInfo = async (req, res) => {
   const { name, email, phone, dob } = req.body;
   try {
     await officerService.updateOfficer(username, { name, email, phone, dob });
-    res.status(200).json({ message: 'Cập nhật thông tin thành công' });
+    req.flash('success', 'Cập nhật thông tin thành công');
+    return res.redirect(`/so/officier/${username}`);
   } catch {
-    res.status(500).json({ message: 'Cập nhật thông tin thất bại' })
+    req.flash('error', 'Cập nhật thông tin thất bại');
+    return res.redirect(`/so/officier/${username}`);
   }
 }
 

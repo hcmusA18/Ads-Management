@@ -38,19 +38,22 @@ const getInfo = async (req, res) => {
     else info.managePlace = 'Sở Văn hóa Thể thao và Du lịch';
     info.roleName = roleName;
     res.render('info', { title: 'Thông tin', info: info, toolbars: createToolbar(role) });
-  } catch {
-    res.render('error', { message: 'Không tìm thấy thông tin' })
+  } catch (error) {
+    res.render('error', { title: 'Lỗi', error});
   }
 }
 
 const updateInfo = async (req, res) => {
   const { username } = req.params;
   const { name, email, phone, dob } = req.body;
+  const role = String(req.originalUrl.split('/')[1]);
   try {
     await officerService.updateOfficer(username, { name, email, phone, dob });
-    res.status(200).json({ message: 'Cập nhật thông tin thành công' });
+    req.flash('success', 'Cập nhật thông tin thành công');
+    return res.redirect(`/${role}/officier/${username}`);
   } catch {
-    res.status(500).json({ message: 'Cập nhật thông tin thất bại' });
+    req.flash('error', 'Cập nhật thông tin thất bại');
+    return res.redirect(`/${role}/officier/${username}`);
   }
 }
 

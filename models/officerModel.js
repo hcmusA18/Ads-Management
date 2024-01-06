@@ -21,7 +21,7 @@ const OfficerSchema = new mongoose.Schema({
     type: String,
   },
   dob: {
-    type: Date,
+    type: Date || String,
   },
   position: {
     type: Number,
