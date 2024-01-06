@@ -237,6 +237,7 @@ export const getBoardByID = async (boardID) => {
         $project: {
           boardID: 1,
           spotID: 1,
+          spotName: '$spot.spotName',
           spotAddress: '$spot.address',
           authCompany: '$licensereq.companyName',
           authCompanyPhone: '$licensereq.companyPhone',

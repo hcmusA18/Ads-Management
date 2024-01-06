@@ -23,6 +23,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
+    <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert"
+      style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+      <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
+      <button type="button" class="btn-close"></button>
+    </div>
+
     <main class="container-fluid d-flex bg-light">
       <div class="row"><%- include("./partials/sidebar.ejs", {toolbars: toolbars}); %></div>
       <div class="container-fluid vw-100 pt-1">
@@ -59,7 +65,7 @@
               <div class="container mt-2 d-flex justify-content-between">
                 <div style="width: calc((100% - 2rem) / 2);">
                   <label for="spotName" class="mb-1">Điểm đặt</label>
-                  <input type="text" list="spotList" class="form-control" id="spotName" autocomplete="on" />
+                  <input type="text" list="spotList" class="form-control" id="spotName" autocomplete="on" value="<%= spotName %>"/>
                   <datalist id="spotList" style="display: none;">
                     <% other.spots.forEach((spot)=> { %>
                       <option value="<%= spot.spotName; %>"></option>
@@ -133,28 +139,27 @@
               <script defer src="/js/uploadImage.js"></script>
             </div>
             <div class="container mt-2 d-flex justify-content-between">
-              <div style="width: calc((100% - 3rem) / 3);">
-                <label for="adsType" style="margin-bottom: 6px;">Loại quảng cáo</label>                  
-                <input type="text" class="form-control" id="boardTypeName" list="boardTypeList" value="<%= boardTypeName %>"  />
-                <input type="text" id="boardType" value="<%= boardType %>" hidden>
-                <datalist id="boardTypeList" style="display: none;">
-                  <% other.boardtypes.forEach((boardtype)=> { %>
-                    <option value="<%= boardtype.typeName; %>"></option>
-                    <% }); %>
-                </datalist>
+              <div style="width: calc((100% - 2rem) / 4);">
+                  <label for="boardTypeName" style="margin-bottom: 6px">Loại bảng</label>
+                  <input type="text" class="form-control" id="boardTypeName" list="boardTypeList" value="<%= boardTypeName %>"/>
+                  <input type="text" class="form-control" id="boardType" value="<%= boardType %>" hidden />
+                  <datalist id="boardTypeList" style="display: none;">
+                      <% other.boardtypes.forEach((boardtype)=> { %>
+                        <option value="<%= boardtype.typeName; %>"></option>
+                      <% }); %>
+                  </datalist>
               </div>
-              <div style="width: calc((100% - 3rem) / 3);">
-                <label for="quantity" style="margin-bottom: 6px">Số lượng</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" id="quantity" value="<%= quantity %>" min="0" step="1">
-                  <div class="input-group-append">
-                      <span class="input-group-text">trụ/bảng</span>
-                  </div>
-                </div>
+              <div style="width: calc((100% - 2rem) / 4);">
+                  <label for="board-quantity" style="margin-bottom: 6px">Số lượng (trụ/bảng)</label>
+                  <input type="number" class="form-control" id="board-quantity" min="0" max="10" value="<%= quantity %>" />
               </div>
-              <div style="width: calc((100% - 3rem) / 3);">
-                <label for="size" style="margin-bottom: 6px">Kích thước</label>
-                <input type="text" class="form-control" id="size" value="<%= size %>"  />
+              <div style="width: calc((100% - 2rem) / 4);">
+                  <label for="board-height" style="margin-bottom: 6px;">Chiều cao (m)</label>                  
+                  <input type="number" class="form-control" id="board-height" min="0" max="50" step="0.01" value="<%= height %>"/>
+              </div>
+              <div style="width: calc((100% - 2rem) / 4);">
+                  <label for="board-width" style="margin-bottom: 6px">Chiều rộng (m)</label>
+                  <input type="number" class="form-control" id="board-width" min="0" max="50" step="0.01" value="<%= width %>"/>
               </div>
             </div> 
             <div class="container mt-2 d-flex justify-content-between">
@@ -239,11 +244,56 @@
       }
       const submitHandler = async (e) => {
         e.preventDefault();
+
+        // ... Check valid of fields BEFORE updating images.................
+        const spotName = document.getElementById('spotName').value.trim();
+        const boardType = document.getElementById('boardTypeName').value.trim();
+        const quantity = document.getElementById('board-quantity').value;
+        const height = document.getElementById('board-height').value;
+        const width = document.getElementById('board-width').value;
+
+        const spotList = JSON.parse('<%- JSON.stringify(other.spots) %>');
+
+        if(spotName == '' || !(spotList.some(spot => spot.spotName === spotName))){
+          document.getElementById('warning-text').textContent = "Vui lòng chọn đúng TÊN ĐIỂM ĐẶT.";
+          document.getElementById('alert-warning').hidden = false;
+          return;
+        }
+
+        const boardTypeList = JSON.parse('<%- JSON.stringify(other.boardtypes); %>');
+        if(boardType == '' || !(boardTypeList.some(type => type.typeName === boardType))){
+            document.getElementById('warning-text').textContent = "Vui lòng nhập đúng LOẠI BẢNG QUẢNG CÁO.";
+            document.getElementById('alert-warning').hidden = false;
+            return;
+        }
+
+        // Check quantity
+        if(quantity == '' || !(/^\d+$/).test(quantity) || Number.parseInt(quantity) > 10 || Number.parseInt(quantity) < 0){
+            document.getElementById('warning-text').textContent = "Vui lòng nhập đúng SỐ LƯỢNG BẢNG / TRỤ (số nguyên từ 0 tới 10).";
+            document.getElementById('alert-warning').hidden = false;
+            return;
+        }
+
+        // Check height
+        if(height == '' || Number.parseFloat(height) > 50.0 || Number.parseFloat(height) < 0.0){
+            document.getElementById('warning-text').textContent = "Vui lòng nhập đúng CHIỀU CAO (từ 0 tới 50).";
+            document.getElementById('alert-warning').hidden = false;
+            return;
+        }
+
+        // Check width
+        if(width == '' || Number.parseFloat(width) > 50.0 || Number.parseFloat(width) < 0.0){
+            document.getElementById('warning-text').textContent = "Vui lòng nhập đúng CHIỀU RỘNG (từ 0 tới 50).";
+            document.getElementById('alert-warning').hidden = false;
+            return;
+        }
+
+        // ................................................
+
         const inputImage = document.getElementById('input-image');
         const files = inputImage.files;
 
-        // show loader
-        loader.style.display = 'block';
+        loader.style.display = 'block'; // show loader
         
         let imgUrlsData = [];
         if (files.length > 0) {
@@ -251,7 +301,16 @@
         }
         getUpdatedImgUrls();
         imgUrlsData = imgUrlsData.concat(imgUrls);
-        console.log("Image URLs: ", imgUrlsData);
+        // console.log("Image URLs: ", imgUrlsData);
+
+        if(imgUrlsData.length == 0){
+          document.getElementById('warning-text').textContent = "Vui lòng tải lên ÍT NHẤT MỘT ẢNH về điểm đặt quảng cáo.";
+          document.getElementById('alert-warning').hidden = false;
+          loader.style.display = 'none';
+          return;
+        }
+
+        // ................................................
 
         const data = {
           spotID: document.getElementById('spotID').value,
@@ -259,9 +318,9 @@
           boardID: document.getElementById('boardID').value,
           boardType: document.getElementById('boardType').value,
           boardTypeName: document.getElementById('boardTypeName').value,
-          quantity: parseInt(document.getElementById('quantity').value, 10),
-          height: parseFloat(document.getElementById('size').value.split('x')[0].trim()),
-          width: parseFloat(document.getElementById('size').value.split('x')[1].replace('m', '').replace('(', '').replace(')', '').trim()),
+          quantity: quantity,
+          height: height,
+          width: width,
           reason: document.getElementById('reason').value || 'Không có lý do chỉnh sửa',
           officerUsername: '<%= user.username %>',
           spotName: document.getElementById('spotName').value,
@@ -436,7 +495,14 @@
           boardtypeIdInput.value = boardtype.typeID;
           // console.log(boardtypeIdInput.value);
         }
-      })      
+      })    
+      
+      document.querySelectorAll('.btn-close').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.target.parentElement.hidden = true;
+        });
+      });
 
     </script>
   </body>

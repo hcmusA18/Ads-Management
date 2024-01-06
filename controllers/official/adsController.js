@@ -129,7 +129,7 @@ const showDetail = async (req, res, isEdit) => {
   const getData = isSpotCategory ? spotService.getSpotByID : boardService.getBoardByID;
   const detailData = await getData(ID);
 
-  console.log(detailData);
+  // console.log(detailData);
 
   const commonData = {
     url: req.originalUrl,
@@ -180,6 +180,7 @@ const showDetail = async (req, res, isEdit) => {
     const data = {
       id: detailData.boardID,
       spotID: detailData.spotID,
+      spotName: detailData.spotName,
       spotAddress: detailData.spotAddress,
       authCompany: detailData.authCompany,
       authCompanyAddress: detailData.authCompanyAddress,
@@ -189,7 +190,8 @@ const showDetail = async (req, res, isEdit) => {
       endDate: detailData.endDate.toLocaleDateString('vi-VN'),
       boardTypeName: detailData.boardTypeName,
       quantity: detailData.quantity,
-      size: `${detailData.height} x ${detailData.width} (m)`,
+      height: detailData.height,
+      width: detailData.width,
       spotTypeName: detailData.spotTypeName,
       adsFormName: detailData.adsFormName,
       imgUrls: detailData.image,
