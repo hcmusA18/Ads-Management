@@ -6,11 +6,25 @@ var mapboxScript = document.createElement('script');
 mapboxScript.setAttribute('src', 'https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js');
 document.head.appendChild(mapboxScript);
 
-let description = '';
-let district = '';
-let ward = '';
-let long = '';
-let lat = '';
+let curPos = null;
+
+const formatMapFeature = (feature) => {
+  const { properties, text } = feature
+  let address = properties.address ? properties.address.split(',')[0] : feature.place_name.split(',')[0]
+  const coordinates = feature.geometry.coordinates.slice()
+
+  address = address.replace(/"/g, '')
+  address += `, ${feature.context[0].text || ''}, ${feature.context[2].text || ''}, ${feature.context[3].text || ''}`
+  if (address.includes(text)) {
+    address = address.replace(`${text}, `, '')
+  }
+
+  return {
+    text,
+    address,
+    coordinates
+  }
+}
 
 mapboxScript.onload = function () {
 	mapboxgl.accessToken = MAPBOX_TOKEN;
@@ -69,25 +83,16 @@ mapboxScript.onload = function () {
 		fetch(api)
 		.then(res => res.json())
 		.then(res => {
-			const coordinates = res.features[0].geometry.coordinates.slice();
-			description = res.features[0].place_name
-			.replace(/,\s*\d+,\s*Vietnam/, '')
-			.replace(/, Ho Chi Minh City|, Quận|, Phường|, Q|, F|, P.*/g, '')
-			.replace(/,.*Dist\.|,.*Ward\./, '');
+			curPos = res.features[0];
+			const {text, address, coordinates} = formatMapFeature(res.features[0]);
 
-            district = res.features[0].context[2].text || '';
-            ward = res.features[0].context[0].text || '';
-            long = res.features[0].geometry.coordinates[0] || '';
-            lat = res.features[0].geometry.coordinates[1] || '';
-
-            let address = ''
-			
-			address = description + (', ' + res.features[0].context[0].text || '') + (', ' + res.features[0].context[2].text || '');
-
-			const innerHtmlContent = `<div style="font-weight: bold; font-size: 15px">${address}</div>`;
+			const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+									  <p class="fw-bold">${text}</p>
+									  <p class="fw-light">${address}</p>`;
 			const divElement = document.createElement('div');
-
+			
 			divElement.innerHTML = innerHtmlContent;
+			divElement.setAttribute('class', 'px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25');
 
             const assignBtn = document.createElement('div');
 
@@ -95,10 +100,9 @@ mapboxScript.onload = function () {
             divElement.appendChild(assignBtn);
 			
 			new mapboxgl.Popup({ offset: [0, -30] })
-			.setLngLat(coordinates)
+			.setLngLat({lng: e.lngLat.lng, lat: e.lngLat.lat})
 			.setDOMContent(divElement)
 			.addTo(map);
-
 		});
 	})
 
@@ -115,12 +119,30 @@ document.addEventListener('click', (event) => {
     if (event.target.id === 'select-btn') {
         const popup = document.querySelector('.mapboxgl-popup');
         popup.remove();
+		let {text, address, coordinates} = formatMapFeature(curPos);
+		address = address
+		.replace(/,\s*\d+,\s*Vietnam/, '')
+		.replace(/(Phường).*?,/, '')
+		.replace(/(Quận).*?,/, '')
+		.replace(/(Thành phố).*?,/, '')
+		.replace(/(P).*?,/, '')
+		.replace(/(Q).*?,/, '')
+		.replace(/(F).*?,/, '')
+		.replace('Ho Chi Minh City', '')
+		.replace(/,.*Dist/, '')
+		.replace(/,.*District/, '')
+		.replace(/,.*Hồ Chí Minh/, '')
+		.replace(/,.*ward/, '')
+		.replace(/,.*Ward/, '')
+
+		// remove all special characters at the end of the string
+		address = address.replace(/[\W_]+$/, '');
         const data = {
-            number: description,
-            district: district,
-            ward: ward,
-            long: long,
-            lat: lat
+            number: address,
+            district: curPos.context[2].text || '',
+            ward: curPos.context[0].text || '',
+            long: coordinates[0] || '',
+            lat: coordinates[1] || '',
         }
         console.log('====================================');
         console.log(data);
