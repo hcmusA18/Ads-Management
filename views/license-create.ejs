@@ -23,19 +23,19 @@
 <div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert"
     style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
     <strong>Bảng quảng cáo được tạo thành công!</strong>
-    <button type="button" class="btn-close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
 <div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert"
     style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
     <strong>Có lỗi xảy ra khi tạo bảng quảng cáo!</strong>
-    <button type="button" class="btn-close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
 <div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert"
     style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
     <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
-    <button type="button" class="btn-close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 <body>
 <header></header>
@@ -344,17 +344,21 @@
       body: JSON.stringify(data),
     });
     if (result.status == 200) {
-        document.getElementById('alert-success').hidden = false;
+        document.getElementById('alert-success').removeAttribute('hidden');
         // clear all input
         document.querySelectorAll('input').forEach((input) => {
-        input.value = '';
-    });
+            input.value = '';
+        });
+        document.getElementById('alert-success').addEventListener('closed.bs.alert', () => {
+            console.log('1');
+            const role = JSON.parse('<%- JSON.stringify(role); %>');
+            window.location.href = `/${role}/license`;
+        });
     } else {
         document.getElementById('alert-danger').hidden = false;
     }
 
     loader.style.display = 'none';
-
   }
 
   const boardTypes = JSON.parse('<%- JSON.stringify(boardtypes) %>');

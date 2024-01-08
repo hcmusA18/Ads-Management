@@ -71,7 +71,6 @@ const show = async (req, res) => {
       }
     });
 
-    console.log(title);
 
     res.render('ads', {
       url: req.originalUrl,
@@ -159,7 +158,8 @@ const showDetail = async (req, res, isEdit) => {
       boardTypeName: object.boardTypeName,
       boardType: object.boardType,
       quantity: object.quantity,
-      size: `${object.height}x${object.width}m`,
+      height: object.height,
+      width: object.width,
       spotTypeName: object.spotTypeName,
       spotType: object.spotType,
       adsFormName: object.adsFormName,

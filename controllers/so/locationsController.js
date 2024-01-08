@@ -155,11 +155,13 @@ controller.updateWard = async (req, res) => {
   try {
 		const message = await wardService.updateWardByID(wardID, data);
 		console.log(message);
-		res.redirect(`/so/locations-detail?quan=${curDistrict}`);
+		// res.redirect(`/so/locations-detail?quan=${curDistrict}`);
+    res.status(200).json({message: message});
 	} catch (error) {
 		console.log(error.message);
 		req.flash('error', error.message);
-		res.redirect(`/so/locations-detail?quan=${curDistrict}`);
+		// res.redirect(`/so/locations-detail?quan=${curDistrict}`);
+    res.status(500).json({message: error.message});
 	}
 }
 
