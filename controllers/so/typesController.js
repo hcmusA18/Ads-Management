@@ -135,12 +135,14 @@ const remove = async (req, res) => {
 		}
 		console.log(`Message: ${message}`);
 		req.flash('success', message);
-		res.send({message});
+		// res.send({message});
+		res.status(200).json({message});
 	}
 	catch (error) {
 		console.log(`Error removing type: ${error.message}`);
 		req.flash('error', error.message);
-		res.send({message: error.message});
+		// res.send({message: error.message});
+		res.status(400).json({message: error.message});
 	}
 }
 

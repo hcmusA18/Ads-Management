@@ -29,7 +29,7 @@ const createComponent = (component) => {
 			break;
 		case 'textarea':
 			input = $(`
-				<textarea class="form-control" id="${component.id}" name="${component.id}" rows="${component.rows}"></textarea>
+				<textarea class="form-control" id="${component.id}" name="${component.id}" rows="${component.rows}">${component.text || ''}</textarea>
 			`);
 			break;
 		default:

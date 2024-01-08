@@ -85,7 +85,7 @@
                 inputType: 'text',
                 placeholder: 'Loại hình'
               },
-              { id: 'desc', label: 'Mô tả', required: true, type: 'textarea', rows: 3, placeholder: 'Mô tả' }
+              { id: 'desc', label: 'Mô tả', required: true, type: 'textarea', rows: 3, placeholder: 'Mô tả', text: '' }
             ]
             const buttons = [
               { label: 'Hủy', color: '#e84747', dismiss: true, type: 'button' },
@@ -101,7 +101,7 @@
             for (let i = 0; i < len; i++) {
               components[0].value = dataID[i]
               components[1].value = dataName[i]
-              components[2].placeholder = dataDescription[i]
+              components[2].text = dataDescription[i] || ''
               const editModal = {
                 id: `editModal-${i}`,
                 title: 'CHỈNH SỬA',

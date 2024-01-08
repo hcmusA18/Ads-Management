@@ -63,9 +63,9 @@
   }
 
   const confirmDelete = async (e) => {
-    const event = e;
-    const url = e.target.dataset.bsUrl;
     e.preventDefault();
+    const event = e;
+    const url = e.target.parentElement.dataset.bsUrl;
     ezBSAlert({
       type: "confirm",
       messageText: "Bạn có chắc chắn muốn xóa?",
@@ -79,6 +79,7 @@
   }
 
   const removeHandler = async (e, url) => {
+    // console.log(url);
     try {
       e.preventDefault();
       const response = await fetch(url, {
