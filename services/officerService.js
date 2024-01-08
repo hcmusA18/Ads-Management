@@ -23,9 +23,9 @@ export const updatePasswordByUsername = async (username, newPassword) => {
 export const deleteOfficerByUsername = async (username) => {
   try {
     await Officer.findOneAndDelete({ username });
-    return { message: 'Officer deleted successfully' };
+    return { message: 'Xóa tài khoản cán bộ thành công' };
   } catch (error) {
-    throw new Error(`Error deleting officer: ${error.message}`);
+    throw new Error(`Lỗi khi xóa tài khoản cán bộ: ${error.message}`);
   }
 };
 
@@ -143,9 +143,9 @@ export const getOfficerByGoogleID = async (googleId) => {
 export const updateOfficer = async (username, dataToUpdate) => {
   try {
     await Officer.findOneAndUpdate({ username }, { $set: dataToUpdate });
-    return { message: 'Officer updated successfully' };
+    return { message: 'Cập nhật tài khoản cán bộ thành công!' };
   } catch (error) {
-    throw new Error(`Error updating officer ${username}: ${error.message}`);
+    throw new Error(`Lỗi khi cập nhật tài khoản ${username}: ${error.message}`);
   }
 };
 

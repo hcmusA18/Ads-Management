@@ -47,12 +47,14 @@ const deleteAccount = async (req, res) => {
 	const username = req.params.username;
 	try {
 		if (username != null) {
-			const message = await officerService.deleteOfficerByUsername(username);
+			const { message } = await officerService.deleteOfficerByUsername(username);
 			console.log(message);
+			res.status(200).json({message: message});
 		}
 	} catch (error) {
 		console.log(error.message);
 		req.flash('error', error.message);
+		res.status(500).json({message: error.message});
 	}
 	// res.redirect('/so/assign');
 }
@@ -68,13 +70,15 @@ const updateOfficer = async (req, res) => {
 	const dataToUpdate = req.body;
 
 	try {
-		const message = await officerService.updateOfficer(username, dataToUpdate);
+		const { message } = await officerService.updateOfficer(username, dataToUpdate);
 		console.log(message);
-		res.redirect('/so/assign');
+		// res.redirect('/so/assign');
+		res.status(200).json({message: message});
 	} catch (error) {
 		console.log(error.message);
 		req.flash('error', error.message);
-		res.redirect('/so/assign');
+		// res.redirect('/so/assign');
+		res.status(500).json({message: error.message});
 	}
 }
 

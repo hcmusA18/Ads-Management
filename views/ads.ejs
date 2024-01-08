@@ -160,6 +160,10 @@
         console.log(error);
         appendAlert(error.message, 'danger');
       };
+      // when alert is closed, reload page
+      $('.alert').on('closed.bs.alert', function() {
+        location.reload();
+      })
     }
 
     $("#table").on('click', '.remove-button', function(e) {
