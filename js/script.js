@@ -331,20 +331,21 @@ mapboxScript.onload = async function () {
 		}
 		marker.setLngLat(e.lngLat).addTo(map);
 
-		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}&language=vi`;
+    const reverseGeoCodingApiKey = 'thNYAinGleq7YRZp4ZsyB9CIzjEWloxCXSuUlRpRfD8';
 
-		fetch(api)
-		.then(res => res.json())
-		.then(res => {
-      const {text, address, coordinates} = formatMapFeature(res.features[0]);
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
 
-			const innerHtmlContent = `<h6 class="fw-bolder"><i class="fa-regular fa-map-marker-alt"></i> Thông tin địa điểm</h6>
-                                <p class="fw-bold">${text}</p>
-                                <p class="fw-light">${address}</p>`;
-			const divElement = document.createElement('div');
-
-      divElement.innerHTML = innerHtmlContent;
-      divElement.setAttribute('class', 'px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25');
+    fetch(api)
+      .then((res) => res.json())
+      .then((res) => {
+        let address = res.items[0].address.label;
+        address = address.replace(', Hồ Chí Minh, Việt Nam', '');
+        const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+                                  <p class="fw-light" style="font-size: 15px;">${address}</p>`;
+        const divElement = document.createElement('div');
+        
+        divElement.innerHTML = innerHtmlContent;
+        divElement.setAttribute('class', 'px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25');
 
       new mapboxgl.Popup({ offset: [0, -30] })
       .setLngLat({lng: e.lngLat.lng, lat: e.lngLat.lat})
