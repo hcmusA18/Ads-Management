@@ -147,7 +147,7 @@
     } else {
       hostName = 'https://ads-manager-1aai.onrender.com/'
     }
-    let detailSpot = await fetch(`${hostName}api/spots/${spotID}`, {
+    let detailSpot = await fetch(`${hostName}api/spots/${spotID}?role=officer`, {
       method: 'GET',
       mode: 'cors',
     }).then(res => res.json());
@@ -179,7 +179,8 @@
 
     // update ads tab pane
     const adsTabPane = offcanvas.querySelector('#ads-tab-pane');
-    const adsHTML = detailSpot.boards.map(ad => `<div class="list-group-item list-group-item-action">
+    const adsHTML = detailSpot.boards.map(ad => {
+      let res = `<div class="list-group-item list-group-item-action">
       <h5 class="mb-1 fw-semibold">${ad.boardType}</h5>
       <small>${detailSpot.address}</small>
       <p class="mb-1">Kích thước: <b>${ad.boardSize}m</b></p>
@@ -187,9 +188,19 @@
       <p class="mb-1">Hình thức: <b>${detailSpot.adsFormName}</b></p>
       <p class="mb-1">Loại hình: <b>${detailSpot.spotTypeName}</b></p>
       <div class="options">
-        <a href="so/ads/${ad.boardID}?category=board" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>
-      </div>
-      </div>`);
+        <a href="so/ads/${ad.boardID}?category=board" class="btn btn-icon" role="button"><i class="bi bi-info-circle"></i></a>`;
+      
+      const currentDate = new Date();
+      const endDate = new Date(ad.expiredDate);
+      if (currentDate > endDate) {
+        res += `<button class="btn btn-outline-danger" disabled >
+          <i class="bi bi-exclamation-triangle"></i>
+          Hợp đồng hết hạn
+        </button>`
+      }
+      res += `</div></div>`;
+      return res;
+    });
     // check if adsHTML is empty hide ads tab pane, also hide ads toggle
     if (adsHTML.length === 0) {
       console.log('empty')

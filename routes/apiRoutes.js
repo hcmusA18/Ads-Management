@@ -23,8 +23,12 @@ router.get('/spots/:spotID', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+  let getAll = true
+  if (req.query.role == 'citizen') {
+    getAll = false
+  }
   api
-    .getDetailSpot(req.params.spotID)
+    .getDetailSpot(req.params.spotID, getAll)
     .then((spot) => res.status(200).json(spot))
     .catch((err) => res.status(500).json({ message: err.message }))
 })

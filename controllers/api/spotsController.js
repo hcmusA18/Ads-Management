@@ -9,9 +9,9 @@ export const getAllSpots = async (districtID, wardID) => {
   }
 }
 
-export const getDetailSpot = async (spotID) => {
+export const getDetailSpot = async (spotID, getAll) => {
   try {
-    return await apiService.getDetailSpot(spotID);
+    return await apiService.getDetailSpot(spotID, getAll);
   } catch (error) {
     console.log(error)
     throw new Error(`Error getting detail spot: ${error.message}`)

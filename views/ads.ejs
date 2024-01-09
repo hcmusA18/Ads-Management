@@ -87,7 +87,7 @@
               <td>
                 <% const infoUrl = (tableRow.actions.info) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
                 <% const removeUrl = (tableRow.actions.remove) ? generateDetailLink({linkDetails: linkDetails, id: tableRow.id}) : null %>
-                <a role="button" class="text-decoration-none mx-3 remove-button" href="<%= removeUrl %>">
+                <a role="button" class="text-decoration-none mx-3 remove-button" href="<%= removeUrl %>" <% if (!url.includes('so')) { %> hidden <% } %>>
                   <img src="/images/remove.svg" alt="Edit" class="bg-transparent">
                 </a>
                 <% if (tableRow.actions.info) { %>

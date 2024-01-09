@@ -180,7 +180,11 @@ const getAllSpots = async (districtID, wardID) => {
   }
 }
 
-const getDetailSpot = async (spotID) => {
+const getDetailSpot = async (spotID, getAll) => {
+  let currentDate = new Date();
+  if (getAll == true) {
+    currentDate.setFullYear(currentDate.getFullYear() - 10);
+  }
   const options = [
     {
       $match: {
@@ -243,13 +247,33 @@ const getDetailSpot = async (spotID) => {
             }
           },
           {
+            $lookup: {
+              as: 'licensingrequest',
+              from: 'licensingrequests',
+              foreignField: 'requestID',
+              localField: 'licensingID'
+            }
+          },
+          {
+            $unwind: {
+              path: '$licensingrequest',
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
             $project: {
               _id: 0,
               boardID: 1,
               reports: 1,
               boardSize: { $concat: [{ $toString: '$width' }, 'x', { $toString: '$height' }] },
               quantity: 1,
-              boardType: '$boardtype.typeName'
+              boardType: '$boardtype.typeName',
+              expiredDate: '$licensingrequest.endDate'
+            }
+          },
+          {
+            $match: {
+              expiredDate: { $gt: currentDate }
             }
           }
         ]
