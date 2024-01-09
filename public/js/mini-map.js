@@ -78,17 +78,18 @@ mapboxScript.onload = function () {
 		}
 		marker.setLngLat(e.lngLat).addTo(map);
 
-		const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+		const reverseGeoCodingApiKey = 'thNYAinGleq7YRZp4ZsyB9CIzjEWloxCXSuUlRpRfD8';
+
+		const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
 
 		fetch(api)
 		.then(res => res.json())
 		.then(res => {
-			curPos = res.features[0];
-			const {text, address, coordinates} = formatMapFeature(res.features[0]);
-
+			curPos = res.items[0];
+			let address = res.items[0].address.label;
+			address = address.replace(', Hồ Chí Minh, Việt Nam', '');
 			const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
-									  <p class="fw-bold">${text}</p>
-									  <p class="fw-light">${address}</p>`;
+									  <p class="fw-light" style="font-size: 15px;">${address}</p>`;
 			const divElement = document.createElement('div');
 			
 			divElement.innerHTML = innerHtmlContent;
@@ -119,30 +120,16 @@ document.addEventListener('click', (event) => {
     if (event.target.id === 'select-btn') {
         const popup = document.querySelector('.mapboxgl-popup');
         popup.remove();
-		let {text, address, coordinates} = formatMapFeature(curPos);
-		address = address
-		.replace(/,\s*\d+,\s*Vietnam/, '')
-		.replace(/(Phường).*?,/, '')
-		.replace(/(Quận).*?,/, '')
-		.replace(/(Thành phố).*?,/, '')
-		.replace(/(P).*?,/, '')
-		.replace(/(Q).*?,/, '')
-		.replace(/(F).*?,/, '')
-		.replace('Ho Chi Minh City', '')
-		.replace(/,.*Dist/, '')
-		.replace(/,.*District/, '')
-		.replace(/,.*Hồ Chí Minh/, '')
-		.replace(/,.*ward/, '')
-		.replace(/,.*Ward/, '')
 
-		// remove all special characters at the end of the string
-		address = address.replace(/[\W_]+$/, '');
+		const address = curPos.address.label.split(',')[0] || ' ';
+
+
         const data = {
             number: address,
-            district: curPos.context[2].text || '',
-            ward: curPos.context[0].text || '',
-            long: coordinates[0] || '',
-            lat: coordinates[1] || '',
+            district: curPos.address.city.replace('Quận ', '').trim() || ' ',
+            ward: curPos.address.district.replace('Phường ', '').trim() || '',
+            long: curPos.position.lng || '',
+            lat: curPos.position.lat || '',
         }
         console.log('====================================');
         console.log(data);

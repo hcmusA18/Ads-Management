@@ -160,13 +160,17 @@
             return;
         }
 
-        console.log('Received coordinates:', event.data);
+        // console.log('Received coordinates:', event.data);
+        const receivedData = event.data;
+        const receivedDistrict = receivedData.district;
+        const receivedWard = receivedData.ward;
+        console.log(receivedWard);
         
-        long = parseFloat(event.data.long);
-        lat = parseFloat(event.data.lat);
-        document.getElementById('spotAddress').value = event.data.number;
-        document.getElementById('wardName').value = event.data.ward.replace('Phường ', '').length == 1 ? '0' + event.data.ward.replace('Phường ', '') : event.data.ward.replace('Phường ', '');
-        document.getElementById('districtName').value = event.data.district.replace('Quận ', '').length == 1 ? '0' + event.data.district.replace('Quận ', '') : event.data.district.replace('Quận ', '');
+        long = parseFloat(receivedData.long);
+        lat = parseFloat(receivedData.lat);
+        document.getElementById('spotAddress').value = receivedData.number;
+        document.getElementById('wardName').value = receivedWard.length == 1 ? '0' + receivedWard : receivedWard;
+        document.getElementById('districtName').value = receivedDistrict.length == 1 ? '0' + receivedDistrict : receivedDistrict;
         miniMapWindow.close();
       });
 

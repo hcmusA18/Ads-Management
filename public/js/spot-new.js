@@ -26,11 +26,10 @@ const addr = document.querySelector('#spotAddress')
 const dist = document.querySelector('#districtName')
 const ward = document.querySelector('#wardName')
 const queryParams = new URLSearchParams(window.location.search)
+const reverseGeoCodingApiKey = 'thNYAinGleq7YRZp4ZsyB9CIzjEWloxCXSuUlRpRfD8';
 
 if (queryParams.get('lng') !== undefined && queryParams.get('lat') !== undefined) {
-  const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${queryParams.get('lng')},${queryParams.get(
-    'lat'
-  )}.json?access_token=${MAPBOX_TOKEN}`
+  const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${queryParams.get('lat')},${queryParams.get('lng')}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
 
   const lng_field = document.querySelector('#longitude')
   const lat_field = document.querySelector('#latitude')
@@ -41,14 +40,15 @@ if (queryParams.get('lng') !== undefined && queryParams.get('lat') !== undefined
   fetch(api)
     .then((res) => res.json())
     .then((res) => {
-      const {text, address, coordinates} = formatMapFeature(res.features[0]);
+      // const {text, address, coordinates} = formatMapFeature(res.features[0]);
+      const address = res.items[0].address.label;
 
-      addr.value = address || ' '
-      dist.value = res.features[0].context[2].text.replace('Quận ', '').trim() || ' '
+      addr.value = address.split(',')[0] || ' '
+      dist.value = res.items[0].address.city.replace('Quận ', '').trim() || ' '
       if (dist.value.length === 1) {
         dist.value = '0' + dist.value
       }
-      ward.value = res.features[0].context[0].text.replace('Phường ', '').trim() || ' '
+      ward.value = res.items[0].address.district.replace('Phường ', '').trim() || ' '
       if (ward.value.length === 1) {
         ward.value = '0' + ward.value
       }

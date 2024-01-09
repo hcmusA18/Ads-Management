@@ -363,16 +363,17 @@ mapboxScript.onload = async function() {
     }
     marker.setLngLat(e.lngLat).addTo(map);
 
-    const api = `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${MAPBOX_TOKEN}&language=vi`;
+    const reverseGeoCodingApiKey = 'thNYAinGleq7YRZp4ZsyB9CIzjEWloxCXSuUlRpRfD8';
+
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
 
     fetch(api)
       .then((res) => res.json())
       .then((res) => {
-        const {text, address, coordinates} = formatMapFeature(res.features[0]);
-
+        let address = res.items[0].address.label;
+        address = address.replace(', Hồ Chí Minh, Việt Nam', '');
         const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
-                                  <p class="fw-bold">${text}</p>
-                                  <p class="fw-light">${address}</p>`;
+                                  <p class="fw-light" style="font-size: 15px;">${address}</p>`;
         const divElement = document.createElement('div');
         
         divElement.innerHTML = innerHtmlContent;
@@ -390,6 +391,7 @@ mapboxScript.onload = async function() {
         .setDOMContent(divElement)
         .addTo(map);
       });
+
   });
 
   // Change the cursor to grab when user drag the map
