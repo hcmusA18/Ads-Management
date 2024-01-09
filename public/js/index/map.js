@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg';
+const reverseGeoCodingApiKey = 'WLHjLJexBZyyYwUy1PpSIrR4BTmXb5Dd048PM9oa50I';
 
 const mapboxVersion = 'v2.9.1';
 const mapboxScript = document.createElement('script');
@@ -140,17 +141,17 @@ function createMap() {
   map.addControl(geolocation, 'bottom-right');
   map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
   map.addControl(new mapboxgl.FullscreenControl(), 'bottom-right');
-  map.addControl(
-    new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-      marker: false,
-      placeholder: 'Tìm kiếm địa điểm',
-      language: 'vi-VN',
-      countries: 'vn'
-    }),
-    'top-left'
-  );
+  // map.addControl(
+  //   new MapboxGeocoder({
+  //     accessToken: mapboxgl.accessToken,
+  //     mapboxgl: mapboxgl,
+  //     marker: false,
+  //     placeholder: 'Tìm kiếm địa điểm',
+  //     language: 'vi-VN',
+  //     countries: 'vn'
+  //   }),
+  //   'top-left'
+  // );
 
   return map;
 }
@@ -284,6 +285,50 @@ async function addSpotLayer(map, spotsGeojson) {
   });
 }
 
+const closeBtn = document.getElementById('close-search-btn');
+const searchInput = document.getElementById('search-input');
+const resultBox = document.querySelector('.result-box');
+let lastSearch = '';
+searchInput.addEventListener('keyup', (e) => {
+  let searchValue = searchInput.value;
+  searchValue = searchValue.trim();
+  if (searchValue === '' || searchValue === lastSearch) {
+    return;
+  }
+  const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${searchValue}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=5`;
+
+  lastSearch = searchValue;
+
+    fetch(api)
+        .then((res) => res.json())
+        .then((res) => {
+            if (res && res.items && res.items.length > 0) {
+            const result = res.items.map((item) => {
+                return {
+                title: item.address.label,
+                lat: item.position.lat,
+                lng: item.position.lng,
+                };
+            });
+            displaySearchResult(result);
+            }
+        });
+});
+
+const displaySearchResult = (result) => {
+  const content = result.map((item) => {
+    return `
+    <a  href='#'
+        class='list-group-item list-group-item-action border-0 rounded-0 list-search-item'
+        data-bs-lat='${item.lat}' 
+        data-bs-lng='${item.lng}'
+        data-bs-title='${item.title}'
+        style='cursor: pointer; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 23.5rem; font-size:0.875rem; line-height: 1.25rem'>${item.title}    
+    </a>`;
+  });
+  resultBox.innerHTML = `<div class='list-group'>${content.join('')}</div>`;
+};
+
 mapboxScript.onload = async function() {
   const map = createMap();
   const spotsGeojson = await getSpotsData();
@@ -363,8 +408,6 @@ mapboxScript.onload = async function() {
     }
     marker.setLngLat(e.lngLat).addTo(map);
 
-    const reverseGeoCodingApiKey = 'thNYAinGleq7YRZp4ZsyB9CIzjEWloxCXSuUlRpRfD8';
-
     const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
 
     fetch(api)
@@ -401,4 +444,22 @@ mapboxScript.onload = async function() {
   map.on('dragend', () => {
     map.getCanvas().style.cursor = '';
   });
+
+  resultBox.addEventListener('click', (e) => {
+    const listSearchItem = e.target.closest('.list-search-item');
+    if (!listSearchItem) return;
+    const lat = listSearchItem.dataset.bsLat;
+    const lng = listSearchItem.dataset.bsLng;
+    map.flyTo({
+      center: [lng, lat],
+      essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+      zoom: 16,
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    resultBox.innerHTML = '';
+  });
+
 };
