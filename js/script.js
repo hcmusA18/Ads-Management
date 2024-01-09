@@ -235,7 +235,7 @@ async function addSpotLayer(map, spotsGeojson) {
     map.getCanvas().style.cursor = "";
   });
 }
-const searchBtn = document.getElementById("search-btn");
+const closeBtn = document.getElementById("close-search-btn");
 const searchInput = document.getElementById("search-input");
 const resultBox = document.querySelector(".result-box");
 let lastSearch = "";
@@ -399,5 +399,10 @@ mapboxScript.onload = async function () {
       essential: true, // this animation is considered essential with respect to prefers-reduced-motion
       zoom: 16,
     });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    resultBox.innerHTML = '';
   });
 };
