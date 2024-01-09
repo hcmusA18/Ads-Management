@@ -24,7 +24,7 @@ const verifyCaptcha = async (captcha) => {
 
 export const createReport = async (data) => {
   try {
-    const secretKey = '6LeREjYpAAAAANtf2r4cBpqHqn9TuTe5yJ4JORtO';
+    const secretKey = '6Lc5xkopAAAAANvP7EU3HG0qxPcOnBGH8B0xjT6D';
     if (!data.captcha) throw new Error('No captcha');
     const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${data.captcha}`;
     const response = await fetch(verifyUrl);
