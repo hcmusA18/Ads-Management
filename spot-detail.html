@@ -40,18 +40,22 @@
   <link rel="stylesheet" href="css/all.css" />
   <!-- Fetch Event -->
   <script src="js/fetchEvent.js"></script>
+
+  <!-- Splide -->
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
 </head>
 
 <body>
   <!-- Loader -->
   <div class="spinner-wrapper" id="loaderContainer" style="display: none;">
     <div class="spinner">
-        <div class="sk-folding-cube">
-            <div class="sk-cube1 sk-cube"></div>
-            <div class="sk-cube2 sk-cube"></div>
-            <div class="sk-cube4 sk-cube"></div>
-            <div class="sk-cube3 sk-cube"></div>
-        </div>
+      <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+      </div>
     </div>
   </div>
   <main class="container-fluid d-flex bg-light" style="min-height: 100vh">
@@ -98,8 +102,23 @@
         <!-- Content -->
         <div class="container-fluid details px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
           <!-- Carousel -->
-          <div class="container-fluid px-0" id="carousel">
+          <!-- <div class="container-fluid px-0" id="carousel">
+          </div> -->
+
+          <div id="main-carousel" class="splide row position-relative container-fluid">
+            <div class="splide__track">
+              <ul class="splide__list">
+              </ul>
+            </div>
+            <div id="thumbnail-carousel" class="splide mt-2" aria-label="The carousel with thumbnails. Selecting a thumbnail will change the Beautiful Gallery carousel.">
+              <div class="splide__track">
+                <ul class="splide__list">
+                </ul>
+              </div>
+            </div>
           </div>
+          
+
           <div class="container-fluid px-0 details">
             <div class="container d-flex justify-content-between">
               <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết điểm đặt</h4>
@@ -159,7 +178,7 @@
 
 
   <script type="module" src="js/spotDetail.js"></script>
-  <script defer src="js/carousel.js"></script>
+  <!-- <script defer src="js/carousel.js"></script> -->
 </body>
 
 </html>

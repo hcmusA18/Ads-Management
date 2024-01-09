@@ -1,7 +1,7 @@
 import { getDetailSpot } from "/js/request.js";
 
 const urlParams = new URLSearchParams(window.location.search);
-const spotID = urlParams.get('id');
+const spotID = urlParams.get("id");
 $("#report-btn").click(() => {
   // change to report page
   window.location.href = `./report-create.html?id=${spotID}`;
@@ -9,46 +9,48 @@ $("#report-btn").click(() => {
 
 let spotDetail = await getDetailSpot(spotID);
 spotDetail = spotDetail[0];
-const attachCarousels = async () => {
 
-  console.log(spotDetail);
-  const carousel = $("#carousel");
-  carousel.empty();
-  carousel.innerHTML = "";
-  let innerCarousel = $(`
-  <div class="row position-relative" id="mainImgContainer">
-    <img id="mainImg" src="${spotDetail.spotImage[0]}" class="img-fluid" alt="Current image">
+const thumbnailsCarousel = spotDetail.spotImage
+  .map((img) =>`<li class="splide__slide"><img src="${img}" alt="thumbnail"></li>`)
+  .join("");
+document
+  .getElementById("thumbnail-carousel")
+  .querySelector("ul.splide__list").innerHTML = thumbnailsCarousel;
+document.getElementById("main-carousel").querySelector("ul.splide__list").innerHTML = thumbnailsCarousel;
 
-  <!--Thumbnails button-->
-    <div class="col-12 position-absolute my-auto d-flex justify-content-between h-100">
-      <button type="button" class="btn border-0" onclick="moveSlides('left')">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-      <button type="button" class="btn border-0" onclick="moveSlides('right')">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
+console.log(spotDetail.spotImage[0]);
 
-  </div>`);
+const thumbnail = new Splide("#thumbnail-carousel", {
+  fixedHeight: "5rem",
+  perPage: Math.min(3, spotDetail.spotImage.length),
+  type: "loop",
+  gap: 10,
+  rewind: true,
+  pagination: false,
+  focus: "center",
+  isNavigation: true,
+  arrows: false,
+  breakpoints: {
+    600: {
+      fixedWidth: 66,
+      fixedHeight: 40,
+    },
+  },
+});
 
-  carousel.append(innerCarousel);
+const main = new Splide("#main-carousel", {
+  type: "fade",
+  rewind: true,
+  pagination: false,
+  arrows: true,
+  fixedHeight: "28rem",
+  fixedWidth: "100%",
+  type:"loop",
+});
 
-  for (let i = 0; i < spotDetail.spotImage.length; i++) {
-    let imgHTML = $(`<div class="row thumbnails-item d-none mt-2"></div>`);
-    // let childImgHTML = $(`<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;"></div>`);
-    for (let j = i; j < i + 3; j++) {
-      imgHTML.append(`<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
-      <img src="${spotDetail.spotImage[j % spotDetail.spotImage.length]}" class="img-fluid" alt="Thumbnail ${j}" style="object-fit: cover; height: 10rem; width: 100%">
-      </div>`);
-    }
-    carousel.append(imgHTML);
-  }
-
-  $(".thumbnails-item:first").removeClass("d-none");
-  $(".thumbnails-item:not(.d-none) img:first").addClass("border border-primary");
-}
-
-attachCarousels();
+main.sync(thumbnail);
+main.mount();
+thumbnail.mount();
 
 $("#spot-name").text(spotDetail.spotName);
 $("#spot-id").val(spotDetail.spotID);
@@ -76,6 +78,6 @@ const boardData = spotDetail.boards.map((board) => ({
         <img src="./assets/info.svg" alt="edit-icon" style="background-color: transparent"/>
       </a>
     </div>
-		`
+		`,
 }));
 table.bootstrapTable("load", boardData);
