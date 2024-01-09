@@ -20,6 +20,18 @@ reportTypes.forEach((type) => {
   reportTypeSelect.appendChild(option);
 })
 
+const alertPlaceholder = document.getElementById('alertConfirm')
+const appendAlert = (message, type) => {
+  const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+      `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+      `   <div>${message}</div>`,
+      '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+      '</div>'
+    ].join('')
+  alertPlaceholder.append(wrapper)
+}
+
 const submitHandler = async (e) => {
   e.preventDefault();
   grecaptcha.execute('6Lc5xkopAAAAAPztUHiaPVzuMeDwtw2OVXZ2ov2e', { action: 'submit' }).then(async (token) => {
@@ -56,7 +68,7 @@ const submitHandler = async (e) => {
       reporterEmail: document.getElementById('email').value,
       reportInfo: tinymce.activeEditor.getContent(),
     }
-    console.log('Will send data', data);
+    // console.log('Will send data', data);
 
     let reportID = null;
     try {
@@ -69,9 +81,11 @@ const submitHandler = async (e) => {
         localStorage.setItem('reportIDs', `${reportID}`);
       }
       console.log(reportID);
+      appendAlert('Báo cáo thành công', 'success');
     } catch (err) {
       console.log(err);
-      alert('Báo cáo thất bại');
+      // alert('Báo cáo thất bại');
+      appendAlert('Báo cáo thất bại', 'danger');
     }
   });
 
