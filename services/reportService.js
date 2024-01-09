@@ -145,7 +145,7 @@ export const getReportByID = async (reportID) => {
     const options = [
       {
         $lookup: {
-          from: 'reportTypes',
+          from: 'reporttypes',
           localField: 'reportType',
           foreignField: 'typeID',
           as: 'reportType'

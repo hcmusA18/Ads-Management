@@ -19,9 +19,19 @@
         <%- include("./partials/profile_card.ejs"); %>
 
         <!-- Title -->
-        <div class="d-block mb-3">
-          <h2 class="fw-bolder text-uppercase"><%= title%></h2>
-        </div>
+        <% if (url.includes('board') && !url.includes('so')) { %>
+          <div class="d-flex pt-2 mb-3 justify-content-between align-items-center">
+            <h2 class="fw-bolder text-uppercase">
+              <%= title %>
+            </h2>
+            <a href="<%= `/${url.split('/')[1]}/license/create` %>" class="btn btn-primary" tabindex="-1" role="button"
+              aria-disabled="true" style="height: fit-content;">Tạo cấp phép quảng cáo</a>
+          </div>
+        <% } else { %>
+          <div class="d-block mb-3">
+            <h2 class="fw-bolder text-uppercase"><%= title%></h2>
+          </div>
+        <% } %>
         <!-- Check box -->
         <% if (url.includes('so') || url.includes('quan')) { %>
         <div class="container-fluid checkbox-container">
