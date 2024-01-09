@@ -135,5 +135,5 @@ export default {
   uploadReport,
   getReport,
   getReportTypes,
-  getReportList,
+  getReportList, 
 }

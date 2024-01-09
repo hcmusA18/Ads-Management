@@ -7,13 +7,17 @@ const initImgView = imgView.innerHTML;
 
 const uploadImage = () => {
   const files = inputImage.files
+  if (files.length > 2) {
+    alert('Chỉ được chọn tối đa 2 ảnh')
+    return
+  }
   let imgLinks = []
   // loop through files
   for (let i = 0; i < files.length; i++) {
     // create object URL to use as src for img element
     imgLinks.push(URL.createObjectURL(files[i]))
   }
-  console.log(`url(${imgLinks[0]})`)
+  // console.log(`url(${imgLinks[0]})`)
 
   badgeText.textContent = files.length.toString()
   // remove hidden attribute from badgeText's parent element when files.length > 0

@@ -43,9 +43,24 @@
 
   <!-- Mapbox -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
+
+  <!-- Fetch Event -->
+  <script src="js/fetchEvent.js"></script>
 </head>
 
 <body>
+  <!-- Loader -->
+  <div class="spinner-wrapper" id="loaderContainer" style="display: none;">
+    <div class="spinner">
+        <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+        </div>
+    </div>
+  </div>
+
   <!--- Load the mapbox geocoder plugin -->
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css" />

@@ -249,20 +249,25 @@ searchInput.addEventListener("keyup", (e) => {
 
   lastSearch = searchValue;
 
-    fetch(api)
+  // fetch after 500ms
+  setTimeout(() => {
+    if (searchValue === lastSearch) {
+      fetch(api)
         .then((res) => res.json())
         .then((res) => {
-            if (res && res.items && res.items.length > 0) {
+          if (res && res.items && res.items.length > 0) {
             const result = res.items.map((item) => {
-                return {
+              return {
                 title: item.address.label,
                 lat: item.position.lat,
                 lng: item.position.lng,
-                };
+              };
             });
             displaySearchResult(result);
-            }
+          }
         });
+    }
+  }, 500);
 });
 const displaySearchResult = (result) => {
   const content = result.map((item) => {

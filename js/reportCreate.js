@@ -4,11 +4,11 @@ import {
 
 const urlParams = new URLSearchParams(window.location.search);
 const objectID = urlParams.get('id');
-console.log(objectID)
+// console.log(objectID)
 $('#object-id').val(objectID);
 
 const reportTypes = await getReportTypes();
-console.log(reportTypes);
+// console.log(reportTypes);
 const reportTypeSelect = document.getElementById('report-type');
 // remove all options
 reportTypeSelect.innerHTML = '';
@@ -27,27 +27,21 @@ const submitHandler = async (e) => {
       alert('Bạn phải nhập đầy đủ thông tin người báo cáo');
       return;
     }
-
     if (!reportTypeSelect.value) {
       alert('Bạn phải chọn loại hình báo cáo');
       return;
     }
-
     const inputImage = document.getElementById('input-image');
     const files = inputImage.files;
     if (files.length > 2){
       alert('Chỉ được chọn tối đa 2 ảnh');
       return;
     }
-
     if (files.length > 0 && !tinymce.activeEditor.getContent()) {
       alert('Bạn phải nhập thông tin báo cáo');
       return;
     }
-
-
     let imgUrls = [];
-    console.log(files);
     if (files.length > 0) {
       imgUrls = await upload2Imgur(files);
       console.log(imgUrls);
@@ -77,18 +71,8 @@ const submitHandler = async (e) => {
       console.log(reportID);
     } catch (err) {
       console.log(err);
-      alert('Báo cáo thất bại' + err);
+      alert('Báo cáo thất bại');
     }
-
-
-
-
-    // if (reportID) {
-    //   alert('Báo cáo thành công');
-    //   window.location.href = '/index.html';
-    // } else {
-    //   alert('Báo cáo thất bại');
-    // }
   });
 
 }
