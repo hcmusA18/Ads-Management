@@ -27,7 +27,7 @@ export const getAllSpots = async () => {
 }
 
 export const getDetailSpot = async (spotID) => {
-  const res = await fetch(`${requestHostname}api/spots/${spotID}`, {
+  const res = await fetch(`${requestHostname}api/spots/${spotID}?role=citizen`, {
     method: 'GET',
     mode: 'cors',
   });
