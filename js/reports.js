@@ -3,7 +3,7 @@ import { getReportList } from "./request.js";
 let reportIDs = localStorage.getItem('reportIDs');
 reportIDs = reportIDs ? reportIDs.split(',') : [];
 
-console.log(reportIDs);
+// console.log(reportIDs);
 
 const reportData = await getReportList(reportIDs);
 console.log(reportData);

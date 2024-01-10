@@ -17,6 +17,7 @@ const COLORS = {
   yellow: "#C7BA30",
   red: "#FF3C3C",
   blue: "#3C77FF",
+  orange: "#FFA03C",
 };
 
 function generateSpotHTML(spot) {
@@ -31,10 +32,12 @@ function generateSpotHTML(spot) {
             </div>
           </div>`;
 }
-
+let reportIDs = localStorage.getItem('reportIDs');
+reportIDs = reportIDs ? reportIDs.split(',') : [];
 async function getSpotsData() {
   try {
     const spots = await request.getAllSpots();
+    console.log(spots);
     const spotsGeojson = {
       type: "FeatureCollection",
       features: [],
@@ -49,11 +52,16 @@ async function getSpotsData() {
         },
         properties: {
           ...spot,
+          userReport: reportIDs.some(reportIDs => {
+            const flattenReportIDs = spot.reportIDs.flat(Infinity);
+            return flattenReportIDs.includes(reportIDs);
+          }),
           description: generateSpotHTML(spot),
         },
       });
     });
 
+    console.log(spotsGeojson);
     return spotsGeojson;
   } catch (error) {
     console.log(error);
@@ -108,6 +116,7 @@ async function addSpotLayer(map, spotsGeojson) {
     clusterProperties: {
       hasReport: ["any", ["get", "hasReport"]],
       planned: ["any", ["==", ["get", "planned"], "Đã quy hoạch"]],
+      userReport: ["any", ["get", "userReport"]],
     },
   });
 
@@ -119,6 +128,8 @@ async function addSpotLayer(map, spotsGeojson) {
     paint: {
       "circle-color": [
         "case",
+        ["==", ["get", "userReport"], true],
+        COLORS.orange,
         ["==", ["get", "hasReport"], true],
         COLORS.red,
         ["==", ["get", "planned"], false],
@@ -149,6 +160,8 @@ async function addSpotLayer(map, spotsGeojson) {
     paint: {
       "circle-color": [
         "case",
+        ["==", ["get", "userReport"], true],
+        COLORS.orange,
         ["==", ["get", "hasReport"], true],
         COLORS.red,
         ["==", ["get", "hasAds"], true],
@@ -406,8 +419,8 @@ mapboxScript.onload = async function () {
     });
   });
 
-  closeBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    resultBox.innerHTML = '';
+  closeBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    resultBox.innerHTML = "";
   });
 };
