@@ -122,7 +122,7 @@ mapboxScript.onload = function () {
 		}
 		marker.setLngLat(e.lngLat).addTo(map);
 
-		const reverseGeoCodingApiKey = 'thNYAinGleq7YRZp4ZsyB9CIzjEWloxCXSuUlRpRfD8';
+		const reverseGeoCodingApiKey = 'WLHjLJexBZyyYwUy1PpSIrR4BTmXb5Dd048PM9oa50I';
 
 		const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
 

@@ -5,6 +5,7 @@ import { getRoleByUsername } from '../../services/officerService.js';
 import { getAllBoardTypes, getBoardTypeByID } from '../../services/boardTypeService.js';
 import { getWardsOfDistrict } from '../../services/wardService.js';
 import { getDistrictByID } from '../../services/districtService.js';
+import { getBoardByID } from '../../services/boardService.js';
 import * as IDGenerator from '../../services/IDGenerator.js';
 
 const convertDate = (date) => {
@@ -15,6 +16,13 @@ const convertDate = (date) => {
 	const year = dateObject.getFullYear();
 
 	return `${day}/${month}/${year}`;
+}
+
+const isOutDated = (date) => {
+	const curDate = new Date();
+	const inDate = new Date(date);
+
+	return inDate < curDate;
 }
 
 const show = async (req, res) => {
@@ -49,7 +57,7 @@ const show = async (req, res) => {
 					spotID: item.spotID,
 					companyName: item.companyName,
 					expired: `${convertDate(item.startDate)} - ${convertDate(item.endDate)}`,
-					state: item.status === 0 ? "Chờ xử lý" : item.status === 1 ? "Đã chấp thuận" : "Đã từ chối",
+					state: (isOutDated(item.endDate)) ? "Đã hết hạn" : ((item.status === 0) ? "Chờ xử lý" : ((item.status === 1) ? "Đã chấp thuận" : "Đã từ chối")),
 					actions: {
 						edit: false,
 						remove: false,
@@ -68,7 +76,7 @@ const show = async (req, res) => {
 					spotID: item.spotID,
 					companyName: item.companyName,
 					expired: `${convertDate(item.startDate)} - ${convertDate(item.endDate)}`,
-					state: item.status === 0 ? "Chờ xử lý" : item.status === 1 ? "Đã chấp thuận" : "Đã từ chối",
+					state: (isOutDated(item.endDate)) ? "Đã hết hạn" : ((item.status === 0) ? "Chờ xử lý" : ((item.status === 1) ? "Đã chấp thuận" : "Đã từ chối")),
 					actions: {
 						edit: false,
 						remove: false,
@@ -116,7 +124,7 @@ const showDetail = async (req, res) => {
 		height: data.height,
 		width: data.width,
 		quantity: data.quantity,
-		state: data.status,
+		state: (isOutDated(data.endDate)) ? -2 : data.status,
 		imgUrls: data.adsImages,
 	}
 	// console.log(data);
@@ -167,6 +175,42 @@ const showCreate = async (req, res) => {
 	res.render('license-create', {url: req.originalUrl, role, title, boardtypes, spots, toolbars: createToolbar(role), curSpot});
 }
 
+const showExtend = async (req, res) => {
+	const role = String(req.originalUrl.split('/')[1]);
+	let title = 'Yêu cầu Gia hạn quảng cáo';
+
+	const boardDetail = await getBoardByID(req.params.id);
+
+	const commonData = {
+		url: req.originalUrl,
+		title,
+		toolbars: createToolbar(role),
+	};
+
+	const data = {
+		id: boardDetail.boardID,
+		spotID: boardDetail.spotID,
+		spotName: boardDetail.spotName,
+		spotAddress: boardDetail.spotAddress,
+		authCompany: boardDetail.authCompany,
+		authCompanyAddress: boardDetail.authCompanyAddress,
+		authCompanyPhone: boardDetail.authCompanyPhone,
+		authCompanyEmail: boardDetail.authCompanyEmail,
+		startDate: boardDetail.startDate.toLocaleDateString('vi-VN'),
+		endDate: boardDetail.endDate.toLocaleDateString('vi-VN'),
+		boardTypeName: boardDetail.boardTypeName,
+		boardType: boardDetail.boardType,
+		quantity: boardDetail.quantity,
+		height: boardDetail.height,
+		width: boardDetail.width,
+		imgUrls: boardDetail.image,
+		content: boardDetail.content,
+	};
+
+	res.render('board-extend', { ...commonData, ...data });
+
+}
+
 const add = async (req, res) => {
 	try {
 		const data = req.body;
@@ -198,5 +242,6 @@ export default {
 	show,
 	showDetail,
 	showCreate,
-	deleteRequest
+	deleteRequest,
+	showExtend
 };

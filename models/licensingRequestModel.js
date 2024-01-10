@@ -63,6 +63,9 @@ const LicensingRequestSchema = new mongoose.Schema({
     content: {
         type: String,
     },
+    extendForBoard: {
+        type: String,
+    }
 });
 
 const LicensingRequest = mongoose.model('licensingRequests', LicensingRequestSchema);

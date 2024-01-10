@@ -21,10 +21,15 @@
             <!-- Back button -->
             <%- include("../partials/back_button.ejs"); %>
             <!-- Title -->
-            <div class="d-flex flex-row align-items-center" style="gap: 10px">
-                <h1 class="fw-bolder m-0 text-uppercase"><%- title %></h1>
-            </div>
-
+            <% if(extendForBoard == '') { %>
+                <div class="d-flex flex-row align-items-center" style="gap: 10px">
+                    <h1 class="fw-bolder m-0 text-uppercase"><%- title %></h1>
+                </div>
+            <% } else { %>
+                <div class="d-flex flex-row align-items-center" style="gap: 10px">
+                    <h1 class="fw-bolder m-0 text-uppercase"><%- title %> (Gia hạn Quảng cáo)</h1>
+                </div>
+            <% } %>
             <!-- Content -->
             <div class="container-fluid nd-chi-tiet px-0">
                 <!-- Row 1: 3 columns -->
@@ -206,15 +211,24 @@
 
       if (isConfirmed) {
         const requestID = JSON.parse('<%- JSON.stringify(requestID) %>');
-        const data = {
-          spotID: document.getElementById("spotID").value,
-          boardType: JSON.parse('<%- JSON.stringify(boardTypeID) %>'),
-          height: document.getElementById("height").value,
-          width: document.getElementById("width").value,
-          quantity: document.getElementById("quantity").value,
-          licensingID: document.getElementById("requestID").value,
-          image: JSON.parse('<%- JSON.stringify(imgUrls) %>')
-        };
+        const extendForBoard = JSON.parse('<%- JSON.stringify(extendForBoard) %>');
+        let data = {};
+        if(extendForBoard == ''){
+            data = {
+                spotID: document.getElementById("spotID").value,
+                boardType: JSON.parse('<%- JSON.stringify(boardTypeID) %>'),
+                height: document.getElementById("height").value,
+                width: document.getElementById("width").value,
+                quantity: document.getElementById("quantity").value,
+                licensingID: document.getElementById("requestID").value,
+                image: JSON.parse('<%- JSON.stringify(imgUrls) %>')
+            };
+        } else {
+            data = {
+                boardID: extendForBoard,
+                licensingID: document.getElementById("requestID").value,
+            }
+        }
         // console.log(data);
         try {
           const response = await fetch(`/so/acceptlicense`, {
