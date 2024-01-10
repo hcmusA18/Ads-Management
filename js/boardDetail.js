@@ -3,7 +3,7 @@ import { getDetailBoard } from "./request.js";
 const urlParams = new URLSearchParams(window.location.search);
 const boardID = urlParams.get('id');
 let boardDetail = await getDetailBoard(boardID);
-console.log(boardDetail);
+// console.log(boardDetail);
 
 const thumbnailsCarousel = boardDetail.image
   .map((img) =>`<li class="splide__slide"><img src="${img}" alt="thumbnail"></li>`)

@@ -36,7 +36,23 @@ let reportIDs = localStorage.getItem("reportIDs");
 reportIDs = reportIDs ? reportIDs.split(",") : [];
 async function getSpotsData() {
   try {
-    const spots = await request.getAllSpots();
+    // const spots = await request.getAllSpots();
+    // let reports = await request.getReportList(reportIDs);
+
+    let [spots, reports] = await Promise.all([
+      request.getAllSpots(),
+      request.getReportList(reportIDs),
+    ]);
+    console.log(reports);
+    reports = reports.filter((report) => report.objectID.startsWith("AD"));
+    reports = reports.map((report) => {
+      const [lng, lat] = report.objectID.substring(2).split(":");
+      return {
+        ...report,
+        lng: parseFloat(lng),
+        lat: parseFloat(lat),
+      };
+    });
     const spotsGeojson = {
       type: "FeatureCollection",
       features: [],
@@ -59,9 +75,26 @@ async function getSpotsData() {
         },
       });
     });
+
+    reports.forEach((report) => {
+      spotsGeojson.features.push({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [report.lng, report.lat],
+        },
+        properties: {
+          ...report,
+          userReport: true,
+        },
+      });
+    });
+
+    console.log(spotsGeojson);
+
     return spotsGeojson;
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     throw new Error("Failed to get spots data");
   }
 }
@@ -103,7 +136,41 @@ function createMap() {
   return map;
 }
 
-async function addSpotLayer(map, spotsGeojson) {
+const getFreeSpot = async (map, lat, lng, marker = null) => {
+  const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=5`;
+
+  fetch(api)
+    .then((res) => res.json())
+    .then((res) => {
+      const place = res.items.find((item) => item.resultType == "place");
+      // console.log(place);
+      let address = place.address.label.split(", ").splice(1).join(", ");
+      address = address.replace(", Hồ Chí Minh, Việt Nam", "");
+      const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+                                <p class="fw-bold" style="font-size: 1.125rem;">${place.title}</p>
+                                <p class="fw-light" style="font-size: 15px;">${address}</p>
+                                <a href="report-create.html?id=AD${place.position.lng}:${place.position.lat}" class="btn btn-outline-danger align-self-end">
+                                <i class="bi bi-exclamation-octagon"></i>
+                                Báo cáo vi phạm
+                                </a>`;
+      const divElement = document.createElement("div");
+
+      divElement.innerHTML = innerHtmlContent;
+      divElement.setAttribute(
+        "class",
+        "px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25 d-flex flex-column"
+      );
+
+      new mapboxgl.Popup({ offset: [0, -30] })
+        .setLngLat({ lng: place.position.lng, lat: place.position.lat })
+        .setDOMContent(divElement)
+        .addTo(map);
+
+      if (marker) marker.setLngLat(place.position).addTo(map);
+    });
+}
+
+async function addSpotLayer(map, marker, spotsGeojson) {
   map.addSource("spots", {
     type: "geojson",
     data: spotsGeojson,
@@ -212,11 +279,16 @@ async function addSpotLayer(map, spotsGeojson) {
   map.on("click", "unclustered-point-spots", function (e) {
     const coordinates = e.features[0].geometry.coordinates.slice();
     const description = e.features[0].properties.description;
+    const objectID = e.features[0].properties.objectID || null;
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
     // over the copy being pointed to.
-    new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
+    if (objectID) {
+      getFreeSpot(map, coordinates[1], coordinates[0], marker);
+    } else {
+      new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
+    }
 
     map.flyTo({
       center: e.features[0].geometry.coordinates,
@@ -299,7 +371,7 @@ mapboxScript.onload = async function () {
   });
   let filteredSpotsGeojson = spotsGeojson;
   map.on("load", async () => {
-    await addSpotLayer(map, filteredSpotsGeojson);
+    await addSpotLayer(map, marker, filteredSpotsGeojson);
     applyFilter();
   });
 
@@ -371,42 +443,16 @@ mapboxScript.onload = async function () {
     });
   });
 
+  
+
+
   // Hien thong tin diem bat ki
   map.on("click", (e) => {
     if (map.getCanvas().style.cursor === "pointer") {
       return;
     }
-
-    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=5`;
-
-    fetch(api)
-      .then((res) => res.json())
-      .then((res) => {
-        const place = res.items.find((item) => item.resultType == "place");
-        console.log(place);
-        let address = place.address.label.split(", ").splice(1).join(", ");
-        address = address.replace(", Hồ Chí Minh, Việt Nam", "");
-        const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
-                                  <p class="fw-bold" style="font-size: 1.125rem;">${place.title}</p>
-                                  <p class="fw-light" style="font-size: 15px;">${address}</p>
-                                  <a href="report-create.html?id=AD${place.position.lng}:${place.position.lat}" class="btn btn-outline-danger align-self-end">
-                                  <i class="bi bi-exclamation-octagon"></i>
-                                  Báo cáo vi phạm
-                                  </a>`;
-        const divElement = document.createElement("div");
-
-        divElement.innerHTML = innerHtmlContent;
-        divElement.setAttribute(
-          "class",
-          "px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25 d-flex flex-column"
-        );
-
-        new mapboxgl.Popup({ offset: [0, -30] })
-          .setLngLat({ lng: place.position.lng, lat: place.position.lat })
-          .setDOMContent(divElement)
-          .addTo(map);
-        marker.setLngLat(place.position).addTo(map);
-      });
+    
+    getFreeSpot(map, e.lngLat.lat, e.lngLat.lng, marker);
   });
 
   resultBox.addEventListener("click", (e) => {
