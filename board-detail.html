@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chi tiết điểm đặt</title>
+  <title>Chi tiết bảng quảng cáo</title>
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -40,6 +40,9 @@
   <!-- Fontawesome icon -->
   <link rel="stylesheet" href="css/all.css" />
   <script src="js/fetchEvent.js"></script>
+  <!-- Splide -->
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -98,8 +101,20 @@
         <!-- Content -->
         <div class="container-fluid details px-0 d-flex flex-row justify-content-between mt-4" style="gap: 1rem;">
           <!-- Carousel -->
-          <div class="container-fluid px-0" id="carousel">
+
+          <div id="main-carousel" class="splide row position-relative container-fluid">
+            <div class="splide__track">
+              <ul class="splide__list">
+              </ul>
+            </div>
+            <div id="thumbnail-carousel" class="splide mt-2" aria-label="The carousel with thumbnails. Selecting a thumbnail will change the Beautiful Gallery carousel.">
+              <div class="splide__track">
+                <ul class="splide__list">
+                </ul>
+              </div>
+            </div>
           </div>
+
           <div class="container-fluid px-0 details d-flex flex-wrap">
             <div class="container d-flex justify-content-between">
               <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết bảng quảng cáo</h4>
@@ -195,7 +210,7 @@
   </main>
 
   <script type="module" src="js/boardDetail.js"></script>
-  <script defer src="js/carousel.js"></script>
+  <!-- <script defer src="js/carousel.js"></script> -->
 
 </body>
 

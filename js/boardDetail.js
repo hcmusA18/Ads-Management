@@ -5,44 +5,45 @@ const boardID = urlParams.get('id');
 let boardDetail = await getDetailBoard(boardID);
 console.log(boardDetail);
 
-const attachCarousels = async () => {
-  const carousel = $("#carousel");
-  carousel.empty();
-  carousel.innerHTML = "";
-  let innerCarousel = $(`
-  <div class="row position-relative" id="mainImgContainer">
-    <img id="mainImg" src="${boardDetail.image[0]}" class="img-fluid" alt="Current image">
+const thumbnailsCarousel = boardDetail.image
+  .map((img) =>`<li class="splide__slide"><img src="${img}" alt="thumbnail"></li>`)
+  .join("");
+document
+  .getElementById("thumbnail-carousel")
+  .querySelector("ul.splide__list").innerHTML = thumbnailsCarousel;
+document.getElementById("main-carousel").querySelector("ul.splide__list").innerHTML = thumbnailsCarousel;
 
-  <!--Thumbnails button-->
-    <div class="col-12 position-absolute my-auto d-flex justify-content-between h-100">
-      <button type="button" class="btn border-0" onclick="moveSlides('left')">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-      <button type="button" class="btn border-0" onclick="moveSlides('right')">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
+const thumbnail = new Splide("#thumbnail-carousel", {
+  fixedHeight: "5rem",
+  perPage: Math.min(3, boardDetail.image.length),
+  type: "loop",
+  gap: 10,
+  rewind: true,
+  pagination: false,
+  focus: "center",
+  isNavigation: true,
+  arrows: false,
+  breakpoints: {
+    600: {
+      fixedWidth: 66,
+      fixedHeight: 40,
+    },
+  },
+});
 
-  </div>`);
+const main = new Splide("#main-carousel", {
+  type: "fade",
+  rewind: true,
+  pagination: false,
+  arrows: true,
+  fixedHeight: "28rem",
+  fixedWidth: "100%",
+  type:"loop",
+});
 
-  carousel.append(innerCarousel);
-
-  for (let i = 0; i < boardDetail.image.length; i++) {
-    let imgHTML = $(`<div class="row thumbnails-item d-none mt-2"></div>`);
-    // let childImgHTML = $(`<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;"></div>`);
-    for (let j = i; j < i + 3; j++) {
-      imgHTML.append(`<div class="col-4" onclick="changeMainImg(this.children[0])" style="cursor: pointer;">
-      <img src="${boardDetail.image[j % boardDetail.image.length]}" class="img-fluid" alt="Thumbnail ${j}" style="object-fit: cover; height: 10rem; width: 100%">
-      </div>`);
-    }
-    carousel.append(imgHTML);
-  }
-
-  $(".thumbnails-item:first").removeClass("d-none");
-  $(".thumbnails-item:not(.d-none) img:first").addClass("border border-primary");
-}
-
-attachCarousels();
+main.sync(thumbnail);
+main.mount();
+thumbnail.mount();
 // {
 //   "_id": "6577e392b9f63faab623510c",
 //   "boardID": "QC0006",

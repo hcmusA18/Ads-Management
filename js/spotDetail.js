@@ -18,8 +18,6 @@ document
   .querySelector("ul.splide__list").innerHTML = thumbnailsCarousel;
 document.getElementById("main-carousel").querySelector("ul.splide__list").innerHTML = thumbnailsCarousel;
 
-console.log(spotDetail.spotImage[0]);
-
 const thumbnail = new Splide("#thumbnail-carousel", {
   fixedHeight: "5rem",
   perPage: Math.min(3, spotDetail.spotImage.length),
