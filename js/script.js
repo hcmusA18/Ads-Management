@@ -521,7 +521,7 @@ mapboxScript.onload = async function () {
     }
 
     try {
-      const res = getFreeSpot(e.lngLat.lat, e.lngLat.lng);
+      const res = await getFreeSpot(e.lngLat.lat, e.lngLat.lng);
       const place = res.items.find((item) => item.resultType == "place");
       // console.log(place);
       let address = place.address.label.split(", ").splice(1).join(", ");
