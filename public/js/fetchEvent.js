@@ -1,4 +1,3 @@
-
 // Store a copy of the fetch function
 var _oldFetch = fetch;
 
@@ -35,12 +34,9 @@ window.fetch = function () {
 };
 
 document.addEventListener('fetchStart', function () {
-  // console.log('fetchStart')
   $('#loaderContainer').show();
 });
 
 document.addEventListener('fetchEnd', function () {
-  // console.log('fetchEnd')
   $('#loaderContainer').hide();
-  // location.reload();
 });

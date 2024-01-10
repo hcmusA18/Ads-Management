@@ -34,7 +34,8 @@ const getAllSpots = async (districtID, wardID) => {
               boardID: 1,
               reports: {
                 $size: '$reports'
-              }
+              },
+              reportIDs: '$reports.reportID'
             }
           }
         ]
@@ -163,6 +164,9 @@ const getAllSpots = async (districtID, wardID) => {
             then: false,
             else: true
           }
+        },
+        reportIDs: {
+          $concatArrays: ['$reports.reportID', '$boards.reportIDs']
         }
       }
     },
