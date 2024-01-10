@@ -32,8 +32,8 @@ function generateSpotHTML(spot) {
             </div>
           </div>`;
 }
-let reportIDs = localStorage.getItem('reportIDs');
-reportIDs = reportIDs ? reportIDs.split(',') : [];
+let reportIDs = localStorage.getItem("reportIDs");
+reportIDs = reportIDs ? reportIDs.split(",") : [];
 async function getSpotsData() {
   try {
     const spots = await request.getAllSpots();
@@ -51,7 +51,7 @@ async function getSpotsData() {
         },
         properties: {
           ...spot,
-          userReport: reportIDs.some(reportIDs => {
+          userReport: reportIDs.some((reportIDs) => {
             const flattenReportIDs = spot.reportIDs.flat(Infinity);
             return flattenReportIDs.includes(reportIDs);
           }),
@@ -269,7 +269,7 @@ searchInput.addEventListener("keyup", (e) => {
             const result = res.items.map((item) => {
               return {
                 title: item.title,
-                label: item.address.label
+                label: item.address.label,
               };
             });
             displaySearchResult(result);
@@ -376,7 +376,6 @@ mapboxScript.onload = async function () {
     if (map.getCanvas().style.cursor === "pointer") {
       return;
     }
-    
 
     const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=5`;
 
@@ -384,17 +383,22 @@ mapboxScript.onload = async function () {
       .then((res) => res.json())
       .then((res) => {
         const place = res.items.find((item) => item.resultType == "place");
-        let address = place.address.label.split(', ').splice(2).join(', ');
+        console.log(place);
+        let address = place.address.label.split(", ").splice(1).join(", ");
         address = address.replace(", Hồ Chí Minh, Việt Nam", "");
         const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
                                   <p class="fw-bold" style="font-size: 1.125rem;">${place.title}</p>
-                                  <p class="fw-light" style="font-size: 15px;">${address}</p>`;
+                                  <p class="fw-light" style="font-size: 15px;">${address}</p>
+                                  <a href="report-create.html?id=AD${place.position.lng}:${place.position.lat}" class="btn btn-outline-danger align-self-end">
+                                  <i class="bi bi-exclamation-octagon"></i>
+                                  Báo cáo vi phạm
+                                  </a>`;
         const divElement = document.createElement("div");
 
         divElement.innerHTML = innerHtmlContent;
         divElement.setAttribute(
           "class",
-          "px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25"
+          "px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25 d-flex flex-column"
         );
 
         new mapboxgl.Popup({ offset: [0, -30] })
@@ -412,18 +416,16 @@ mapboxScript.onload = async function () {
     const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${label}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=1`;
 
     fetch(api)
-    .then((res) => res.json())
-    .then((res) => {
-      if (res && res.items && res.items.length > 0) {
-        map.flyTo({
-          center: [res.items[0].position.lng, res.items[0].position.lat],
-          essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-          zoom: 16,
-        });
-      }
-    });
-
-    
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.items && res.items.length > 0) {
+          map.flyTo({
+            center: [res.items[0].position.lng, res.items[0].position.lat],
+            essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+            zoom: 16,
+          });
+        }
+      });
   });
 
   closeBtn.addEventListener("click", () => {
