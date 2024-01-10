@@ -13,6 +13,7 @@ document.getElementById("sender-name").value = report.reporterName;
 document.getElementById("phone").value = report.reporterPhone;
 document.getElementById("email").value = report.reporterEmail;
 document.getElementById("report-type").value = report.reportTypeName;
+document.getElementById("solution").value = report.solution || "Chưa xử lý";
 const reportInfoHTML = new DOMParser().parseFromString(report.reportInfo, "text/html").body.firstElementChild;
 if (reportInfoHTML && reportInfoHTML.innerHTML)
   document.getElementById("content").innerHTML = reportInfoHTML.innerHTML;
