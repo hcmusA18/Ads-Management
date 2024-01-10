@@ -32,6 +32,60 @@ function generateSpotHTML(spot) {
             </div>
           </div>`;
 }
+
+async function generateReportHTML(report, lat, lng) {
+  const res = await getFreeSpot(lat, lng);
+  const place = res.items.find((item) => item.resultType == "place");
+  let address = place.address.label.split(", ").splice(1).join(", ");
+  address = address.replace(", Hồ Chí Minh, Việt Nam", "");
+
+  let reportHTML = "";
+  if (report.length > 1) {
+    const innnerHTML = report.map((report) => {
+      return `
+              <div class="d-flex justify-content-between align-items-center">
+              <p class="card-text">${report.reportID}: <span class="fw-bold">${report.status == 0 ? "Chưa xử lý" : "Đã xử lý"}</span></p>
+              <a href="report-detail.html?id=${report.reportID}" class="btn btn-sm text-primary">
+                <i class="fas fa-info-circle"></i>
+              </a>
+              </div>`;
+    }).join("");
+    reportHTML = `<div class="card mb-2">
+                    <div class="card-body bg-info text-info-emphasis bg-opacity-25">
+                    <h6 class="card-title fw-bold">Danh sách báo cáo</h6>
+                      ${innnerHTML}
+                    </div>
+                  </div>`
+  } else if (report.length === 1) {
+    let report = report[0];
+    reportHTML = `<div class="card mb-2">
+                    <div class="card-body bg-info text-info-emphasis bg-opacity-25">
+                      <h6 class="card-title fw-bold">${report.reportID}</h6>
+                      <p class="card-text">${report.reporterName}</p>
+                      <p class="card-text"><span class="fw-bold">Tình trạng:</span> ${report.status == 0 ? "Chưa xử lý" : "Đã xử lý"}</p>
+                      <a href="report-detail.html?id=${report.reportID}" class="btn btn-primary btn-sm">
+                        Xem chi tiết
+                      </a>
+                    </div>
+                  </div>`
+  }
+
+  return `${reportHTML}
+          <div class="card">
+            <div class="card-body bg-success text-success-emphasis bg-opacity-25 d-flex flex-column">
+              <h6 class="card-title fw-bold"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+              <p class="card-text fw-bold" style="font-size: 1.125rem;">${place.title}</p>
+              <p class="card-text fw-light" style="font-size: 15px;">${address}</p>
+              
+              <a href="report-create.html?id=AD${lng}:${lat}" class="btn btn-outline-danger btn-sm align-self-end">
+                <i class="fas fa-exclamation-triangle"></i>
+                Báo cáo vi phạm
+              </a>
+            </div>
+          </div>`;
+}
+
+
 let reportIDs = localStorage.getItem("reportIDs");
 reportIDs = reportIDs ? reportIDs.split(",") : [];
 async function getSpotsData() {
@@ -43,7 +97,8 @@ async function getSpotsData() {
       request.getAllSpots(),
       request.getReportList(reportIDs),
     ]);
-    console.log(reports);
+    
+
     reports = reports.filter((report) => report.objectID.startsWith("AD"));
     reports = reports.map((report) => {
       const [lng, lat] = report.objectID.substring(2).split(":");
@@ -53,6 +108,36 @@ async function getSpotsData() {
         lat: parseFloat(lat),
       };
     });
+    console.log(reports)
+    const mergedReports = [];
+    reports.forEach((report) => {
+      const index = mergedReports.findIndex((mergedReport) => {
+        return mergedReport.objectID === report.objectID;
+      });
+
+      if (index !== -1) {
+        mergedReports[index].reports.push({
+          reportID: report.reportID,
+          reporterName: report.reporterName,
+          sendTime: report.sendTime,
+          status: report.status,
+        });
+      } else {
+        mergedReports.push({
+          objectID: report.objectID,
+          lng: report.lng,
+          lat: report.lat,
+          reports: [{
+            reportID: report.reportID,
+            reporterName: report.reporterName,
+            sendTime: report.sendTime,
+            status: report.status,
+          }]
+        });
+      }
+    });
+    console.log(mergedReports);
+
     const spotsGeojson = {
       type: "FeatureCollection",
       features: [],
@@ -76,7 +161,7 @@ async function getSpotsData() {
       });
     });
 
-    reports.forEach((report) => {
+    mergedReports.forEach(async (report) => {
       spotsGeojson.features.push({
         type: "Feature",
         geometry: {
@@ -86,6 +171,7 @@ async function getSpotsData() {
         properties: {
           ...report,
           userReport: true,
+          description: await generateReportHTML(report.reports, report.lat, report.lng),
         },
       });
     });
@@ -136,38 +222,20 @@ function createMap() {
   return map;
 }
 
-const getFreeSpot = async (map, lat, lng, marker = null) => {
+const getFreeSpot = async (lat, lng) => {
   const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=5`;
-
-  fetch(api)
-    .then((res) => res.json())
-    .then((res) => {
-      const place = res.items.find((item) => item.resultType == "place");
-      // console.log(place);
-      let address = place.address.label.split(", ").splice(1).join(", ");
-      address = address.replace(", Hồ Chí Minh, Việt Nam", "");
-      const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
-                                <p class="fw-bold" style="font-size: 1.125rem;">${place.title}</p>
-                                <p class="fw-light" style="font-size: 15px;">${address}</p>
-                                <a href="report-create.html?id=AD${place.position.lng}:${place.position.lat}" class="btn btn-outline-danger align-self-end">
-                                <i class="bi bi-exclamation-octagon"></i>
-                                Báo cáo vi phạm
-                                </a>`;
-      const divElement = document.createElement("div");
-
-      divElement.innerHTML = innerHtmlContent;
-      divElement.setAttribute(
-        "class",
-        "px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25 d-flex flex-column"
-      );
-
-      new mapboxgl.Popup({ offset: [0, -30] })
-        .setLngLat({ lng: place.position.lng, lat: place.position.lat })
-        .setDOMContent(divElement)
-        .addTo(map);
-
-      if (marker) marker.setLngLat(place.position).addTo(map);
-    });
+  // fetch(api)
+  //   .then((res) => res.json())
+  //   .then((res) => {
+  //     return res;
+  //   });
+  try {
+    const res = await fetch(api);
+    return await res.json();
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to get free spot");
+  }
 }
 
 async function addSpotLayer(map, marker, spotsGeojson) {
@@ -284,11 +352,11 @@ async function addSpotLayer(map, marker, spotsGeojson) {
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
     // over the copy being pointed to.
-    if (objectID) {
-      getFreeSpot(map, coordinates[1], coordinates[0], marker);
-    } else {
-      new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
-    }
+    // if (objectID) {
+    //   getFreeSpot(map, coordinates[1], coordinates[0], marker);
+    // } else {
+    // }
+    new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
 
     map.flyTo({
       center: e.features[0].geometry.coordinates,
@@ -447,12 +515,41 @@ mapboxScript.onload = async function () {
 
 
   // Hien thong tin diem bat ki
-  map.on("click", (e) => {
+  map.on("click", async (e) => {
     if (map.getCanvas().style.cursor === "pointer") {
       return;
     }
-    
-    getFreeSpot(map, e.lngLat.lat, e.lngLat.lng, marker);
+
+    try {
+      const res = getFreeSpot(e.lngLat.lat, e.lngLat.lng);
+      const place = res.items.find((item) => item.resultType == "place");
+      // console.log(place);
+      let address = place.address.label.split(", ").splice(1).join(", ");
+      address = address.replace(", Hồ Chí Minh, Việt Nam", "");
+      const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+                                <p class="fw-bold" style="font-size: 1.125rem;">${place.title}</p>
+                                <p class="fw-light" style="font-size: 15px;">${address}</p>
+                                <a href="report-create.html?id=AD${place.position.lng}:${place.position.lat}" class="btn btn-outline-danger align-self-end">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Báo cáo vi phạm
+                                </a>`;
+      const divElement = document.createElement("div");
+
+      divElement.innerHTML = innerHtmlContent;
+      divElement.setAttribute(
+        "class",
+        "px-4 py-3 rounded-2 bg-success text-success-emphasis bg-opacity-25 d-flex flex-column"
+      );
+
+      new mapboxgl.Popup({ offset: [0, -30] })
+        .setLngLat({ lng: place.position.lng, lat: place.position.lat })
+        .setDOMContent(divElement)
+        .addTo(map);
+
+      if (marker) marker.setLngLat(place.position).addTo(map);
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   resultBox.addEventListener("click", (e) => {
