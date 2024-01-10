@@ -37,7 +37,6 @@ reportIDs = reportIDs ? reportIDs.split(',') : [];
 async function getSpotsData() {
   try {
     const spots = await request.getAllSpots();
-    console.log(spots);
     const spotsGeojson = {
       type: "FeatureCollection",
       features: [],
@@ -60,8 +59,6 @@ async function getSpotsData() {
         },
       });
     });
-
-    console.log(spotsGeojson);
     return spotsGeojson;
   } catch (error) {
     console.log(error);
@@ -258,22 +255,21 @@ searchInput.addEventListener("keyup", (e) => {
   if (searchValue === "" || searchValue === lastSearch) {
     return;
   }
-  const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${searchValue}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=5`;
+  const autoCompleteApi = `https://revgeocode.search.hereapi.com/v1/autocomplete?q=${searchValue}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=5`;
 
   lastSearch = searchValue;
 
   // fetch after 500ms
   setTimeout(() => {
     if (searchValue === lastSearch) {
-      fetch(api)
+      fetch(autoCompleteApi)
         .then((res) => res.json())
         .then((res) => {
           if (res && res.items && res.items.length > 0) {
             const result = res.items.map((item) => {
               return {
-                title: item.address.label,
-                lat: item.position.lat,
-                lng: item.position.lng,
+                title: item.title,
+                label: item.address.label
               };
             });
             displaySearchResult(result);
@@ -287,10 +283,9 @@ const displaySearchResult = (result) => {
     return `
     <a  href="#"
         class="list-group-item list-group-item-action border-0 rounded-0 list-search-item"
-        data-bs-lat="${item.lat}" 
-        data-bs-lng="${item.lng}"
-        data-bs-title="${item.title}"
-        style="cursor: pointer; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 23.5rem; font-size:0.875rem; line-height: 1.25rem">${item.title}    
+        data-bs-title="${item.title}" 
+        data-bs-label="${item.label}"
+        style="cursor: pointer; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 23.5rem; font-size:0.875rem; line-height: 1.25rem">${item.label}    
     </a>`;
   });
   resultBox.innerHTML = `<div class="list-group">${content.join("")}</div>`;
@@ -345,7 +340,7 @@ mapboxScript.onload = async function () {
         return true;
       }),
     };
-    console.log("filtered");
+    // console.log("filtered");
     map.getSource("spots").setData(filteredSpotsGeojson);
   };
 
@@ -370,7 +365,7 @@ mapboxScript.onload = async function () {
       }
 
       filterOptions[key] = e.target.checked;
-      console.log(filterOptions);
+      // console.log(filterOptions);
 
       applyFilter();
     });
@@ -410,13 +405,23 @@ mapboxScript.onload = async function () {
   resultBox.addEventListener("click", (e) => {
     const listSearchItem = e.target.closest(".list-search-item");
     if (!listSearchItem) return;
-    const lat = listSearchItem.dataset.bsLat;
-    const lng = listSearchItem.dataset.bsLng;
-    map.flyTo({
-      center: [lng, lat],
-      essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-      zoom: 16,
+    const label = listSearchItem.dataset.bsLabel;
+    const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${label}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=1`;
+
+    fetch(api)
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res);
+      if (res && res.items && res.items.length > 0) {
+        map.flyTo({
+          center: [res.items[0].position.lng, res.items[0].position.lat],
+          essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+          zoom: 16,
+        });
+      }
     });
+
+    
   });
 
   closeBtn.addEventListener("click", () => {
