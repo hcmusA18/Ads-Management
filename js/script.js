@@ -61,7 +61,7 @@ async function getSpotsData() {
     });
     return spotsGeojson;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw new Error("Failed to get spots data");
   }
 }
@@ -349,7 +349,7 @@ mapboxScript.onload = async function () {
     toggle.checked = filterOptions[toggle.id.split("-")[0]];
 
     toggle.addEventListener("change", async (e) => {
-      console.log(e.target.id);
+      // console.log(e.target.id);
       const key = e.target.id.split("-")[0];
 
       if (key === "all" && e.target.checked) {
@@ -376,16 +376,18 @@ mapboxScript.onload = async function () {
     if (map.getCanvas().style.cursor === "pointer") {
       return;
     }
-    marker.setLngLat(e.lngLat).addTo(map);
+    
 
-    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=5`;
 
     fetch(api)
       .then((res) => res.json())
       .then((res) => {
-        let address = res.items[0].address.label;
+        const place = res.items.find((item) => item.resultType == "place");
+        let address = place.address.label.split(', ').splice(2).join(', ');
         address = address.replace(", Hồ Chí Minh, Việt Nam", "");
         const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+                                  <p class="fw-bold" style="font-size: 1.125rem;">${place.title}</p>
                                   <p class="fw-light" style="font-size: 15px;">${address}</p>`;
         const divElement = document.createElement("div");
 
@@ -396,9 +398,10 @@ mapboxScript.onload = async function () {
         );
 
         new mapboxgl.Popup({ offset: [0, -30] })
-          .setLngLat({ lng: e.lngLat.lng, lat: e.lngLat.lat })
+          .setLngLat({ lng: place.position.lng, lat: place.position.lat })
           .setDOMContent(divElement)
           .addTo(map);
+        marker.setLngLat(place.position).addTo(map);
       });
   });
 
@@ -411,7 +414,6 @@ mapboxScript.onload = async function () {
     fetch(api)
     .then((res) => res.json())
     .then((res) => {
-      console.log(res);
       if (res && res.items && res.items.length > 0) {
         map.flyTo({
           center: [res.items[0].position.lng, res.items[0].position.lat],
