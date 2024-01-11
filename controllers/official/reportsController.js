@@ -5,6 +5,8 @@ import {getDistrictByID} from '../../services/districtService.js';
 import {getWardByID, getWardsOfDistrict} from '../../services/wardService.js';
 import emailService from '../../services/emailService.js';
 import * as locationService from '../../services/locationService.js';
+import * as boardService from '../../services/boardService.js'
+import * as spotService from '../../services/spotService.js'
 
 const convertDate = (date) => {
 	const dateObject = new Date(date);
@@ -144,6 +146,28 @@ const showDetail = async (req, res) => {
 	const officerName = req.user.username;
 	// console.log(officerName);
 
+	if(dataFetch.objectID.includes('QC')){
+		const boardDetail = await boardService.getBoardByID(dataFetch.objectID);
+	
+		dataFetch.spotAddress = boardDetail.spotAddress;
+		dataFetch.district = boardDetail.districtName;
+		dataFetch.ward = boardDetail.wardName;
+	  } 
+	  if(dataFetch.objectID.includes('DD')){
+		const spotDetail = await spotService.getSpotByID(dataFetch.objectID);
+	
+		dataFetch.spotAddress = spotDetail.address;
+		dataFetch.district = spotDetail.districtName;
+		dataFetch.ward = spotDetail.wardName;
+	  } 
+	  if(dataFetch.objectID.includes('AD')){
+		const addrDetail = await locationService.getDistrictWardName(dataFetch.objectID.split(':')[1], dataFetch.objectID.split(':')[0].replace('AD', ''));
+	
+		dataFetch.spotAddress = addrDetail.address;
+		dataFetch.district = addrDetail.districtName;
+		dataFetch.ward = addrDetail.wardName;
+	  }
+
 	const data = {
 		id: dataFetch.reportID,
 		phone: dataFetch.reporterPhone,
@@ -159,6 +183,9 @@ const showDetail = async (req, res) => {
 		officer: dataFetch.officerName,
 		district: dataFetch.officerDistrict,
 		ward: dataFetch.officerWard,
+		spotAddress: dataFetch.spotAddress,
+		spotDistrict: dataFetch.district,
+		spotWard: dataFetch.ward,
 	}
 	res.render('report-detail', {role, title, officerName, toolbars: createToolbar(role), ...data});
 }

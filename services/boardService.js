@@ -234,6 +234,34 @@ export const getBoardByID = async (boardID) => {
         }
       },
       {
+        $lookup: {
+          from: 'districts',
+          localField: 'spot.districtID',
+          foreignField: 'districtID',
+          as: 'district',
+        }
+      },
+      {
+        $unwind: {
+          path: '$district',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'wards',
+          localField: 'spot.wardID',
+          foreignField: 'wardID',
+          as: 'ward',
+        }
+      },
+      {
+        $unwind: {
+          path: '$ward',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
         $project: {
           boardID: 1,
           spotID: 1,
@@ -256,7 +284,9 @@ export const getBoardByID = async (boardID) => {
           adsFormName: '$adsform.formName',
           image: 1,
           licensingID: 1,
-          content: '$licensereq.content'
+          content: '$licensereq.content',
+          districtName: '$district.districtName',
+          wardName: '$ward.wardName',
         }
       }
     ]

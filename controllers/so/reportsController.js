@@ -2,6 +2,8 @@ import { toolbars } from './utilities.js'
 import * as reportService from '../../services/reportService.js'
 import * as districtService from '../../services/districtService.js'
 import * as locationService from '../../services/locationService.js'
+import * as boardService from '../../services/boardService.js'
+import * as spotService from '../../services/spotService.js'
 
 const controller = {}
 
@@ -84,6 +86,29 @@ controller.show = async (req, res) => {
 controller.showDetail = async (req, res) => {
   const id = req.params.id
   const dataFetch = await reportService.getReportByID(id);
+  
+  if(dataFetch.objectID.includes('QC')){
+    const boardDetail = await boardService.getBoardByID(dataFetch.objectID);
+
+    dataFetch.spotAddress = boardDetail.spotAddress;
+    dataFetch.district = boardDetail.districtName;
+    dataFetch.ward = boardDetail.wardName;
+  } 
+  if(dataFetch.objectID.includes('DD')){
+    const spotDetail = await spotService.getSpotByID(dataFetch.objectID);
+
+    dataFetch.spotAddress = spotDetail.address;
+    dataFetch.district = spotDetail.districtName;
+    dataFetch.ward = spotDetail.wardName;
+  } 
+  if(dataFetch.objectID.includes('AD')){
+    const addrDetail = await locationService.getDistrictWardName(dataFetch.objectID.split(':')[1], dataFetch.objectID.split(':')[0].replace('AD', ''));
+
+    dataFetch.spotAddress = addrDetail.address;
+    dataFetch.district = addrDetail.districtName;
+    dataFetch.ward = addrDetail.wardName;
+  }
+
   const detail = {
 		id: dataFetch.reportID,
 		phone: dataFetch.reporterPhone,
@@ -99,6 +124,9 @@ controller.showDetail = async (req, res) => {
 		officer: dataFetch.officerName,
 		district: dataFetch.officerDistrict,
 		ward: dataFetch.officerWard,
+    spotAddress: dataFetch.spotAddress,
+    spotDistrict: dataFetch.district,
+    spotWard: dataFetch.ward,
 	}
   const title = 'Sở - Chi tiết báo cáo vi phạm'
   return res.render('./so/report-detail', { title, detail, toolbars })
