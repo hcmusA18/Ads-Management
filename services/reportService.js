@@ -297,8 +297,9 @@ export const getReportByOfficerRole = async (officerRole)  => {
             { 'spotInfo.districtID': officerRole },
             { 'spotInfo.wardID': officerRole },
             { 'boardSpotInfo.districtID': officerRole },
-            { 'boardSpotInfo.wardID': officerRole }
-          ]
+            { 'boardSpotInfo.wardID': officerRole },
+            { 'objectID': { $regex: '^AD' } } // Include all reports with objectID starting with 'AD'
+          ],
         }
       },
       {
@@ -325,8 +326,6 @@ export const getReportByOfficerRole = async (officerRole)  => {
           reporterEmail: 1,
           sendTime: 1,
           status: 1,
-          // test1: {$arrayElemAt: ['$spotInfo.spotID', 0]},
-          // test2: '$objectID',
           wardID: {
             $cond: {
               if: {$eq : ['$objectID', {$arrayElemAt: ['$spotInfo.spotID', 0]}]},

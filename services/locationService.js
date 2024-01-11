@@ -2,6 +2,8 @@ import District from '../models/districtModel.js';
 import Ward from '../models/wardModel.js';
 import Spot from '../models/spotModel.js';
 import Board from '../models/boardModel.js';
+import * as districtService from './districtService.js';
+import * as wardService from './wardService.js';
 
 export const getAll = async () => {
   const options = [
@@ -146,5 +148,34 @@ export const getDistrictDetail = async (districtID) => {
     return districts;
   } catch (error) {
     throw new Error(`Error getting all districts: ${error.message}`);
+  }
+}
+
+// get district and ward name by lat, lng
+export const getDistrictWardName = async (lat, lng) => {
+  const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apiKey=${process.env.REVERSE_GEOCODING_API}&lang=vi`;
+
+  try {
+    const res = await fetch(api);
+    const data = await res.json();
+    let districtName = data.items[0].address.city.replace('Quận ', '').trim();
+    let wardName = data.items[0].address.district.replace('Phường ', '').trim();
+    if (districtName.length === 1) {
+      districtName = '0' + districtName;
+    }
+    if (wardName.length === 1) {
+      wardName = '0' + wardName;
+    }
+
+    // console.log(districtName, wardName);
+
+    const  districtID = (await districtService.getIDByName(districtName)) || '';
+    // console.log(districtName, districtID);
+    const wardID = (await wardService.getIDByName(wardName)) || '';
+    // console.log(wardName, wardID);
+
+    return { districtName, wardName, districtID, wardID };
+  } catch (error) {
+    throw new Error(`Error getting district and ward name: ${error.message}`);
   }
 }

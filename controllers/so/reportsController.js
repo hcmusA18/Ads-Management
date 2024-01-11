@@ -1,6 +1,7 @@
 import { toolbars } from './utilities.js'
 import * as reportService from '../../services/reportService.js'
 import * as districtService from '../../services/districtService.js'
+import * as locationService from '../../services/locationService.js'
 
 const controller = {}
 
@@ -28,12 +29,25 @@ controller.show = async (req, res) => {
   
   const data = await reportService.getAllReports();
   // console.log(data);
-  tableData = data.map((item) => {
+  tableData = await Promise.all(data.map(async (item) => {
+    let districtName = item.spotDistrictName[0];
+    let wardName = item.spotWardName[0];
+
+    // console.log(item.objectID);
+
+    if (item.objectID.includes('AD')) {
+      const lat = item.objectID.split(':')[1];
+      const lng = item.objectID.split(':')[0].replace('AD', '');
+      const location = await locationService.getDistrictWardName(lat, lng);
+      districtName = location.districtName;
+      wardName = location.wardName;
+    }
+
     return {
       id: item.reportID,
       objectID: item.objectID,
-      district: item.spotDistrictName[0],
-      ward: item.spotWardName[0],
+      district: districtName,
+      ward: wardName,
       reportType: item.reportType,
       reporterName: item.reporterName,
       sendTime: convertDate(item.sendTime),
@@ -44,7 +58,8 @@ controller.show = async (req, res) => {
         info: true
       }
     }
-  })
+  }));
+
   // console.log(tableData);
 
   let checkboxData = await districtService.getAllDistricts()
@@ -62,7 +77,7 @@ controller.show = async (req, res) => {
     checkboxHeader: checkboxHeader
   }
 
-  const title = 'Sở - Quản lý danh sách các báo cáo vi phạm'.toUpperCase();
+  const title = 'Sở - Quản lý danh sách các báo cáo vi phạm';
   return res.render('./so/reports', { title, tableHeads, tableData, toolbars, ...commonData })
 }
 

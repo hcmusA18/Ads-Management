@@ -4,6 +4,7 @@ import {getReportByOfficerRole, getReportByID, updateReportByID} from '../../ser
 import {getDistrictByID} from '../../services/districtService.js';
 import {getWardByID, getWardsOfDistrict} from '../../services/wardService.js';
 import emailService from '../../services/emailService.js';
+import * as locationService from '../../services/locationService.js';
 
 const convertDate = (date) => {
 	const dateObject = new Date(date);
@@ -34,12 +35,27 @@ const show = async (req, res) => {
 		quan: {
 			tableHeads: ['ID Báo Cáo', 'ID DD / QC', 'Loại hình báo cáo', 'Phường'
 				, 'Họ tên người gửi', 'Email', 'Thời điểm gửi', 'Trạng thái'],
-			tableData: data.map((item) => {
+			tableData: await Promise.all(data.map(async (item) => {
+				let wardName = item.wardName;
+			
+				if (item.objectID.includes('AD')) {
+					const lat = item.objectID.split(':')[1];
+					const lng = item.objectID.split(':')[0].replace('AD', '');
+					const location = await locationService.getDistrictWardName(lat, lng);
+					const districtID = location.districtID;
+
+					// if districtID is not equal to officerRole, then return empty object
+					if (districtID !== officerRole) {
+						return {};
+					}
+
+					wardName = location.wardName;
+				}
 				return {
 					id: item.reportID,
 					objectID: item.objectID,
 					reportType: item.reportType,
-					ward: item.wardName,
+					ward: wardName,
 					reporterName: item.reporterName,
 					reporterEmail: item.reporterEmail,
 					sendTime: convertDate(item.sendTime),
@@ -50,13 +66,25 @@ const show = async (req, res) => {
 						info: true
 					}
 				}
-			}),
+			})),
 			checkboxHeader: "Quận " + officerRoleName,
 		},
 		phuong: {
 			tableHeads: ['ID Báo Cáo', 'ID DD / QC', 'Loại hình báo cáo',
 				'Họ tên người gửi', 'Email', 'Thời điểm gửi', 'Trạng thái'],
 			tableData: data.map((item) => {
+				if (item.objectID.includes('AD')) {
+					const lat = item.objectID.split(':')[1];
+					const lng = item.objectID.split(':')[0].replace('AD', '');
+					const location = locationService.getDistrictWardName(lat, lng);
+					const wardID = location.wardID;
+
+					// if wardID is not equal to officerRole, then return empty object
+					if (wardID !== officerRole) {
+						return {};
+					}
+				}
+
 				return {
 					id: item.reportID,
 					objectID: item.objectID,
@@ -75,7 +103,13 @@ const show = async (req, res) => {
 		},
 	}
 
-	const roleInfo = roleData[role];
+	let roleInfo = roleData[role];
+
+	// remove empty object
+	roleInfo.tableData = roleInfo.tableData.filter(item => Object.keys(item).length !== 0);
+
+	// console.log(roleInfo);
+
 	if (!roleInfo) {
 		res.status(404);
 		return res.render('error', {error: {status: 404, message: 'Không tìm thấy trang'}});
@@ -87,8 +121,8 @@ const show = async (req, res) => {
 		wardsOfDistrict = await getWardsOfDistrict(officerRole)
 		wardsOfDistrict = wardsOfDistrict.map((ward) =>{
 			return {
-			  name: `Phường ${ward.wardName}`,
-			  status: roleInfo.tableData.some(item => item.ward === ward.wardName)
+				name: `Phường ${ward.wardName}`,
+				status: roleInfo.tableData.some(item => item.ward === ward.wardName)
 			}
 		});
 

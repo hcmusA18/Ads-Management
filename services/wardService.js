@@ -22,6 +22,18 @@ export const getWardByID = async (wardID) => {
   }
 };
 
+export const getIDByName = async (wardName) => {
+  try {
+    const ward = await Ward.findOne({ wardName }, { _id: 0, wardID: 1 })
+    if (!ward) {
+      return null
+    }
+    return ward.wardID
+  } catch (error) {
+    throw new Error(`Error getting ward by name: ${error.message}`)
+  }
+}
+
 export const getAllWards = async () => {
   try {
     return await Ward.find().sort({wardID: 1});

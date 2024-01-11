@@ -57,3 +57,16 @@ export const deleteDistrictByID = async (districtID) => {
     throw new Error(`Error deleting district by ID: ${error.message}`);
   }
 }
+
+export const getIDByName = async (districtName) => {
+  try {
+    const district = await District.findOne({ districtName }, { _id: 0, districtID: 1 });
+    
+    if (!district) {
+      return null;
+    }
+    return district.districtID;
+  } catch (error) {
+    throw new Error(`Error getting district ID by name: ${error.message}`);
+  }
+}
