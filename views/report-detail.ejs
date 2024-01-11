@@ -39,18 +39,6 @@
                   </div>
                   <div class="col-md-4 custom-col">
                     <label for="dropdown-state-list" style="margin-bottom: 6px">Trạng thái</label>
-                    <!-- <div class="dropdown d-block p-0" style="flex: 0">
-                      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdown-state-list"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Chưa xử lý
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="dropdown-state-list">
-                        <li><a class="dropdown-item" href="#">Chờ xử lý</a></li>
-                        <li><a class="dropdown-item" href="#">Đã xử lý</a></li>
-                      </ul>
-                    </div> -->
-                    
-
                     <% if(state == 0) { %>
                       <select class="form-select" aria-label="Default select example" id="state-baocao" disabled>
                         <option selected value="0">Đang xử lí</option>
@@ -62,8 +50,21 @@
                         <option selected value="1">Đã xử lí</option>
                       </select>
                     <% } %>
+                  </div>
+                </div>
 
-                    
+                <div class="row mt-2">
+                  <div class="col-md-4 custom-col">
+                      <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
+                      <input type="text" class="form-control" id="spotAddress" value='<%= spotAddress %>' disabled/>
+                  </div>
+                  <div class="col-md-4 custom-col">
+                    <label for="spotDistrict" style="margin-bottom: 6px">Quận</label>
+                    <input type="text" class="form-control" id="spotDistrict" value='<%= spotDistrict %>' disabled/>
+                  </div>
+                  <div class="col-md-4 custom-col">
+                      <label for="spotWard" style="margin-bottom: 6px">Phường</label>
+                      <input type="text" class="form-control" id="spotWard" value='<%= spotWard %>' disabled/>
                   </div>
                 </div>
 

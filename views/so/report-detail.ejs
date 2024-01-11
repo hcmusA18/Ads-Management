@@ -51,6 +51,21 @@
                     </div>
                 </div>
 
+                <div class="row mt-2">
+                  <div class="col-md-4 custom-col">
+                      <label for="spotAddress" style="margin-bottom: 6px">Địa chỉ</label>
+                      <input type="text" class="form-control" id="spotAddress" value='<%= detail.spotAddress %>' disabled/>
+                  </div>
+                  <div class="col-md-4 custom-col">
+                    <label for="spotDistrict" style="margin-bottom: 6px">Quận</label>
+                    <input type="text" class="form-control" id="spotDistrict" value='<%= detail.spotDistrict %>' disabled/>
+                  </div>
+                  <div class="col-md-4 custom-col">
+                      <label for="spotWard" style="margin-bottom: 6px">Phường</label>
+                      <input type="text" class="form-control" id="spotWard" value='<%= detail.spotWard %>' disabled/>
+                  </div>
+                </div>
+
                 <!-- Row 2: 2 columns -->
                 <div class="row mt-2">
                     <div class="col-md-6 custom-col">
@@ -130,12 +145,21 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-12 custom-col hinhanh-mhoa">
-                        <label for="images" style="margin-bottom: 6px">Hình ảnh minh họa</label>
-                        <div class="d-flex flex-row" style="gap: 20px">
-                            <% detail.imgUrls.forEach((el, index) => { %>
-                                <img src="<%= el %>" alt="img<%= index + 1 %>">
-                            <% }); %>
-                        </div>                        
+                      <label for="illustrate" style="margin-bottom: 6px">Hình ảnh minh họa</label>
+                      <div class="d-flex flex-row row">
+                        <% if(detail.imgUrls[1]) { %>
+                          <div class="col-md-6 custom-col">
+                            <img src="<%- detail.imgUrls[0] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">
+                          </div>
+                          <div class="col-md-6 custom-col">
+                            <img src="<%- detail.imgUrls[1] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">
+                          </div>
+                        <% } else { %>  
+                          <div class="col-md-12 custom-col">
+                            <img src="<%- detail.imgUrls[0] %>" alt=""  style="height: 16rem; object-fit: cover; object-position: center">
+                          </div>
+                        <% } %>   
+                      </div>
                     </div>
                 </div>
             </div>
