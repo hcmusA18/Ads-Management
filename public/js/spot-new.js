@@ -41,7 +41,6 @@ if (queryParams.get('lng') !== undefined && queryParams.get('lat') !== undefined
     .then((res) => res.json())
     .then((res) => {
       let address = res.items[0].address.label;
-
       addr.value = address.split(',')[0] || ' '
       dist.value = res.items[0].address.city.replace('Quận ', '').trim() || ' '
       if (dist.value.length === 1) {

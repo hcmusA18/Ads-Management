@@ -175,10 +175,22 @@ const showDetail = async (req, res, isEdit) => {
 
     if (isEdit) {
       let other = {}
-      other.spottypes = await spotTypeService.getAllSpotTypes() || [];
-      other.adsforms = await adsFormService.getAllAdsForms() || [];
-      other.districts = await districtService.getAllDistricts() || [];
-      other.wards = await wardService.getAllWards() || [];
+      // other.spottypes = await spotTypeService.getAllSpotTypes() || [];
+      // other.adsforms = await adsFormService.getAllAdsForms() || [];
+      // other.districts = await districtService.getAllDistricts() || [];
+      // other.wards = await wardService.getAllWards() || [];
+      // promise.all
+      const [spottypes, adsforms, districts, wards] = await Promise.all([
+        spotTypeService.getAllSpotTypes(),
+        adsFormService.getAllAdsForms(),
+        districtService.getAllDistricts(),
+        wardService.getAllWards(),
+      ]);
+      other.spottypes = spottypes || [];
+      other.adsforms = adsforms || [];
+      other.districts = districts || [];
+      other.wards = wards || [];
+
       res.render('spot-modify', { ...commonData, ...data, other });
     } else {
       res.render('spot-detail', { ...commonData, ...data, boardsTableHeads, boardsTableData: transformedBoardsTableData });

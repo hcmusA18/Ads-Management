@@ -144,6 +144,12 @@
       let lat = parseFloat(`<%= latitude %>`);
       let miniMapWindow = null;
 
+      spotAddressInput.addEventListener('focus', (e) => {
+        if (miniMapWindow) {
+          miniMapWindow.close();
+        }
+      })
+
       spotAddressInput.addEventListener('dblclick', (e) => {
         const width = 900;
         const height = 700;
@@ -151,12 +157,18 @@
         const left = (window.innerWidth - width) / 2;
         const top = (window.innerHeight - height) / 2;
 
+        console.log('Open mini map window');
+
+        if (miniMapWindow) {
+          miniMapWindow.close();
+        }
+
         miniMapWindow = window.open('/mini-map', 'Mini Map', `width=${width},height=${height},left=${left},top=${top}`);
       })
 
       window.addEventListener('message', (event) => {
         // Check the origin to ensure it's from the correct window
-        if (event.origin !== window.location.origin) {
+        if (event.origin !== window.location.origin || !miniMapWindow) {
             return;
         }
 

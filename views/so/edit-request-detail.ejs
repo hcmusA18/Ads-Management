@@ -38,30 +38,21 @@
         <div class="container-fluid nd-chi-tiet px-0">
           <!-- Row 1: 3 columns -->
           <div class="row mt-2">
-            <div class="col-md-4 custom-col">
+            <div class="col-md-3 custom-col">
               <label for="id-baocao" style="margin-bottom: 6px">ID Yêu cầu</label>
               <input type="text" class="form-control" id="id-baocao" value='<%= requestID %>' disabled />
             </div>
-            <div class="col-md-4 custom-col">
-              <label for="phone" style="margin-bottom: 6px">Thời gian gửi</label>
-              <input type="text" class="form-control" id="phone" value="<%= requestTime %>" disabled />
+            <div class="col-md-3 custom-col">
+              <label for="report-time" style="margin-bottom: 6px">Thời gian gửi</label>
+              <input type="text" class="form-control" id="report-time" value="<%= requestTime %>" disabled />
             </div>
-            <div class="col-md-4 custom-col">
-              <label for="phone" style="margin-bottom: 6px">Người gửi</label>
-              <input type="text" class="form-control" id="phone" value="<%= officerUsername %>" disabled />
+            <div class="col-md-3 custom-col">
+              <label for="officer-username" style="margin-bottom: 6px">Người gửi</label>
+              <input type="text" class="form-control" id="officer-username" value="<%= officerUsername %>" disabled />
             </div>
-            <div class="col-md-3 custom-col" hidden>
-              <label for="dropdown-state-list" style="margin-bottom: 6px">Trạng thái</label>
-              <!-- <div class="dropdown d-block p-0" style="flex: 0" <% if (status != 0) { %> disabled <% } %>>
-                      <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdown-state-list"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Đang chờ duyệt
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="dropdown-state-list">
-                        <li><a class="dropdown-item">Đã duyệt</a></li>
-                        <li><a class="dropdown-item">Đã từ chối</a></li>
-                      </ul>
-                    </div> -->
+            <div class="col-md-3 custom-col">
+              <label for="status" style="margin-bottom: 6px">Trạng thái</label>
+              <input type="text" class="form-control fw-bold <%= status == 1 ? 'text-success-emphasis' : (status == 0 ? 'text-info-emphasis' : 'text-danger-emphasis') %>" id="status" value="<%= status == 1 ? 'Đã duyệt' : (status == 0 ? 'Đang chờ duyệt' : 'Đã từ chối') %>" disabled />
 
               <!-- <select class="form-select d-block py-1 dropdown" style="flex: 0; line-height: 1.5;" id="status-menu" <% if (status != 0) { %> disabled <% } %>>
                         <option selected value="-1">Đang chờ duyệt</option>
@@ -220,7 +211,7 @@
         </div>
 
         <div class="d-flex flex-row align-items-center justify-content-end" style="gap: 20px; margin-top: 15px; padding: 0 12px">
-          <button type="button" class="btn btn-danger" style="width: 130px;" onclick="process(event, 0)" <% if (status != 0) { %> hidden <% } %>>Từ chối</button>
+          <button type="button" class="btn btn-danger" style="width: 130px;" onclick="process(event, -1)" <% if (status != 0) { %> hidden <% } %>>Từ chối</button>
           <button type="button" class="btn btn-success" style="width: 150px;" id="submitBtn" onclick="process(event, 1)" <% if (status != 0) { %> hidden <% } %>>Phê duyệt</button>
         </div>
 
@@ -265,6 +256,10 @@
       // .......................................................
 
       console.log(response)
+      // when alert is closed, reload page
+      $('.alert').on('closed.bs.alert', function() {
+        location.reload();
+      })
     }
   </script>
 </body>
