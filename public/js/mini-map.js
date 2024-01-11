@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY29rYXZuMTEiLCJhIjoiY2xuenJ6Nm02MHZvajJpcGVreXpmZm8wNCJ9.a3zQ4KrnD9YRRco8l4o-Pg';
-const reverseGeoCodingApiKey = 'WLHjLJexBZyyYwUy1PpSIrR4BTmXb5Dd048PM9oa50I';
+const reverseGeoCodingApiKey = 'iFRNmnpm9tPfPuSWFtpk3VDDI3xKUuNDxy0EHKjJlF4';
 
 var mapboxScript = document.createElement('script');
 mapboxScript.setAttribute('src', 'https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js');
@@ -122,7 +122,7 @@ mapboxScript.onload = function () {
 		}
 		marker.setLngLat(e.lngLat).addTo(map);
 
-		const reverseGeoCodingApiKey = 'WLHjLJexBZyyYwUy1PpSIrR4BTmXb5Dd048PM9oa50I';
+		const reverseGeoCodingApiKey = 'iFRNmnpm9tPfPuSWFtpk3VDDI3xKUuNDxy0EHKjJlF4';
 
 		const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
 

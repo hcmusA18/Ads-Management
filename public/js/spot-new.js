@@ -26,7 +26,7 @@ const addr = document.querySelector('#spotAddress')
 const dist = document.querySelector('#districtName')
 const ward = document.querySelector('#wardName')
 const queryParams = new URLSearchParams(window.location.search)
-const reverseGeoCodingApiKey = 'WLHjLJexBZyyYwUy1PpSIrR4BTmXb5Dd048PM9oa50I';
+const reverseGeoCodingApiKey = 'iFRNmnpm9tPfPuSWFtpk3VDDI3xKUuNDxy0EHKjJlF4';
 
 if (queryParams.get('lng') !== undefined && queryParams.get('lat') !== undefined) {
   const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${queryParams.get('lat')},${queryParams.get('lng')}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=5`;
