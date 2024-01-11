@@ -23,4 +23,7 @@ router.get('/license/create', (req, res) => controller.licenseController.showCre
 router.get('/license/:id', (req, res) => controller.licenseController.showDetail(req, res, true))
 router.delete('/license/:id', (req, res) => controller.licenseController.deleteRequest(req, res));
 router.post('/license', (req, res) => controller.licenseController.add(req, res));
+router.get('/license/extend/:id', (req, res) => controller.licenseController.showExtend(req, res));
+router.post('/license/extend/:id', (req, res) => controller.licenseController.add(req, res));
+
 export const quanRoutes = router;

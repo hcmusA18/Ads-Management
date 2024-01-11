@@ -105,7 +105,7 @@ controller.showDetail = async (req, res) => {
 			data = await getByID(id);
 			let spotDetail = await spotService.getSpotByID(data.spotID);
 			const boardType = await getBoardTypeByID(data.boardType);
-			// console.log(data);
+			
 			// console.log(spotDetail);
 			data = {
 				requestID: data.requestID,
@@ -129,6 +129,7 @@ controller.showDetail = async (req, res) => {
 				officerUsername: data.officerUsername,
 				ward: spotDetail.wardName,
 				district: spotDetail.districtName,
+				extendForBoard: data.extendForBoard,
 			}
 			return res.render('./so/license-request-detail', {title, toolbars, ...data});
 		case 'modify':
@@ -190,21 +191,37 @@ controller.requestProcessing = async (req, res) => {
 
 controller.acceptLicense = async (req, res) => {
 	const data = req.body;
-	data.boardID = await IDGenerator.getNewID('Board'); 
-	// console.log(data);
-
-	try {
-		const response = await boardService.createBoard(data);
-		if(response.message.trim() == 'Board created successfully'){
-			const response1 = await updateByID(data.licensingID, {status: 1});
-			// console.log(response1);
+	if(data.boardID != null){
+		try {
+			const response = await boardService.updateBoardByID(data.boardID, {licensingID: data.licensingID});
+			if(response.message.trim() == 'Board updated successfully'){
+				const response1 = await updateByID(data.licensingID, {status: 1});
+				// console.log(response1);
+			}
+			res.redirect('/so/requests?category=license');
+		} catch (error) {
+			console.log(`Error sending edit request: ${error.message}`);
+			req.flash('error', error.message);
+			res.redirect('/so/requests?category=license');
 		}
-		res.redirect('/so/requests?category=license');
-	} catch (error) {
-		console.log(`Error sending edit request: ${error.message}`);
-		req.flash('error', error.message);
-		res.redirect('/so/requests?category=license');
+	} else {
+		data.boardID = await IDGenerator.getNewID('Board'); 
+		// console.log(data);
+
+		try {
+			const response = await boardService.createBoard(data);
+			if(response.message.trim() == 'Board created successfully'){
+				const response1 = await updateByID(data.licensingID, {status: 1});
+				// console.log(response1);
+			}
+			res.redirect('/so/requests?category=license');
+		} catch (error) {
+			console.log(`Error sending edit request: ${error.message}`);
+			req.flash('error', error.message);
+			res.redirect('/so/requests?category=license');
+		}	
 	}
+	
 }
 
 controller.rejectLicense = async (req, res) => {

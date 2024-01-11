@@ -42,21 +42,19 @@
                     <% if(state == 0) { %>
                       <select class="form-select" aria-label="Default select example" id="state" disabled>
                         <option selected value="0">Chờ xử lý</option>
-                        <option value="1">Đã chấp thuận</option>
-                        <option value="-1">Đã từ chối</option>
                       </select>
                     <% } else if(state == 1){ %>
                         <select class="form-select" aria-label="Default select example" id="state" disabled>
-                            <option value="0">Chờ xử lý</option>
                             <option selected value="1">Đã chấp thuận</option>
-                            <option value="-1">Đã từ chối</option>
                           </select>
-                    <% } else { %>
+                    <% } else if(state == -1){ %>
                         <select class="form-select" aria-label="Default select example" id="state" disabled>
-                            <option value="0">Chờ xử lý</option>
-                            <option value="1">Đã chấp thuận</option>
                             <option selected value="-1">Đã từ chối</option>
                           </select>
+                    <% } else {%>
+                      <select class="form-select" aria-label="Default select example" id="state" disabled>
+                        <option selected value="-2">Đã hết hạn</option>
+                      </select>
                     <% } %>
                   </div>
                 </div>

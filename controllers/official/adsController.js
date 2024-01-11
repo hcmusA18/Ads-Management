@@ -9,6 +9,13 @@ import * as boardTypeService from '../../services/boardTypeService.js';
 import { editRequestService } from '../../services/requestService.js';
 import * as IDGenerator from '../../services/IDGenerator.js';
 
+const isOutDated = (date) => {
+	const curDate = new Date();
+	const inDate = new Date(date);
+
+	return inDate < curDate;
+}
+
 const show = async (req, res) => {
   const role = String(req.originalUrl.split('/')[1])
   const category = req.query.category || ''
@@ -199,7 +206,8 @@ const showDetail = async (req, res, isEdit) => {
       adsForm: detailData.adsForm,
       spotType: detailData.spotType,
       licensingID: detailData.licensingID,
-      content: detailData.content
+      content: detailData.content,
+      isOutDated: isOutDated(detailData.endDate)
     };
 
     if (isEdit) {

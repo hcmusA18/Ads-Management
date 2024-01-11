@@ -7,6 +7,23 @@
     <%- include("./partials/head.ejs"); %>
     <link rel="stylesheet" href="/css/carousel.css"/>
 </head>
+<div class="alert alert-success alert-dismissible fade show mt-3" id="alert-success" role="alert"
+    style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Yêu cầu chỉnh sửa được gửi đi thành công!</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show mt-3" id="alert-danger" role="alert"
+    style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong>Có lỗi xảy ra khi gửi yêu cầu chỉnh sửa!</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="alert alert-warning alert-dismissible fade show mt-3" id="alert-warning" role="alert"
+    style="position: fixed; top: 0; left: 0; width: 80%; z-index: 1000; margin-left: 10rem;" hidden>
+    <strong id="warning-text">Vui lòng nhập đầy đủ và chính xác các trường thông tin!</strong>
+    <button type="button" class="btn-close"></button>
+</div>
 
 <body>
 <header></header>
@@ -17,10 +34,10 @@
             <!-- Profile -->
             <%- include("./partials/profile_card.ejs"); %>
             <!-- Back button -->
-            <%- include("./partials/back_button.ejs", {url: "/phuong/boards"}); %>
+            <%- include("./partials/back_button.ejs"); %>
             <!-- Title -->
             <div class="d-flex flex-row align-items-center justify-content-between" style="gap: 10px">
-                <h1 class="fw-bolder m-0 text-uppercase">CHI TIẾT BẢNG QUẢNG CÁO</h1>
+                <h1 class="fw-bolder m-0 text-uppercase"><%= title %></h1>
             </div>
 
             <!-- Content -->
@@ -29,30 +46,6 @@
                 <!-- Carousel -->
                 <%- include("./partials/carousel.ejs",{imgUrls: imgUrls}); %>
                 <div class="container-fluid px-0 nd-chi-tiet d-flex flex-wrap">
-                    <% if(!url.includes('so') && isOutDated) { %>
-                        <div class="container d-flex justify-content-between" style="height: fit-content;">
-                            <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết bảng
-                                quảng cáo (ĐÃ HẾT HẠN)</h4>
-                            
-                            <% if (role !== 'so') { %>
-                            <a href="<%= '/' + role + '/license/extend/' + id %>" class="btn btn-primary" tabindex="-1"
-                               role="button" aria-disabled="true">Gia hạn</a>
-                            <% } %>
-                        </div>
-                    <% } else { %>
-                        <div class="container d-flex justify-content-between" style="height: fit-content;">
-                            <h4 style="font-weight: bold; margin: 0; height: fit-content; align-self: center;">Chi tiết bảng
-                                quảng cáo</h4>
-                            <% const [baseUrl, queryParams] = url.split('?'); %>
-                            <% if (role !== 'so') { %>
-                            <a href="<%= baseUrl + '/modify?' + queryParams %>" class="btn btn-primary" tabindex="-1"
-                               role="button" aria-disabled="true">Yêu cầu chỉnh sửa</a>
-                            <% } %>
-                        </div>
-                    <% } %>
-
-                    
-
                     <div class="container mt-2 d-flex justify-content-between">
                         <div style="width: calc((100% - 2rem) / 2);">
                             <label for="id-quangcao" style="margin-bottom: 6px;">ID Quảng cáo</label>
@@ -83,33 +76,19 @@
                         </div>
                     </div>
                     <div class="container mt-2">
-                        <label for="compAdress" style="margin-bottom: 6px">Địa chỉ công ty</label>
-                        <input type="text" class="form-control" id="compAdress"
+                        <label for="compAddress" style="margin-bottom: 6px">Địa chỉ công ty</label>
+                        <input type="text" class="form-control" id="compAddress"
                                value="<%= authCompanyAddress %>"
                                disabled/>
                     </div>
                     <div class="container mt-2 d-flex justify-content-between">
                         <div style="width: calc((100% - 2rem) / 2);">
-                            <label for="startDate" style="margin-bottom: 6px;">Thời gian bắt đầu hợp đồng</label>
-                            <div class="input-group date" id="datepicker">
-                                <input type="text" class="form-control" id="startDate" value="<%= startDate %>" disabled/>
-                                <span class="input-group-append">
-                      <span class="input-group-text h-100">
-                        <i class="fa fa-calendar" style="background-color: transparent;"></i>
-                      </span>
-                    </span>
-                            </div>
+                            <label for="startDate" class="mb-1">Thời gian bắt đầu hợp đồng</label>
+                            <input type="date" class="form-control" id="startDate" />
                         </div>
                         <div style="width: calc((100% - 2rem) / 2);">
-                            <label for="endDate" style="margin-bottom: 6px">Thời gian kết thúc hợp đồng</label>
-                            <div class="input-group date" id="datepicker">
-                                <input type="text" class="form-control" id="endDate" value="<%= endDate %>" disabled/>
-                                <span class="input-group-append">
-                      <span class="input-group-text h-100">
-                        <i class="fa fa-calendar" style="background-color: transparent;"></i>
-                      </span>
-                    </span>
-                            </div>
+                            <label for="endDate" class="mb-1">Thời gian kết thúc hợp đồng</label>
+                            <input type="date" class="form-control" id="endDate" />
                         </div>
                     </div>
                 </div>
@@ -134,17 +113,6 @@
                         <input type="number" class="form-control" id="board-width" min="0" max="50" step="0.01" value="<%= width %>"disabled/>
                     </div>
                 </div>
-                <div class="container mt-2 d-flex justify-content-between">
-                    <div style="width: calc((100% - 2rem) / 2);">
-                        <label for="locationType" style="margin-bottom: 6px;">Phân loại</label>
-                        <input type="text" class="form-control" id="locationType"
-                               value="<%= spotTypeName %>" disabled/>
-                    </div>
-                    <div style="width: calc((100% - 2rem) / 2);">
-                        <label for="adsForm" style="margin-bottom: 6px">Hình thức</label>
-                        <input type="text" class="form-control" id="adsForm" value="<%= adsFormName %>" disabled/>
-                    </div>
-                </div>
                 <div class="container mt-2">
                     <div class="col-md-12 custom-col">
                         <label for="content" style="margin-bottom: 6px">Nội dung quảng cáo</label>
@@ -164,14 +132,99 @@
                     </script>
                 </div>
             </div>
+            <!-- Button -->
+            <div class="container-fluid px-0 mt-4 mb-2">
+                <div class="container flex-row mt-2 d-flex justify-content-end gap-2">
+                    <button type="button" id="submitBtn" class="btn btn-primary">Xác nhận gia hạn</button>
+                </div>
+            </div>
 
         </div>
     </div>
 </main>
 
-<!-- Ads list -->
+<script>
+    const submitHandler = async (e) => {
+        e.preventDefault();
 
+        // Check startDate & EndDate
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const curDate = new Date();
+        const sDate = new Date(startDate);
+        if(startDate == '' || endDate == ''){
+            document.getElementById('warning-text').textContent = "Vui lòng nhập NGÀY BẮT ĐẦU và NGÀY KẾT THÚC của hợp đồng";
+            document.getElementById('alert-warning').hidden = false;
+            return;
+        }
 
-<script defer type="text/javascript" src="/js/ChitietDiemDat.js"></script>
+        if(startDate >= endDate){
+            document.getElementById('warning-text').textContent = "Vui lòng nhập đúng NGÀY KẾT THÚC sau NGÀY BẮT ĐẦU";
+            document.getElementById('alert-warning').hidden = false;
+            return;
+        }
+
+        if(sDate <= curDate){
+            document.getElementById('warning-text').textContent = "Vui lòng nhập đúng NGÀY BẮT ĐẦU sau ngày hôm nay";
+            document.getElementById('alert-warning').hidden = false;
+            return;
+        }
+
+        const data = {
+            spotID: document.getElementById('id-diemdat').value,
+            boardType: JSON.parse('<%- JSON.stringify(boardType); %>'),
+            quantity: document.getElementById('board-quantity').value,
+            height: document.getElementById('board-height').value,
+            width: document.getElementById('board-width').value,
+            adsImages: JSON.parse('<%- JSON.stringify(imgUrls); %>'),
+            content: document.getElementById('content').innerHTML,
+            companyName: document.getElementById('compName').value,
+            companyPhone: document.getElementById('compPhone').value,
+            companyEmail: document.getElementById('compEmail').value,
+            companyAddress: document.getElementById('compAddress').value,
+            startDate: document.getElementById('startDate').value,
+            endDate: document.getElementById('endDate').value,
+            officerUsername: '<%= user.username %>',
+            extendForBoard: document.getElementById('id-quangcao').value,
+        }
+
+        const url = '<%= url %>';
+        const requestUrl = url.replace('/create', '');
+        // console.log(data);
+        // console.log(requestUrl);
+        const result = await fetch(requestUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        });
+        if (result.status == 200) {
+            document.getElementById('alert-success').removeAttribute('hidden');
+            // clear all input
+            document.querySelectorAll('input').forEach((input) => {
+                input.value = '';
+            });
+            document.getElementById('alert-success').addEventListener('closed.bs.alert', () => {
+                console.log('1');
+                const role = JSON.parse('<%- JSON.stringify(role); %>');
+                window.location.href = `/${role}/license`;
+            });
+        } else {
+            document.getElementById('alert-danger').hidden = false;
+        }
+    };
+
+    document.querySelectorAll('.btn-close').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.target.parentElement.hidden = true;
+        });
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', submitHandler);
+
+</script>
+
 </body>
 </html>
