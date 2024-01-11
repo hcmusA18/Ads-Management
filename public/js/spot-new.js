@@ -29,7 +29,7 @@ const queryParams = new URLSearchParams(window.location.search)
 const reverseGeoCodingApiKey = 'thNYAinGleq7YRZp4ZsyB9CIzjEWloxCXSuUlRpRfD8';
 
 if (queryParams.get('lng') !== undefined && queryParams.get('lat') !== undefined) {
-  const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${queryParams.get('lat')},${queryParams.get('lng')}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
+  const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${queryParams.get('lat')},${queryParams.get('lng')}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=5`;
 
   const lng_field = document.querySelector('#longitude')
   const lat_field = document.querySelector('#latitude')
@@ -40,8 +40,7 @@ if (queryParams.get('lng') !== undefined && queryParams.get('lat') !== undefined
   fetch(api)
     .then((res) => res.json())
     .then((res) => {
-      // const {text, address, coordinates} = formatMapFeature(res.features[0]);
-      const address = res.items[0].address.label;
+      let address = res.items[0].address.label;
 
       addr.value = address.split(',')[0] || ' '
       dist.value = res.items[0].address.city.replace('Quận ', '').trim() || ' '

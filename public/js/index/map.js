@@ -295,38 +295,40 @@ searchInput.addEventListener('keyup', (e) => {
   if (searchValue === '' || searchValue === lastSearch) {
     return;
   }
-  const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${searchValue}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=5`;
+  const autoCompleteApi = `https://revgeocode.search.hereapi.com/v1/autocomplete?q=${searchValue}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=5`;
 
   lastSearch = searchValue;
 
-    fetch(api)
+  // fetch after 500ms
+  setTimeout(() => {
+    if (searchValue === lastSearch) {
+      fetch(autoCompleteApi)
         .then((res) => res.json())
         .then((res) => {
-            if (res && res.items && res.items.length > 0) {
+          if (res && res.items && res.items.length > 0) {
             const result = res.items.map((item) => {
-                return {
-                title: item.address.label,
-                lat: item.position.lat,
-                lng: item.position.lng,
-                };
+              return {
+                title: item.title,
+                label: item.address.label,
+              };
             });
             displaySearchResult(result);
-            }
+          }
         });
+    }
+  }, 500);
 });
-
 const displaySearchResult = (result) => {
   const content = result.map((item) => {
     return `
-    <a  href='#'
-        class='list-group-item list-group-item-action border-0 rounded-0 list-search-item'
-        data-bs-lat='${item.lat}' 
-        data-bs-lng='${item.lng}'
-        data-bs-title='${item.title}'
-        style='cursor: pointer; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 23.5rem; font-size:0.875rem; line-height: 1.25rem'>${item.title}    
+    <a  href="#"
+        class="list-group-item list-group-item-action border-0 rounded-0 list-search-item"
+        data-bs-title="${item.title}" 
+        data-bs-label="${item.label}"
+        style="cursor: pointer; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 23.5rem; font-size:0.875rem; line-height: 1.25rem">${item.label}    
     </a>`;
   });
-  resultBox.innerHTML = `<div class='list-group'>${content.join('')}</div>`;
+  resultBox.innerHTML = `<div class="list-group">${content.join('')}</div>`;
 };
 
 mapboxScript.onload = async function() {
@@ -408,14 +410,16 @@ mapboxScript.onload = async function() {
     }
     marker.setLngLat(e.lngLat).addTo(map);
 
-    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi`;
+    const api = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${e.lngLat.lat},${e.lngLat.lng}&apiKey=${reverseGeoCodingApiKey}&lang=vi&limit=10`;
 
     fetch(api)
       .then((res) => res.json())
       .then((res) => {
+        const place = res.items.find((item) => item.resultType === 'place');
         let address = res.items[0].address.label;
         address = address.replace(', Hồ Chí Minh, Việt Nam', '');
         const innerHtmlContent = `<h6 class="fw-bolder"><i class="bi bi-geo-alt"></i> Thông tin địa điểm</h6>
+                                  <p class="fw-bold" style="font-size: 1.125rem;">${place.title}</p>
                                   <p class="fw-light" style="font-size: 15px;">${address}</p>`;
         const divElement = document.createElement('div');
         
@@ -448,13 +452,20 @@ mapboxScript.onload = async function() {
   resultBox.addEventListener('click', (e) => {
     const listSearchItem = e.target.closest('.list-search-item');
     if (!listSearchItem) return;
-    const lat = listSearchItem.dataset.bsLat;
-    const lng = listSearchItem.dataset.bsLng;
-    map.flyTo({
-      center: [lng, lat],
-      essential: true, // this animation is considered essential with respect to prefers-reduced-motion
-      zoom: 16,
-    });
+    const label = listSearchItem.dataset.bsLabel;
+    const api = `https://revgeocode.search.hereapi.com/v1/geocode?q=${label}&apiKey=${reverseGeoCodingApiKey}&lang=vi&in=countryCode:VNM&limit=1`;
+
+    fetch(api)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.items && res.items.length > 0) {
+          map.flyTo({
+            center: [res.items[0].position.lng, res.items[0].position.lat],
+            essential: true,
+            zoom: 16,
+          });
+        }
+      });
   });
 
   closeBtn.addEventListener('click', () => {
