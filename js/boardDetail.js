@@ -87,3 +87,4 @@ $("#quantity").val(`${boardDetail.quantity} trụ/bảng`);
 $("#size").val(`${boardDetail.width} x ${boardDetail.height} m^2`);
 $("#ads-form").val(boardDetail.adsFormName);
 $("#location-type").val(boardDetail.spotTypeName);
+$("#report-btn").attr("href", `/report-create.html?id=${boardDetail.boardID}`);
