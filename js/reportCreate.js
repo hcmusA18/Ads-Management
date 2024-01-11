@@ -34,7 +34,7 @@ const appendAlert = (message, type) => {
 
 const submitHandler = async (e) => {
   e.preventDefault();
-  grecaptcha.execute('6Lc5xkopAAAAAPztUHiaPVzuMeDwtw2OVXZ2ov2e', { action: 'submit' }).then(async (token) => {
+  grecaptcha.execute('6LeRPU0pAAAAAO3wpsQevQMPg0qP6GyEZzAQ_0MU', { action: 'submit' }).then(async (token) => {
     if (!document.getElementById('sender-name').value || !document.getElementById('phone').value || !document.getElementById('email').value) {
       alert('Bạn phải nhập đầy đủ thông tin người báo cáo');
       return;

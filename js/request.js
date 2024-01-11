@@ -127,6 +127,14 @@ export const getReportList = async (reportIDs) => {
   return await res.json();
 }
 
+export const getDistrictWardName = async (lng, lat) => {
+  const res = await fetch(`${requestHostname}api/district-ward-name?lng=${lng}&lat=${lat}`, {
+    method: 'GET',
+    mode: 'cors',
+  });
+  return await res.json();
+}
+
 
 export default {
   getAllSpots,
@@ -135,5 +143,6 @@ export default {
   uploadReport,
   getReport,
   getReportTypes,
-  getReportList, 
+  getReportList,
+  getDistrictWardName,
 }
