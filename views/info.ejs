@@ -74,7 +74,7 @@
               <label for="phone" class="form-label">SĐT</label>
             </div>
             <div class="form-floating mb-3 ">
-              <input type="date" class="form-control" id="birthday" name="dob" value="<%= info.dob.toISOString().slice(0, 10) || null %>" />
+              <input type="date" class="form-control" id="birthday" name="dob" value="<%= info.dob ? info.dob.toISOString().slice(0, 10) : null %>" />
               <label for="birthday" class="form-label">Ngày sinh</label>
             </div>
             <button type="submit" class="btn btn-primary">

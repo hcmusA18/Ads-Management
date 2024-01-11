@@ -8,6 +8,7 @@ router.get('*', (req, res, next) => {
   next();
 });
 router.get('/officier/:username', (req, res) => controller.infoController.getInfo(req, res));
+router.post('/officier/:username', (req, res) => controller.infoController.updateInfo(req, res));
 router.get('/', (req, res) => controller.indexController.show(req, res));
 router.get('/reports', (req, res) => controller.reportsController.show(req, res));
 

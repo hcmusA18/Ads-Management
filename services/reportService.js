@@ -2,7 +2,7 @@ import Report from '../models/reportModel.js'
 
 export const createReport = async (data) => {
   try {
-    const newReport = new Report(data)
+    const newReport = new Report(data);
     const res = await newReport.save();
     return res.reportID;
   } catch (error) {
