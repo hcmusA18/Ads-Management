@@ -153,15 +153,6 @@
                             <%- content %>
                         </div>
                     </div>
-                    <script>
-                      let content = document.getElementById("content");
-                      content = content.value.replace(/\\n/g, "<br />");
-                      console.log(`after replace: ${content}`);
-                      const adsContent = new DOMParser().parseFromString(content, "text/html").body.firstElementChild;
-                      if (adsContent && adsContent.innerHTML)
-                        document.getElementById("content").innerHTML = adsContent.innerHTML;
-                      else document.getElementById("content").innerText = content;
-                    </script>
                 </div>
             </div>
 

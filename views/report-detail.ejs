@@ -123,17 +123,11 @@
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col">
                     <label for="content" style="margin-bottom: 6px">Nội dung báo cáo</label>
-                    <textarea class="form-control" id="content" disabled
-                      style="min-height: 100px"><%- content %></textarea>
+                    <div id="content" class="form-control"
+                             style="min-height: 6.25rem; border-radius: 0; background-color: var(--bs-secondary-bg) !important; border-bottom-color: var(--Neutral-5);">
+                             <%- content %>
+                    </div>
                   </div>
-                  <script>
-                    let content = document.getElementById('content');
-                    content = content.value.replace(/\\n/g, "<br />");
-                    const reportInfoHTML = new DOMParser().parseFromString(content, "text/html").body.firstElementChild;
-                    if (reportInfoHTML && reportInfoHTML.innerHTML)
-                      document.getElementById("content").innerHTML = reportInfoHTML.innerHTML;
-                    else document.getElementById("content").innerText = content;
-                  </script>
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col">

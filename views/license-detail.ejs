@@ -129,17 +129,6 @@
                       <%- content %>
                     </div>
                   </div>
-                  <script>
-                    let content = document.getElementById("content");
-                    console.log(`content: ${content.value}`);
-                    content = content.value.replace(/\\n/g, "<br />");
-                    console.log(`after replace: ${content}`);
-                    const adsContent = new DOMParser().parseFromString(content, "text/html").body.firstElementChild;
-                    console.log(`adsContent: ${adsContent}`);
-                    if (adsContent && adsContent.innerHTML)
-                      document.getElementById("content").innerHTML = adsContent.innerHTML;
-                    else document.getElementById("content").innerText = content;
-                  </script>
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-12 custom-col hinhanh-mhoa">
