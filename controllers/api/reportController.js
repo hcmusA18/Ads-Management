@@ -1,4 +1,5 @@
 import apiService from '../../services/apiService.js';
+import * as locationService from '../../services/locationService.js';
 
 export const getReport = async (spotID) => {
   try {
@@ -24,7 +25,7 @@ const verifyCaptcha = async (captcha) => {
 
 export const createReport = async (data) => {
   try {
-    const secretKey = '6Lc5xkopAAAAANvP7EU3HG0qxPcOnBGH8B0xjT6D';
+    const secretKey = '6LeRPU0pAAAAAEWCzWcYcBZ86hWCBm4-lvFuX35T';
     if (!data.captcha) throw new Error('No captcha');
     const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${data.captcha}`;
     const response = await fetch(verifyUrl);
@@ -54,5 +55,14 @@ export const getListReport = async (reportIDs) => {
   } catch (error) {
     console.log(error);
     throw new Error(`Error getting list report: ${error.message}`);
+  }
+}
+
+export const getDistrictWardName = async (lat, lng) => {
+  try {
+    return await locationService.getDistrictWardName(lat, lng);
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Error getting district ward name: ${error.message}`);
   }
 }

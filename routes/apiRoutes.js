@@ -72,4 +72,11 @@ router.get('/report-types', (req, res) => {
     .catch((err) => res.status(500).json({ message: err.message }))
 });
 
+router.get('/district-ward-name', (req, res) => {
+  api
+    .getDistrictWardName(req.query.lat, req.query.lng)
+    .then((districtWardName) => res.status(200).json(districtWardName))
+    .catch((err) => res.status(500).json({ message: err.message }))
+});
+
 export const apiRoutes = router;
