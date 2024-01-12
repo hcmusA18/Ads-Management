@@ -57,13 +57,14 @@ async function generateReportHTML(report, lat, lng) {
                     </div>
                   </div>`
   } else if (report.length === 1) {
-    let report = report[0];
+    console.log(report);
+    let report1 = report[0];
     reportHTML = `<div class="card mb-2">
                     <div class="card-body bg-info text-info-emphasis bg-opacity-25">
-                      <h6 class="card-title fw-bold">${report.reportID}</h6>
-                      <p class="card-text">${report.reporterName}</p>
-                      <p class="card-text"><span class="fw-bold">Tình trạng:</span> ${report.status == 0 ? "Chưa xử lý" : "Đã xử lý"}</p>
-                      <a href="report-detail.html?id=${report.reportID}" class="btn btn-primary btn-sm">
+                      <h6 class="card-title fw-bold">${report1.reportID}</h6>
+                      <p class="card-text">${report1.reporterName}</p>
+                      <p class="card-text"><span class="fw-bold">Tình trạng:</span> ${report1.status == 0 ? "Chưa xử lý" : "Đã xử lý"}</p>
+                      <a href="report-detail.html?id=${report1.reportID}" class="btn btn-primary btn-sm">
                         Xem chi tiết
                       </a>
                     </div>
