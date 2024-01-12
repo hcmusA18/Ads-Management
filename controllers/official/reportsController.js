@@ -32,6 +32,7 @@ const show = async (req, res) => {
 	// console.log(wardsOfDistrict);
 
 	const data = await getReportByOfficerRole(officerRole);
+	console.log(data);
 
 	const roleData = {
 		quan: {
@@ -74,12 +75,15 @@ const show = async (req, res) => {
 		phuong: {
 			tableHeads: ['ID Báo Cáo', 'ID DD / QC', 'Loại hình báo cáo',
 				'Họ tên người gửi', 'Email', 'Thời điểm gửi', 'Trạng thái'],
-			tableData: data.map((item) => {
+			tableData: await Promise.all(data.map(async (item) => {
 				if (item.objectID.includes('AD')) {
 					const lat = item.objectID.split(':')[1];
 					const lng = item.objectID.split(':')[0].replace('AD', '');
-					const location = locationService.getDistrictWardName(lat, lng);
+					const location = await locationService.getDistrictWardName(lat, lng);
+					console.log(location);
 					const wardID = location.wardID;
+					console.log(officerRole);
+					console.log(wardID);
 
 					// if wardID is not equal to officerRole, then return empty object
 					if (wardID !== officerRole) {
@@ -102,7 +106,7 @@ const show = async (req, res) => {
 					}
 				}
 			}),
-		},
+		)	},
 	}
 
 	let roleInfo = roleData[role];
